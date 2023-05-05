@@ -13,7 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->loadViewsFrom(__DIR__ . '/../Resources/Views', 'Blog');
+        Blade::component('Blog::BlogWebNav', 'blogwebnav');
     }
 
     /**
