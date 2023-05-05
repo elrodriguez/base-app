@@ -41,7 +41,7 @@ class BlogServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->loadViewsFrom(__DIR__ . '/../Resources/Views', 'Blog');
 
-        Blade::component('Blog::BlogWebNav', 'blog-web-nav');
+        Blade::component('Blog::BlogWebNav', 'BlogWebNav');
     }
 
     /**
