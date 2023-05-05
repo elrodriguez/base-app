@@ -29,9 +29,6 @@ class BlogServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
-        $this->loadViewsFrom(__DIR__ . '/../Resources/Views', 'Blog');
-
-        Blade::component('Blog::BlogWebNav', 'blogwebnav');
     }
 
     /**
@@ -42,6 +39,8 @@ class BlogServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->loadViewsFrom(__DIR__ . '/../Resources/Views', 'Blog');
+        Blade::component('Blog::BlogWebNav', 'blogwebnav');
     }
 
     /**
