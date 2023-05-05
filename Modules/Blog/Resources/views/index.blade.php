@@ -97,6 +97,8 @@
                             <li><a href="#">Facebook</a></li> 
                         </ol> 
                     </div>  --}}
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2128776301009629"
+                    crossorigin="anonymous"></script>
                 </div> 
             </div> 
         </div> 
