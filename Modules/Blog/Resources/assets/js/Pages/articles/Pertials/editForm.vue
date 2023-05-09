@@ -8,6 +8,7 @@
     import { ref, onMounted } from 'vue';
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import TextInput from '@/Components/TextInput.vue';
+    import SecondaryButton from '@/Components/SecondaryButton.vue';
 
     const props = defineProps({
         article: {
@@ -17,13 +18,24 @@
     });
 
     const form = useForm({
+        id: props.article.id,
         title: props.article.title,
         content_text: props.article.content_text,
-        status: props.article.status ? true : false
+        status: props.article.status ? true : false,
+        file: props.article.imagen
     });
 
+    const photoPreview = ref(null);
+    const photoInput = ref(null);
+
     const updateArticle = () => {
-        form.put(route('blog-article.update', props.article.id), {
+
+        if (photoInput.value) {
+            form.file = photoInput.value.files[0];
+        }
+
+        form.post(route('blog-article-update'), {
+            forceFormData: true,
             errorBag: 'updateArticle',
             preserveScroll: true,
             onSuccess: () => {
@@ -32,10 +44,36 @@
         });
     };
 
+    const selectNewPhoto = () => {
+        photoInput.value.click();
+    };
+
+    const updatePhotoPreview = () => {
+        const photo = photoInput.value.files[0];
+
+        if (! photo) return;
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            photoPreview.value = e.target.result;
+        };
+
+        reader.readAsDataURL(photo);
+    };
+
+    const deletePhoto = () => {
+        router.delete(route('current-user-photo.destroy'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                photoPreview.value = null;
+                clearPhotoFileInput();
+            },
+        });
+    };
+
     onMounted(() => {
-         ClassicEditor.create(document.querySelector('#editor'),{
-            minHeight: '300px'
-         }).then(editor => {
+         ClassicEditor.create(document.querySelector('#editor')).then(editor => {
             editor.setData(props.article.content_text);
             editor.model.document.on('change:data', () => {
                 form.content_text = editor.getData();
@@ -44,6 +82,7 @@
             console.error(error);
         });
     });
+
 </script>
 
 
@@ -74,6 +113,42 @@
                 <InputLabel for="content" value="Contenido *" />
                 <div id="editor"></div>
                 <InputError :message="form.errors.content_text" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-6">
+                <div>
+                    <!-- Profile Photo File Input -->
+                    <input
+                        ref="photoInput"
+                        type="file"
+                        class="hidden"
+                        @change="updatePhotoPreview"
+                    >
+                    <InputLabel for="photo" value="Photo" />
+                    <!-- Current Profile Photo -->
+                    <div v-show="!photoPreview" class="mt-2">
+                        <img :src="form.file" :alt="form.title" class="object-cover" style="width: 200px;" />
+                    </div>
+
+                    <!-- New Profile Photo Preview -->
+                    <div v-show="photoPreview" class="mt-2">
+                        <img :src="photoPreview" :alt="form.title" class="object-cover" style="width: 200px;" />
+                    </div>
+
+                    <SecondaryButton class="mt-2 mr-2" type="button" @click.prevent="selectNewPhoto">
+                        Seleccione una nueva foto
+                    </SecondaryButton>
+
+                    <!-- <SecondaryButton
+                        v-if="form.file"
+                        type="button"
+                        class="mt-2"
+                        @click.prevent="deletePhoto"
+                    >
+                        Eliminar imagen
+                    </SecondaryButton> -->
+
+                    <InputError :message="form.errors.file" class="mt-2" />
+                </div>
             </div>
             <div class="col-span-6 sm:col-span-6">
                 <div class="flex items-center mb-6">

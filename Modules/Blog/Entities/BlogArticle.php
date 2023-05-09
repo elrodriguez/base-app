@@ -29,4 +29,8 @@ class BlogArticle extends Model
     {
         return html_entity_decode($value, ENT_QUOTES, "UTF-8");
     }
+    public function getImagenAttribute($value)
+    {
+        return ($value != 'img/imagen-no-disponible.jpg' ? asset('storage/' . $value) : asset($value));
+    }
 }

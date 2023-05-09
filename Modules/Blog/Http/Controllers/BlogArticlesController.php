@@ -96,6 +96,7 @@ class BlogArticlesController extends Controller
      */
     public function update(Request $request, BlogArticle $blogArticle)
     {
+
         $this->validate($request, [
             'title' => 'required|max:255|unique:blog_articles,url,' . $blogArticle->id,
             'content_text' => 'required'
@@ -123,5 +124,43 @@ class BlogArticlesController extends Controller
 
         return redirect()->route('blog-article.index')
             ->with('message', __('Artículo eliminado con éxito'));
+    }
+    public function updateArticle(Request $request)
+    {
+        $blogArticle = BlogArticle::find($request->get('id'));
+
+        $this->validate($request, [
+            'title' => 'required|max:255|unique:blog_articles,url,' . $blogArticle->id,
+            'content_text' => 'required',
+        ]);
+
+        $path = 'img/imagen-no-disponible.jpeg';
+        $destination = 'uploads/blog/articles';
+        $file = $request->file('file');
+
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = $request->get('id') . '.' . $extension;
+            $path = $request->file('file')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+        }
+
+
+
+        $blogArticle->update([
+            'title'         => $request->get('title'),
+            'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
+            'url'           => Str::slug($request->get('title')),
+            'imagen'        => $path,
+            'status'        => $request->get('status')
+        ]);
+
+        return redirect()->route('blog-article.edit', $blogArticle->id)
+            ->with('message', 'Categoria updated successfully.');
     }
 }

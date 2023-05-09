@@ -19,5 +19,7 @@ Route::prefix('blog')->group(function () {
         Route::get('/dashboard', 'BlogController@dashboard')->name('blog_dashboard');
         Route::resource('blog-category', BlogCategoriesController::class);
         Route::resource('blog-article', BlogArticlesController::class);
+        Route::post('blog-article-update', 'BlogArticlesController@updateArticle')->name('blog-article-update');
+        Route::post('upload/article/image', 'BlogArticlesController@updateImage')->name('blog_article_upload_image');
     });
 });

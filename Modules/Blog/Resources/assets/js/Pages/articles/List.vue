@@ -72,11 +72,14 @@
                         </div>
                     </div>
                     <div class="relative overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table class="w-full text-sm text-gray-500 dark:text-gray-400">
                             <thead class="text-gray-700 uppercase bg-gray-100 dark:text-gray-400">
                                 <tr class="border">
                                     <th scope="col" class="px-6 py-4 border">
                                         Acciones
+                                    </th>
+                                    <th scope="col" class="px-6 py-4">
+                                        Imagen
                                     </th>
                                     <th scope="col" class="px-6 py-4">
                                         <div class="flex items-center">
@@ -98,6 +101,9 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(article, index) in articles.data" :key="article.id" class="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="border px-6 py-4">
+                                        <img :src="article.imagen" :alt="article.title" class="object-cover" style="width: 100px;" />
+                                    </td>
                                     <td class="border px-6 py-4">
                                         <a :href="route('blog-article.edit',article.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             <font-awesome-icon :icon="faPencilAlt" />
