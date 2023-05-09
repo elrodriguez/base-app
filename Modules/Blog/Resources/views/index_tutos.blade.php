@@ -56,7 +56,8 @@
             @endforeach
         </div>
     </section>
-
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2128776301009629"
+    crossorigin="anonymous"></script>
     <footer class="bg-light py-4">
         <div class="container text-center">
         <p>&copy; 2023 {{ env('APP_NAME') }} Blog. Todos los derechos reservados.</p>
