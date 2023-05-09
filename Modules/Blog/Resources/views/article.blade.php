@@ -12,6 +12,7 @@
         background-color: #f1f1f1;
         padding: 10px;
         border-radius: 5px;
+        overflow-x: auto;
     }
 
     blockquote p {
