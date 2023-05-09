@@ -7,19 +7,7 @@
 {{-- <meta name="description" content="Descripción breve de la página"> --}}
 
 @stop
-<style>
-    blockquote {
-        background-color: #f1f1f1;
-        padding: 10px;
-        border-radius: 5px;
-        overflow-x: auto;
-    }
 
-    blockquote p {
-        white-space: pre;
-        font-family: monospace;
-    }
-    </style>
 @section('content')
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
