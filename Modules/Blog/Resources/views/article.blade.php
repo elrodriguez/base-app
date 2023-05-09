@@ -61,7 +61,18 @@
                             <li><a href="#">Facebook</a></li> 
                         </ol> 
                     </div>  --}}
-
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2128776301009629"
+                    crossorigin="anonymous"></script>
+                    <!-- delventas_articulo -->
+                    <ins class="adsbygoogle"
+                            style="display:block"
+                            data-ad-client="ca-pub-2128776301009629"
+                            data-ad-slot="4358157531"
+                            data-ad-format="auto"
+                            data-full-width-responsive="true"></ins>
+                    <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div> 
             </div> 
         </div> 
