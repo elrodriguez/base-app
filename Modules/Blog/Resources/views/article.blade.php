@@ -32,13 +32,6 @@
         </div>
     </nav>
     <main class="container"> 
-        {{-- <div class="row g-5"> 
-            <div class="col-md-12"> 
-                <div class="mt-4">
-                    <h3 class="text-center">{{ $article->title }}</h3>
-                </div>
-            </div>
-        </div> --}}
         <div class="row g-5"> 
             <div class="col-md-8"> 
                 <div class="mt-4">
