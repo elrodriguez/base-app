@@ -11,6 +11,13 @@
 |
 */
 
-Route::middleware(['module.layout'])->prefix('blog')->group(function () {
+
+Route::prefix('blog')->group(function () {
     Route::get('/', 'BlogController@index');
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/dashboard', 'BlogController@dashboard')->name('blog_dashboard');
+        Route::resource('blog-category', BlogCategoriesController::class);
+        Route::resource('blog-article', BlogArticlesController::class);
+    });
 });

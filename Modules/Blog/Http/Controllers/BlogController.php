@@ -5,6 +5,8 @@ namespace Modules\Blog\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Inertia\Inertia;
+use Modules\Blog\Entities\BlogArticle;
 
 class BlogController extends Controller
 {
@@ -14,16 +16,17 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return view('blog::index');
+        $articles = BlogArticle::where('status', true)->get();
+        return view('blog::index_tutos')->with('articles', $articles);
     }
 
     /**
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function dashboard()
     {
-        return view('blog::create');
+        return Inertia::render('Blog::Dashboard');
     }
 
     /**
@@ -31,9 +34,10 @@ class BlogController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function article($url)
     {
-        //
+        $article = BlogArticle::where('url', $url)->first();
+        return view('blog::article')->with('article', $article);
     }
 
     /**

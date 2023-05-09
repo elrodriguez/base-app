@@ -17,7 +17,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use Modules\Blog\Http\Controllers\BlogController;
 
-Route::get('/', [BlogController::class, 'index']);
+Route::get('/', [BlogController::class, 'index'])->name('blog_principal');
+Route::get('/article/{url}', [BlogController::class, 'article'])->name('blog_article_by_url');
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),

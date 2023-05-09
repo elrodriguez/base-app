@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VueTheMask from 'vue-the-mask'
 import Permissions from './Plugins/Permissions';
 
-
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({

@@ -36,6 +36,9 @@
                         <NavLink :href="route('onlineshop_dashboard')" :active="route().current('onlineshop_dashboard')">
                             Tienda virtual
                         </NavLink>
+                        <NavLink :href="route('blog_dashboard')" :active="route().current('blog_dashboard')">
+                            Blog
+                        </NavLink>
                     </div>
                 </div>
 
@@ -125,6 +128,9 @@
                 </ResponsiveNavLink>
                 <ResponsiveNavLink :href="route('onlineshop_dashboard')" :active="route().current('onlineshop_dashboard')">
                     Tienda virtual 
+                </ResponsiveNavLink>
+                <ResponsiveNavLink :href="route('blog_dashboard')" :active="route().current('blog_dashboard')">
+                    Blog
                 </ResponsiveNavLink>
             </div>
 
