@@ -6,7 +6,7 @@
     import Keypad from '@/Components/Keypad.vue';
     import swal from "sweetalert";
     import { usePage } from '@inertiajs/vue3';
-
+swal('Mensaje desde el controlador con inertia')
     const props = defineProps({
         articles: {
             type: Object,

@@ -43,10 +43,9 @@
                 
                 <div class="col">
                     <div class="card h-100 mb-4">
-                        <img src="tutorial1.jpg" class="card-img-top" alt="Tutorial 1">
+                        <img src="{{ $article->imagen }}" class="card-img-top" alt="{{ $article->title }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ $article->title }}</h5>
-                            
                         </div>
                         <div class="card-footer">
                             <a href="{{ route('blog_article_by_url',$article->url ) }}" class="btn btn-link">Leer más</a>

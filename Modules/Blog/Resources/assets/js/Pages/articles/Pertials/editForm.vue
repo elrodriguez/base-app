@@ -73,7 +73,20 @@
     };
 
     onMounted(() => {
-         ClassicEditor.create(document.querySelector('#editor')).then(editor => {
+         ClassicEditor.create(document.querySelector('#editor'),{
+            toolbar: [
+                'heading', 
+                '|', 
+                'bold', 
+                'italic', 
+                'link',
+                'alignment',
+                '|',
+                'imageUpload',
+                'blockQuote',
+                'code',
+            ]
+         }).then(editor => {
             editor.setData(props.article.content_text);
             editor.model.document.on('change:data', () => {
                 form.content_text = editor.getData();

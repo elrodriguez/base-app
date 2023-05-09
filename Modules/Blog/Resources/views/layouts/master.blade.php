@@ -87,12 +87,14 @@
             z-index: 1500;
         }
         </style> <!-- Custom styles for this template --> 
+
         <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900&amp;display=swap" rel="stylesheet"> <!-- Custom styles for this template --> 
         <link href="{{ asset('themes/blog/blog.css') }}" rel="stylesheet"> 
         <meta http-equiv="X-Translated-By" content="Google">
         <meta http-equiv="X-Translated-To" content="es">
         <script type="text/javascript" src="https://www.gstatic.com/_/translate_http/_/js/k=translate_http.tr.es._ssfQsttTrQ.O/d=1/rs=AN8SPfpZfNcrlWCHZyrQDu0vAfcmaQTEzA/m=corsproxy" data-sourceurl="https://getbootstrap.com/docs/5.3/examples/blog/" data-navigation-history-proxy-enabled="true"></script>
         <meta name="robots" content="none">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
     </head> 
     <body>
         @yield('content')
