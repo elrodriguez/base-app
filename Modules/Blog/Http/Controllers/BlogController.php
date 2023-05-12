@@ -45,9 +45,9 @@ class BlogController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show($id)
+    public function policies()
     {
-        return view('blog::show');
+        return view('blog::policies');
     }
 
     /**

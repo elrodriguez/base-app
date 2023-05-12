@@ -19,6 +19,7 @@ use Modules\Blog\Http\Controllers\BlogController;
 
 Route::get('/', [BlogController::class, 'index'])->name('blog_principal');
 Route::get('/article/{url}', [BlogController::class, 'article'])->name('blog_article_by_url');
+Route::get('/policies', [BlogController::class, 'policies'])->name('blog_policies');
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),

@@ -38,7 +38,7 @@
     </header>
 
     <section class="container">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
             @foreach($articles as $article)
                 
                 <div class="col">
@@ -56,12 +56,11 @@
             @endforeach
         </div>
     </section>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2128776301009629"
-    crossorigin="anonymous"></script>
-    <footer class="bg-light py-4">
+
+    {{-- <footer class="bg-light py-4">
         <div class="container text-center">
         <p>&copy; 2023 {{ env('APP_NAME') }} Blog. Todos los derechos reservados.</p>
         </div>
-    </footer>
-  
+    </footer> --}}
+
 @endsection
