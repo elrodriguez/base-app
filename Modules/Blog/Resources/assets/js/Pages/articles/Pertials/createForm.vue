@@ -13,6 +13,7 @@
     const form = useForm({
         title: '',
         content_text: '',
+        description:'',
         status: true
     });
 
@@ -61,10 +62,16 @@
                 <InputError :message="form.errors.title" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-6">
+                <InputLabel for="description" value="description *" />
+                <textarea v-model="form.description" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                <InputError :message="form.errors.description" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="content" value="Contenido *" />
                 <div id="editor"></div>
                 <InputError :message="form.errors.content_text" class="mt-2" />
             </div>
+            
             <div class="col-span-6 sm:col-span-6">
                 <div class="flex items-center mb-6">
                     <input v-model="form.status" id="checkboxStatus" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">

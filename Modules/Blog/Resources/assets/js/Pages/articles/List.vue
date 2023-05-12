@@ -90,6 +90,9 @@
                                         </div>
                                     </th>
                                     <th scope="col" class="px-6 py-4">
+                                        Descripción
+                                    </th>
+                                    <th scope="col" class="px-6 py-4">
                                         <div class="flex items-center">
                                             Estado
                                             <a :href="route('blog-article.index', {sort:'status',sort_order: filters.sort_order})">
@@ -114,6 +117,9 @@
                                     </td>
                                     <td class="border px-6 py-4">
                                         {{ article.title }}
+                                    </td>
+                                    <td class="border px-6 py-4">
+                                        {{ article.short_description }}
                                     </td>
                                     <td class="border px-6 py-4">
                                         <span v-if="article.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>

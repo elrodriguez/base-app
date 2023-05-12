@@ -64,13 +64,15 @@ class BlogArticlesController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|max:255|unique:blog_articles,url',
-            'content_text' => 'required'
+            'content_text' => 'required',
+            'description' => 'required'
         ]);
 
         BlogArticle::create([
             'title'         => $request->get('title'),
             'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
             'url'           => Str::slug($request->get('title')),
+            'short_description'   => $request->get('description'),
             'status'        => $request->get('status')
         ]);
 
@@ -99,12 +101,14 @@ class BlogArticlesController extends Controller
 
         $this->validate($request, [
             'title' => 'required|max:255|unique:blog_articles,url,' . $blogArticle->id,
-            'content_text' => 'required'
+            'content_text' => 'required',
+            'description' => 'required'
         ]);
 
         $blogArticle->update([
             'title'         => $request->get('title'),
             'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
+            'short_description'   => $request->get('description'),
             'url'           => Str::slug($request->get('title')),
             'status'        => $request->get('status')
         ]);
@@ -134,6 +138,12 @@ class BlogArticlesController extends Controller
             'content_text' => 'required',
         ]);
 
+        $blogArticle->title = $request->get('title');
+        $blogArticle->content_text = htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8");
+        $blogArticle->url = Str::slug($request->get('title'));
+        $blogArticle->short_description = $request->get('description');
+        $blogArticle->status = $request->get('status');
+
         $path = 'img/imagen-no-disponible.jpeg';
         $destination = 'uploads/blog/articles';
         $file = $request->file('file');
@@ -148,17 +158,13 @@ class BlogArticlesController extends Controller
                 $file_name,
                 'public'
             );
+
+            $blogArticle->imagen = $path;
         }
 
 
 
-        $blogArticle->update([
-            'title'         => $request->get('title'),
-            'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
-            'url'           => Str::slug($request->get('title')),
-            'imagen'        => $path,
-            'status'        => $request->get('status')
-        ]);
+        $blogArticle->save();
 
         return redirect()->route('blog-article.edit', $blogArticle->id)
             ->with('message', 'Categoria updated successfully.');

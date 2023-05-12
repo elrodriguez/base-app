@@ -17,7 +17,10 @@ class BlogArticle extends Model
         'likes',
         'url',
         'publicity',
-        'status'
+        'status',
+        'keywords',
+        'short_description',
+        'category_id'
     ];
 
     protected static function newFactory()

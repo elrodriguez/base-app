@@ -22,7 +22,9 @@
         title: props.article.title,
         content_text: props.article.content_text,
         status: props.article.status ? true : false,
-        file: props.article.imagen
+        file_view: props.article.imagen,
+        file: '',
+        description: props.article.short_description
     });
 
     const photoPreview = ref(null);
@@ -123,6 +125,11 @@
                 <InputError :message="form.errors.title" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-6">
+                <InputLabel for="description" value="description *" />
+                <textarea v-model="form.description" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                <InputError :message="form.errors.description" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="content" value="Contenido *" />
                 <div id="editor"></div>
                 <InputError :message="form.errors.content_text" class="mt-2" />
@@ -139,7 +146,7 @@
                     <InputLabel for="photo" value="Photo" />
                     <!-- Current Profile Photo -->
                     <div v-show="!photoPreview" class="mt-2">
-                        <img :src="form.file" :alt="form.title" class="object-cover" style="width: 200px;" />
+                        <img :src="form.file_view" :alt="form.title" class="object-cover" style="width: 200px;" />
                     </div>
 
                     <!-- New Profile Photo Preview -->
