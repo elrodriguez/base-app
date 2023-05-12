@@ -38,22 +38,48 @@
     </header>
 
     <section class="container">
-        <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-            @foreach($articles as $article)
-                
-                <div class="col">
-                    <div class="card h-100 mb-4">
-                        <img src="{{ $article->imagen }}" class="card-img-top" alt="{{ $article->title }}">
+        <div class="row mb-4">
+            <div class="col-12 col-md-9">
+                @foreach($articles as $article)
+                    <div class="card mb-2">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $article->title }}</h5>
-                        </div>
-                        <div class="card-footer">
-                            <a href="{{ route('blog_article_by_url',$article->url ) }}" class="btn btn-link">Leer más</a>
+                            <div class="d-flex align-items-center">
+                                <a href="{{ route('blog_article_by_url',$article->url ) }}" class="flex-shrink-0">
+                                    <img src="{{ $article->imagen }}" alt="{{ $article->title }}" style="width: 100px;">
+                                </a>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="card-title">
+                                        <a href="{{ route('blog_article_by_url',$article->url ) }}" style="text-decoration: none; color: inherit;">
+                                            {{ $article->title }}
+                                        </a>
+                                    </h5>
+                                    <p>{{ $article->short_description }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                @endforeach
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ asset('img/spc.jpg') }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Sistema de Punto de Ventas de Calzado en Laravel 10</h5>
+                      <p class="card-text">Nuestro sistema de punto de ventas de calzado desarrollado en Laravel 10 ofrece una solución completa y eficiente para la gestión de ventas de zapatillas por tallas.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item list-group-item-primary">Registro de productos</li>
+                      <li class="list-group-item list-group-item-secondary">Administración de precios por local</li>
+                      <li class="list-group-item list-group-item-success">Gestión de ventas</li>
+                      <li class="list-group-item list-group-item-danger">Reportes de ventas</li>
+                      <li class="list-group-item list-group-item-warning">Apertura y cierre de caja chica</li>
+                      <li class="list-group-item list-group-item-light">Roles de usuario</li>
+                    </ul>
+                    {{-- <div class="card-body">
+                      <a href="#" class="card-link">Roles de usuario</a>
+                    </div> --}}
                 </div>
-
-            @endforeach
+            </div>
         </div>
     </section>
 
