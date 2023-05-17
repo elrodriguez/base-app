@@ -55,9 +55,9 @@ class BlogController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
+    public function contactUs()
     {
-        return view('blog::edit');
+        return view('blog::contact_us');
     }
 
     /**

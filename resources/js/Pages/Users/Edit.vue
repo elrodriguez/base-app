@@ -11,6 +11,10 @@
             type: Object,
             default: () => ({}),
         },
+		xrole:{
+            type: Object,
+            default: () => ({}),
+        },
         roles:{
             type: Object,
             default: () => ({}),
@@ -28,7 +32,12 @@
         </template>
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <EditUserForm :roles="roles" :establishments="props.establishments" :xuser="props.xuser" />
+                <EditUserForm 
+                    :roles = "roles" 
+                    :establishments = "props.establishments" 
+                    :xuser = "props.xuser"
+                    :xrole = "props.xrole"
+                     />
             </div>
         </div>
     </AppLayout>

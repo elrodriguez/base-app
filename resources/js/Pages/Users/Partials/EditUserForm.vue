@@ -19,6 +19,10 @@
             type: Object,
             default: () => ({}),
         },
+		xrole:{
+            type: Object,
+            default: () => ({}),
+        },
         roles:{
             type: Object,
             default: () => ({}),
@@ -30,7 +34,7 @@
         email: props.xuser.email,
         password: props.xuser.password,
         local_id: props.xuser.local_id,
-        role:''
+        role: props.xrole
     });
 
     const updateUser = () => {

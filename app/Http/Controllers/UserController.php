@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\LocalSale;
-use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -52,22 +51,12 @@ class UserController extends Controller
             'password' => 'required|string'
         ]);
 
-        $user = User::create([
+        User::create([
             'name'          => $request->get('name'),
             'email'         => $request->get('email'),
             'password'      => Hash::make($request->get('password')),
             'local_id'      => $request->get('local_id')
         ]);
-
-        $team = Team::create([
-            'user_id' => $user->id,
-            'name' => $user->name,
-            'personal_team' => 1
-        ]);
-
-        $user->current_team_id = $team->id;
-
-        $user->save();
 
         return redirect()->route('users.create')
             ->with('message', __('Usuario creado con éxito'));
@@ -75,7 +64,6 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        Team::where('user_id', $user->id)->delete();
         $user->delete();
         return redirect()->route('users.index')
             ->with('message', __('Usuario eliminado con éxito'));
@@ -86,6 +74,7 @@ class UserController extends Controller
         return Inertia::render('Users/Edit', [
             'establishments' => LocalSale::all(),
             'xuser' => $user,
+            'xrole' => $user->roles->pluck('name')->first(),
             'roles' => Role::all()
         ]);
     }
@@ -100,10 +89,12 @@ class UserController extends Controller
         $user->local_id = $request->get('local_id');
         $user->name = $request->get('name');
         $user->email = $request->get('email');
+
         if ($request->get('password')) {
             $user->password = Hash::make($request->get('password'));
         }
         $user->assignRole($request->get('role'));
+
         $user->save();
 
         return redirect()->route('users.edit', $user->id)
