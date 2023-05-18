@@ -1,4 +1,4 @@
-@extends('blog::layouts.stories')
+@extends('blog::layouts.master')
 @section('title', 'Políticas del sitio')
 
 @section('title')
@@ -17,11 +17,13 @@
                 </div>
                 <article class="blog-post"> 
                     <p>Fecha de vigencia: 11 de mayo de 2023</p>
-                    <p style="text-align: justify;">Agradecemos tu interés en nuestro sitio web Delventas Developers. En esta política de privacidad, describimos cómo recopilamos, utilizamos y protegemos la información personal que puedas proporcionarnos a través de nuestro sitio web.</p>
+                    <p style="text-align: justify;">Agradecemos tu interés en nuestro sitio web Cuentos Cortos. En esta política de privacidad, describimos cómo recopilamos, utilizamos y protegemos la información personal que puedas proporcionarnos a través de nuestro sitio web.</p>
+                    <strong>Propiedad intelectual:</strong>
+                    <p style="text-align: justify;">El sitio web "Cuentos Cortos" recopila historias de diferentes fuentes con el objetivo de compartir y entretener a los lectores. no se reclama la propiedad intelectual de las historias individuales.</p>
                     <strong>Recopilación de información:</strong>
                     <p style="text-align: justify;">No recopilamos información personal identificable de los usuarios que visitan nuestro sitio web a menos que la proporcionen voluntariamente a través de un formulario de contacto o algún otro medio de comunicación.</p>
                     <strong>Uso de la información:</strong>
-                    <p style="text-align: justify;">La información personal que nos proporciones será utilizada únicamente para responder a tus consultas y brindarte la asistencia solicitada en relación con el desarrollo de software y otras temáticas relacionadas. No compartiremos tu información personal con terceros sin tu consentimiento, a menos que estemos legalmente obligados a hacerlo.</p>
+                    <p style="text-align: justify;">La información personal que nos proporciones será utilizada únicamente para responder a tus consultas. No compartiremos tu información personal con terceros sin tu consentimiento, a menos que estemos legalmente obligados a hacerlo.</p>
                     <strong>Cookies:</strong>
                     <p style="text-align: justify;">No utilizamos cookies en nuestro sitio web. Sin embargo, es posible que algunos de nuestros proveedores de servicios externos utilicen cookies y tecnologías similares para recopilar información anónima y mejorar la funcionalidad de nuestro sitio web.</p>
                     <strong>Enlaces a sitios web de terceros:</strong>
