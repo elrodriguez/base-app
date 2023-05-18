@@ -55,9 +55,7 @@
                 </article>
                 <h3>La mujer que compró su marido</h3>
                 <article class="blog-post"> 
-                    <p>El año 1946 se presentó ante el Secretario del Concejo Provincial, una hermosa porteña que quería contraer matrimonio civil, fijada la fecha y la hora, en plena ceremonia hizo acto de presencia una mujer con su hija tratando de impedir el acto amparada en la Partida de Matrimonio que exhibía.
-
-                        La contrayente ni corta ni perezosa llevó a la mujer a un extremo de la Casa Municipal y le extendió un cheque por 250 mil soles de aquel entonces, que fue aceptado. El Secretario no quiso continuar la ceremonia, exclamando la mujer que no se preocupara que ella firmaría como testigo, autorizando el Alcalde la compra del marido por la mujer adinerada.</p>
+                    <p>El año 1946 se presentó ante el Secretario del Concejo Provincial, una hermosa porteña que quería contraer matrimonio civil, fijada la fecha y la hora, en plena ceremonia hizo acto de presencia una mujer con su hija tratando de impedir el acto amparada en la Partida de Matrimonio que exhibía. La contrayente ni corta ni perezosa llevó a la mujer a un extremo de la Casa Municipal y le extendió un cheque por 250 mil soles de aquel entonces, que fue aceptado. El Secretario no quiso continuar la ceremonia, exclamando la mujer que no se preocupara que ella firmaría como testigo, autorizando el Alcalde la compra del marido por la mujer adinerada.</p>
                 </article>
                 <h3>La Llorona de Coishco</h3>
                 <article class="blog-post"> 

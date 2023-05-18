@@ -3,8 +3,8 @@
 
 @section('title')
 <meta name="robots" content="index, follow">
-<meta name="keywords" content="laravel 10, php8">
-{{-- <meta name="description" content="Descripción breve de la página"> --}}
+<meta name="keywords" content="l{{ $article->title }}">
+<meta name="description" content="{{ $article->short_description }}">
 
 @stop
 
