@@ -4,7 +4,7 @@
           <div class="col-md-6">
               <ul class="nav justify-content-center">
                   <li class="nav-item">
-                      <a class="nav-link" href="{{ route('blog_policies') }}">Políticas del sitio</a>
+                      <a class="nav-link" href="{{ route('blog_stories_policies') }}">Políticas del sitio</a>
                   </li>
               </ul>
           </div>
