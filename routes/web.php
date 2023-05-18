@@ -21,6 +21,11 @@ Route::get('/', [BlogController::class, 'index'])->name('blog_principal');
 Route::get('/article/{url}', [BlogController::class, 'article'])->name('blog_article_by_url');
 Route::get('/policies', [BlogController::class, 'policies'])->name('blog_policies');
 Route::get('/contact-us', [BlogController::class, 'contactUs'])->name('blog_contact_us');
+
+Route::get('/stories/article/{url}', [BlogController::class, 'storiesArticle'])->name('blog_stories_article_by_url');
+Route::get('/stories/policies', [BlogController::class, 'storiesPolicies'])->name('blog_stories_policies');
+Route::get('/stories/contact-us', [BlogController::class, 'storiesContactUs'])->name('blog_stories_contact_us');
+
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),

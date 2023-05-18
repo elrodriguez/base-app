@@ -26,5 +26,11 @@ class AppServiceProvider extends ServiceProvider
 
             return $rule->passes($attribute, $value);
         });
+
+        Blade::component('blog-web-nav-stories', \Modules\Blog\View\Components\BlogWebNavStories::class);
+        Blade::component('blog-footer-stories', \Modules\Blog\View\Components\BlogWebFooterStories::class);
+
+        Blade::component('blog-web-nav-dev', \Modules\Blog\View\Components\BlogWebNavDev::class);
+        Blade::component('blog-footer-dev', \Modules\Blog\View\Components\BlogWebFooterDev::class);
     }
 }

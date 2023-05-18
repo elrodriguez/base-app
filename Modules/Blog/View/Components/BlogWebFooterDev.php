@@ -4,7 +4,7 @@ namespace Modules\Blog\View\Components;
 
 use Illuminate\View\Component;
 
-class BlogWebNav extends Component
+class BlogWebFooterDev extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class BlogWebNav extends Component
      */
     public function render()
     {
-        return view('blog::components.blogwebnav');
+        return view('blog::components.blogwebfooterdev');
     }
 }

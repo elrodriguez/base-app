@@ -17,7 +17,7 @@ class BlogController extends Controller
     public function index()
     {
         $articles = BlogArticle::where('status', true)->get();
-        return view('blog::index_tutos')->with('articles', $articles);
+        return view('blog::index_stories')->with('articles', $articles);
     }
 
     /**
@@ -29,55 +29,37 @@ class BlogController extends Controller
         return Inertia::render('Blog::Dashboard');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
+
     public function article($url)
     {
         $article = BlogArticle::where('url', $url)->first();
-        return view('blog::article')->with('article', $article);
+        return view('blog::tutorials.article')->with('article', $article);
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
+
     public function policies()
     {
-        return view('blog::policies');
+        return view('blog::tutorials.policies');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
     public function contactUs()
     {
-        return view('blog::contact_us');
+        return view('blog::tutorials.contact_us');
+    }
+    public function storiesArticle($url)
+    {
+        $article = BlogArticle::where('url', $url)->first();
+        return view('blog::stories.article')->with('article', $article);
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
+
+    public function storiesPolicies()
     {
-        //
+        return view('blog::stories.policies');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
+    public function storiesContactUs()
     {
-        //
+        return view('blog::stories.contact_us');
     }
 }

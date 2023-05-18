@@ -1,16 +1,16 @@
-@extends('blog::layouts.master')
-@section('title', 'Delventas Developers')
+@extends('blog::layouts.stories')
+@section('title', 'Cuentos Cortos')
 @section('title')
 <meta name="robots" content="index, follow">
 @stop
 
 @section('content')
 
-
     <header class="jumbotron jumbotron-fluid">
         <div class="container">
-        <h1 class="display-4">Bienvenido a Delventas Blog</h1>
-        <p class="lead">Encuentra tutoriales cortos y consejos para programadores.</p>
+            <h1 class="display-4">Cuentos Cortos</h1>
+            <p class="lead">Es un blog que tiene como objetivo compartir diversas historias y curiosidades con sus lectores. En este espacio, podrás encontrar historias de terror y misterio que te mantendrán en vilo, así como datos curiosos e históricos que te sorprenderán.</p>
+            <p class="lead">Además de todo esto, "Cuentos Cortos" cuenta con una pestaña especial donde podrás descargar dibujos para pintar tanto para adultos como para niños, ofreciendo una opción creativa y relajante para disfrutar en tu tiempo libre. En resumen, "Cuentos Cortos" es un lugar lleno de variedad y entretenimiento para todos los gustos.</p>
         </div>
     </header>
 
@@ -21,12 +21,12 @@
                     <div class="card mb-2">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <a href="{{ route('blog_article_by_url',$article->url ) }}" class="flex-shrink-0">
+                                <a href="{{ route('blog_stories_article_by_url',$article->url ) }}" class="flex-shrink-0">
                                     <img src="{{ $article->imagen }}" alt="{{ $article->title }}" style="width: 100px;">
                                 </a>
                                 <div class="flex-grow-1 ms-3">
                                     <h5 class="card-title">
-                                        <a href="{{ route('blog_article_by_url',$article->url ) }}" style="text-decoration: none; color: inherit;">
+                                        <a href="{{ route('blog_stories_article_by_url',$article->url ) }}" style="text-decoration: none; color: inherit;">
                                             {{ $article->title }}
                                         </a>
                                     </h5>
@@ -38,7 +38,7 @@
                 @endforeach
             </div>
             <div class="col-12 col-md-3">
-                <div class="card" >
+                {{-- <div class="card" >
                     <img src="{{ asset('img/spc.jpg') }}" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">Sistema de Punto de Ventas de Calzado en Laravel 10</h5>
@@ -52,11 +52,12 @@
                       <li class="list-group-item list-group-item-warning">Apertura y cierre de caja chica</li>
                       <li class="list-group-item list-group-item-light">Roles de usuario</li>
                     </ul>
-                    {{-- <div class="card-body">
+                    <div class="card-body">
                       <a href="#" class="card-link">Roles de usuario</a>
-                    </div> --}}
-                </div>
+                    </div>
+                </div> --}}
             </div>
         </div>
     </section>
+    
 @endsection

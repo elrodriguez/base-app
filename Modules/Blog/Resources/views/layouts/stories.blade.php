@@ -95,25 +95,12 @@
         <script type="text/javascript" src="https://www.gstatic.com/_/translate_http/_/js/k=translate_http.tr.es._ssfQsttTrQ.O/d=1/rs=AN8SPfpZfNcrlWCHZyrQDu0vAfcmaQTEzA/m=corsproxy" data-sourceurl="https://getbootstrap.com/docs/5.3/examples/blog/" data-navigation-history-proxy-enabled="true"></script>
         <meta name="robots" content="none">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
-        <style>
-            blockquote {
-                background-color: #f1f1f1;
-                padding: 10px;
-                border-radius: 5px;
-                overflow-x: auto;
-            }
-        
-            blockquote p {
-                white-space: pre;
-                font-family: monospace;
-            }
-        </style>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2128776301009629"
         crossorigin="anonymous"></script>
     </head> 
     <body>
-        <x-blog-web-nav-dev />
+        <x-blog-web-nav-stories />
         @yield('content')
-        <x-blog-footer-dev />
+        <x-blog-footer-stories />
     </body>
 </html>
