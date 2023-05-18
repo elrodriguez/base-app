@@ -1,4 +1,4 @@
-@extends('blog::layouts.master')
+@extends('blog::layouts.stories')
 @section('title', 'Políticas del sitio')
 
 @section('title')
