@@ -32,8 +32,9 @@ class BlogController extends Controller
 
     public function article($url)
     {
-        $article = BlogArticle::where('url', $url)->first();
-        return view('blog::tutorials.article')->with('article', $article);
+        $article = BlogArticle::where('url', $url);
+        $article->increment('views');
+        return view('blog::tutorials.article')->with('article', $article->first());
     }
 
 
@@ -48,8 +49,9 @@ class BlogController extends Controller
     }
     public function storiesArticle($url)
     {
-        $article = BlogArticle::where('url', $url)->first();
-        return view('blog::stories.article')->with('article', $article);
+        $article = BlogArticle::where('url', $url);
+        $article->increment('views');
+        return view('blog::stories.article')->with('article', $article->first());
     }
 
 
