@@ -17,7 +17,7 @@ class BlogController extends Controller
     public function index()
     {
         $articles = BlogArticle::where('status', true)->get();
-        return view('blog::index_stories')->with('articles', $articles);
+        return view('blog::index_tutos')->with('articles', $articles);
     }
 
     /**
