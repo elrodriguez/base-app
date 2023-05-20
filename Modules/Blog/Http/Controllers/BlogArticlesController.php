@@ -169,4 +169,19 @@ class BlogArticlesController extends Controller
         return redirect()->route('blog-article.edit', $blogArticle->id)
             ->with('message', 'Categoria updated successfully.');
     }
+
+    public function uploadImageCkeditor(Request $request)
+    {
+        $file = $request->file('upload');
+        $file_name = str_replace(' ', '_', $file->getClientOriginalName());
+
+        //indicamos que queremos guardar un nuevo archivo en el disco local
+        $path = $request->file('upload')->storeAs(
+            'articles',
+            $file_name,
+            'public'
+        );
+        $url = asset('storage/' . $path);
+        return response()->json(['fileName' => $file_name, 'uploaded' => 1, 'url' => $url]);
+    }
 }

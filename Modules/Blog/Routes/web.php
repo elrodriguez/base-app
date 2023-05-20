@@ -21,5 +21,6 @@ Route::prefix('blog')->group(function () {
         Route::resource('blog-article', BlogArticlesController::class);
         Route::post('blog-article-update', 'BlogArticlesController@updateArticle')->name('blog-article-update');
         Route::post('upload/article/image', 'BlogArticlesController@updateImage')->name('blog_article_upload_image');
+        Route::post('blog-article-upload-image', 'BlogArticlesController@uploadImageCkeditor')->name('blog-article-ipload-image');
     });
 });

@@ -6,9 +6,9 @@
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import Keypad from '@/Components/Keypad.vue';
     import { ref, onMounted } from 'vue';
-    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import TextInput from '@/Components/TextInput.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
+    import Editor from '@tinymce/tinymce-vue'
 
     const props = defineProps({
         article: {
@@ -74,30 +74,6 @@
         });
     };
 
-    onMounted(() => {
-         ClassicEditor.create(document.querySelector('#editor'),{
-            toolbar: [
-                'heading', 
-                '|', 
-                'bold', 
-                'italic', 
-                'link',
-                'alignment',
-                '|',
-                'imageUpload',
-                'blockQuote',
-                'code',
-            ]
-         }).then(editor => {
-            editor.setData(props.article.content_text);
-            editor.model.document.on('change:data', () => {
-                form.content_text = editor.getData();
-            });
-        }).catch(error => {
-            console.error(error);
-        });
-    });
-
 </script>
 
 
@@ -131,7 +107,13 @@
             </div>
             <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="content" value="Contenido *" />
-                <div id="editor"></div>
+                <Editor
+                    api-key="qv97v3surg08i8vhwvqxnj7ek17sk8xx2aqimzrrsgav6003"
+                    v-model="form.content_text"
+                    :init="{
+                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes mergetags autocorrect typography inlinecss',
+                    }"
+                />
                 <InputError :message="form.errors.content_text" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-6">

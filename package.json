@@ -21,12 +21,11 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^37.1.0",
-        "@ckeditor/ckeditor5-vue": "^5.1.0",
         "@fortawesome/fontawesome-free": "^6.4.0",
         "@fortawesome/fontawesome-svg-core": "^6.2.1",
         "@fortawesome/free-solid-svg-icons": "^6.2.1",
         "@fortawesome/vue-fontawesome": "^3.0.0-5",
+        "@tinymce/tinymce-vue": "^5.1.0",
         "@websitebeaver/vue-magnifier": "^1.1.0",
         "cropperjs": "^1.5.13",
         "jspdf": "^2.5.1",
