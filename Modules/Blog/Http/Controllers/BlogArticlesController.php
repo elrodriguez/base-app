@@ -172,16 +172,17 @@ class BlogArticlesController extends Controller
 
     public function uploadImageCkeditor(Request $request)
     {
-        $file = $request->file('upload');
+        //dd($request->all());
+        $file = $request->file('file');
         $file_name = str_replace(' ', '_', $file->getClientOriginalName());
 
         //indicamos que queremos guardar un nuevo archivo en el disco local
-        $path = $request->file('upload')->storeAs(
+        $path = $request->file('file')->storeAs(
             'articles',
             $file_name,
             'public'
         );
         $url = asset('storage/' . $path);
-        return response()->json(['fileName' => $file_name, 'uploaded' => 1, 'url' => $url]);
+        return response()->json(['location' =>  $url]);
     }
 }

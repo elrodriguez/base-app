@@ -23,7 +23,40 @@
             preserveScroll: true
         });
     };
+    const uploadImage = (blobInfo, progress) => {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
 
+            axios.post(route('blog_article_uploa_image_tiny'), formData, {
+                withCredentials: false,
+                onUploadProgress: (e) => {
+                    progress(e.loaded / e.total * 100);
+                }
+            }).then(response => {
+                if (response.status === 403) {
+                    reject({ message: 'HTTP Error: ' + response.status, remove: true });
+                    return;
+                }
+
+                if (response.status < 200 || response.status >= 300) {
+                    reject('HTTP Error: ' + response.status);
+                    return;
+                }
+
+                const json = response.data;
+
+                if (!json || typeof json.location !== 'string') {
+                    reject('Invalid JSON: ' + JSON.stringify(json));
+                    return;
+                }
+
+                resolve(json.location);
+            }).catch(error => {
+                reject('Image upload failed due to a XHR Transport error. Error: ' + error.message);
+            });
+        });
+    };
 </script>
 
 
@@ -61,8 +94,10 @@
                     api-key="qv97v3surg08i8vhwvqxnj7ek17sk8xx2aqimzrrsgav6003"
                     v-model="form.content_text"
                     :init="{
-                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes mergetags autocorrect typography inlinecss',
+                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes autocorrect typography inlinecss',
+                        images_upload_handler: uploadImage
                     }"
+                    :images_upload_url="route('blog_article_uploa_image_tiny')"
                 />
                 <InputError :message="form.errors.content_text" class="mt-2" />
             </div>
