@@ -16,7 +16,7 @@ import ApplicationMark from '@/Components/ApplicationMark.vue';
                     Productos
                     <div class="flex flex-wrap justify-center">
                         <img
-                            src="img/zapatillas.png"
+                            src="img/revisa.png"
                             alt="Productos"
                             style="width: 70px;"
                         />

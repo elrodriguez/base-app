@@ -8,7 +8,7 @@
 </script>
 
 <template>
-    <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:grid md:grid-cols-3 md:gap-6 mb-4">
         <SectionTitle>
             <template #title>
                 <slot name="title" />

@@ -9,6 +9,8 @@
     import { Link } from '@inertiajs/vue3';
 
     const showingNavigationDropdown = ref(false);
+
+
 </script>
 <template>
     <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -71,7 +73,8 @@
                             </template>
 
                             <template #content>
-                                <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                <DropdownLink :href="route('profile.edit')"> Perfil </DropdownLink>
+                                <DropdownLink :href="route('company_show')"> Mi empresa </DropdownLink>
                                 <DropdownLink v-role="'admin'" :href="route('config')"> Configuración </DropdownLink>
                                 <DropdownLink :href="route('logout')" method="post" as="button">
                                     Cerrar sesión
@@ -144,8 +147,9 @@
                 </div>
 
                 <div class="mt-3 space-y-1">
-                    <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
-                    <ResponsiveNavLink v-role="'admin'" :href="route('config')"> Configuración </ResponsiveNavLink>
+                    <ResponsiveNavLink :href="route('profile.edit')"> Perfil </ResponsiveNavLink>
+                    <ResponsiveNavLink v-role="'admin'" :href="route('company_show')"> Mi empresa </ResponsiveNavLink>
+                    <ResponsiveNavLink v-role="'admin'" :href="route('config')"> Seguridad </ResponsiveNavLink>
                     <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                         Cerrar sesión
                     </ResponsiveNavLink>

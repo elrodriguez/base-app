@@ -13,7 +13,7 @@
 <template>
     <AppLayout title="Editar Producto">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight dark:text-white">
                 Editar Producto
             </h2>
         </template>

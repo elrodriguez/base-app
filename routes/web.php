@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\LocalSaleController;
 use App\Http\Controllers\PersonController;
@@ -213,6 +214,21 @@ Route::middleware('auth')->group(function () {
         'data/payment/method/motals',
         [ReportController::class, 'dataPaymentMethodTotals']
     )->name('data_payment_method_totals');
+
+    Route::get(
+        'company/show',
+        [CompanyController::class, 'show']
+    )->name('company_show');
+
+    Route::post(
+        'company/update_create',
+        [CompanyController::class, 'updateCreate']
+    )->name('company_update_create');
+
+    Route::get(
+        'company/getdata',
+        [CompanyController::class, 'getdata']
+    )->middleware(['auth', 'verified'])->name('datosempresa');
 });
 
 require __DIR__ . '/auth.php';

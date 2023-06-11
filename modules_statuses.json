@@ -1,5 +1,6 @@
 {
     "Security": true,
     "Onlineshop": true,
-    "Blog": true
+    "Blog": true,
+    "Sales": true
 }
