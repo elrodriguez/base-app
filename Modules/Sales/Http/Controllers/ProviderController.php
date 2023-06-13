@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers;
 
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class ProviderController extends Controller
 {
+    use ValidatesRequests;
     public function index()
     {
         $providers = (new Person())->newQuery()->where('is_provider', true);
@@ -28,7 +31,7 @@ class ProviderController extends Controller
 
         $providers = $providers->paginate(10)->onEachSide(2);
 
-        return Inertia::render('Providers/List', [
+        return Inertia::render('Sales::Providers/List', [
             'providers' => $providers,
             'filters' => request()->all('search'),
         ]);
@@ -41,7 +44,7 @@ class ProviderController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Providers/Create');
+        return Inertia::render('Sales::Providers/Create');
     }
 
     /**
@@ -112,7 +115,7 @@ class ProviderController extends Controller
      */
     public function edit(Person $provider)
     {
-        return Inertia::render('Providers/Edit', [
+        return Inertia::render('Sales::Providers/Edit', [
             'provider' => $provider
         ]);
     }
@@ -128,7 +131,7 @@ class ProviderController extends Controller
     {
         // dd($request->all());
         $this->validate($request, [
-            'short_name' => 'required|required|unique:people,short_name,'.$provider->id,
+            'short_name' => 'required|required|unique:people,short_name,' . $provider->id,
             'description' => 'required',
             'name' => 'required',
             'number' => 'required|numeric',
@@ -151,35 +154,39 @@ class ProviderController extends Controller
         }
 
         //dd($request->get('sale_prices'));
-        if($request->get('short_name')!= $provider->short_name){
+        if ($request->get('short_name') != $provider->short_name) {
             $this->validate($request, [
                 'short_name' => 'required|unique:people,short_name'
             ]);
             $provider->update([
-                'short_name' => $request->get('short_name')]);
+                'short_name' => $request->get('short_name')
+            ]);
         }
-        if($request->get('name')!= $provider->full_name){
+        if ($request->get('name') != $provider->full_name) {
             $this->validate($request, [
                 'name' => 'required|unique:people,full_name'
             ]);
             $provider->update([
-                'full_name' => $request->get('name')]);
+                'full_name' => $request->get('name')
+            ]);
         }
 
-        if($request->get('number')!= $provider->number){
+        if ($request->get('number') != $provider->number) {
             $this->validate($request, [
                 'number' => 'required|unique:people,number'
             ]);
             $provider->update([
-                'number'  => $request->get('number')]);
+                'number'  => $request->get('number')
+            ]);
         }
 
-        if($request->get('email')!= $provider->email){
+        if ($request->get('email') != $provider->email) {
             $this->validate($request, [
                 'email' => 'required|unique:people,email'
             ]);
             $provider->update([
-            'email'  => $request->get('email')]);
+                'email'  => $request->get('email')
+            ]);
         }
 
         $provider->update([
@@ -208,6 +215,5 @@ class ProviderController extends Controller
         $provider->delete();
         return redirect()->route('providers.index')
             ->with('message', __('Providero eliminado con éxito'));
-
     }
 }

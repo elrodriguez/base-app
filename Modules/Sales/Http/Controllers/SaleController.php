@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers;
 
 use App\Models\Kardex;
 use App\Models\KardexSize;
@@ -20,9 +20,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use PDF;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class SaleController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      *
@@ -76,7 +79,7 @@ class SaleController extends Controller
             ->paginate(10)
             ->onEachSide(2);
 
-        return Inertia::render('Sales/List', [
+        return Inertia::render('Sales::Sales/List', [
             'sales' => $sales,
             'filters' => request()->all('search'),
         ]);
@@ -92,7 +95,7 @@ class SaleController extends Controller
         $payments = PaymentMethod::all();
         $client = Person::find(1);
         $documentTypes = DB::table('identity_document_type')->get();
-        return Inertia::render('Sales/Create', [
+        return Inertia::render('Sales::Sales/Create', [
             'payments'      => $payments,
             'client'        => $client,
             'documentTypes' => $documentTypes
@@ -322,7 +325,7 @@ class SaleController extends Controller
         ];
 
         $file = public_path('ticket/') . 'ticket.pdf';
-        $pdf = PDF::loadView('sales.ticket_pdf', $data);
+        $pdf = PDF::loadView('sales::sales.ticket_pdf', $data);
         $pdf->setPaper(array(0, 0, 273, 500), 'portrait');
         $pdf->save($file);
 

@@ -5,7 +5,7 @@
     import { ref } from 'vue';
     import { useForm } from '@inertiajs/vue3';
     import swal from 'sweetalert';
-    import NumberInput from '../../../Components/NumberInput.vue';
+    import NumberInput from '@/Components/NumberInput.vue';
 
     const displayModal = ref(false);
 

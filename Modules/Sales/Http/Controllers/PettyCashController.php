@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers;
 
 use App\Models\Expense;
 use App\Models\LocalSale;
@@ -13,9 +13,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class PettyCashController extends Controller
 {
+    use ValidatesRequests;
     public function index()
     {
         $pettycashes = (new PettyCash())->newQuery();
@@ -84,7 +87,7 @@ class PettyCashController extends Controller
 
 
 
-        return Inertia::render('Pettycashes/List', [
+        return Inertia::render('Sales::Pettycashes/List', [
             'pettycashes' => $pettycashes,
             'filters' => request()->all('search'),
             'locals' => LocalSale::all(),

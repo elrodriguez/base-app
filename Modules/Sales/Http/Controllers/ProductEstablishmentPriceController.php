@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers;
 
-use App\Models\PaymentMethod;
+use App\Models\ProductEstablishmentPrice;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
-class PaymentMethodController extends Controller
+class ProductEstablishmentPriceController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      *
@@ -41,10 +44,10 @@ class PaymentMethodController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PaymentMethod  $paymentMethod
+     * @param  \App\Models\ProductEstablishmentPrice  $productEstablishmentPrice
      * @return \Illuminate\Http\Response
      */
-    public function show(PaymentMethod $paymentMethod)
+    public function show(ProductEstablishmentPrice $productEstablishmentPrice)
     {
         //
     }
@@ -52,10 +55,10 @@ class PaymentMethodController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\PaymentMethod  $paymentMethod
+     * @param  \App\Models\ProductEstablishmentPrice  $productEstablishmentPrice
      * @return \Illuminate\Http\Response
      */
-    public function edit(PaymentMethod $paymentMethod)
+    public function edit(ProductEstablishmentPrice $productEstablishmentPrice)
     {
         //
     }
@@ -64,10 +67,10 @@ class PaymentMethodController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PaymentMethod  $paymentMethod
+     * @param  \App\Models\ProductEstablishmentPrice  $productEstablishmentPrice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PaymentMethod $paymentMethod)
+    public function update(Request $request, ProductEstablishmentPrice $productEstablishmentPrice)
     {
         //
     }
@@ -75,10 +78,10 @@ class PaymentMethodController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PaymentMethod  $paymentMethod
+     * @param  \App\Models\ProductEstablishmentPrice  $productEstablishmentPrice
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PaymentMethod $paymentMethod)
+    public function destroy(ProductEstablishmentPrice $productEstablishmentPrice)
     {
         //
     }

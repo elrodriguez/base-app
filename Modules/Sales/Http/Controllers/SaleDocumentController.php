@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers;
 
-use App\Models\SaleProduct;
+use App\Models\SaleDocument;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
-class SaleProductController extends Controller
+class SaleDocumentController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      *
@@ -41,10 +44,10 @@ class SaleProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SaleProduct  $saleProduct
+     * @param  \App\Models\SaleDocument  $saleDocument
      * @return \Illuminate\Http\Response
      */
-    public function show(SaleProduct $saleProduct)
+    public function show(SaleDocument $saleDocument)
     {
         //
     }
@@ -52,10 +55,10 @@ class SaleProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SaleProduct  $saleProduct
+     * @param  \App\Models\SaleDocument  $saleDocument
      * @return \Illuminate\Http\Response
      */
-    public function edit(SaleProduct $saleProduct)
+    public function edit(SaleDocument $saleDocument)
     {
         //
     }
@@ -64,10 +67,10 @@ class SaleProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SaleProduct  $saleProduct
+     * @param  \App\Models\SaleDocument  $saleDocument
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SaleProduct $saleProduct)
+    public function update(Request $request, SaleDocument $saleDocument)
     {
         //
     }
@@ -75,10 +78,10 @@ class SaleProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SaleProduct  $saleProduct
+     * @param  \App\Models\SaleDocument  $saleDocument
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SaleProduct $saleProduct)
+    public function destroy(SaleDocument $saleDocument)
     {
         //
     }

@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CreateProviderForm from '@/Pages/Providers/Partials/CreateProviderForm.vue';
+import CreateProviderForm from './Partials/CreateProviderForm.vue';
 </script>
 
 <template>

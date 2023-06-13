@@ -1,9 +1,9 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import EditProductForm from '@/Pages/Products/Partials/EditProductForm.vue';
+    import EditProviderForm from './Partials/EditProviderForm.vue';
 
     defineProps({
-        product: {
+        provider: {
             type: Object,
             default: () => ({}),
         }
@@ -11,16 +11,16 @@
 </script>
 
 <template>
-    <AppLayout title="Editar Producto">
+    <AppLayout title="Edit Provider">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight dark:text-white">
-                Editar Producto
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Editar Proveedor
             </h2>
         </template>
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <EditProductForm 
-                    :product="product"
+                <EditProviderForm
+                    :provider="provider"
                 />
             </div>
         </div>

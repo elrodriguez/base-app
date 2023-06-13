@@ -74,7 +74,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <FormSection @submitted="createProduct">
+    <FormSection @submitted="createProduct" class="">
         <template #title>
             Producto Detalles
         </template>
@@ -84,7 +84,7 @@ const props = defineProps({
         </template>
 
         <template #form>
-            <div class="col-span-6 sm:col-span-2">
+            <div class="col-span-6 sm:col-span-2 ">
                 <InputLabel for="stablishment" value="Establecimiento" />
                 <select v-model="form.local_id" id="stablishment" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <template v-for="(establishment, index) in props.establishments" :key="index">

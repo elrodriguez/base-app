@@ -13,8 +13,10 @@
     import swal from 'sweetalert';
     import Keypad from '@/Components/Keypad.vue';
     import ModalLarge from '@/Components/ModalLarge.vue';
+    import ModalSmall from '@/Components/ModalSmall.vue';
     import VueMagnifier from '@websitebeaver/vue-magnifier'
     import '@websitebeaver/vue-magnifier/styles.css'
+    import Swal2 from 'sweetalert2';
 
     const props = defineProps({
         products: {
@@ -268,6 +270,47 @@
       });
     }
 
+    const displayModalImport = ref(false);
+
+    const openModalImport = () => {
+      displayModalImport.value = true;
+    }
+    const closeModalImport = () => {
+      displayModalImport.value = false;
+    }
+
+    const formImport = useForm({
+        file: null
+    });
+
+    const saveImport = async () => {
+
+      if(formImport.file){
+        Swal2.fire({
+          imageUrl: '/img/loading-70.gif',
+          imageHeight: 120,
+          imageAlt: 'Cargando',
+          showConfirmButton: false,
+          allowOutsideClick: false
+        });
+
+        displayModalImport.value = false;
+        
+        try {
+          const response = await axios.post(route('import_product_data'), formImport, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          formImport.reset()
+          Swal2.fire({ html: `total de registros: ${response.data.total}` })
+        } catch (error) {
+            console.log(error)
+        } 
+      }else{
+        formImport.errors.file = 'Seleccionar Archivo';
+      }
+    }
 </script>
 <template>
     <AppLayout title="Productos">
@@ -276,125 +319,130 @@
                 Productos
             </h2>
         </template>
-
-        <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div class="col-span-6 p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                  <div class="grid grid-cols-2 gap-4 pb-4">
-                       <div class="col-span-2 sm:col-span-1">
-                          <form @submit.prevent="form.get(route('products.index'))">
-                              <label for="table-search" class="sr-only">Search</label>
-                              <div class="relative">
-                                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                      <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-                                  </div>
-                                  <input v-model="form.search" type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar productos">
-                              </div>
-                          </form>
-                       </div>
-                        <div class="col-span-2 sm:col-span-1 text-right">
-                          <Keypad>
-                            <template #botones>
-                                <button v-can="'productos_salida'" @click="openModalEntradaSalida(0)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Salidas</button>
-                                <button v-can="'productos_entrada'" @click="openModalEntradaSalida(1)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-yellow-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-yellow-600 hover:shadow-lg focus:bg-yellow-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-700 active:shadow-lg transition duration-150 ease-in-out">Entradas</button>
-                                <button type="button"                                                                class="mr-1 inline-block px-6 py-2.5 bg-green-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-800 hover:shadow-lg focus:ring-green-300  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition duration-150 ease-in-out" >Importar</button>
-                                <a v-can="'productos_nuevo'" :href="route('products.create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                                  Nuevo
-                                </a>
-                            </template>
-                          </Keypad>
-                        </div>
-                    </div>
-                    <div class="mb-4 relative shadow-md sm:rounded-lg">
-                      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                              <tr>
-                                  <th class="px-6 py-3">
-                                  #
-                                  </th>
-                                  <th class="text-center px-6 py-3">
-                                      Acción
-                                  </th>
-                                  <th class="text-center px-6 py-3">
-                                      Imagen
-                                  </th>
-                                  <th class="px-6 py-3">
-                                      Código
-                                  </th>
-                                  <th class="px-6 py-3">
-                                      Descripción
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr v-for="(product, index) in products.data" :key="product.id"
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                  <td class="px-6 py-2">
-                                      {{ index + 1 }}
-                                  </td>
-                                  <td class="w-80 px-6 py-4">
-                                      <div class="flex space-x-2 justify-center">
-                                          <div>
-                                              <a v-permission="'productos_editar'" title="Editar" :href="route('products.edit',product.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                  <font-awesome-icon :icon="faPencilAlt" />
-                                              </a>
-                                              <button title="Mover Mercadería/Calzados" type="button" class="mr-1 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                                              @click="openModalTrasladoMercaderia(product)"
-                                              >
-                                                <font-awesome-icon :icon="faTruck" />
-                                              </button>
-                                              <button type="button" class="mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                                                  <font-awesome-icon :icon="faPrint" />
-                                              </button>
-                                              <button
-                                                @click="openModalPrices(product)"
-                                                title="precios por tienda"
-                                                type="button"
-                                                class="mr-1 text-white bg-gray-400 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-400 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-400 dark:hover:bg-gray-400 dark:focus:ring-gray-400">
-                                                  <font-awesome-icon :icon="faDollarSign" />
-                                              </button>
-                                              <button title="ver Stock" type="button" class="mr-1 text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
-                                                @click="showDetailProduct(product)"
-                                              >
-                                                <font-awesome-icon :icon="faWarehouse" />
-                                              </button>
-                                              <button type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                                                @click="destroy(product.id)"
-                                                >
-                                                <font-awesome-icon :icon="faTrashAlt" />
+        
+        <div class="">
+          <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+            <div class="w-full p-4 border border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
+              <div class="grid grid-cols-2">
+                <div class="col-span-2 sm:col-span-1">
+                  <form @submit.prevent="form.get(route('products.index'))">
+                    <label for="table-search" class="sr-only">Search</label>
+                      <div class="relative">
+                          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                              <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                          </div>
+                          <input v-model="form.search" type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar productos">
+                      </div>
+                  </form>
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                  <Keypad>
+                    <template #botones>
+                      <button v-can="'productos_salida'" @click="openModalEntradaSalida(0)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Salidas</button>
+                      <button v-can="'productos_entrada'" @click="openModalEntradaSalida(1)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-blue-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-800 hover:shadow-lg  focus:bg-green-600 focus:shadow-lg focus:outline-none  focus:ring-0 focus:ring-blue-300 active:shadow-lg dark:bg-blue-600 dark:hover:bg-blue-700 transition duration-150 ease-in-out">Entradas</button>
+                      <button v-can="'productos_entrada'" @click="openModalImport()" type="button" class="mr-1 inline-block px-6 py-2.5 bg-green-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-800 hover:shadow-lg focus:ring-green-300  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition duration-150 ease-in-out" >Importar</button>
+                      <a v-can="'productos_nuevo'" :href="route('products.create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                        Nuevo
+                      </a>
+                    </template>
+                  </Keypad>
+                </div>
+              </div>
+            </div>
+            <div class="code-preview-wrapper">
+              <div class="flex p-0 bg-white border-gray-200 bg-gradient-to-r code-preview dark:bg-gray-900 border-x dark:border-gray-600">
+                <div class="w-full ">
+                  <div class="relative overflow-y-auto shadow-md">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400">
+                          <tr>
+                              <th class="px-6 py-3">
+                              #
+                              </th>
+                              <th class="text-center px-6 py-3">
+                                  Acción
+                              </th>
+                              <th class="text-center px-6 py-3">
+                                  Imagen
+                              </th>
+                              <th class="px-6 py-3">
+                                  Código
+                              </th>
+                              <th class="px-6 py-3">
+                                  Descripción
+                              </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(product, index) in products.data" :key="product.id"
+                              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-6 py-2">
+                                    {{ index + 1 }}
+                                </td>
+                                <td class="w-80 px-6 py-4">
+                                    <div class="flex space-x-2 justify-center">
+                                        <div>
+                                            <a v-permission="'productos_editar'" title="Editar" :href="route('products.edit',product.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                <font-awesome-icon :icon="faPencilAlt" />
+                                            </a>
+                                            <button title="Mover Mercadería/Calzados" type="button" class="mr-1 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                                            @click="openModalTrasladoMercaderia(product)"
+                                            >
+                                              <font-awesome-icon :icon="faTruck" />
                                             </button>
+                                            <button type="button" class="mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                                                <font-awesome-icon :icon="faPrint" />
+                                            </button>
+                                            <button
+                                              @click="openModalPrices(product)"
+                                              title="precios por tienda"
+                                              type="button"
+                                              class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                <font-awesome-icon :icon="faDollarSign" />
+                                            </button>
+                                            <button title="ver Stock" type="button" class="mr-1 text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-center inline-flex items-center text-sm p-2.5 mr-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                                              @click="showDetailProduct(product)"
+                                            >
+                                              <font-awesome-icon :icon="faWarehouse" />
+                                            </button>
+                                            <button type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                                              @click="destroy(product.id)"
+                                              >
+                                              <font-awesome-icon :icon="faTrashAlt" />
+                                          </button>
 
-                                          </div>
-                                      </div>
-                                  </td>
-                                  <td class="w-32 p-4">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="w-32 p-4">
 
-                                    <VueMagnifier
-                                      :src="product.image" width="500"
-                                      :zoomImgSrc="product.image"
-                                      :mgWidth="210"
-                                      :mgHeight="210"
-                                      />
+                                  <VueMagnifier
+                                    :src="product.image" width="500"
+                                    :zoomImgSrc="product.image"
+                                    :mgWidth="210"
+                                    :mgHeight="210"
+                                    />
 
-                                  </td>
-                                  <td class="px-6 py-4">
-                                      {{ product.interne }}
-                                  </td>
-                                  <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                      {{ product.description }}
-                                  </td>
-                              </tr>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ product.interne }}
+                                </td>
+                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                                    {{ product.description }}
+                                </td>
+                            </tr>
 
-                          </tbody>
+                        </tbody>
                       </table>
                     </div>
-                    <Pagination :data="products" />
                 </div>
-
+              </div>
             </div>
+            <Pagination :data="products" />
+          </div>
         </div>
 
-        <DialogModal :show="openModalDetilsProduct" @close="closeModalDetailsProduct">
+        <ModalLarge :show="openModalDetilsProduct"  @close="closeModalDetailsProduct">
             <template #title>
               {{ formDetails.interne }} - {{ formDetails.description }}
             </template>
@@ -402,85 +450,85 @@
             <template #content>
               <table class="border" style="width: 100%;">
                     <thead class="bg-white border-b">
-                      <tr class="text-xs text-white bg-blue-700 border-b dark:text-white">
-                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic">
+                      <tr class="text-xs text-white bg-blue-700 border-b dark:text-white dark:bg-gray-800">
+                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
                           Tallas
                         </th>
-                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic">
+                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
                           Cantidad
                         </th>
-                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic">
+                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
                           Precio V. Normal
                         </th>
-                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic">
+                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
                           Precio V. Medio
                         </th>
-                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic">
+                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
                           Precio V. Minimo
                         </th>
-                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic">
+                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
                           Precio de Compra
                         </th>
                       </tr>
                     </thead>
                     <tbody>
 
-                      <tr v-for="(size, index) in formDetails.sizes" :key="formDetails.id"  class="border-b">
-                        <td class="text-right px-6 py-4 text-sm font-medium text-white bg-blue-500">
+                      <tr v-for="(size, index) in formDetails.sizes" :key="formDetails.id"  class="border-b ">
+                        <td class="text-right px-6 py-4 text-sm font-medium text-white bg-blue-600  dark:bg-gray-800">
                           {{ size.size }}</td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700">
+                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
                           {{ size.quantity }}
                         </td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-500">
+                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-600 dark:bg-gray-800">
                           S/. {{ formDetails.sale_prices.high }}
                         </td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700">
+                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
                           S/. {{ formDetails.sale_prices.medium }}
                         </td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-500">
+                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-600 dark:bg-gray-800">
                           S/. {{ formDetails.sale_prices.under }}
                         </td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700">
+                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
                           S/. {{ formDetails.purchase_prices }}
                         </td>
                       </tr>
 
 
                       <tr class=" border-b">
-                        <td class="text-right px-6 py-4 text-sm font-medium bg-blue-500 text-white">
+                        <td class="text-right px-6 py-4 text-sm font-medium bg-blue-600 text-white dark:bg-gray-800">
                             Totales
                         </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 ">
+                        <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 dark:bg-gray-800">
                           {{ formDetails.quantity_total }}
                         </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-500 px-6 py-4">
+                        <td class="text-right text-sm text-white font-light bg-blue-600 px-6 py-4 dark:bg-gray-800">
                           S/. {{ formDetails.quantity_total*formDetails.sale_prices.high }}
                         </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4">
+                        <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 dark:bg-gray-800">
                           S/. {{ formDetails.quantity_total*formDetails.sale_prices.medium }}
                         </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-500 px-6 py-4">
+                        <td class="text-right text-sm text-white font-light bg-blue-600 px-6 py-4 dark:bg-gray-800">
                           S/. {{ formDetails.quantity_total*formDetails.sale_prices.under }}
                         </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4">
+                        <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 dark:bg-gray-800">
                           S/. {{ formDetails.quantity_total*formDetails.purchase_prices }}
                         </td>
                       </tr>
 
                       <tr class="border-b">
-                        <td colspan="2" class="text-right px-6 py-4 text-sm bg-green-800 font-medium text-white">
+                        <td colspan="2" class="text-right px-6 py-4 text-sm bg-green-700 font-medium text-white dark:bg-gray-800">
                           Ganancias Esperadas
                         </td>
-                        <td class="text-right text-sm text-white font-light bg-green-600 px-6 py-4">
+                        <td class="text-right text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
                           S/. {{ formDetails.quantity_total*formDetails.sale_prices.high-(formDetails.quantity_total*formDetails.purchase_prices) }}
                         </td>
-                        <td class="text-right text-sm text-white font-light bg-green-800 px-6 py-4">
+                        <td class="text-right text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
                           S/. {{ formDetails.quantity_total*formDetails.sale_prices.medium-(formDetails.quantity_total*formDetails.purchase_prices) }}
                         </td>
-                        <td class="text-right text-sm text-white font-light bg-green-600 px-6 py-4">
+                        <td class="text-right text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
                           S/. {{ formDetails.quantity_total*formDetails.sale_prices.under-(formDetails.quantity_total*formDetails.purchase_prices) }}
                         </td>
-                        <td class="text-sm text-white font-light bg-green-800 px-6 py-4">
+                        <td class="text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
                           <!-- no usar esta clase whitespace-nowrap -->
                         </td>
                       </tr>
@@ -493,7 +541,7 @@
                     Cancel
                 </SecondaryButton>
             </template>
-        </DialogModal>
+        </ModalLarge>
 
         <DialogModal
           :show="openModalEntrada"
@@ -613,27 +661,17 @@
             </template>
         </DialogModal>
 
-
-
-
-        <DialogModal
-          :show="openModalTraslado"
-          @close="closeModalTrasladoMercaderia"
-
-          >
+        <DialogModal :show="openModalTraslado" @close="closeModalTrasladoMercaderia">
             <template #title>
               Traslado de {{ formReLocate.product_full_name }}
             </template>
 
             <template #content>
                 <div class="mt-4 mb-1">
-<!-- Trabajando -->
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-
                   <div class="col-span-2 sm:col-span-1">
-
-                                                                                                             <!-- ----------Origen -------->
+                    <!-- ----------Origen -------->
                     <InputLabel for="stablishment" value="Establecimiento Origen" />
                     <select v-model="formReLocate.local_id_origin"  v-on:change="getProductByLocal()" id="stablishment" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                       <template v-for="(establishment, index) in props.establishments" :key="index">
@@ -731,10 +769,6 @@
                 </DangerButton>
             </template>
         </DialogModal>
-
-
-
-
         <ModalLarge
           :show="displayModalPrices"
           :onClose="closeModalPrices"
@@ -800,5 +834,32 @@
             </DangerButton>
           </template>
         </ModalLarge>
+
+        <ModalSmall :show="displayModalImport" :onClose="closeModalImport" :icon="'/img/excel.png'">
+          <template #title>
+            Importar productos
+          </template>
+          <template #message>
+            Solo acepta documentos EXCEL
+          </template>
+          <template #content>
+            <div class="flex flex-col">
+              
+              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
+              <input @input="formImport.file = $event.target.files[0]" accept=".xls, .xlsx"  class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">.xlsx.</p>
+              <InputError :message="formImport.errors.file" class="mt-2" />
+            </div>
+
+          </template>
+          <template #buttons>
+            <DangerButton
+                class="mr-3"
+                @click="saveImport()"
+            >
+                Procesar
+            </DangerButton>
+          </template>
+        </ModalSmall>
     </AppLayout>
 </template>

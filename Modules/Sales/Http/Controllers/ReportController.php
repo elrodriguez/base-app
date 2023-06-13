@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers;
 
 use App\Models\Expense;
 use App\Models\LocalSale;
@@ -15,9 +15,12 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use PDF;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class ReportController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +33,7 @@ class ReportController extends Controller
 
     public function sales_report()
     {
-        return Inertia::render('Reports/SaleReport', [
+        return Inertia::render('Sales::Reports/SaleReport', [
             'filters' => request()->all('search'),
             'locals' => LocalSale::all(),
         ]);
@@ -53,7 +56,7 @@ class ReportController extends Controller
         $start = date('d/m/Y', strtotime($start));
         $end = date('d/m/Y', strtotime($end));
         if ($download == "false") {
-            return view('reports.sales_report', ['sales' => $sales, 'start' => $start, 'end' => $end, 'date' => $date, 'print' => true]);
+            return view('sales::reports.sales_report', ['sales' => $sales, 'start' => $start, 'end' => $end, 'date' => $date, 'print' => true]);
         } else {
             $pdf = PDF::loadView('reports.sales_report', ['sales' => $sales, 'start' => $start, 'end' => $end, 'date' => $date, 'print' => false]);
             $pdf->setPaper('A4', 'landscape');
@@ -141,7 +144,7 @@ class ReportController extends Controller
             ->get();
         $expenses = Expense::where('petty_cash_id', $petty_cash_id)->get();
 
-        return Inertia::render('Reports/PettyCashReport', [
+        return Inertia::render('Sales::Reports/PettyCashReport', [
             'locals' => LocalSale::all(),
             'sales' => $sales,
             'petty_cash' => $petty_cash,
@@ -202,7 +205,7 @@ class ReportController extends Controller
 
     public function reportPaymentMethodTotals()
     {
-        return Inertia::render('Reports/PaymentMethodTotals', [
+        return Inertia::render('Sales::Reports/PaymentMethodTotals', [
             'locals' => LocalSale::all(),
         ]);
     }

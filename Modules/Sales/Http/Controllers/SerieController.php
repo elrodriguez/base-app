@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers;
 
 use App\Models\LocalSale;
 use App\Models\Serie;
 use App\Models\User;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class SerieController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      *

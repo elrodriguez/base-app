@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers;
 
-use App\Models\SaleDocument;
+use App\Models\SaleDocumentType;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
-class SaleDocumentController extends Controller
+class SaleDocumentTypeController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      *
@@ -41,10 +44,10 @@ class SaleDocumentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SaleDocument  $saleDocument
+     * @param  \App\Models\SaleDocumentType  $saleDocumentType
      * @return \Illuminate\Http\Response
      */
-    public function show(SaleDocument $saleDocument)
+    public function show(SaleDocumentType $saleDocumentType)
     {
         //
     }
@@ -52,10 +55,10 @@ class SaleDocumentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SaleDocument  $saleDocument
+     * @param  \App\Models\SaleDocumentType  $saleDocumentType
      * @return \Illuminate\Http\Response
      */
-    public function edit(SaleDocument $saleDocument)
+    public function edit(SaleDocumentType $saleDocumentType)
     {
         //
     }
@@ -64,10 +67,10 @@ class SaleDocumentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SaleDocument  $saleDocument
+     * @param  \App\Models\SaleDocumentType  $saleDocumentType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SaleDocument $saleDocument)
+    public function update(Request $request, SaleDocumentType $saleDocumentType)
     {
         //
     }
@@ -75,10 +78,10 @@ class SaleDocumentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SaleDocument  $saleDocument
+     * @param  \App\Models\SaleDocumentType  $saleDocumentType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SaleDocument $saleDocument)
+    public function destroy(SaleDocumentType $saleDocumentType)
     {
         //
     }

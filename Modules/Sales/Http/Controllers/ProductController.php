@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers;
 
 use App\Models\Kardex;
 use App\Models\KardexSize;
@@ -15,9 +15,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ProductController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      *
@@ -46,7 +50,7 @@ class ProductController extends Controller
         $products = $products->paginate(10)->onEachSide(2);
         $establishments = LocalSale::all();
 
-        return Inertia::render('Products/List', [
+        return Inertia::render('Sales::Products/List', [
             'products' => $products,
             'establishments' => $establishments,
             'filters' => request()->all('search'),
@@ -60,7 +64,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Products/Create', [
+        return Inertia::render('Sales::Products/Create', [
             'establishments' => LocalSale::all(),
         ]);
     }
@@ -153,7 +157,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return Inertia::render('Products/Edit', [
+        return Inertia::render('Sales::Products/Edit', [
             'product' => $product,
         ]);
     }
@@ -577,5 +581,25 @@ class ProductController extends Controller
             DB::rollback();
             return $e->getMessage();
         }
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+
+        $spreadsheet = IOFactory::load($path);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $total = 0;
+        $data = [];
+        foreach ($worksheet->getRowIterator() as $row) {
+            $rowData = [];
+            foreach ($row->getCellIterator() as $cell) {
+                $rowData[] = $cell->getValue();
+            }
+            $data[] = $rowData;
+            $total++;
+        }
+        return response()->json(['total' => $total]);
     }
 }

@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CreateProductForm from '@/Pages/Products/Partials/CreateProductForm.vue';
+import CreateProductForm from './Partials/CreateProductForm.vue';
 
 const props = defineProps({
     establishments: {
