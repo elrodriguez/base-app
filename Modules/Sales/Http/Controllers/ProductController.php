@@ -77,21 +77,30 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $presentations = $request->get('presentations');
+
         $this->validate(
             $request,
             [
                 'interne' => 'required|unique:products,interne',
                 'description' => 'required',
                 'purchase_prices' => 'required',
-                'sale_prices.high' => 'required',
-                'sizes.*.size' => 'required|numeric',
-                'sizes.*.quantity' => 'required|numeric',
-            ],
-            [
-                'sizes.*.size.required' => 'Ingrese Talla',
-                'sizes.*.quantity.required' => 'Ingrese Cantidad',
+                'sale_prices.high' => 'required'
             ]
         );
+        if ($presentations) {
+            $this->validate(
+                $request,
+                [
+                    'sizes.*.size' => 'required|numeric',
+                    'sizes.*.quantity' => 'required|numeric',
+                ],
+                [
+                    'sizes.*.size.required' => 'Ingrese Talla',
+                    'sizes.*.quantity.required' => 'Ingrese Cantidad',
+                ]
+            );
+        }
         // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
         // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
         $path = 'img/imagen-no-disponible.jpeg';
@@ -124,6 +133,7 @@ class ProductController extends Controller
             'sizes' => json_encode($request->get('sizes')),
             'stock_min' => 1,
             'stock' => $total,
+            'presentations' => $presentations
         ]);
 
         $k = Kardex::create([
@@ -135,16 +145,17 @@ class ProductController extends Controller
             'description' => 'Stock Inicial',
         ]);
 
-        foreach ($request->get('sizes') as $row) {
-            KardexSize::create([
-                'kardex_id' => $k->id,
-                'product_id' => $pr->id,
-                'local_id' => $request->get('local_id'),
-                'size' => $row['size'],
-                'quantity' => $row['quantity'],
-            ]);
+        if ($presentations) {
+            foreach ($request->get('sizes') as $row) {
+                KardexSize::create([
+                    'kardex_id' => $k->id,
+                    'product_id' => $pr->id,
+                    'local_id' => $request->get('local_id'),
+                    'size' => $row['size'],
+                    'quantity' => $row['quantity'],
+                ]);
+            }
         }
-
         return redirect()->route('products.create')
             ->with('message', __('Producto creado con éxito'));
     }
@@ -208,13 +219,14 @@ class ProductController extends Controller
     {
         $local_id = Auth::user()->local_id;
         $search = $request->get('search');
-
+        $products = [];
         $success = false;
-
-        $products = DB::table('products as t1')
-            ->select(
-                't1.*',
-                DB::raw(`
+        $message = null;
+        if ($local_id) {
+            $products = DB::table('products as t1')
+                ->select(
+                    't1.*',
+                    DB::raw(`
                 SELECT
                     JSON_ARRAYAGG(JSON_OBJECT('size', size, 'quantity', quantity_sum)) AS productos
                     FROM (
@@ -222,28 +234,37 @@ class ProductController extends Controller
                         FROM kardex_sizes
                         WHERE kardex_sizes.product_id=t1.id AND local_id = ` . $local_id . `GROUP BY size
                     ) AS local_sizes`)
-            )
-            ->selectSub(function ($query) use ($local_id) {
-                $query->from('product_establishment_prices')
-                    ->selectRaw("JSON_OBJECT('high', high, 'under', under,'medium',MEDIUM)")
-                    ->whereColumn('product_establishment_prices.product_id', 't1.id')
-                    ->where('product_establishment_prices.local_id', $local_id);
-            }, 'local_prices')
-            ->leftJoin('kardexes', 't1.id', '=', 'kardexes.product_id')
-            ->where(function ($query) use ($search) {
-                $query->where('t1.interne', '=', $search)
-                    ->orWhere('t1.description', 'like', '%' . $search . '%');
-            })
-            ->where('kardexes.local_id', '=', $local_id)
-            ->groupBy('t1.id')
-            ->get();
+                )
+                ->selectSub(function ($query) use ($local_id) {
+                    $query->from('product_establishment_prices')
+                        ->selectRaw("JSON_OBJECT('high', high, 'under', under,'medium',MEDIUM)")
+                        ->whereColumn('product_establishment_prices.product_id', 't1.id')
+                        ->where('product_establishment_prices.local_id', $local_id);
+                }, 'local_prices')
+                ->leftJoin('kardexes', 't1.id', '=', 'kardexes.product_id')
+                ->where(function ($query) use ($search) {
+                    $query->where('t1.interne', '=', $search)
+                        ->orWhere('t1.usine', '=', $search)
+                        ->orWhere('t1.description', 'like', '%' . $search . '%');
+                })
+                ->where('kardexes.local_id', '=', $local_id)
+                ->groupBy('t1.id')
+                ->get();
 
-        if (count($products) > 0) {
-            $success = true;
+            if (count($products) > 0) {
+                $success = true;
+            } else {
+                $message = 'No se encontro productos';
+            }
+        } else {
+            $message = 'El usuario no esta asignado a un local para realizar una venta, comuniquese con el administrador del sistema';
         }
+
+
         return response()->json([
             'success' => $success,
             'products' => $products,
+            'message' => $message
         ]);
     }
 
@@ -251,11 +272,15 @@ class ProductController extends Controller
     {
         $search = $request->get('search');
         $local_id = Auth::user()->local_id;
+        $success = false;
+        $message = null;
+        $product = [];
 
-        $product = DB::table('products as t1')
-            ->select(
-                't1.*',
-                DB::raw(`
+        if ($local_id) {
+            $product = DB::table('products as t1')
+                ->select(
+                    't1.*',
+                    DB::raw(`
                 SELECT
                     JSON_ARRAYAGG(JSON_OBJECT('size', size, 'quantity', quantity_sum)) AS productos
                     FROM (
@@ -263,23 +288,36 @@ class ProductController extends Controller
                         FROM kardex_sizes
                         WHERE kardex_sizes.product_id=t1.id AND local_id = ` . $local_id . `GROUP BY size
                     ) AS local_sizes`)
-            )
-            ->selectSub(function ($query) use ($local_id) {
-                $query->from('product_establishment_prices')
-                    ->selectRaw("JSON_OBJECT('high', high, 'under', under,'medium',MEDIUM)")
-                    ->whereColumn('product_establishment_prices.product_id', 't1.id')
-                    ->where('product_establishment_prices.local_id', $local_id);
-            }, 'local_prices')
+                )
+                ->selectSub(function ($query) use ($local_id) {
+                    $query->from('product_establishment_prices')
+                        ->selectRaw("JSON_OBJECT('high', high, 'under', under,'medium',MEDIUM)")
+                        ->whereColumn('product_establishment_prices.product_id', 't1.id')
+                        ->where('product_establishment_prices.local_id', $local_id);
+                }, 'local_prices')
 
-            ->leftJoin('kardexes', 't1.id', '=', 'kardexes.product_id')
-            ->where(function ($query) use ($search) {
-                $query->where('t1.interne', '=', $search);
-            })
-            ->where('kardexes.local_id', '=', $local_id)
-            ->groupBy('t1.id')
-            ->first();
+                ->leftJoin('kardexes', 't1.id', '=', 'kardexes.product_id')
+                ->where(function ($query) use ($search) {
+                    $query->where('t1.interne', '=', $search)
+                        ->orWhere('t1.usine', '=', $search);
+                })
+                ->where('kardexes.local_id', '=', $local_id)
+                ->groupBy('t1.id')
+                ->first();
 
-        return response()->json($product);
+            if ($product) {
+                $success = true;
+            } else {
+                $message = 'No se encontro el producto';
+            }
+        } else {
+            $message = 'El usuario no esta asignado a un local para realizar una venta, comuniquese con el administrador del sistema';
+        }
+        return response()->json([
+            'success' => $success,
+            'product' => $product,
+            'message' => $message
+        ]);
     }
 
     public function showdetails($id)

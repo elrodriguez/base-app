@@ -314,134 +314,167 @@
 </script>
 <template>
     <AppLayout title="Productos">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight dark:text-white">
-                Productos
-            </h2>
-        </template>
-        
-        <div class="">
-          <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <div class="w-full p-4 border border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
-              <div class="grid grid-cols-2">
-                <div class="col-span-2 sm:col-span-1">
-                  <form @submit.prevent="form.get(route('products.index'))">
-                    <label for="table-search" class="sr-only">Search</label>
-                      <div class="relative">
-                          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                              <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-                          </div>
-                          <input v-model="form.search" type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar productos">
-                      </div>
-                  </form>
+        <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
+          <!-- Breadcrumb Start -->
+          <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+              <li class="inline-flex items-center">
+                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                  <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                  Inicio
+                </a>
+              </li>
+              <li>
+                <div class="flex items-center">
+                  <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                  <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
+                  <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Ventas</span>
                 </div>
-                <div class="col-span-2 sm:col-span-1">
-                  <Keypad>
-                    <template #botones>
-                      <button v-can="'productos_salida'" @click="openModalEntradaSalida(0)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Salidas</button>
-                      <button v-can="'productos_entrada'" @click="openModalEntradaSalida(1)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-blue-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-800 hover:shadow-lg  focus:bg-green-600 focus:shadow-lg focus:outline-none  focus:ring-0 focus:ring-blue-300 active:shadow-lg dark:bg-blue-600 dark:hover:bg-blue-700 transition duration-150 ease-in-out">Entradas</button>
-                      <button v-can="'productos_entrada'" @click="openModalImport()" type="button" class="mr-1 inline-block px-6 py-2.5 bg-green-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-800 hover:shadow-lg focus:ring-green-300  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition duration-150 ease-in-out" >Importar</button>
-                      <a v-can="'productos_nuevo'" :href="route('products.create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                        Nuevo
-                      </a>
-                    </template>
-                  </Keypad>
+              </li>
+              <li aria-current="page">
+                <div class="flex items-center">
+                  <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                  <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Productos & servicios</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+          <!-- Breadcrumb End -->
+
+          <!-- ====== Table Section Start -->
+          <div class="flex flex-col gap-10">
+            <!-- ====== Table One Start -->
+            <div class="rounded-sm border border-stroke bg-white px-5  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+              
+              <div class="border-b border-gray-200 dark:border-gray-700">
+                  <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+                      <li class="mr-2">
+                          <a href="#" class="inline-flex p-4 border-b-2 text-blue-600 border-b-2 border-blue-600   rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                            <img src="/img/24px/orden.png" class="mr-1" />Productos
+                          </a>
+                      </li>
+                      <li class="mr-2">
+                          <a href="#" class="inline-flex p-4 border-transparent rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group" aria-current="page">
+                            <img src="/img/24px/public-service.png" class="mr-1" />Servicios
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+              <div class="w-full p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
+                <div class="grid grid-cols-3">
+                  <div class="col-span-3 sm:col-span-1">
+                    <form @submit.prevent="form.get(route('products.index'))">
+                      <label for="table-search" class="sr-only">Search</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <input v-model="form.search" type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar productos">
+                        </div>
+                    </form>
+                  </div>
+                  <div class="col-span-3 sm:col-span-2">
+                    <Keypad>
+                      <template #botones>
+                        <button v-can="'productos_salida'" @click="openModalEntradaSalida(0)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Salidas</button>
+                        <button v-can="'productos_entrada'" @click="openModalEntradaSalida(1)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-blue-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-800 hover:shadow-lg  focus:bg-green-600 focus:shadow-lg focus:outline-none  focus:ring-0 focus:ring-blue-300 active:shadow-lg dark:bg-blue-600 dark:hover:bg-blue-700 transition duration-150 ease-in-out">Entradas</button>
+                        <button v-can="'productos_entrada'" @click="openModalImport()" type="button" class="mr-1 inline-block px-6 py-2.5 bg-green-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-800 hover:shadow-lg focus:ring-green-300  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition duration-150 ease-in-out" >Importar</button>
+                        <a v-can="'productos_nuevo'" :href="route('products.create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                          Nuevo
+                        </a>
+                      </template>
+                    </Keypad>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="code-preview-wrapper">
-              <div class="flex p-0 bg-white border-gray-200 bg-gradient-to-r code-preview dark:bg-gray-900 border-x dark:border-gray-600">
-                <div class="w-full ">
-                  <div class="relative overflow-y-auto shadow-md">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400">
-                          <tr>
-                              <th class="px-6 py-3">
-                              #
-                              </th>
-                              <th class="text-center px-6 py-3">
-                                  Acción
-                              </th>
-                              <th class="text-center px-6 py-3">
-                                  Imagen
-                              </th>
-                              <th class="px-6 py-3">
-                                  Código
-                              </th>
-                              <th class="px-6 py-3">
-                                  Descripción
-                              </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(product, index) in products.data" :key="product.id"
-                              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td class="px-6 py-2">
-                                    {{ index + 1 }}
-                                </td>
-                                <td class="w-80 px-6 py-4">
-                                    <div class="flex space-x-2 justify-center">
-                                        <div>
-                                            <a v-permission="'productos_editar'" title="Editar" :href="route('products.edit',product.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                <font-awesome-icon :icon="faPencilAlt" />
-                                            </a>
-                                            <button title="Mover Mercadería/Calzados" type="button" class="mr-1 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                                            @click="openModalTrasladoMercaderia(product)"
-                                            >
-                                              <font-awesome-icon :icon="faTruck" />
-                                            </button>
-                                            <button type="button" class="mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                                                <font-awesome-icon :icon="faPrint" />
-                                            </button>
-                                            <button
-                                              @click="openModalPrices(product)"
-                                              title="precios por tienda"
-                                              type="button"
-                                              class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                <font-awesome-icon :icon="faDollarSign" />
-                                            </button>
-                                            <button title="ver Stock" type="button" class="mr-1 text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-center inline-flex items-center text-sm p-2.5 mr-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-                                              @click="showDetailProduct(product)"
-                                            >
-                                              <font-awesome-icon :icon="faWarehouse" />
-                                            </button>
-                                            <button type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                                              @click="destroy(product.id)"
-                                              >
-                                              <font-awesome-icon :icon="faTrashAlt" />
-                                          </button>
+              <div class="max-w-full overflow-x-auto">
+                <table class="w-full table-auto">
+                  <thead class="border-b border-stroke">
+                    <tr class="bg-gray-50 text-left dark:bg-meta-4">
+                      <th class="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">#</th>
+                      <th class="py-4 px-4 text-center  font-medium text-black dark:text-white">
+                          Acción
+                      </th>
+                      <th class="py-4 px-4 text-center font-medium text-black dark:text-white">
+                          Imagen
+                      </th>
+                      <th class="py-4 px-4 font-medium text-black dark:text-white">
+                          Código
+                      </th>
+                      <th class="py-4 px-4 font-medium text-black dark:text-white">
+                          Descripción
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(product, index) in products.data" :key="product.id" >
+                      <td class="border-b border-stroke py-4 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                          {{ index + 1 }}
+                      </td>
+                      <td class="text-center border-b border-stroke py-4 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                        <div class="flex items-center space-x-3.5">
+                            <a v-permission="'productos_editar'" title="Editar" :href="route('products.edit',product.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <font-awesome-icon :icon="faPencilAlt" />
+                            </a>
+                            <button title="Mover Mercadería/Calzados" type="button" class="mr-1 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                            @click="openModalTrasladoMercaderia(product)"
+                            >
+                              <font-awesome-icon :icon="faTruck" />
+                            </button>
+                            <button type="button" class="mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                                <font-awesome-icon :icon="faPrint" />
+                            </button>
+                            <button
+                              @click="openModalPrices(product)"
+                              title="precios por tienda"
+                              type="button"
+                              class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <font-awesome-icon :icon="faDollarSign" />
+                            </button>
+                            <button title="ver Stock" type="button" class="mr-1 text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-center inline-flex items-center text-sm p-2.5 mr-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                              @click="showDetailProduct(product)"
+                            >
+                              <font-awesome-icon :icon="faWarehouse" />
+                            </button>
+                            <button type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                              @click="destroy(product.id)"
+                              >
+                              <font-awesome-icon :icon="faTrashAlt" />
+                          </button>
+                        </div>
+                      </td>
+                      <td class="w-32 border-b border-stroke py-4 px-4 dark:border-strokedark">
 
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="w-32 p-4">
+                        <VueMagnifier
+                          :src="product.image" width="500"
+                          :zoomImgSrc="product.image"
+                          :mgWidth="210"
+                          :mgHeight="210"
+                          />
 
-                                  <VueMagnifier
-                                    :src="product.image" width="500"
-                                    :zoomImgSrc="product.image"
-                                    :mgWidth="210"
-                                    :mgHeight="210"
-                                    />
-
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ product.interne }}
-                                </td>
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                    {{ product.description }}
-                                </td>
-                            </tr>
-
-                        </tbody>
-                      </table>
-                    </div>
-                </div>
+                      </td>
+                      <td class="border-b border-stroke py-4 px-4 dark:border-strokedark">
+                          {{ product.interne }}
+                      </td>
+                      <td class="border-b border-stroke py-4 px-4 dark:border-strokedark">
+                          {{ product.description }}
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="5" class="py-4 px-4 dark:border-strokedark">
+                        <Pagination :data="products" />
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                
               </div>
+              
             </div>
-            <Pagination :data="products" />
-          </div>
+           </div>
         </div>
-
         <ModalLarge :show="openModalDetilsProduct"  @close="closeModalDetailsProduct">
             <template #title>
               {{ formDetails.interne }} - {{ formDetails.description }}
@@ -669,9 +702,8 @@
             <template #content>
                 <div class="mt-4 mb-1">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                  <div class="col-span-2 sm:col-span-1">
-                    <!-- ----------Origen -------->
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="col-span-3 sm:col-span-1">
                     <InputLabel for="stablishment" value="Establecimiento Origen" />
                     <select v-model="formReLocate.local_id_origin"  v-on:change="getProductByLocal()" id="stablishment" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                       <template v-for="(establishment, index) in props.establishments" :key="index">
@@ -681,7 +713,7 @@
                     <InputError :message="formReLocate.errors.local_id_origin" class="mt-2" />
                   </div>
                                                                                                                         <!-- Destino-->
-                  <div class="col-span-2 sm:col-span-1">
+                  <div class="col-span-3 sm:col-span-1">
                     <InputLabel for="stablishment" value="Establecimiento Destino" />
                     <select v-model="formReLocate.local_id_destiny" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                       <template v-for="(establishment, index) in props.establishments" :key="index">
@@ -691,18 +723,17 @@
                     <InputError :message="formReLocate.errors.local_id_destiny" class="mt-2" />
                   </div>
 
-                  <div class="col-span-2 sm:col-span-1">
-                    <InputLabel for="description" value="Descripción o Motivo" />
+                  <div class="col-span-3 sm:col-span-1">
+                    <InputLabel class="mb-1" for="description" value="Descripción o Motivo" />
                     <TextInput
                         id="description"
                         v-model="formReLocate.description"
                         type="text"
-                        class="block w-full mt-1"
                         autofocus
                     />
                     <InputError :message="formReLocate.errors.description" class="mt-2" />
                   </div>
-                  <div class="col-span-6 sm:col-span-6">
+                  <div class="col-span-3">
                       <label>
                           Tallas Disponibles en el local de origen
                       </label>
@@ -755,18 +786,19 @@
             </template>
 
             <template #footer>
-                <SecondaryButton @click="closeModalTrasladoMercaderia()">
-                    Cancel
-                </SecondaryButton>
+                
 
                 <DangerButton
-                    class="ml-3"
+                    
                     :class="{ 'opacity-25': formInput.processing }"
                     :disabled="formInput.processing"
                     @click="saveRelocate()"
                 >
                     Guardar
                 </DangerButton>
+                <SecondaryButton class="ml-3" @click="closeModalTrasladoMercaderia()">
+                    Cancel
+                </SecondaryButton>
             </template>
         </DialogModal>
         <ModalLarge

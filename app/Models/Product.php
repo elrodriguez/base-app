@@ -18,7 +18,10 @@ class Product extends Model
         'sale_prices',
         'sizes',
         'stock_min',
-        'stock'
+        'stock',
+        'presentations',
+        'is_product',
+        'type_affectation'
     ];
 
     public function getImageAttribute($value)

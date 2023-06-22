@@ -7,7 +7,7 @@
     import ModalPrintSale from './Partials/ModalPrintSale.vue';
     import InputError from '@/Components/InputError.vue';
     import Keypad from '@/Components/Keypad.vue';
-    
+    import Swal2 from 'sweetalert2';
 
     const props = defineProps({
         payments: {
@@ -64,10 +64,30 @@
         }
     };
     const saveSale = async () => {
+        Swal2.fire({
+          imageUrl: '/img/loading-70.gif',
+          imageHeight: 120,
+          imageAlt: 'Cargando',
+          showConfirmButton: false,
+          allowOutsideClick: false
+        });
         if(form.total>0){
             axios.post(route('sales.store'), form ).then((res) => {
                 form.reset();
-                printPdf(res.data.id);
+                Swal2.fire({
+                    title: 'Ticket',
+                    text: "¿Desea imprimir el ticket?",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Imprimir',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        printPdf(res.data.id);
+                    }
+                });
             });
         }else{
             swal('Agregar Productos para realizar la venta');
@@ -76,7 +96,9 @@
     }
 
     const printPdf = (id) => {
-        window.location.href = "../../pdf/sales/ticket/" + id;
+        //window.location.href = "../../pdf/sales/ticket/" + id;
+        let url = route('ticketpdf_sales',id)
+        window.open(url, "_blank");
     }
 
     const getClient = async (data) => {
@@ -87,70 +109,89 @@
 
 <template>
     <AppLayout title="Punto de Ventas">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Punto de Venta
-            </h2>
-        </template>
+        <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
+            <!-- Breadcrumb Start -->
+            <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                        Inicio
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Ventas</span>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">punto de Ventas</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
 
-        <div>
-            <div class="mx-auto py-2 sm:px-2 lg:px-4">
-                <div class="grid grid-cols-12 gap-4">
-                    <div class="col-span-12 sm:col-span-12 md:col-span-6 bg-teal-400 p-4">
+            <div class="grid grid-cols-2 gap-9">
+                <div class="mb-2 pr-4 col-span-2 gap-9 sm:col-span-1">
+                    <div class="p-2 border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <SearchProducts @eventdata="getDataTable" />
-                        <div class="mt-4 relative overflow-x-auto shadow-md sm:rounded-lg">
-                            <table style="width: 100%;">
-                                <thead class="border-b bg-gray-800">
+                        <div class="mt-4 relative overflow-x-auto">
+                            <table class="border border-stroke w-full">
+                                <thead class="border-b bg-gray-100 border-stroke dark:bg-gray-700">
                                     <tr>
-                                        <th class="text-sm font-medium text-white px-6 py-2"></th>
-                                        <th scope="col" class="text-sm font-medium text-white px-6 py-2">
+                                        <th class="text-sm font-medium  px-2 py-2"></th>
+                                        <th scope="col" class="text-sm font-medium px-6 py-2">
                                             Código & Descripción
                                         </th>
-                                        <th class="text-sm font-medium text-white px-6 py-2">
+                                        <th class="text-sm font-medium px-2 py-2">
                                             Cantidad
                                         </th>
-                                        <th class="text-sm font-medium text-white px-6 py-2">
+                                        <th class="text-sm font-medium  px-2 py-2">
                                             Precio
                                         </th>
-                                        <th class="text-sm font-medium text-white px-6 py-2">
+                                        <th class="text-sm font-medium px-2 py-2">
                                             Descuento
                                         </th>
-                                        <th class="text-sm font-medium text-white px-6 py-2">
+                                        <th class="text-sm font-medium px-2 py-2">
                                             Importe
                                         </th>
                                     </tr>
                                 </thead >
                                 <tbody style="max-height: 250px;overflow-y: auto;overflow-x: hidden;">
                                    <template v-if="form.products.length > 0">
-                                    <tr v-for="(product, key) in form.products" class="border-b bg-gray-800 boder-gray-900">
-                                        <td class="text-center text-sm text-white font-medium px-6 py-2">
+                                    <tr v-for="(product, key) in form.products" class="border-b bg-gray-500 border-stroke">
+                                        <td class="text-center text-sm text-white font-medium px-2 py-2">
                                             <div class="relative">
-                                                <button @click="removeProduct(key)" type="button" class="inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9">
+                                                <button @click="removeProduct(key)" type="button" class="inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out px-3 py-2">
                                                     <font-awesome-icon :icon="faTrashAlt" />
                                                 </button>
                                             </div>
                                         </td>
-                                        <td class="text-sm text-white font-medium px-6 py-2">
+                                        <td class="text-sm text-white font-medium px-2 py-2">
                                             {{ product.interne  }} - {{ product.description  }} / {{ product.size  }}
                                         </td>
-                                        <td class="text-right text-sm text-white font-medium px-6 py-2">
+                                        <td class="text-right text-sm text-white font-medium px-2 py-2">
                                             {{ product.quantity  }}
                                         </td>
-                                        <td class="text-right text-sm text-white font-medium px-6 py-2">
+                                        <td class="text-right text-sm text-white font-medium px-2 py-2">
                                             {{ product.price  }}
                                         </td>
-                                        <td class="text-right text-sm text-white font-medium px-6 py-2">
+                                        <td class="text-right text-sm text-white font-medium px-2 py-2">
                                             {{ product.discount  }}
                                         </td>
-                                        <td class="text-right text-sm text-white font-medium px-6 py-2">
+                                        <td class="text-right text-sm text-white font-medium px-2 py-2">
                                             {{ product.total  }}
                                         </td>
                                     </tr>
                                    </template>
                                    <template v-else>
-                                        <tr class="border-b bg-gray-800 boder-gray-900">
-                                           <td colspan="6" class="text-center text-sm text-white font-medium px-6 py-2">
-                                                <div class="flex p-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800" role="alert">
+                                        <tr class="border-b border-stroke">
+                                           <td colspan="6" class="text-center text-sm font-medium px-6 py-2">
+                                                <div class="flex p-4 text-sm border border-gray-300 bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-yellow-800" role="alert">
                                                     <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
                                                     <span class="sr-only">Info</span>
                                                     <div>
@@ -162,48 +203,52 @@
                                    </template>
                                 </tbody>
                                 <tfoot>
-                                    <tr class="border-b bg-gray-800 boder-gray-900">
-                                        <td colspan="5" class="text-right text-sm text-white font-medium px-6 py-2 whitespace-nowrap"> Total a Cobrar</td>
-                                        <td class="text-right text-sm text-white font-medium px-6 py-2 whitespace-nowrap">S/. {{ form.total }}</td>
+                                    <tr class="border-b bg-gray-100 border-stroke dark:bg-gray-700">
+                                        <th colspan="5" class="text-right text-sm  font-medium px-2 py-2 whitespace-nowrap dark:text-white "><strong>Total a Cobrar</strong></th>
+                                        <td class="text-right text-sm font-medium px-2 py-2 whitespace-nowrap dark:text-white "><strong>S/. {{ form.total }}</strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
                     </div>
-                    <div class="col-span-12 sm:col-span-12 md:col-span-6 bg-teal-400 p-4">
+                </div>
+                <div class="mb-2 pr-4 col-span-2 gap-9 sm:col-span-1">
+                    <div class="p-2 border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <SearchClients @clientId="getClient" :clientDefault="form.client" :documentTypes="documentTypes" />
                         <InputError :message="form.errors[`client.id`]" class="mt-2" />
-                        <div>
+                        <div class="mt-4">
                             <h4 class="italic font-bold mb-4">Medio de Pago</h4>
-                            <div class="grid grid-cols-10 gap-4">
-                                <template v-for="(row, index) in form.payments" v-bind:key="index">
-                                    <div class="col-span-3 mb-2">
-                                        <select v-model="row.type" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <template v-for="(payment) in payments">
-                                                <option :value="payment.id">{{ payment.description }}</option>
-                                            </template>
-                                        </select>
-                                        <InputError :message="form.errors[`payments.${index}.id`]" class="mt-2" />
-                                    </div>
-                                    <div class="col-span-3 mb-2">
-                                        <input v-model="row.reference" type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Referencia" required>
-                                        <InputError :message="form.errors[`payments.${index}.reference`]" class="mt-2" />
-                                    </div>
-                                    <div class="col-span-3 mb-2">
-                                        <input v-model="row.amount" type="text" id="first_name" class="text-right bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Monto" required>
-                                        <InputError :message="form.errors[`payments.${index}.amount`]" class="mt-2" />
-                                    </div>
-                                    <div class="col-span-1">
-                                        <button @click="removePayment(index)" type="button" class="inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9">
-                                            <font-awesome-icon :icon="faTrashAlt" />
-                                        </button>
-                                    </div>
-                                </template>
-                            </div>
-                            <button @click="addPayment()" type="button" class="inline-block px-6 py-2 bg-transparent text-blue-600 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">Agregar (+)</button>
+                            <table>
+                                <tbody>
+                                    <tr v-for="(row, index) in form.payments" v-bind:key="index">
+                                        <td>
+                                            <select v-model="row.type" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                <template v-for="(payment) in payments">
+                                                    <option :value="payment.id">{{ payment.description }}</option>
+                                                </template>
+                                            </select>
+                                            <InputError :message="form.errors[`payments.${index}.id`]" class="mt-2" />
+                                        </td>
+                                        <td>
+                                            <input v-model="row.reference" type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Referencia" required>
+                                            <InputError :message="form.errors[`payments.${index}.reference`]" class="mt-2" />
+                                        </td>
+                                        <td>
+                                            <input v-model="row.amount" type="text" id="first_name" class="text-right bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Monto" required>
+                                            <InputError :message="form.errors[`payments.${index}.amount`]" class="mt-2" />
+                                        </td>
+                                        <td>
+                                            <button @click="removePayment(index)" type="button" class="px-2 py-1 inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                                <font-awesome-icon :icon="faTrashAlt" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button @click="addPayment()" type="button" class="inline-block px-0 py-2 bg-transparent text-blue-600 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">Agregar (+)</button>
                         </div>
                         <div class="grid grid-cols-6 gap-4">
-                            <div class="col-end-7 col-span-4 text-right">
+                            <div class="col-span-6 text-right">
                                 <Keypad>
                                     <template #botones>
                                         <button @click="saveSale()" type="button" class=" inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out">
@@ -216,9 +261,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-        
     </AppLayout>
 </template>

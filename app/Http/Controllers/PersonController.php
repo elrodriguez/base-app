@@ -153,6 +153,8 @@ class PersonController extends Controller
 
         $persons = Person::where('number', $search)
             ->orWhere('full_name', 'like', '%' . $search . '%')
+            ->orWhere('short_name', 'like', '%Clientes Varios%')
+            ->orderBy('id')
             ->get();
         if (count($persons) > 0) {
             $status = true;

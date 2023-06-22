@@ -12,7 +12,10 @@
 */
 
 use Illuminate\Support\Facades\Route;
+use Modules\Sales\Http\Controllers\PettyCashController;
 use Modules\Sales\Http\Controllers\ProductController;
+use Modules\Sales\Http\Controllers\ReportController;
+use Modules\Sales\Http\Controllers\SaleController;
 
 Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::resource('products', ProductController::class);

@@ -402,7 +402,7 @@ class SaleController extends Controller
 
             $file = public_path('ventas/') . 'ventas.pdf';
 
-            $pdf = PDF::loadView('sales.sale_day', [
+            $pdf = PDF::loadView('sales::sales.sale_day', [
                 'header' => $header,
                 'sales' => $sales,
                 'payments' => $payments,

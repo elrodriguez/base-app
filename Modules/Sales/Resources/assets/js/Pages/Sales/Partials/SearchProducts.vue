@@ -28,33 +28,37 @@
             size_quantity: 0
         }
     });
+
+    const displayResultSearch = ref(false);
     const searchProducts = async () => {
         if(formScaner.scaner){
-            axios.post(route('search_scaner_product'), form ).then((product) => {
-                if(Object.entries(product).length > 0){
+            axios.post(route('search_scaner_product'), form ).then((response) => {
+                if(response.data.success){
                     displayModal.value = true;
                     form.products = [];
-                    form.product = product.data;
-                    form.data.id = product.data.id;
-                    form.data.interne = product.data.interne;
-                    form.data.stock = product.data.stock;
-                    form.data.description = product.data.description;
+                    form.product = response.data.product;
+                    form.data.id = response.data.product.id;
+                    form.data.interne = response.data.product.interne;
+                    form.data.stock = response.data.product.stock;
+                    form.data.description = response.data.product.description;
                     form.data.price = null;
                     form.data.total = 0;
                     form.data.quantity = 1;
                     form.data.discount = 0;
                     form.search = null;
+                    
                 }else{
-                    swal('No se encontró producto');
+                    swal(response.data.message);
                 }
                 
             });
         }else{
-            axios.post(route('search_product'), form ).then((res) => {
-                if(res.data.success){
-                    form.products = res.data.products;
+            axios.post(route('search_product'), form ).then((response) => {
+                if(response.data.success){
+                    form.products = response.data.products;
+                    displayResultSearch.value = true;
                 }else{
-                    swal('No se encontró producto');
+                    swal(response.data.message);
                 }
                 
             });
@@ -65,6 +69,7 @@
     }
     const openModalSelectProduct = async (product) => {
         displayModal.value = true;
+        displayResultSearch.value = false;
         form.products = [];
         form.product = product;
         form.data.id = product.id;
@@ -98,6 +103,7 @@
                 emit('eventdata',data);
                 displayModal.value = false;
                 form.data.size = null;
+                displayResultSearch.value = false;
             }else{
                 swal('Seleccionar Precio')
             }
@@ -110,45 +116,55 @@
 
 <template>
     <div style="position: relative;">
-        <form @submit.prevent="searchProducts()"> 
+        <form @submit.prevent="searchProducts()">
             <div class="flex">
-
-                <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                <div class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" >
-                    <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
-                        <input
-                            class="relative float-left mt-[0.15rem] mr-[6px] -ml-[1.5rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-[rgba(0,0,0,0.25)] bg-white outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:ml-[0.25rem] checked:after:-mt-px checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-t-0 checked:after:border-l-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:bg-white focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:ml-[0.25rem] checked:focus:after:-mt-px checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-t-0 checked:focus:after:border-l-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent"
-                            type="checkbox"
-                            v-model="formScaner.scaner"
-                            id="scaner" />
-                        <label
-                            class="inline-block pl-[0.15rem] hover:cursor-pointer"
-                            for="scaner">
-                            Scaner
-                        </label>
-                    </div>
+                <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                <div class="flex items-center mr-4">
+                    <input v-model="formScaner.scaner" id="scaner" type="checkbox" value="" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="scaner" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scaner</label>
                 </div>
-                
                 <div class="relative w-full">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </div>
-                    <input v-model="form.search" autocomplete="off" type="search" id="search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-r-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar Producto" required>
-                    <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
+                    <input v-model="form.search" autocomplete="off" type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Buscar por código o descripción..." required>
+                    <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <span class="sr-only">Search</span>
+                    </button>
                 </div>
             </div>
         </form>
-        <div  id="result" style="position: absolute;width: 100%;z-index: 999999;">
-            <div class="mt-1" style="max-height: 300px;overflow-y: auto;">
-                <table class="min-w-full" >
-                    <tbody>
-                        <tr @click="openModalSelectProduct(product)" v-for="(product, index) in form.products" class="border-b bg-gray-100 boder-gray-900" style="cursor: pointer;">
-                            <td class="text-sm font-medium px-6 py-4 whitespace-nowrap">
-                                {{ product.interne }} - {{ product.description }}
-                            </td>
-                        </tr>
-                    </tbody> 
-                </table>
+        <div v-show="displayResultSearch" id="result" style="position: absolute; width: 100%;z-index: 999;">
+            <div class="mt-1 border border-stroke" style="max-height: 300px;overflow-y: auto;">
+                <ul class="max-w-md divide-y bg-white">
+                    <li v-for="(product, index) in form.products" class="p-4 border-b border-stroke bg-gray-100 pb-3 sm:pb-4 dark:border-strokedark dark:bg-boxdark" >
+                        <div @click="openModalSelectProduct(product)" style="cursor: pointer;" class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <img class="w-8 h-8 rounded-full" :src="'/storage/'+product.image" :alt="product.interne">
+                            </div>
+                            <div class="flex-1 min-w-0 ml-2">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    {{ product.interne }}
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    {{ product.description }}
+                                </p>
+                            </div>
+                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                               Stock {{ product.stock }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="flex justify-end">
+                        <button @click="displayResultSearch = false" class="right-2 flex items-center justify-center w-8 h-8 text-red-500 hover:text-red-700 transition-colors">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                fill-rule="evenodd"
+                                d="M5.293 4.293a1 1 0 011.414 0L10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

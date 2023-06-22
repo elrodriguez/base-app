@@ -1,6 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
 
+
 import { createApp, h } from 'vue';
 import VueGates from 'vue-gates'
 import { createInertiaApp } from '@inertiajs/vue3';

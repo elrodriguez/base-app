@@ -8,7 +8,7 @@
     });
 </script>
 <template>
-    <nav v-if="data.links.length > 3" role="navigation" aria-label="Pagination Navigation" class="mt-4 flex items-center justify-between">
+    <nav v-if="data.links.length > 3" role="navigation" aria-label="Pagination Navigation" class="flex items-center justify-between">
         <div class="flex justify-between flex-1 sm:hidden">
             <span v-if="data.current_page <= 1" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md">
                 Previous
