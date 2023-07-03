@@ -8,6 +8,7 @@ use App\Http\Controllers\LocalSaleController;
 use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use Modules\Blog\Http\Controllers\BlogController;
 
@@ -24,7 +25,7 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        //'laravelVersion' => Application::VERSION,
+        'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 });
