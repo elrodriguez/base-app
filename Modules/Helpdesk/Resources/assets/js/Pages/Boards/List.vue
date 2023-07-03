@@ -482,6 +482,4 @@
   border-radius: 4px;
   white-space: nowrap;
 }
-@import "vue-select/dist/vue-select.css";
-
 </style>
