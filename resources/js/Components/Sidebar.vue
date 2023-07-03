@@ -150,7 +150,7 @@ const toggleSubItems = (index) => {
 <!-- @click.outside="sidebarToggle = false" -->
 <template>
     <aside :class="sidebarToggle  ? 'translate-x-0' : '-translate-x-full'"
-        class="absolute left-0 top-0 z-99 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
+        class="absolute left-0 top-0 z-999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
         >
                 <!-- SIDEBAR HEADER -->
         <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-5.5 bg-gray-300 dark:bg-gray-800">
