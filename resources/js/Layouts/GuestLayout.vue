@@ -10,12 +10,11 @@ import { Link } from '@inertiajs/vue3';
                 <div class="py-17.5 px-26 text-center">
                   <a class="mb-5.5 inline-block" :href="route('login')">
                     <img class="hidden dark:block" src="themes/tailadmin/src/images/logo/logo.svg" alt="Logo" />
-                    <img class="dark:hidden" src="themes/tailadmin/src/images/logo/logo-dark.svg" alt="Logo" />
+                    <img style="width: 176px; height: 32px;" class="dark:hidden" src="/storage/uploads/company/logo176x32.png" alt="Logo" />
                   </a>
 
                   <p class="font-medium 2xl:px-20">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    suspendisse.
+                    Solución de ventas adaptable y amigable multiplataforma.
                   </p>
 
                   <span class="mt-15 inline-block">
