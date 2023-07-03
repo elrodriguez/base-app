@@ -28,7 +28,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Reports/List');
+        return Inertia::render('Sales::Reports/List');
     }
 
     public function sales_report()
@@ -58,7 +58,7 @@ class ReportController extends Controller
         if ($download == "false") {
             return view('sales::reports.sales_report', ['sales' => $sales, 'start' => $start, 'end' => $end, 'date' => $date, 'print' => true]);
         } else {
-            $pdf = PDF::loadView('reports.sales_report', ['sales' => $sales, 'start' => $start, 'end' => $end, 'date' => $date, 'print' => false]);
+            $pdf = PDF::loadView('sales::reports.sales_report', ['sales' => $sales, 'start' => $start, 'end' => $end, 'date' => $date, 'print' => false]);
             $pdf->setPaper('A4', 'landscape');
             $pdf->save($file);
 
@@ -85,7 +85,7 @@ class ReportController extends Controller
                     'sales' => $sales
                 ]);
             } else {
-                return Inertia::render('Reports/SaleReportByDates', [
+                return Inertia::render('Sales::Reports/SaleReportByDates', [
                     'locals' => LocalSale::all(),
                     'sales' => $sales,
                     'date' => $date,
@@ -96,39 +96,78 @@ class ReportController extends Controller
             }
         } else {
             $sales = $this->getSales($start, $end, $local_id);
+
+
             return response()->json([
                 'payments' => $payments,
                 'sales' => $sales
             ]);
         }
-
-        // return view('reports.sales_report', ['sales' => $sales, 'start' => $start, 'end' => $end, 'date' => $date, 'print' => true]);
-
     }
     public function getSales($start, $end, $local_id = 0)
     {
+        $sales = [];
         if ($local_id == 0) {
-            return Sale::join('local_sales', 'sales.local_id', 'local_sales.id')
+            $sales = Sale::join('local_sales', 'sales.local_id', 'local_sales.id')
                 ->join('sale_products', 'sale_products.sale_id', 'sales.id')
                 ->join('products', 'products.id', 'sale_products.product_id')
-                ->select('sales.*', 'products.interne', 'products.description as product_description', 'products.image', 'sale_products.product as product')
+                ->select(
+                    'sales.id',
+                    'sales.created_at',
+                    'sales.local_id',
+                    'sales.payments',
+                    'local_sales.description AS local_description',
+                    'products.interne',
+                    'products.description as product_description',
+                    'products.image',
+                    'sale_products.product as product',
+                    'sale_products.total as product_total'
+                )
                 ->whereDate('sales.created_at', '>=', $start)
                 ->whereDate('sales.created_at', '<=', $end)
                 ->where('sales.status', '=', 1)
-                ->orderBy('id', 'desc')->orderBy('sale_products.id', 'desc')
+                ->orderBy('sales.id')
                 ->get();
         } else {
-            return Sale::join('local_sales', 'sales.local_id', 'local_sales.id')
+            $sales = Sale::join('local_sales', 'sales.local_id', 'local_sales.id')
                 ->join('sale_products', 'sale_products.sale_id', 'sales.id')
                 ->join('products', 'products.id', 'sale_products.product_id')
-                ->select('sales.*', 'products.interne', 'products.description as product_description', 'products.image', 'sale_products.product as product')
+                ->select(
+                    'sales.id',
+                    'sales.created_at',
+                    'sales.local_id',
+                    'sales.payments',
+                    'local_sales.description AS local_description',
+                    'products.interne',
+                    'products.description as product_description',
+                    'products.image',
+                    'sale_products.product as product',
+                    'sale_products.total as product_total'
+                )
                 ->whereDate('sales.created_at', '>=', $start)
                 ->whereDate('sales.created_at', '<=', $end)
                 ->where('sales.status', '=', 1)
                 ->where('sales.local_id', '=', $local_id)
-                ->orderBy('id', 'desc')->orderBy('sale_products.id', 'desc')
+                ->orderBy('sales.id')
                 ->get();
         }
+        $arraySale = [];
+        foreach ($sales as $k => $sale) {
+            $arraySale[$k] = [
+                'id'                        => $sale->id,
+                'created_at'                => $sale->created_at,
+                'local_id'                  => $sale->local_id,
+                'payments'                  => $sale->payments,
+                'interne'                   => $sale->interne,
+                'product_description'       => $sale->product_description,
+                'image'                     => $sale->image,
+                'product'                   => $sale->product,
+                'product_total'             => $sale->product_total,
+                'local_description'         => $sale->local_description
+            ];
+        }
+
+        return $arraySale;
     }
 
     public function PettyCashReport($petty_cash_id)
@@ -177,7 +216,7 @@ class ReportController extends Controller
         $time = date('H:i'); //obtiene la hora y los minutos actuales en formato de 24 horas separados por dos puntos
         $date = $day . "/" . $month . "/" . $year . " a las  " . $time;
 
-        return view('reports.inventory_report', ['products' => $products, 'date' => $date, 'print' => true]);
+        return view('sales::reports.inventory_report', ['products' => $products, 'date' => $date, 'print' => true]);
     }
 
     public function inventory_report_by_local($local_id)

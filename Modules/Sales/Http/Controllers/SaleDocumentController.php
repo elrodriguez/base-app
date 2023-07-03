@@ -2,10 +2,14 @@
 
 namespace Modules\Sales\Http\Controllers;
 
+use App\Models\PaymentMethod;
+use App\Models\Person;
 use App\Models\SaleDocument;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class SaleDocumentController extends Controller
 {
@@ -27,7 +31,14 @@ class SaleDocumentController extends Controller
      */
     public function create()
     {
-        //
+        $payments = PaymentMethod::all();
+        $client = Person::find(1);
+        $documentTypes = DB::table('identity_document_type')->get();
+        return Inertia::render('Sales::Documents/Create', [
+            'payments'      => $payments,
+            'client'        => $client,
+            'documentTypes' => $documentTypes
+        ]);
     }
 
     /**

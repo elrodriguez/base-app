@@ -14,8 +14,10 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Sales\Http\Controllers\PettyCashController;
 use Modules\Sales\Http\Controllers\ProductController;
+use Modules\Sales\Http\Controllers\ProviderController;
 use Modules\Sales\Http\Controllers\ReportController;
 use Modules\Sales\Http\Controllers\SaleController;
+use Modules\Sales\Http\Controllers\SaleDocumentController;
 
 Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::resource('products', ProductController::class);
@@ -76,4 +78,6 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::post('data/payment/method/motals', [ReportController::class, 'dataPaymentMethodTotals'])->name('data_payment_method_totals');
 
     Route::post('import/product/data', [ProductController::class, 'import'])->name('import_product_data');
+
+    Route::resource('saledocuments', SaleDocumentController::class);
 });

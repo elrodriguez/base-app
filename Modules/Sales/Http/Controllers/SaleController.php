@@ -191,34 +191,36 @@ class SaleController extends Controller
                         'description' => 'Venta'
                     ]);
 
-                    KardexSize::create([
-                        'kardex_id' => $k->id,
-                        'product_id' => $produc['id'],
-                        'local_id' => $local_id,
-                        'size'      => $produc['size'],
-                        'quantity'  => (-$produc['quantity'])
-                    ]);
-
                     $product = Product::find($produc['id']);
 
-                    $tallas = $product->sizes;
-                    $n_tallas = [];
-                    foreach (json_decode($tallas, true) as $k => $talla) {
-                        if ($talla['size'] == $produc['size']) {
-                            $n_tallas[$k] = array(
-                                'size' => $talla['size'],
-                                'quantity' => ($talla['quantity'] - $produc['quantity'])
-                            );
-                        } else {
-                            $n_tallas[$k] = array(
-                                'size' => $talla['size'],
-                                'quantity' => $talla['quantity']
-                            );
+                    if ($product->presentations) {
+                        KardexSize::create([
+                            'kardex_id' => $k->id,
+                            'product_id' => $produc['id'],
+                            'local_id' => $local_id,
+                            'size'      => $produc['size'],
+                            'quantity'  => (-$produc['quantity'])
+                        ]);
+                        $tallas = $product->sizes;
+                        $n_tallas = [];
+                        foreach (json_decode($tallas, true) as $k => $talla) {
+                            if ($talla['size'] == $produc['size']) {
+                                $n_tallas[$k] = array(
+                                    'size' => $talla['size'],
+                                    'quantity' => ($talla['quantity'] - $produc['quantity'])
+                                );
+                            } else {
+                                $n_tallas[$k] = array(
+                                    'size' => $talla['size'],
+                                    'quantity' => $talla['quantity']
+                                );
+                            }
                         }
+                        $product->update([
+                            'sizes' => json_encode($n_tallas)
+                        ]);
                     }
-                    $product->update([
-                        'sizes' => json_encode($n_tallas)
-                    ]);
+
                     Product::find($produc['id'])->decrement('stock', $produc['quantity']);
                 }
                 return $sale;
@@ -263,35 +265,39 @@ class SaleController extends Controller
                         'description' => 'Anulacion de Venta'
                     ]);
 
-                    KardexSize::create([
-                        'kardex_id' => $k->id,
-                        'product_id' => $produc->product_id,
-                        'local_id' => $sale->local_id,
-                        'size'      => json_decode($produc->product)->size,
-                        'quantity'  => $produc->quantity
-                    ]);
+
 
                     $product = Product::find($produc->product_id);
 
-                    $tallas = $product->sizes;
-                    $n_tallas = [];
-                    foreach (json_decode($tallas, true) as $k => $talla) {
-                        if ($talla['size'] == $produc['size']) {
-                            $n_tallas[$k] = array(
-                                'size' => $talla['size'],
-                                'quantity' => ($talla['quantity'] + $produc->quantity)
-                            );
-                        } else {
-                            $n_tallas[$k] = array(
-                                'size' => $talla['size'],
-                                'quantity' => $talla['quantity']
-                            );
-                        }
-                    }
-                    $product->update([
-                        'sizes' => json_encode($n_tallas)
-                    ]);
+                    if ($product->presentations) {
 
+                        KardexSize::create([
+                            'kardex_id' => $k->id,
+                            'product_id' => $produc->product_id,
+                            'local_id' => $sale->local_id,
+                            'size'      => json_decode($produc->product)->size,
+                            'quantity'  => $produc->quantity
+                        ]);
+
+                        $tallas = $product->sizes;
+                        $n_tallas = [];
+                        foreach (json_decode($tallas, true) as $k => $talla) {
+                            if ($talla['size'] == $produc['size']) {
+                                $n_tallas[$k] = array(
+                                    'size' => $talla['size'],
+                                    'quantity' => ($talla['quantity'] + $produc->quantity)
+                                );
+                            } else {
+                                $n_tallas[$k] = array(
+                                    'size' => $talla['size'],
+                                    'quantity' => $talla['quantity']
+                                );
+                            }
+                        }
+                        $product->update([
+                            'sizes' => json_encode($n_tallas)
+                        ]);
+                    }
                     Product::find($produc->product_id)->increment('stock', $produc->quantity);
                 }
                 return $sale;

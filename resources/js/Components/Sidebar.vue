@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue';
+import { faPoll, faGear, faCashRegister, faBolt, faUserGear } from "@fortawesome/free-solid-svg-icons";
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     sidebarToggle: {
@@ -16,82 +18,145 @@ const menu = ref([
     {
         status:false,
         text: 'Dashboard',
-        icom: null,
-        route: route('dashboard')
+        icom: faPoll,
+        route: route('dashboard'),
+        permissions: 'dashboard',
     },
     {
         status:false,
         text: 'Configuraciones',
-        icom: null,
+        icom: faGear,
         route: null,
+        permissions: 'configuracion',
         items: [
             {
+                route: route('company_show'),
                 status: false,
-                text: 'Empresa'
+                text: 'Empresa',
+                permissions: 'empresa',
             },
             {
+                route: route('roles.index'),
                 status: false,
-                text: 'Roles'
+                text: 'Roles',
+                permissions: 'roles',
             },
             {
+                route: route('permissions.index'),
                 status: false,
-                text: 'Permisos'
+                text: 'Permisos',
+                permissions: 'permisos',
             },
             {
+                route: route('users.index'),
                 status: false,
-                text: 'usuarios'
+                text: 'usuarios',
+                permissions: 'usuarios',
             }
         ]
     },
     {
         status:false,
         text: 'Ventas',
-        icom: null,
+        icom: faCashRegister,
         route: null,
+        permissions: 'sale_dashboard',
         items: [
+            {
+                route: route('establishments.index'),
+                status: false,
+                text: 'Tiendas',
+                permissions: 'sale_tienda',
+            },
             {
                 route: route('clients.index'),
                 status: false,
-                text: 'Registro de clientes'
+                text: 'Clientes',
+                permissions: 'clientes',
             },
             {
                 route: route('pettycash.index'),
                 status: false,
-                text: 'Caja Chica'
+                text: 'Caja Chica',
+                permissions: 'caja_chica',
             },
             {
                 status: false,
                 route: route('products.index'),
-                text: 'Gestión Productos & servicios'
+                text: 'Gestión Productos & servicios',
+                permissions: 'productos',
             },
             {
                 route: route('sales.index'),
                 status: false,
-                text: 'Punto de venta (POS)'
+                text: 'Punto de venta (POS)',
+                permissions: 'punto_ventas',
+            },
+            {
+                route: route('reports'),
+                status: false,
+                text: 'Reportes',
+                permissions: 'sale_reportes',
             }
+        ]
+    },
+    {
+        status:false,
+        text: 'Facturación Electrónica',
+        icom: faBolt,
+        route: null,
+        permissions: 'invo_dashboard',
+        items: [
+            {
+                route: route('saledocuments.create'),
+                status: false,
+                text: 'Crear Documento',
+                permissions: 'invo_documento',
+            }
+        ]
+    },
+    {
+        status:false,
+        text: 'Centro de Soporte',
+        icom: faUserGear,
+        route: null,
+        permissions: 'help_dashboard',
+        items: [
+            {
+                route: route('help-level.index'),
+                status: false,
+                text: 'Niveles',
+                permissions: 'help_nivel',
+            },
+            {
+                route: route('help-boards.index'),
+                status: false,
+                text: 'Tableros',
+                permissions: 'help_tableros',
+            },
+            
         ]
     }
 ]);
 
 const toggleSubItems = (index) => {
-    if (menu.value[index].route == null){
-        menu.value[index].status = !menu.value[index].status;
-    }else{
-        window.location.href = menu.value[index].route;
-    }
+    menu.value = menu.value.map((item, i) => ({
+        ...item,
+        status: i === index ? !item.status : false
+    }));
 };
 
 </script>
 <!-- @click.outside="sidebarToggle = false" -->
 <template>
     <aside :class="sidebarToggle  ? 'translate-x-0' : '-translate-x-full'"
-        class="absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
+        class="absolute left-0 top-0 z-99 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
         >
                 <!-- SIDEBAR HEADER -->
-        <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-            <a :href="route('dashboard')">
-                <img src="/themes/tailadmin/src/images/logo/logo.svg" alt="Logo" />
-            </a>
+        <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-5.5 bg-gray-300 dark:bg-gray-800">
+            <Link  :href="route('dashboard')">
+                <img src="/storage/uploads/company/logo176x32.png" alt="Logo" />
+            </Link >
 
             <button class="block lg:hidden" @click.stop="closeSidebarToggle">
             <svg
@@ -117,44 +182,71 @@ const toggleSubItems = (index) => {
                 <!-- Menu Group -->
                 <div>
                     <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">MENU</h3>
-
+                    
                     <ul class="mb-6 flex flex-col gap-1.5">
-                        <li v-for="(item, index) in menu" :key="index">
-                            <a 
-                                href="#" 
-                                @click.prevent="toggleSubItems(index)"
-                                class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
-                                {{ item.text }}
+                        <template v-for="(item, index) in menu" :key="index">
+                            <li v-can="item.permissions">
 
-                                <svg v-if="item.items && item.items.length > 0"
-                                    class="absolute right-4 top-1/2 -translate-y-1/2 fill-current"
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 20 20"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                    fill-rule="evenodd"
-                                    clip-rule="evenodd"
-                                    d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                    fill=""
-                                    />
-                                </svg>
-                            </a>
+                                <a v-if="item.route == null"
+                                    href="#" 
+                                    @click.prevent="toggleSubItems(index)"
+                                    class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
+                                    <font-awesome-icon :icon="item.icom" />
+                                    {{ item.text }}
 
-                            <!-- Dropdown Menu Start -->
-                            <div v-show="item.status" v-if="item.items && item.items.length > 0" class="overflow-hidden transition-opacity duration-500">
-                                <ul class="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                                    <li v-for="(subItem, subIndex) in item.items" :key="subIndex">
-                                        <a :href="subItem.route" class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white">
-                                            {{ subItem.text }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- Dropdown Menu End -->
-                        </li>
+                                    <svg v-if="item.items && item.items.length > 0"
+                                        class="absolute right-4 top-1/2 -translate-y-1/2 fill-current"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 20 20"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                        fill-rule="evenodd"
+                                        clip-rule="evenodd"
+                                        d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                                        fill=""
+                                        />
+                                    </svg>
+                                </a>
+                                <Link v-else
+                                    :href="item.route" 
+                                    class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
+                                    <font-awesome-icon :icon="item.icom" />
+                                    {{ item.text }}
+
+                                    <svg v-if="item.items && item.items.length > 0"
+                                        class="absolute right-4 top-1/2 -translate-y-1/2 fill-current"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 20 20"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                        fill-rule="evenodd"
+                                        clip-rule="evenodd"
+                                        d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                                        fill=""
+                                        />
+                                    </svg>
+                                </Link>
+                                <!-- Dropdown Menu Start -->
+                                <div v-show="item.status" v-if="item.items && item.items.length > 0" class="overflow-hidden transition-opacity duration-500">
+                                    <ul class="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                                        <template v-for="(subItem, subIndex) in item.items" :key="subIndex">
+                                            <li v-can="subItem.permissions">
+                                                <Link  :href="subItem.route" class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white">
+                                                    {{ subItem.text }}
+                                                </Link >
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                                <!-- Dropdown Menu End -->
+                            </li>
+                        </template>
                     </ul>
                 </div>
             </nav>

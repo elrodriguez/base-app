@@ -1,6 +1,6 @@
 <script setup>
     import { useForm } from "@inertiajs/vue3"
-    import AppLayout from '../../layouts/master.vue';
+    import AppLayout from '@/Layouts/AppLayout.vue';
     import Pagination from '@/Components/Pagination.vue';
     import { faTrashAlt, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
     import Keypad from '@/Components/Keypad.vue';

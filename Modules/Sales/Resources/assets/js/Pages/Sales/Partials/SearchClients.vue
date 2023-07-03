@@ -102,7 +102,7 @@
 </script>
 
 <template>
-    <div >
+    <div style="display: none;" >
         <div style="position: relative;">
             <form @submit.prevent="searchClient()">
                 <div class="flex">

@@ -5,6 +5,8 @@ import { useForm } from '@inertiajs/vue3';
 import * as XLSX from 'xlsx/dist/xlsx.full.min';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';  //No lo borres si se usa aunque pareciera que no.
+import { ref, onMounted } from 'vue';
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     locals: {
@@ -38,27 +40,29 @@ const form = useForm({
     payments: props.payments
 });
 
-function getLocal(id){
-    let arreglo = props.locals;
-    let local = arreglo.find(arreglo => arreglo.id == id);
-    return local.description;
+const totalPrice = ref(0);
+const totalQuantity = ref(0);
+const totalDiscount = ref(0);
+const totalFinal = ref(0);
+
+onMounted(() => {
+    calculateTotals();
+});
+
+function calculateTotals() {
+    totalPrice.value    = 0;
+    totalQuantity.value = 0;
+    totalDiscount.value = 0;
+    totalFinal.value    = 0;
+    form.sales.forEach(sale => {
+        totalPrice.value      = totalPrice.value     + parseFloat(JSON.parse(sale.product).price);
+        totalQuantity.value   = totalQuantity.value + parseFloat(JSON.parse(sale.product).quantity);
+        totalDiscount.value   = totalDiscount.value + parseFloat(JSON.parse(sale.product).discount);
+        totalFinal.value      = totalFinal.value + (parseFloat(JSON.parse(sale.product).price)*parseFloat(JSON.parse(sale.product).quantity))-parseFloat(JSON.parse(sale.product).discount);
+    });
+    
 }
 
-function getTotalQuantities(){
-    let quantities=0;
-    let arreglo = form.sales;
-    arreglo.forEach(sale=> {
-        quantities+=JSON.parse(sale.product).quantity;
-    });
-    return quantities;
-}
-function getTotalPrices(){
-    let prices=0;
-    form.sales.forEach(sale=> {
-        prices+=JSON.parse(sale.product).quantity*JSON.parse(sale.product).price;
-    });
-    return prices;
-}
 
 function getReport(){
     let url = route('sales_report_dates', {
@@ -70,9 +74,8 @@ function getReport(){
     axios.get(url).then(response => {
         form.sales=null;
         form.sales = response.data.sales;
-        form.payments = response.data.payments
-        getTotalPrices();
-        getTotalQuantities();
+        form.payments = response.data.payments;
+        calculateTotals();
     }).catch(err => {
         console.log("ERROR ENCONTRADO", err);
     });
@@ -140,155 +143,186 @@ function downloadPdf(){
 
 <template>
     <AppLayout title="Reportes de Ventas">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Reportes
-            </h2>
-        </template>
-
-        <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div class="col-span-6 p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-
-                    <div class="grid grid-cols-6 gap-3 py-2">
-                        <div class="col-span-6 sm:col-span-2">
-                            <InputLabel for="stablishment" value="Establecimiento" />
-                            <select v-model="form.local_id" v-on:change="getReport()"
-                                id="stablishment"
-                                class="w-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="0">Todos los Locales</option>
-                                <template v-for="(local, index) in props.locals" :key="index">
-                                    <option :value="local.id">{{ local.description }}</option>
-                                </template>
-                            </select>
+        <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
+            <!-- Breadcrumb Start -->
+            <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <Link :href="route('dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                        Inicio
+                        </Link>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Ventas</span>
                         </div>
-                        <div class="col-span-6 sm:col-span-1">
-                            <input type="date" v-model="form.start" v-on:change="getReport()"
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            <Link :href="route('reports')" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Reportes</Link>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Reporte de ventas entre fechas(por locales)</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+            <!-- ====== Table Section Start -->
+            <div class="flex flex-col gap-10">
+                <!-- ====== Table One Start -->
+                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
+                        <div class="grid grid-cols-6 gap-3 py-2">
+                            <div class="col-span-6 sm:col-span-2">
+                                <InputLabel for="stablishment" value="Establecimiento" />
+                                <select v-model="form.local_id" v-on:change="getReport()"
+                                    id="stablishment"
+                                    class="w-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="0">Todos los Locales</option>
+                                    <template v-for="(local, index) in props.locals" :key="index">
+                                        <option :value="local.id">{{ local.description }}</option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-1">
+                                <input type="date" v-model="form.start" v-on:change="getReport()"
+                                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    id="f1" />
+                            </div>
+                            <div class="col-span-6 sm:col-span-1">
+                                <input type="date" v-model="form.end" v-on:change="getReport()"
+                                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    id="f2" />
+                            </div>
+                            <div v-if="false" class="col-span-6 sm:col-span-1">
+                                <button v-on:click="downloadExcel()"
+                                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none dark:bg-gray-700 "
+                                        >Exportar en Excel
+                                </button>
+                            </div>
+
+                            <div class="col-span-6 sm:col-span-1">
+                                <button v-on:click="downloadPdf()"
                                 class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                id="f1" />
+                                    >Exportar en PDF
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-span-6 sm:col-span-1">
-                            <input type="date" v-model="form.end" v-on:change="getReport()"
-                                class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                id="f2" />
-                        </div>
-                        <div v-if="false" class="col-span-6 sm:col-span-1">
-                            <button v-on:click="downloadExcel()"
-                                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                     >Exportar en Excel
-                            </button>
-                        </div>
+                    </div>
+                    <div id="ContenidoTabla" class="max-w-full overflow-x-auto">
+                        <table id="table_export" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead>
+                                <tr class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400" v-if="form.start==form.end">
+                                    <th colspan="10" scope="col" class="px-2 py-2 bg-gray-50 dark:bg-gray-800" style="text-align: center">Ventas del día: {{ form.start }} </th>
+                                </tr>
+                                <tr class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400" v-else>
+                                    <th colspan="10" scope="col" class="px-2 py-2 bg-gray-50 dark:bg-gray-800" style="text-align: center">Matos Store - Ventas del: {{ form.start }} al {{ form.end }}</th>
+                                </tr>
+                                <tr class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <th colspan="10" scope="col" class="px-2 py-2 bg-gray-50 dark:bg-gray-800" style="text-align: center">De: {{ form.local_name }}</th>
+                                </tr>
+                                <tr class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                                    <th scope="col" class="px-2 py-2 text-center dark:bg-gray-700">
+                                        Fecha
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 dark:bg-gray-700">
+                                        Tienda
+                                    </th>
+                                    <th scope="col"  class="px-2 py-2 text-center dark:bg-gray-700">
+                                        Cod. Prod.
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 text-center dark:bg-gray-700">
+                                        Talla
+                                    </th>
+                                    <th scope="col"  class="px-2 py-2 dark:bg-gray-700">
+                                        Producto
+                                    </th>
+                                    <th scope="col" class="px-62 py-2 text-center bg-gray-50 dark:bg-gray-800">
+                                        Metodos de Pago
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 text-center dark:bg-gray-700">
+                                        Precio Vendido
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 text-center dark:bg-gray-700">
+                                        Cantidad
+                                    </th>
+                                    <th scope="col" class="px-2 py-2 text-center dark:bg-gray-700">
+                                        Descuento
+                                    </th>
+                                    
+                                    <th scope="col" class="px-2 py-2 text-center dark:bg-gray-700">
+                                        Total
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(sale, index) in form.sales" :key="sale.id" :class="  index % 2 == 0 ? 'bg-gray-100 hover:bg-gray-300 border-b' : 'bg-gray-200 hover:bg-gray-300'" class="border-b border-stroke">
+                                    <td class="px-2 py-2 text-center dark:bg-gray-600">
+                                        {{ sale.created_at }}
+                                    </td>
+                                    <td class="px-2 py-2 dark:bg-gray-600">
+                                        {{ sale.local_description }}
+                                    </td>
+                                    <td class="px-2 py-2 dark:bg-gray-600">
+                                        {{ sale.interne }}
+                                    </td>
+                                    <td class="px-2 py-2 text-right dark:bg-gray-600">
+                                        {{ JSON.parse(sale.product).size }}
+                                    </td>
+                                    <td class="px-2 py-2 text-center dark:bg-gray-600">
+                                        <img :src="'/storage/'+sale.image" width="40"> {{ sale.product_description }}
+                                    </td>
+                                    <td rowspan="col" class="px-2 py-2 bg-gray-50 dark:bg-gray-700">
+                                        <div v-for="pay in JSON.parse(sale.payments)"> 
+                                            <ul class="">
+                                                <li>
+                                                    <span v-for="mto in form.payments">
+                                                        <strong v-if="pay.type == mto.id">
+                                                            Metodo: {{ mto.description }}
+                                                        </strong>
+                                                    </span>
+                                                </li>
+                                                <li>Referencia: {{ pay.reference }}</li>
+                                                <li>Importe: {{ pay.amount }}</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="px-2 py-2 text-right dark:bg-gray-600">
+                                        {{ JSON.parse(sale.product).price }}
+                                    </td>
+                                    <td class="px-2 py-2 text-right dark:bg-gray-600">
+                                        {{ JSON.parse(sale.product).quantity }}
+                                    </td>
+                                    <td class="px-2 py-2 text-right dark:bg-gray-600">
+                                        {{ JSON.parse(sale.product).discount }}
+                                    </td>
+                                    
+                                    <td class="px-6 py-2 text-right dark:bg-gray-600">
+                                        {{ sale.product_total }}
+                                    </td>
+                                </tr>
 
-                        <div class="col-span-6 sm:col-span-1">
-                            <button v-on:click="downloadPdf()"
-                            class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                >Exportar en PDF
-                            </button>
-                        </div>
+                            </tbody>
+                            <tfoot>
+                                <tr class="bg-blue-400 hover:bg-blue-600">
+                                    <th scope="col" class="px-6 py-4 bg-gray-50 dark:bg-gray-800" style="text-align: right" colspan="6">Totales</th>
+                                    <th scope="col" class="px-6 py-4 bg-gray-50 dark:bg-gray-800" style="text-align: right">S/ {{ totalPrice.toFixed(2) }}</th>
+                                    <th scope="col" class="px-6 py-4 bg-gray-50 dark:bg-gray-800" style="text-align: right">{{ totalQuantity }}</th>
+                                    <th scope="col" class="px-6 py-4 bg-gray-50 dark:bg-gray-800" style="text-align: right"> S/ {{ totalDiscount.toFixed(2) }} </th>
+                                    <th scope="col" class="px-6 py-4 bg-gray-50 dark:bg-gray-800" style="text-align: right">S/ {{ totalFinal.toFixed(2) }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="max-w-7xl mx-auto py-2 sm:px-6 lg:px-8">
-                <div id="ContenidoTabla" class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table id="table_export" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead>
-                            <tr class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400" v-if="form.start==form.end">
-                                <th colspan="9" scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800" style="text-align: center">Ventas del día: {{ form.start }} </th>
-                            </tr>
-                            <tr class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400" v-else>
-                                <th colspan="9" scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800" style="text-align: center">Matos Store - Ventas del: {{ form.start }} al {{ form.end }}</th>
-                            </tr>
-                            <tr class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <th colspan="9" scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800" style="text-align: center">De: {{ form.local_name }}</th>
-                            </tr>
-                            <tr class="text-xs text-gray-700 uppercase dark:text-gray-400">
-                                <th scope="col" class="px-6 py-3">
-                                    Fecha
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Tienda
-                                </th>
-                                <th scope="col"  class="px-6 py-3">
-                                    Cod. Prod.
-                                </th>
-                                <th scope="col"  class="px-6 py-3">
-                                    Producto
-                                </th>
-                                <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    Metodos de Pago
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Precio Vendido
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Cantidad
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Talla
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Total
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(sale, index) in form.sales" :key="sale.id" :class="  index % 2 == 0 ? 'bg-gray-100 hover:bg-gray-300 border-b' : 'bg-gray-200 hover:bg-gray-300 border-b'">
-                                <td class="px-6 py-4">
-                                    {{ sale.created_at }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ getLocal(sale.local_id) }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ sale.interne }}
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <img :src="'/storage/'+sale.image" width="40"> {{ sale.product_description }}
-                                </td>
-                                <td scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
-                                    <div v-for="pay in JSON.parse(sale.payments)"> 
-                                        <ul class="">
-                                            <li>
-                                                <span v-for="mto in form.payments">
-                                                    <strong v-if="pay.type == mto.id">
-                                                        Metodo: {{ mto.description }}
-                                                    </strong>
-                                                </span>
-                                            </li>
-                                            <li>Referencia: {{ pay.reference }}</li>
-                                            <li>Importe: {{ pay.amount }}</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    {{ JSON.parse(sale.product).price }}
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    {{ JSON.parse(sale.product).quantity }}
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    {{ JSON.parse(sale.product).size }}
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    {{ JSON.parse(sale.product).quantity * JSON.parse(sale.product).price }}
-                                </td>
-                            </tr>
-
-                        </tbody>
-
-                        <tfoot>
-                            <tr class="bg-blue-400 hover:bg-blue-600">
-                                <th scope="col" class="px-6 py-4 bg-gray-50 dark:bg-gray-800" style="text-align: right" colspan="6">Totales</th>
-                                <th scope="col" class="px-6 py-4 bg-gray-50 dark:bg-gray-800" style="text-align: right">{{ getTotalQuantities()}}</th>
-                                <th scope="col" class="px-6 py-4 bg-gray-50 dark:bg-gray-800" style="text-align: right"></th>
-                                <th scope="col" class="px-6 py-4 bg-gray-50 dark:bg-gray-800" style="text-align: center">S/ {{ getTotalPrices()}}</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
         </div>
-        
-
     </AppLayout>
 </template>

@@ -2,5 +2,6 @@
     "Security": true,
     "Onlineshop": true,
     "Blog": true,
-    "Sales": true
+    "Sales": true,
+    "Helpdesk": true
 }

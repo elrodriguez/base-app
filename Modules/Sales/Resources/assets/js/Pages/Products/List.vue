@@ -17,6 +17,7 @@
     import VueMagnifier from '@websitebeaver/vue-magnifier'
     import '@websitebeaver/vue-magnifier/styles.css'
     import Swal2 from 'sweetalert2';
+    import { Link } from '@inertiajs/vue3';
 
     const props = defineProps({
         products: {
@@ -53,8 +54,8 @@
         }],
         stock_min:'',
         stock:'',
-        quantity_total:''
-
+        quantity_total:'',
+        presentations: null
     });
 
     const formDelete = useForm({});
@@ -64,6 +65,7 @@
     const displayModalPrices = ref(false);
 
     const showDetailProduct = (product) => {
+
         formDetails.interne = product.interne;
         formDetails.description = product.description;
         formDetails.purchase_prices = product.purchase_prices;
@@ -72,10 +74,14 @@
         formDetails.stock_min = product.stock_min;
         formDetails.stock = product.stock;
         formDetails.quantity_total=0;
-        formDetails.sizes.forEach(size => {
-            formDetails.quantity_total+= parseFloat(size.quantity); //*1 para parsear a numero
-        });
-
+        formDetails.presentations=product.presentations;
+        if(product.presentations){
+          formDetails.sizes.forEach(size => {
+              formDetails.quantity_total+= parseFloat(size.quantity); //*1 para parsear a numero
+          });
+        }else{
+          formDetails.quantity_total = product.stock
+        }
 
         openModalDetilsProduct.value = true;
     }
@@ -303,7 +309,13 @@
             },
           });
           formImport.reset()
-          Swal2.fire({ html: `total de registros: ${response.data.total}` })
+          Swal2.fire({ 
+            html: `total de registros: ${response.data.total}` 
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = route('product.index');
+            }
+          })
         } catch (error) {
             console.log(error)
         } 
@@ -319,10 +331,10 @@
           <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
               <li class="inline-flex items-center">
-                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                <Link :href="route('dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
                   <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
                   Inicio
-                </a>
+                </Link>
               </li>
               <li>
                 <div class="flex items-center">
@@ -379,9 +391,9 @@
                         <button v-can="'productos_salida'" @click="openModalEntradaSalida(0)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Salidas</button>
                         <button v-can="'productos_entrada'" @click="openModalEntradaSalida(1)" type="button" class="mr-1 inline-block px-6 py-2.5 bg-blue-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-800 hover:shadow-lg  focus:bg-green-600 focus:shadow-lg focus:outline-none  focus:ring-0 focus:ring-blue-300 active:shadow-lg dark:bg-blue-600 dark:hover:bg-blue-700 transition duration-150 ease-in-out">Entradas</button>
                         <button v-can="'productos_entrada'" @click="openModalImport()" type="button" class="mr-1 inline-block px-6 py-2.5 bg-green-700 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-800 hover:shadow-lg focus:ring-green-300  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition duration-150 ease-in-out" >Importar</button>
-                        <a v-can="'productos_nuevo'" :href="route('products.create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                        <Link v-can="'productos_nuevo'" :href="route('products.create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                           Nuevo
-                        </a>
+                        </Link>
                       </template>
                     </Keypad>
                   </div>
@@ -413,9 +425,9 @@
                       </td>
                       <td class="text-center border-b border-stroke py-4 px-4 pl-9 dark:border-strokedark xl:pl-11">
                         <div class="flex items-center space-x-3.5">
-                            <a v-permission="'productos_editar'" title="Editar" :href="route('products.edit',product.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <Link v-permission="'productos_editar'" title="Editar" :href="route('products.edit',product.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <font-awesome-icon :icon="faPencilAlt" />
-                            </a>
+                            </Link>
                             <button title="Mover Mercadería/Calzados" type="button" class="mr-1 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                             @click="openModalTrasladoMercaderia(product)"
                             >
@@ -484,10 +496,10 @@
               <table class="border" style="width: 100%;">
                     <thead class="bg-white border-b">
                       <tr class="text-xs text-white bg-blue-700 border-b dark:text-white dark:bg-gray-800">
-                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
+                        <th v-if="formDetails.presentations" class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
                           Tallas
                         </th>
-                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
+                        <th :colspan="formDetails.presentations ? 0 : 2" class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
                           Cantidad
                         </th>
                         <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
@@ -505,66 +517,85 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <template v-if="formDetails.presentations">
+                        <tr v-for="(size, index) in formDetails.sizes" :key="formDetails.id"  class="border-b ">
+                          <td class="text-right px-6 py-4 text-sm font-medium text-white bg-blue-600  dark:bg-gray-800">
+                            {{ size.size }}</td>
+                          <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
+                            {{ size.quantity }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-600 dark:bg-gray-800">
+                            S/. {{ formDetails.sale_prices.high }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
+                            S/. {{ formDetails.sale_prices.medium ? formDetails.sale_prices.medium : 0 }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-600 dark:bg-gray-800">
+                            S/. {{ formDetails.sale_prices.under ? formDetails.sale_prices.under : 0 }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
+                            S/. {{ formDetails.purchase_prices }}
+                          </td>
+                        </tr>
+                      </template>
+                      <template v-else>
+                        <tr class="border-b ">
+                          <td :colspan="formDetails.presentations ? 0 : 2" class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
+                            {{ formDetails.stock }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-600 dark:bg-gray-800">
+                            S/. {{ formDetails.sale_prices.high ? formDetails.sale_prices.high : 0 }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
+                            S/. {{ formDetails.sale_prices.medium ? formDetails.sale_prices.medium : 0 }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-600 dark:bg-gray-800">
+                            S/. {{ formDetails.sale_prices.under ? formDetails.sale_prices.under : 0 }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
+                            S/. {{ formDetails.purchase_prices }}
+                          </td>
+                        </tr>
+                      </template>
 
-                      <tr v-for="(size, index) in formDetails.sizes" :key="formDetails.id"  class="border-b ">
-                        <td class="text-right px-6 py-4 text-sm font-medium text-white bg-blue-600  dark:bg-gray-800">
-                          {{ size.size }}</td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
-                          {{ size.quantity }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-600 dark:bg-gray-800">
-                          S/. {{ formDetails.sale_prices.high }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
-                          S/. {{ formDetails.sale_prices.medium }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-600 dark:bg-gray-800">
-                          S/. {{ formDetails.sale_prices.under }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light px-6 py-4 bg-blue-700 dark:bg-gray-800">
-                          S/. {{ formDetails.purchase_prices }}
-                        </td>
-                      </tr>
+                        <tr class=" border-b">
+                          <td class="text-right px-6 py-4 text-sm font-medium bg-blue-600 text-white dark:bg-gray-800">
+                              Totales
+                          </td>
+                          <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 dark:bg-gray-800">
+                            {{ formDetails.quantity_total }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light bg-blue-600 px-6 py-4 dark:bg-gray-800">
+                            S/. {{ formDetails.quantity_total*formDetails.sale_prices.high }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 dark:bg-gray-800">
+                            S/. {{ formDetails.quantity_total*formDetails.sale_prices.medium }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light bg-blue-600 px-6 py-4 dark:bg-gray-800">
+                            S/. {{ formDetails.quantity_total*formDetails.sale_prices.under }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 dark:bg-gray-800">
+                            S/. {{ formDetails.quantity_total*formDetails.purchase_prices }}
+                          </td>
+                        </tr>
 
-
-                      <tr class=" border-b">
-                        <td class="text-right px-6 py-4 text-sm font-medium bg-blue-600 text-white dark:bg-gray-800">
-                            Totales
-                        </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 dark:bg-gray-800">
-                          {{ formDetails.quantity_total }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-600 px-6 py-4 dark:bg-gray-800">
-                          S/. {{ formDetails.quantity_total*formDetails.sale_prices.high }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 dark:bg-gray-800">
-                          S/. {{ formDetails.quantity_total*formDetails.sale_prices.medium }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-600 px-6 py-4 dark:bg-gray-800">
-                          S/. {{ formDetails.quantity_total*formDetails.sale_prices.under }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light bg-blue-700 px-6 py-4 dark:bg-gray-800">
-                          S/. {{ formDetails.quantity_total*formDetails.purchase_prices }}
-                        </td>
-                      </tr>
-
-                      <tr class="border-b">
-                        <td colspan="2" class="text-right px-6 py-4 text-sm bg-green-700 font-medium text-white dark:bg-gray-800">
-                          Ganancias Esperadas
-                        </td>
-                        <td class="text-right text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
-                          S/. {{ formDetails.quantity_total*formDetails.sale_prices.high-(formDetails.quantity_total*formDetails.purchase_prices) }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
-                          S/. {{ formDetails.quantity_total*formDetails.sale_prices.medium-(formDetails.quantity_total*formDetails.purchase_prices) }}
-                        </td>
-                        <td class="text-right text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
-                          S/. {{ formDetails.quantity_total*formDetails.sale_prices.under-(formDetails.quantity_total*formDetails.purchase_prices) }}
-                        </td>
-                        <td class="text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
-                          <!-- no usar esta clase whitespace-nowrap -->
-                        </td>
-                      </tr>
+                        <tr class="border-b">
+                          <td colspan="2" class="text-right px-6 py-4 text-sm bg-green-700 font-medium text-white dark:bg-gray-800">
+                            Ganancias Esperadas
+                          </td>
+                          <td class="text-right text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
+                            S/. {{ formDetails.quantity_total*formDetails.sale_prices.high-(formDetails.quantity_total*formDetails.purchase_prices) }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
+                            S/. {{ formDetails.quantity_total*formDetails.sale_prices.medium-(formDetails.quantity_total*formDetails.purchase_prices) }}
+                          </td>
+                          <td class="text-right text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
+                            S/. {{ formDetails.quantity_total*formDetails.sale_prices.under-(formDetails.quantity_total*formDetails.purchase_prices) }}
+                          </td>
+                          <td class="text-sm text-white font-light bg-green-700 px-6 py-4 dark:bg-gray-800">
+                            <!-- no usar esta clase whitespace-nowrap -->
+                          </td>
+                        </tr>
                     </tbody>
                   </table>
             </template>

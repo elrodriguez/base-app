@@ -7,6 +7,7 @@
     import swal from 'sweetalert';
     import NumberInput from '@/Components/NumberInput.vue';
 
+
     const displayModal = ref(false);
 
     const formScaner = useForm({
@@ -85,8 +86,34 @@
 
     const emit = defineEmits(['eventdata']);
 
-    const addProduct = () => {
-        if(form.data.size){
+    const addProduct = (pre) => {
+        if (pre){
+            if(form.data.size){
+                if(form.data.price){
+                    let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
+                    form.data.total = total;
+                    let data = {
+                        id: form.data.id,
+                        interne: form.data.interne,
+                        description: form.data.description,
+                        price: form.data.price,
+                        total: form.data.total,
+                        quantity: form.data.quantity,
+                        size: form.data.size,
+                        discount: form.data.discount,
+                        presentations: pre
+                    }
+                    emit('eventdata',data);
+                    displayModal.value = false;
+                    form.data.size = null;
+                    displayResultSearch.value = false;
+                }else{
+                    swal('Seleccionar Precio')
+                }
+            }else{
+                swal('Seleccionar Talla')
+            }
+        }else{
             if(form.data.price){
                 let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
                 form.data.total = total;
@@ -99,6 +126,7 @@
                     quantity: form.data.quantity,
                     size: form.data.size,
                     discount: form.data.discount,
+                    presentations: pre
                 }
                 emit('eventdata',data);
                 displayModal.value = false;
@@ -107,9 +135,8 @@
             }else{
                 swal('Seleccionar Precio')
             }
-        }else{
-            swal('Seleccionar Talla')
         }
+        
     }
 </script>
 
@@ -208,7 +235,7 @@
                                         Precio Medio {{ JSON.parse(form.product.sale_prices).medium  }}
                                     </label>
                                 </div>
-                                <div class="form-check">
+                                <div v-show="JSON.parse(form.product.sale_prices).under" class="form-check">
                                     <input v-model="form.data.price" :value="JSON.parse(form.product.sale_prices).under" class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
                                     <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault3">
                                         Precio Minimo {{ JSON.parse(form.product.sale_prices).under  }}
@@ -237,7 +264,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mb-4">
+                    <div v-show="form.product.presentations" class="mb-4">
                         <label for="size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Tallas Disponibles
                         </label>
@@ -285,7 +312,7 @@
         <template #footer>
             <DangerButton
                 class="mr-3"
-                @click="addProduct()"
+                @click="addProduct(form.product.presentations)"
             >
                 Agregar
             </DangerButton>

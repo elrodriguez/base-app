@@ -1,7 +1,6 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
-import StockTotal from '../Pages/Kardex/Partials/StockTotal.vue';
 import Sidebar from '@/Components/Sidebar.vue';
 import Header from '@/Components/Header.vue';
 
@@ -13,13 +12,14 @@ const eventSidebarToggle = (parmt) => {
 defineProps({
     title: String,
 });
+
 </script>
 
 <template>
     <Head :title="title" />
     <div class="flex h-screen overflow-hidden">
         <Sidebar :sidebarToggle="sidebarToggle" @activateCakeButton="eventSidebarToggle"></Sidebar>
-        <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+        <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden dark:bg-gray-700">
             <Header :sidebarToggle="sidebarToggle" @displaySidebarToggle="eventSidebarToggle" ></Header>
             <main>
                 <slot />

@@ -1,6 +1,6 @@
 <script setup>
     import { useForm } from "@inertiajs/vue3"
-    import AppLayout from '../../layouts/master.vue';
+    import AppLayout from '@/Layouts/AppLayout.vue';
     import Pagination from '@/Components/Pagination.vue';
     import { faTrashAlt, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
     import Keypad from '@/Components/Keypad.vue';
@@ -43,7 +43,7 @@
 </script>
 
 <template>
-    <AppLayout title="Roles">
+    <AppLayout title="Permisos">
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <div class="col-span-6 p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg">

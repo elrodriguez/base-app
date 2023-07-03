@@ -1,21 +1,22 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
-import FormSection from '@/Components/FormSection.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import Keypad from '@/Components/Keypad.vue';
-import swal from 'sweetalert';
+    import { useForm } from '@inertiajs/vue3';
+    import FormSection from '@/Components/FormSection.vue';
+    import InputError from '@/Components/InputError.vue';
+    import InputLabel from '@/Components/InputLabel.vue';
+    import PrimaryButton from '@/Components/PrimaryButton.vue';
+    import TextInput from '@/Components/TextInput.vue';
+    import { library } from "@fortawesome/fontawesome-svg-core";
+    import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+    import Keypad from '@/Components/Keypad.vue';
+    import swal from 'sweetalert';
+    import { watch } from 'vue';
 
-const props = defineProps({
-    establishments: {
-        type: Object,
-        default: () => ({}),
-    }
-});
+    const props = defineProps({
+        establishments: {
+            type: Object,
+            default: () => ({}),
+        }
+    });
 
     const form = useForm({
         usine: '',
@@ -71,6 +72,14 @@ const props = defineProps({
     }
 
     library.add(faTrashAlt);
+
+    watch(
+    () => {
+        if (form.presentations) {
+            form.stock = null;
+        } 
+    }
+);
 
 </script>
 
@@ -179,11 +188,23 @@ const props = defineProps({
                 />
                 <InputError :message="form.errors[`sale_prices.under`]" class="mt-2" />
             </div>
-            <div class="col-span-6 sm:col-span-6">
+            <div class="col-span-6 sm:col-span-3">
                 <div class="flex items-center">
                     <input v-model="form.presentations" id="checked-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    <label for="checked-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">¿Tiene diferentes presentaciones?</label>
+                    <label for="checked-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">¿Tiene diferentes tallas?</label>
                 </div>
+            </div>
+            <div class="col-span-6 sm:col-span-3">
+                <InputLabel for="sale_prices_under" value="Stock" />
+                <TextInput
+                    id="sale_prices_under"
+                    v-model="form.stock"
+                    type="number"
+                    class="block w-full mt-1"
+                    :class="form.presentations ? 'bg-gray-500' : ''"
+                    :readonly="form.presentations"
+                />
+                <InputError :message="form.errors.stock" class="mt-2" />
             </div>
             <div v-show="form.presentations" class="col-span-6 sm:col-span-6">
                 <label>

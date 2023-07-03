@@ -30,14 +30,28 @@ class CompanyController extends Controller
         $path = '';
         $destination = 'uploads/company';
         $file = $request->file('logo');
+        $file176x32 = $request->file('logo_document');
+
         if ($file) {
             $original_name = strtolower(trim($file->getClientOriginalName()));
             $original_name = str_replace(" ", "_", $original_name);
-            $extension = $file->getClientOriginalExtension();
+            //$extension = $file->getClientOriginalExtension();
             $file_name = 'logo.png';
             $path = $request->file('logo')->storeAs(
                 $destination,
                 $file_name,
+                'public'
+            );
+        }
+
+        if ($file176x32) {
+            $original_name = strtolower(trim($file176x32->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            //$extension = $file->getClientOriginalExtension();
+            $file_name176x32 = 'logo176x32.png';
+            $path176x32 = $request->file('logo_document')->storeAs(
+                $destination,
+                $file_name176x32,
                 'public'
             );
         }
@@ -52,14 +66,14 @@ class CompanyController extends Controller
                 'phone'             => $request->get('phone'),
                 'representative'    => $request->get('representative'),
                 'email'             => $request->get('email'),
-                'logo'              => $path ? $path : Company::where('ruc', '=', $request->get('ruc'))->first()->logo
+                'logo'              => $path ? $path : Company::where('ruc', '=', $request->get('ruc'))->first()->logo,
+                'logo_document'     => $path176x32 ? $path176x32 : Company::where('ruc', '=', $request->get('ruc'))->first()->logo
             ]
         );
 
         Company::where('ruc', '<>', $request->get('ruc'))->delete();
 
-        return redirect()->route('company_show')
-            ->with('message', __('Empresa registrada con éxito'));
+        return redirect()->route('company_show');
     }
 
     public function getdata()

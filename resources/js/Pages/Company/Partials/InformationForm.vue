@@ -26,7 +26,8 @@
         email: props.company.email,
         logo: null,
         logo_old: props.company.logo,
-        logo_document: props.company.logo_document,
+        logo_document_old: props.company.logo_document,
+        logo_document: null,
         key_sunat: props.company.key_sunat,
         user_sunat: props.company.user_sunat,
         certificate_sunat: props.company.certificate_sunat,
@@ -153,6 +154,10 @@
                 <InputError :message="form.errors.logo" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-3">
+                <figure v-if="form.logo_document_old" class="max-w-lg">
+                    <img class="h-auto max-w-full rounded-lg" :src="'/storage/'+form.logo_document_old" alt="image description">
+                    <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Logo Actual</figcaption>
+                </figure>
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="small_size">Logo - se recomienda 317x48</label>
                 <input type="file" @input="form.logo_document = $event.target.files[0]" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="document_small_size" >
             </div>

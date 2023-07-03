@@ -110,7 +110,7 @@ class ProductController extends Controller
             $original_name = strtolower(trim($file->getClientOriginalName()));
             $original_name = str_replace(" ", "_", $original_name);
             $extension = $file->getClientOriginalExtension();
-            $file_name = date('YmdHis') . $extension;
+            $file_name = date('YmdHis') . '.' . $extension;
             $path = $request->file('image')->storeAs(
                 $destination,
                 $file_name,
@@ -118,9 +118,14 @@ class ProductController extends Controller
             );
         }
         $total = 0;
-        foreach ($request->get('sizes') as $k => $item) {
-            $total = $total + $item['quantity'];
+        if ($presentations) {
+            foreach ($request->get('sizes') as $k => $item) {
+                $total = $total + $item['quantity'];
+            }
+        } else {
+            $total = $request->get('stock');
         }
+
 
         //dd($request->get('sale_prices'));
         $pr = Product::create([
@@ -130,10 +135,15 @@ class ProductController extends Controller
             'image' => $path,
             'purchase_prices' => $request->get('purchase_prices'),
             'sale_prices' => json_encode($request->get('sale_prices')),
-            'sizes' => json_encode($request->get('sizes')),
+            'sizes' => $presentations ? json_encode($request->get('sizes')) : null,
             'stock_min' => 1,
             'stock' => $total,
-            'presentations' => $presentations
+            'presentations' => $presentations,
+            'is_product' => true,
+            'type_sale_affectation_id' => '10',
+            'type_purchase_affectation_id' => '10',
+            'type_unit_measure_id' => 'NIU',
+            'status' => true
         ]);
 
         $k = Kardex::create([
@@ -635,9 +645,66 @@ class ProductController extends Controller
             foreach ($row->getCellIterator() as $cell) {
                 $rowData[] = $cell->getValue();
             }
-            $data[] = $rowData;
+            //$data[] = $rowData;
+            $this->saveImportProduct($rowData);
             $total++;
         }
         return response()->json(['total' => $total]);
+    }
+    public function saveImportProduct($data)
+    {
+        try {
+            //$presentations = $data[12];
+
+            $path = 'img/imagen-no-disponible.jpeg';
+
+            $total = 0;
+            // if ($presentations) {
+            //     foreach ($data[15] as $k => $item) {
+            //         $attribute
+            //         $total = $total + $item['quantity'];
+            //     }
+            // } else {
+            //     $total = $request->get('stock');
+            // }
+
+
+            //dd($request->get('sale_prices'));
+
+
+            $json_prices = array(
+                "high" => $data[3], "under" =>  $data[5], "medium" => $data[4]
+            );
+
+            $pr = Product::create([
+                'usine' => $data[1],
+                'interne' => $data[1],
+                'description' => $data[0],
+                'image' => $path,
+                'purchase_prices' => $data[7],
+                'sale_prices' => json_encode($json_prices),
+                'sizes' => null,
+                'stock_min' => 1,
+                'stock' => $data[9],
+                'presentations' => false,
+                'is_product' => true,
+                'type_sale_affectation_id' => $data[6],
+                'type_purchase_affectation_id' => $data[8],
+                'type_unit_measure_id' => $data[8],
+                'status' => true
+            ]);
+
+            $k = Kardex::create([
+                'date_of_issue' => Carbon::now()->format('Y-m-d'),
+                'motion' => 'purchase',
+                'product_id' => $pr->id,
+                'local_id' => Auth::user()->local_id,
+                'quantity' => $data[9],
+                'description' => 'Stock Inicial',
+            ]);
+        } catch (\Illuminate\Database\QueryException $ex) {
+            dd($ex->getMessage());
+            // Note any method of class PDOException can be called on $ex.
+        }
     }
 }

@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-
+import { faMoneyBillWave } from "@fortawesome/free-solid-svg-icons";
 const dropdownOpen = ref(false)
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     sidebarToggle: {
@@ -18,7 +19,7 @@ const showSidebarToggle = async () => {
 }
 </script>
 <template>
-    <header class="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
+    <header class="sticky top-0 z-99 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
         <div class="flex flex-grow items-center justify-between py-4 px-4 shadow-2 md:px-6 2xl:px-11">
             <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
             <!-- Hamburger Toggle BTN -->
@@ -43,12 +44,15 @@ const showSidebarToggle = async () => {
                     </span>
                 </button>
             <!-- Hamburger Toggle BTN -->
-            <a class="block flex-shrink-0 lg:hidden" :href="route('dashboard')">
-                <img src="/themes/tailadmin/src/images/logo/logo-icon.svg" alt="Logo" />
-            </a>
+            <Link class="block flex-shrink-0 lg:hidden" :href="route('dashboard')">
+                <img src="/storage/uploads/company/logo.png" alt="Logo" />
+            </Link>
             </div>
             <div class="hidden sm:block">
-            
+                <Link :href="route('sales.create')" type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+                    <font-awesome-icon :icon="faMoneyBillWave" />
+                    Vender
+                </Link>
             </div>
 
             <div class="flex items-center gap-3 2xsm:gap-7">
@@ -78,7 +82,7 @@ const showSidebarToggle = async () => {
                         class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <ul class="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
                             <li>
-                                <a :href="route('profile.edit')"
+                                <Link :href="route('profile.edit')"
                                     class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
                                     <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +94,7 @@ const showSidebarToggle = async () => {
                                         fill="" />
                                     </svg>
                                     Perfil
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                         <DropdownLink :href="route('logout')" method="post" as="button" class="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">

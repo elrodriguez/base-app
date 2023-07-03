@@ -2,6 +2,7 @@
 import Welcome from '@/Components/Welcome.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import Shortcuts from '@/Components/Shortcuts.vue';
 </script>
 
 <template>
@@ -14,8 +15,11 @@ import { Head } from '@inertiajs/vue3';
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="bg-white overflow-hidden">
                     <Welcome />
+                </div>
+                <div class="bg-white overflow-hidden mt-4">
+                    <Shortcuts />
                 </div>
             </div>
         </div>
