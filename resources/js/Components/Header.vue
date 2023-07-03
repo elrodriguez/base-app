@@ -66,7 +66,7 @@ const showSidebarToggle = async () => {
                         </span>
 
                         <span class="h-12 w-12 rounded-full">
-                            <img src="/themes/tailadmin/src/images/user/user-01.png" alt="User" />
+                            <img :src="'https://ui-avatars.com/api/?name='+ $page.props.auth.user.name+'&size=48&rounded=true'" alt="User" />
                         </span>
 
                         <svg :class="dropdownOpen && 'rotate-180'" class="hidden fill-current sm:block" width="12" height="8"

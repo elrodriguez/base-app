@@ -2,6 +2,7 @@
 
 namespace Modules\Sales\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\PaymentMethod;
 use App\Models\Person;
 use App\Models\SaleDocument;
@@ -32,12 +33,17 @@ class SaleDocumentController extends Controller
     public function create()
     {
         $payments = PaymentMethod::all();
+        $company = Company::first();
         $client = Person::find(1);
         $documentTypes = DB::table('identity_document_type')->get();
+        $saleDocumentTypes = DB::table('sale_document_types')->whereIn('sunat_id', ['01', '03'])->get();
+
         return Inertia::render('Sales::Documents/Create', [
             'payments'      => $payments,
             'client'        => $client,
-            'documentTypes' => $documentTypes
+            'documentTypes' => $documentTypes,
+            'saleDocumentTypes' => $saleDocumentTypes,
+            'company'       => $company
         ]);
     }
 

@@ -97,6 +97,7 @@
             errorBag: 'saveLevelMembers',
             preserveScroll: true,
             onSuccess: () => { 
+                formMembers.reset();
                 displayModalMembers.value = false;
                 Swal2.fire('Enhorabuena','Registro exitoso.','success')
             },
@@ -183,7 +184,7 @@
                                             >
                                             <font-awesome-icon :icon="faUserGear" />
                                             </button>
-                                            <button type="button" class="text-white bg-red-800 border border-red-700 focus:outline-none hover:bg-red-100 focus:ring-4 focus:ring-red-200 font-medium rounded-full text-sm px-2 py-1.5 mr-1 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                                            <button v-permission="'help_nivel_eliminar'" type="button" class="text-white bg-red-800 border border-red-700 focus:outline-none hover:bg-red-100 focus:ring-4 focus:ring-red-200 font-medium rounded-full text-sm px-2 py-1.5 mr-1 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                                                 @click="destroyLevel(level.id)"
                                                 title="Eliminar"
                                                 >
