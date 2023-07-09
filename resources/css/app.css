@@ -171,3 +171,6 @@ span.flatpickr-weekday,
 .swal2-container {
   z-index: 99999;
 };
+.cursor-not-allowed {
+  cursor: not-allowed;
+}

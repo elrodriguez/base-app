@@ -157,12 +157,10 @@ class SaleController extends Controller
                     'petty_cash_id' => $petty_cash->id
                 ]);
 
-                $serie = Serie::find($serie_id);
-
                 $document = SaleDocument::create([
-                    'sale_id' => $sale->id,
-                    'serie_id' => $serie_id,
-                    'number' => $serie->number
+                    'sale_id'   => $sale->id,
+                    'serie_id'  => $serie_id,
+                    'number'    => str_pad($serie->number, 9, '0', STR_PAD_LEFT),
                 ]);
 
                 $serie->increment('number', 1);

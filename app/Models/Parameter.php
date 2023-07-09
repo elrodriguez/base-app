@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Serie extends Model
+class Parameter extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'document_type_id',
+        'parameter_code',
         'description',
-        'number',
-        'user_id',
-        'local_id'
+        'control_type',
+        'json_query_data',
+        'value_default'
     ];
 }

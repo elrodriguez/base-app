@@ -10,7 +10,7 @@
       default: false,
     },
     icon:{
-      type: Boolean,
+      type: String,
       default: false,
     }
   });

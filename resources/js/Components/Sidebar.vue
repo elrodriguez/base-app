@@ -108,7 +108,7 @@ const menu = ref([
         permissions: 'invo_dashboard',
         items: [
             {
-                route: route('saledocuments.create'),
+                route: route('saledocuments_create'),
                 status: false,
                 text: 'Crear Documento',
                 permissions: 'invo_documento',

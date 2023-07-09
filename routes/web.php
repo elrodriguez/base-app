@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
         'search/person/number',
         [PersonController::class, 'searchByNumberType']
     )->name('search_person_number');
+
     Route::post(
         'save/person/update/create',
         [PersonController::class, 'saveUpdateOrCreate']

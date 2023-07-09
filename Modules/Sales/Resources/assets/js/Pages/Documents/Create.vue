@@ -1,13 +1,13 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    // import SearchProducts from './Partials/SearchProducts.vue';
-    // import SearchClients from './Partials/SearchClients.vue';
-    // import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+    import DangerButton from '@/Components/PrimaryButton.vue';
+    import SecondaryButton from '@/Components/SecondaryButton.vue';
+    import SearchClients from './Partials/SearchClients.vue';
+    import { faPlus, faXmark, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
     import { useForm } from '@inertiajs/vue3';
-    // import ModalPrintSale from './Partials/ModalPrintSale.vue';
-    // import InputError from '@/Components/InputError.vue';
-    // import Keypad from '@/Components/Keypad.vue';
-    // import Swal2 from 'sweetalert2';
+    import InputError from '@/Components/InputError.vue';
+    import { ref, onMounted } from 'vue';
+    import Swal2 from 'sweetalert2';
     import { Link } from '@inertiajs/vue3';
 
     const props = defineProps({
@@ -30,21 +30,173 @@
         saleDocumentTypes:{
             type: Object,
             default: () => ({}),
-        }  
+        },
+        departments: {
+            type: Object,
+            default: () => ({}),
+        },
+        unitTypes: {
+            type: Object,
+            default: () => ({}),
+        },
+        type_operation: {
+            type: String,
+            default: () => ({}),
+        }
     });
-
-    const openSearchClient = () => {
-        alert('ssss')
-    }
 
     const formDocument = useForm({
         client_id: props.client.id,
-        client_name: props.client.full_name,
+        client_name: props.client.number+"-"+props.client.full_name,
         client_ubigeo: props.client.ubigeo,
+        client_dti: props.client.document_type_id,
+        client_number: props.client.number,
         client_ubigeo_description: 'Ancash-Chimbote',
         client_direction: props.client.address,
-        sale_documenttype_id: 2
+        client_phone: props.client.telephone,
+        client_email: props.client.email,
+        sale_documenttype_id: 2,
+        type_operation: props.type_operation,
+        serie: null,
+        date_issue: null,
+        date_end: null,
+        items:[],
+        total_discount: 0,
+        total: 0,
+        payments: [{
+            type:1,
+            reference: null,
+            amount:0
+        }],
     });
+
+    const series = ref([]);
+
+    const getSeriesByDocumentType = () => {
+        let did = formDocument.sale_documenttype_id;
+        axios.get(route('sale_document_series',did)).then((res) => {
+            if (res.data.status) {
+                series.value = res.data.series;
+                formDocument.serie = series.value[0].id;
+            } else {
+                Swal2.fire('Información Importante','No existe serie para este local o tipo de documento','info');
+            }
+        });
+    }
+
+    onMounted(() => {
+        getSeriesByDocumentType();
+        getCurrentDate();
+    });
+
+    const getCurrentDate = () => {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Los meses son base 0, por eso se suma 1
+        const day = String(currentDate.getDate()).padStart(2, '0');
+
+        // Formato de fecha: YYYY-MM-DD
+        formDocument.date_issue = `${year}-${month}-${day}`;
+        formDocument.date_end = `${year}-${month}-${day}`;
+    };
+
+    const getDataClient = async (data) => {
+        displayModalClientSearch.value = false;
+        formDocument.client_id = data.id;
+        formDocument.client_name = data.number+"-"+data.full_name;
+        formDocument.client_ubigeo_description = data.city;
+        formDocument.client_ubigeo = data.ubigeo;
+        formDocument.client_direction = data.address;
+        formDocument.client_dti = data.document_type_id;
+        formDocument.client_number = data.number;
+        formDocument.client_phone = data.telephone;
+        formDocument.client_email = data.email;
+    }
+
+    const displayModalClientSearch = ref(false);
+    const saleDocumentTypesId = ref({});
+    
+    const openModalClientSearch = () => {
+        displayModalClientSearch.value = true;
+        saleDocumentTypesId.value = formDocument.sale_documenttype_id
+    }
+    const closeModalClientSearch = () => {
+        saleDocumentTypesId.value =  null;
+        displayModalClientSearch.value = false;
+    }
+    const newItems = () => {
+        let item = {
+            id: null,
+            description: null,
+            is_product: true,
+            unit_type: 'NIU',
+            quantity: 1,
+            unit_price: 0,
+            discount: 0,
+            total: 0,
+            afe_igv: 10
+        }
+        formDocument.items.push(item);
+    }
+    const removeItem = (key) => {
+        let t = parseFloat(formDocument.items[key].total);
+        formDocument.total = parseFloat(formDocument.total) - t;
+        formDocument.items.splice(key,1);
+    }
+
+
+    const calculateTotals = (key) => {
+        let c = parseFloat(formDocument.items[key].quantity) ?? 0;
+        let p = parseFloat(formDocument.items[key].unit_price) ?? 0;
+        let d = parseFloat(formDocument.items[key].discount) ?? 0;
+
+        let st = (c * p) - d;
+
+        // Verificar si el resultado es NaN y asignar 0 en su lugar
+        if (isNaN(st)) {
+            st = 0;
+        }
+
+        formDocument.items[key].total = st.toFixed(2);
+
+        // Calcular la suma de los totales de todos los items
+        formDocument.total = formDocument.items.reduce((acc, item) => acc + parseFloat(item.total), 0).toFixed(2);
+        formDocument.payments[0].amount = formDocument.total;
+    }
+
+    const saveDocument = () => {
+        axios.post(route('saledocuments_store'), formDocument ).then((res) => {
+            //formDocument.reset();
+            console.log(res)
+            // Swal2.fire({
+            //     title: 'Comprobante',
+            //     text: "¿Desea imprimir el Comprobante?",
+            //     icon: 'info',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Imprimir',
+            //     cancelButtonText: 'Cancelar'
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+            //         printPdf(res.data.id);
+            //     }
+            // });
+        });
+    }
+    const addPayment = () => {
+        let ar = {
+            type:1,
+            reference: null,
+            amount:0
+        };
+        formDocument.payments.push(ar);
+    };
+    const removePayment = (index) => {
+        if(index>0){
+            formDocument.payments.splice(index,1);
+        }
+    };
 </script>
 <template>
     <AppLayout title="Punto de Ventas">
@@ -74,7 +226,7 @@
                 </ol>
             </nav>
 
-            <div class="flex-shrink max-w-full px-4 w-full mb-6">
+            <div class="flex-shrink max-w-full w-full mb-6">
                 <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
                     <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700 mb-3">
                         <div class="flex flex-col">
@@ -83,106 +235,208 @@
                             </div>
                             <p class="text-sm">Ancash, Chimbote<br>{{ company.fiscal_address }}</p>
                         </div>
-                        <div class="text-4xl uppercase font-bold">
-                            <select v-model="formDocument.sale_documenttype_id" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <div style="width: 180px;" class="text-4xl uppercase font-bold">
+                            <select @change="getSeriesByDocumentType" v-model="formDocument.sale_documenttype_id" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option v-for="(type, index) in saleDocumentTypes" :value="type.id"> {{  type.description  }}</option>
                             </select>
                         </div>
                     </div>
                     <div class="flex flex-row justify-between py-3">
                         <div class="flex-1 pr-4 ">
-                            <div class="flex justify-between mb-1">
-                                <div class="flex-1 font-semibold">Cliente:</div>
-                                <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input :value="formDocument.client_name" class="invoice-imput" type="text" />
+                            <div class="grid grid-cols-3 gap-4 justify-between mb-1">
+                                <div style="font-size: 14px;" class="col-span-3 sm:col-span-1 uppercase">Cliente:</div>
+                                <div class="col-span-3 sm:col-span-2 ltr:text-right rtl:text-left">
+                                    <input @click="openModalClientSearch" @input="openModalClientSearch" :value="formDocument.client_name" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                    <SearchClients 
+                                        :display="displayModalClientSearch" 
+                                        :closeModalClient="closeModalClientSearch"
+                                        @clientId="getDataClient" 
+                                        :clientDefault="client" 
+                                        :documentTypes="documentTypes"
+                                        :saleDocumentTypes="saleDocumentTypesId"
+                                        :ubigeo="departments"
+                                    />
                                 </div>
                             </div>
-                            <div class="flex justify-between mb-1">
-                                <div class="flex-1 font-semibold">Ciudad:</div>
-                                <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input :value="formDocument.client_ubigeo_description" class="invoice-imput bg-gray-100" disabled type="text" />
+                            <div class="grid grid-cols-3 gap-4 justify-between mb-1">
+                                <div style="font-size: 14px;" class="col-span-3 sm:col-span-1 uppercase">Ciudad:</div>
+                                <div class="col-span-3 sm:col-span-2 ltr:text-right rtl:text-left">
+                                    <input :value="formDocument.client_ubigeo_description" class="invoice-imput bg-gray-100 dark:text-gray-400 dark:bg-gray-700" disabled type="text" />
                                 </div>
                             </div>
-                            <div class="flex justify-between mb-1">
-                                <div class="flex-1 font-semibold">Dirección:</div>
-                                <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input :value="formDocument.client_direction" class="invoice-imput bg-gray-100" disabled type="text" />
+                            <div class="grid grid-cols-3 gap-4 justify-between mb-1">
+                                <div style="font-size: 14px;" class="col-span-3 sm:col-span-1 uppercase">Dirección:</div>
+                                <div class="col-span-3 sm:col-span-2 ltr:text-right rtl:text-left">
+                                    <input :value="formDocument.client_direction" class="invoice-imput bg-gray-100 dark:text-gray-400 dark:bg-gray-700" disabled type="text" />
                                 </div>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div class="flex justify-between mb-1">
-                                <div class="flex-1 font-semibold">Serie:</div>
+                                <div style="font-size: 14px;" class="flex-1 uppercase">Serie:</div>
                                 <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <select class="invoice-select">
-                                        <option>
-                                            
-                                        </option>
+                                    <select v-model="formDocument.serie" class="invoice-select dark:text-gray-400 dark:bg-gray-700">
+                                        <option v-for="(serie, index) in series" :value="serie.id" >{{ serie.description }}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="flex justify-between mb-1">
-                                <div class="flex-1 font-semibold">Fecha de la factura:</div>
+                                <div style="font-size: 14px;" class="flex-1 uppercase">Fecha de Emisión:</div>
                                 <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input class="invoice-imput" type="date" />
+                                    <input v-model="formDocument.date_issue" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="date" />
                                 </div>
                             </div>
                             <div class="flex justify-between mb-1">
-                                <div class="flex-1 font-semibold">Fecha de vencimiento:</div>
+                                <div style="font-size: 14px;" class="flex-1 uppercase">Fecha de vencimiento:</div>
                                 <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input class="invoice-imput bg-gray-100" disabled type="date" />
+                                    <input v-model="formDocument.date_end" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="date" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="py-4">
+                    <div class="max-w-full overflow-x-auto py-4">
                         <table class="table-bordered w-full ltr:text-left rtl:text-right text-gray-600">
-                            <thead class="border-b border-stroke dark:border-gray-700">
+                            <thead class="border-b border-t border-gray-400 dark:border-gray-700">
                                 <tr class="bg-gray-100 dark:bg-gray-900 dark:bg-opacity-20">
-                                    <th>Products</th>
-                                    <th class="text-center px-2 py-2">Qty</th>
-                                    <th class="text-center px-2 py-2">Unit price</th>
-                                    <th class="text-center px-2 py-2">Amount</th>
+                                    <th style="width: 70px;" class="text-right py-1">
+                                        <button @click="newItems" type="button" style="width: 28px;" title="Agregar Nuevo" class="mr-1 text-center  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-xs p-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            <font-awesome-icon :icon="faPlus" />
+                                        </button>
+                                        <button @click="newItems" type="button" style="width: 28px;" title="Abrir Buscar" class="text-center  text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium text-xs p-2 text-center inline-flex items-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                                            <font-awesome-icon :icon="faMagnifyingGlass" />
+                                        </button>
+                                    </th>                                    
+                                    <th class="text-left text-xs uppercase px-2 py-1">Item</th>
+                                    <th class="text-center text-xs uppercase px-2 py-1">Producto</th>
+                                    <th class="text-center text-xs uppercase px-2 py-1">Tipo de Unidad</th>
+                                    <th class="text-center text-xs uppercase px-2 py-1">Cantidad</th>
+                                    <th class="text-center text-xs uppercase px-2 py-1">Precio unitario</th>
+                                    <th class="text-center text-xs uppercase px-2 py-1">Descuento</th>
+                                    <th class="text-center text-xs uppercase px-2 py-1">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="px-2 py-2">
-                                        <div class="flex flex-wrap flex-row items-center">
-                                            <div class="self-center"><img class="h-8 w-8" src=""></div>
-                                            <div class="leading-5 dark:text-gray-300 flex-1 ltr:ml-2 rtl:mr-2 mb-1">  
-                                            Nike Unisex-Child Free Rn (Big Kid)
+                                <template v-if="formDocument.items && formDocument.items.length > 0">
+                                    <tr v-for="(row, key) in formDocument.items">
+                                        <td class="text-right">
+                                            <button @click="removeItem(key)" type="button" style="width: 28px;" class="text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-xs p-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                <font-awesome-icon :icon="faXmark"  />
+                                            </button>
+                                        </td>
+                                        <td class="">
+                                            <input v-model="row.description" :ref="'item-description-' + key" class="invoice-imput text-left dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                        </td>
+                                        <td style="width: 80px;" class="text-center">
+                                            <input v-model="row.is_product" type="checkbox">
+                                        </td>
+                                        <td style="width: 110px;">
+                                            <select v-model="row.unit_type" class="invoice-select dark:text-gray-400 dark:bg-gray-700">
+                                                <template v-for="(unitType) in unitTypes">
+                                                    <option :value="unitType.id" >{{ unitType.description }}</option>
+                                                </template>
+                                            </select>
+                                        </td>
+                                        <td style="width: 70px;" class="text-center">
+                                            <input v-model="row.quantity" @input="calculateTotals(key)" class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                        </td>
+                                        <td style="width: 120px;" class="text-right">
+                                            <input v-model="row.unit_price" @input="calculateTotals(key)" pattern="[A-Za-z0-9]{1,15}" class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                        </td>
+                                        <td style="width: 90px;" class="text-right">
+                                            <input v-model="row.discount" @input="calculateTotals(key)" class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                        </td>
+                                        <td style="width: 110px;" class="text-right ">
+                                            <input v-model="row.total" class="invoice-imput text-right bg-gray-100 dark:text-gray-400 dark:bg-gray-700" disabled type="text" />
+                                            <InputError :message="formDocument.errors[`items.${index}.total`]" class="mt-2" />
+                                        </td>
+                                    </tr>
+                                </template>
+                                <template v-else>
+                                    <tr>
+                                        <td colspan="7">
+                                            <div class="flex items-center mt-1 p-2 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
+                                                <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                                </svg>
+                                                <span class="sr-only">Info</span>
+                                                <div>
+                                                    Click en <span class="p-1 bg-blue-700 text-white"><font-awesome-icon @click="newItems" :icon="faPlus" /></span> para agregar o click en <span class="p-1 bg-gray-700 text-white"><font-awesome-icon @click="newItems" :icon="faMagnifyingGlass" /></span> para buscar producto o servicio
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center px-2 py-2">1</td>
-                                    <td class="text-right px-2 py-2">80$</td>
-                                    <td class="text-right px-2 py-2">80$</td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                </template>
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="2"></td>
-                                    <td class="text-right"><b>Sub-Total</b></td>
-                                    <td class="text-right">$290</td>
+                                    <td colspan="3"></td>
+                                    <td colspan="4" class="text-right text-xs uppercase"><b>OP. GRAVADAS: S/</b></td>
+                                    <td class="text-right text-xs">$290</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"></td>
-                                    <td class="text-right"><b>Discount</b></td>
-                                    <td class="text-right">15%</td>
+                                    <td colspan="3"></td>
+                                    <td colspan="4" class="text-right text-xs uppercase"><b>descuento: S/</b></td>
+                                    <td class="text-right text-xs">15%</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"></td>
-                                    <td class="text-right"><b>Tax</b></td>
-                                    <td class="text-right">5%</td>
+                                    <td colspan="3"></td>
+                                    <td colspan="4" class="text-right text-xs uppercase"><b>IGV: S/</b></td>
+                                    <td class="text-right text-xs">5%</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"></td>
-                                    <td class="text-right"><b>Total</b></td>
-                                    <td class="text-right font-bold">$258,8</td>
+                                    <td colspan="3"></td>
+                                    <td colspan="4" class="text-right text-xs uppercase"><b>TOTAL A PAGAR: S/</b></td>
+                                    <td class="text-right font-bold text-xs">
+                                        {{ formDocument.total }}
+                                        <InputError :message="formDocument.errors.total" class="mt-2" />
+                                    </td>
                                 </tr>
                             </tfoot>
                         </table>
+                    </div>
+                    <div class="max-w-full overflow-x-auto py-4">
+                        <label style="font-size: 14px;" class="italic font-bold uppercase mb-4">Medio de Pago <button @click="addPayment()" type="button" class="inline-block px-0 py-2 bg-transparent text-blue-600 font-medium text-xs leading-tight uppercase rounded transition duration-150 ease-in-out">Agregar (+)</button></label>
+                        <table class="table-bordered w-full ltr:text-left rtl:text-right text-gray-600">
+                            <tbody>
+                                <tr v-for="(row, index) in formDocument.payments" v-bind:key="index">
+                                    <td style="width: 70px;" class="text-right">
+                                        <button @click="removePayment(index)" type="button" style="width: 28px;" class="text-xs p-1.5 inline-block bg-red-700 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                            <font-awesome-icon :icon="faXmark" />
+                                        </button>
+                                    </td>
+                                    <td >
+                                        <select v-model="row.type" class="invoice-select dark:text-gray-400 dark:bg-gray-700">
+                                            <template v-for="(payment) in payments">
+                                                <option :value="payment.id">{{ payment.description }}</option>
+                                            </template>
+                                        </select>
+                                        <InputError :message="formDocument.errors[`payments.${index}.id`]" class="mt-2" />
+                                    </td>
+                                    <td>
+                                        <input v-model="row.reference" type="text" id="first_name" class="invoice-imput text-left dark:text-gray-400 dark:bg-gray-700" placeholder="Referencia">
+                                        <InputError :message="formDocument.errors[`payments.${index}.reference`]" class="mt-2" />
+                                    </td>
+                                    <td style="width: 110px;">
+                                        <input v-model="row.amount" type="text" id="first_name" class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" placeholder="Monto" required>
+                                        <InputError :message="formDocument.errors[`payments.${index}.amount`]" class="mt-2" />
+                                    </td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    <div class="flex justify-end">
+                        <SecondaryButton class="mr-2">
+                            Cancelar
+                        </SecondaryButton> 
+                        <DangerButton @click="saveDocument" :class="{ 'opacity-25': formDocument.processing }" :disabled="formDocument.processing">
+                            <svg v-show="formDocument.processing" aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
+                            </svg>
+                            Generar
+                        </DangerButton> 
                     </div>
                 </div>
             </div>
@@ -195,13 +449,13 @@
     padding: 1px !important;
     height: 26px !important;
     width: 100% !important;
-    font-size: 14px;
+    font-size: 12px;
 }
 .invoice-imput{
     margin: 0px !important;
     padding: 1px !important;
     height: 26px !important;
     width: 100% !important;
-    font-size: 14px;
+    font-size: 12px;
 }
 </style>

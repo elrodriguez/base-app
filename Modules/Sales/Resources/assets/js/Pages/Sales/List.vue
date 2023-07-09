@@ -201,14 +201,8 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="5" class="py-4 px-4 dark:border-strokedark">
-                                        <Pagination :data="sales" />
-                                    </td>
-                                </tr>
-                            </tfoot>
                         </table>
+                        <Pagination :data="sales" />
                     </div>
                 </div>
             </div>

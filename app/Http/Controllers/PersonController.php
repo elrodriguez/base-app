@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Person;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
@@ -94,15 +95,24 @@ class PersonController extends Controller
         $person = [];
         $alert = 'No existen datos para la busqueda';
 
-        if (!$document_type) {
+        if ($document_type == '') {
             $msg1 = 'Elija Tipo docuemnto';
         }
         if (!$number) {
             $msg2 = 'Ingrese numero de documento';
         }
-        $person = Person::where('document_type_id', $document_type)
-            ->where('number', $number)
+
+        $person = Person::leftJoin('districts', 'ubigeo', 'districts.id')
+            ->leftJoin('provinces', 'districts.province_id', 'provinces.id')
+            ->leftJoin('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'people.*',
+                DB::raw('CONCAT(departments.name,"-",provinces.name,"-",districts.name) AS city')
+            )
+            ->where('people.document_type_id', $document_type)
+            ->where('people.number', $number)
             ->first();
+
         if ($person) {
             $status = true;
             $alert = null;
@@ -124,7 +134,10 @@ class PersonController extends Controller
     {
         $this->validate($request, [
             'document_type' => 'required',
-            'number' => 'required'
+            'number' => 'required',
+            'full_name' => 'required|max:255',
+            'address'   => 'required|max:255',
+            'ubigeo'   => 'required'
         ]);
 
         $person = Person::updateOrCreate(
@@ -136,10 +149,17 @@ class PersonController extends Controller
                 'full_name' => $request->input('full_name'),
                 'telephone' => $request->input('telephone'),
                 'email' => $request->input('email'),
-                'address' => $request->input('address')
+                'address' => $request->input('address'),
+                'is_client' => true,
+                'ubigeo' => $request->input('ubigeo')
                 // otros campos que quieras actualizar o crear
             ]
         );
+
+        $person->load('district.province.department');
+        // Obtener el nombre de la ciudad usando los datos relacionados
+        $city = $person->district->province->department->name . "-" . $person->district->province->name . "-" . $person->district->name;
+        $person->city = $city;
 
         return response()->json($person);
     }
