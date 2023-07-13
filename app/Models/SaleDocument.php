@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SaleDocument extends Model
 {
     use HasFactory;
-
 
     protected $fillable = [
         'sale_id',
@@ -23,6 +23,7 @@ class SaleDocument extends Model
         'client_ubigeo_description',
         'client_phone',
         'client_email',
+        'invoice_document_name',
         'invoice_ubl_version',
         'invoice_type_operation',
         'invoice_type_doc',
@@ -48,6 +49,12 @@ class SaleDocument extends Model
         'invoice_pdf',
         'invoice_response_code',
         'invoice_response_description',
+        'invoice_notes',
         'invoice_status'
     ];
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(SaleDocumentItem::class, 'document_id', 'id');
+    }
 }

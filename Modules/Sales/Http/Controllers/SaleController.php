@@ -68,6 +68,7 @@ class SaleController extends Controller
                 'series.description AS serie',
                 'sale_documents.number'
             )
+            ->where('series.document_type_id', 5)
             ->whereDate('sales.created_at', '=', $current_date)
             ->when(!$isAdmin, function ($q) use ($search) {
                 return $q->where('sales.user_id', Auth::id());

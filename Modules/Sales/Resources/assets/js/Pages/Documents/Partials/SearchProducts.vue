@@ -7,6 +7,16 @@
     import swal from 'sweetalert';
     import NumberInput from '@/Components/NumberInput.vue';
 
+    const props = defineProps({
+        displaySearch: {
+            type: Boolean,
+            default: false
+        },
+        close: {
+            type: Function,
+            default: false
+        }
+    });
 
     const displayModal = ref(false);
 
@@ -94,14 +104,16 @@
                     form.data.total = total;
                     let data = {
                         id: form.data.id,
-                        interne: form.data.interne,
-                        description: form.data.description,
-                        price: form.data.price,
-                        total: form.data.total,
+                        description: form.data.interne+' - '+form.data.description,
+                        is_product: form.product.is_product == 1 ? true : false,
+                        unit_type: form.product.type_unit_measure_id,
                         quantity: form.data.quantity,
-                        size: form.data.size,
+                        unit_price: form.data.price,
                         discount: form.data.discount,
-                        presentations: pre
+                        total: form.data.total,
+                        afe_igv: form.product.type_sale_affectation_id,
+                        presentations: pre,
+                        size: form.data.size,
                     }
                     emit('eventdata',data);
                     displayModal.value = false;
@@ -119,13 +131,14 @@
                 form.data.total = total;
                 let data = {
                     id: form.data.id,
-                    interne: form.data.interne,
-                    description: form.data.description,
-                    price: form.data.price,
-                    total: form.data.total,
+                    description: form.data.interne+' - '+form.data.description,
+                    is_product: form.product.is_product == 1 ? true : false,
+                    unit_type: form.product.type_unit_measure_id,
                     quantity: form.data.quantity,
-                    size: form.data.size,
+                    unit_price: form.data.price,
                     discount: form.data.discount,
+                    total: form.data.total.toFixed(2),
+                    afe_igv: form.product.type_sale_affectation_id,
                     presentations: pre
                 }
                 emit('eventdata',data);
@@ -142,59 +155,69 @@
 
 
 <template>
-    <div style="position: relative;">
-        <form @submit.prevent="searchProducts()">
-            <div class="flex">
-                <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                <div class="flex items-center mr-4">
-                    <input v-model="formScaner.scaner" id="scaner" type="checkbox" value="" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    <label for="scaner" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scaner</label>
-                </div>
-                <div class="relative w-full">
-                    <input v-model="form.search" autocomplete="off" type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Buscar por código o descripción..." required>
-                    <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <span class="sr-only">Search</span>
-                    </button>
-                </div>
-            </div>
-        </form>
-        <div v-show="displayResultSearch" id="result" style="position: absolute; width: 100%;z-index: 999;">
-            <div class="mt-1 border border-stroke" style="max-height: 300px;overflow-y: auto;">
-                <ul class="max-w-md divide-y bg-white">
-                    <li v-for="(product, index) in form.products" class="p-4 border-b border-stroke bg-gray-100 pb-3 sm:pb-4 dark:border-strokedark dark:bg-boxdark" >
-                        <div @click="openModalSelectProduct(product)" style="cursor: pointer;" class="flex items-center space-x-4">
-                            <div class="flex-shrink-0">
-                                <img class="w-8 h-8 rounded-full" :src="'/storage/'+product.image" :alt="product.interne">
-                            </div>
-                            <div class="flex-1 min-w-0 ml-2">
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                    {{ product.interne }}
-                                </p>
-                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                                    {{ product.description }}
-                                </p>
-                            </div>
-                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                               Stock {{ product.stock }}
-                            </div>
-                        </div>
-                    </li>
-                    <li class="flex justify-end">
-                        <button @click="displayResultSearch = false" class="right-2 flex items-center justify-center w-8 h-8 text-red-500 hover:text-red-700 transition-colors">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                fill-rule="evenodd"
-                                d="M5.293 4.293a1 1 0 011.414 0L10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
-                                ></path>
-                            </svg>
+
+    <div v-show="displaySearch" style="min-width: 350px;max-width: 350px;" class="absolute z-99 mt-1 bg-white border border-gray-400 shadow w-60 dark:bg-gray-700">
+        <div class="p-4">
+            <form @submit.prevent="searchProducts()">
+                <!-- <div class="flex">
+                    <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                    <div class="flex items-center mr-4">
+                        <input v-model="formScaner.scaner" id="scaner" type="checkbox" value="" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="scaner" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scaner</label>
+                    </div>
+                    <div class="relative w-full">
+                        <input v-model="form.search" autocomplete="off" type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Buscar por código o descripción..." required>
+                        <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            <span class="sr-only">Search</span>
                         </button>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+                </div> -->
+                <label for="input-group-search" class="sr-only">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input v-model="form.search" type="text" id="input-group-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search user">
+                </div>
+            </form>
+            
         </div>
+        <ul v-show="displayResultSearch" id="result" class="h-48 px-4 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
+            <li v-for="(product, index) in form.products">
+                <div @click="openModalSelectProduct(product)" style="cursor: pointer;" class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <img class="w-8 h-8 rounded-full" :src="'/storage/'+product.image" :alt="product.interne">
+                    </div>
+                    <div class="text-left flex-1 min-w-0 ml-2">
+                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            {{ product.interne }}
+                        </p>
+                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                            {{ product.description }}
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                        Stock {{ product.stock }}
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <a @click="close" href="#" type="button" class="flex items-center p-2.5 text-sm font-medium text-red-600 border-t border-gray-200 rounded-b-lg bg-gray-50 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-red-500 hover:underline">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                fill-rule="evenodd"
+                d="M5.293 4.293a1 1 0 011.414 0L10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+                ></path>
+            </svg>
+            Cancelar
+        </a>
     </div>
+
+    
     <DialogModal 
         :show="displayModal" 
         @close="closeModalSelectProduct"
@@ -229,7 +252,7 @@
                                         Precio Normal {{ JSON.parse(form.product.sale_prices).high  }}
                                     </label>
                                 </div>
-                                <div class="form-check">
+                                <div v-show="JSON.parse(form.product.sale_prices).medium" class="form-check">
                                     <input v-model="form.data.price" :value="JSON.parse(form.product.sale_prices).medium" class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                                     <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault2">
                                         Precio Medio {{ JSON.parse(form.product.sale_prices).medium  }}

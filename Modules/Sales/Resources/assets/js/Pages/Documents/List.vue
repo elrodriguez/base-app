@@ -1,17 +1,17 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
     import { useForm } from '@inertiajs/vue3';
-    import { faTimes, faPencilAlt, faPrint, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+    import { faTimes, faPaperPlane, faPrint, faWarehouse } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import Keypad from '@/Components/Keypad.vue';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import { ref } from 'vue';
     import ModalSmall from '@/Components/ModalSmall.vue';
-    import swal from "sweetalert";
-    import { Link } from '@inertiajs/vue3';
+    import Swal from "sweetalert2";
+    import { Link, router } from '@inertiajs/vue3';
 
     const props = defineProps({
-        sales: {
+        documents: {
             type: Object,
             default: () => ({}),
         },
@@ -80,6 +80,48 @@
             } 
         });
     }
+
+    const sendSunatDocument = (document) => {
+
+        Swal.fire({
+            title: document.serie+'-'+document.number,
+            text: 'Enviar documento',
+            showCancelButton: true,
+            confirmButtonText: 'Enviar',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return axios.get(route('saledocuments_send', document.document_id)).then((res) => {
+                    if (!res.data.success) {
+                        Swal.showValidationMessage(
+                            `Error código: ${res.data.code}<br>Descripción:${res.data.message}`
+                        )
+                    }
+                    return res
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var cadena = "";
+                let array = JSON.parse(result.value.data.notes);
+                for (var i = 0; i < array.length; i++) {
+                    cadena += array[i] + "<br>";
+                }
+
+                Swal.fire({
+                    title: `${result.value.data.message}`,
+                    html: `${cadena}`,
+                    icon: 'success',
+                }).then(() => {
+                    router.visit(route('saledocuments_list'),{
+                        method: 'get'
+                    });
+                });
+
+            }
+        });
+    }
+
 </script>
 
 <template>
@@ -135,7 +177,7 @@
                                         >
                                             Imprimir Ventas Del día
                                         </PrimaryButton>
-                                        <Link :href="route('sales.create')" class="inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Nuevo</Link>
+                                        <Link :href="route('saledocuments_create')" class="inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Nuevo</Link>
                                     </template>
                                 </Keypad>
                             </div>
@@ -145,64 +187,84 @@
                         <table class="w-full table-auto">
                             <thead class="border-b border-stroke">
                                 <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th class="py-4 px-4 text-center font-medium text-black dark:text-white">
+                                    <th class="py-1 px-4 text-center font-medium text-black dark:text-white">
                                         Acciones
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                                        #
+                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
+                                        Nmr. Documento
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
-                                        Nmr. Ticket
-                                    </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
+                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
                                         Fecha
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
+                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
                                         Cliente
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
+                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
                                         Total
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
+                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
                                         Estado
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(sale, index) in sales.data" :key="sale.id" >
-                                    <td class="text-center border-b border-stroke py-4 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                                        <button @click="printTicket(sale.id)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            <font-awesome-icon :icon="faPrint" />
-                                        </button>
-                                        <button v-role="'admin'" type="button" class="px-3 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                                            @click="deleteSale(sale.id)"
-                                            >
-                                            <font-awesome-icon :icon="faTimes" />
-                                        </button>
-                                    </td>
-                                    <td class="text-center border-b border-stroke py-4 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                                        {{ index + 1 }}
-                                    </td>
-                                    <td class="w-32 border-b border-stroke py-4 px-4 dark:border-strokedark">
-                                        {{ sale.serie }}-{{ sale.number }}
-                                    </td>
-                                    <td class="border-b border-stroke py-4 px-4 dark:border-strokedark">
-                                        {{ sale.created_at }}
-                                    </td>
-                                    <td class="border-b border-stroke py-4 px-4 dark:border-strokedark">
-                                        {{ sale.full_name }}
-                                    </td>
-                                    <td class="text-right border-b border-stroke py-4 px-4 dark:border-strokedark">
-                                        {{ sale.total }}
-                                    </td>
-                                    <td class="border-b border-stroke py-4 px-4 dark:border-strokedark">
-                                        <span v-if="sale.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Registrado</span>
-                                        <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
-                                    </td>
-                                </tr>
+                                <template v-for="(document, index) in documents.data" :key="document.id">
+                                    <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" :class="document.invoice_status ==='registrado' ? 'border-b border-stroke' : ''">
+                                        <td :rowspan="document.invoice_status ==='registrado' ? 1 : 2" class="text-center py-1 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                                            <button @click="printTicket(document.id)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                <font-awesome-icon :icon="faPrint" />
+                                            </button>
+                                            <template v-if="document.invoice_status != 'Aceptada'">
+                                                <button v-can="'invo_documento_envio_sunat'" type="button" title="Enviar a Sunat" class="px-2.5 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+                                                    @click="sendSunatDocument(document)"
+                                                    >
+                                                    <font-awesome-icon :icon="faPaperPlane" />
+                                                </button>
+                                            </template>
+                                            <button v-role="'admin'" type="button" class="px-3 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                                                @click="deleteSale(document.id)"
+                                                >
+                                                <font-awesome-icon :icon="faTimes" />
+                                            </button>
+                                        </td>
+                                        <td class="w-32 py-1 px-4 dark:border-strokedark">
+                                            {{ document.serie }}-{{ document.number }}
+                                        </td>
+                                        <td class="py-1 px-4 dark:border-strokedark">
+                                            {{ document.created_at }}
+                                        </td>
+                                        <td class="py-1 px-4 dark:border-strokedark">
+                                            {{ document.full_name }}
+                                        </td>
+                                        <td class="text-right py-1 px-4 dark:border-strokedark">
+                                            {{ document.total }}
+                                        </td>
+                                        <td  class="text-center py-1 px-4 dark:border-strokedark">
+                                            <span v-if="document.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Activa</span>
+                                            <span v-else class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
+                                        </td>
+                                    </tr>
+                                    <template v-if="document.invoice_status !='registrado'" >
+                                        <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" class="border-b border-stroke" >
+                                            <td colspan="4" class="text-xs">
+                                               
+                                                    <code v-if="document.invoice_response_code != 0">
+                                                        Código: {{ document.invoice_response_code }}
+                                                    </code>
+                                                    <code>
+                                                        Descripción: {{ document.invoice_response_description }}
+                                                    </code>
+                                            </td>
+                                            <td class="text-center text-xs">
+                                                <small>Estado Sunat</small>
+                                                {{ document.invoice_status }}
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </template>
                             </tbody>
                         </table>
-                        <Pagination :data="sales" />
+                        <Pagination :data="documents" />
                     </div>
                 </div>
             </div>

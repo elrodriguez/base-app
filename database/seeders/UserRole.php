@@ -22,13 +22,18 @@ class UserRole extends Seeder
         $role = Role::create(['name' => 'admin']);
 
         $permissions = [];
+        array_push($permissions, Permission::create(['name' => 'dashboard']));
         array_push($permissions, Permission::create(['name' => 'configuracion']));
+        array_push($permissions, Permission::create(['name' => 'empresa']));
         array_push($permissions, Permission::create(['name' => 'usuarios']));
         array_push($permissions, Permission::create(['name' => 'usuarios_nuevo']));
         array_push($permissions, Permission::create(['name' => 'usuarios_editar']));
         array_push($permissions, Permission::create(['name' => 'usuarios_eliminar']));
         array_push($permissions, Permission::create(['name' => 'usuarios_ver']));
         array_push($permissions, Permission::create(['name' => 'roles']));
+        array_push($permissions, Permission::create(['name' => 'permisos']));
+
+        array_push($permissions, Permission::create(['name' => 'sale_dashboard']));
         array_push($permissions, Permission::create(['name' => 'productos']));
         array_push($permissions, Permission::create(['name' => 'productos_nuevo']));
         array_push($permissions, Permission::create(['name' => 'productos_editar']));
@@ -46,6 +51,13 @@ class UserRole extends Seeder
         array_push($permissions, Permission::create(['name' => 'proveedores_editar']));
         array_push($permissions, Permission::create(['name' => 'proveedores_eliminar']));
         array_push($permissions, Permission::create(['name' => 'punto_ventas']));
+        array_push($permissions, Permission::create(['name' => 'sale_reportes']));
+        array_push($permissions, Permission::create(['name' => 'sale_tienda']));
+        array_push($permissions, Permission::create(['name' => 'invo_dashboard']));
+        array_push($permissions, Permission::create(['name' => 'invo_documento']));
+        array_push($permissions, Permission::create(['name' => 'invo_documento_lista']));
+        array_push($permissions, Permission::create(['name' => 'invo_documento_envio_sunat']));
+
         array_push($permissions, Permission::create(['name' => 'blog_dashboard']));
         array_push($permissions, Permission::create(['name' => 'blog_categorias']));
         array_push($permissions, Permission::create(['name' => 'blog_categorias_nuevo']));
@@ -76,7 +88,7 @@ class UserRole extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
-            'local_id' => null
+            'local_id' => 1
         ]);
 
         $user->assignRole('admin');

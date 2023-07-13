@@ -52,7 +52,7 @@ return new class extends Migration
                 'short_name' => 'Clientes Varios',
                 'full_name' => 'Clientes Varios',
                 'number' => '99999999',
-                'is_client' => true
+                'is_client' => true,
             ]
         ]);
     }

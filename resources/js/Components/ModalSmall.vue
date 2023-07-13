@@ -11,7 +11,7 @@
     },
     icon:{
       type: String,
-      default: false,
+      default: () => {},
     }
   });
 </script>

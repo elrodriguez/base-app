@@ -67,6 +67,10 @@
                     caption-side: bottom;">Importe</td>
                 </tr>
                 @foreach ($products as $item)
+                    @php
+                        $json = json_decode($item->product, true);
+                        $size = isset($json['size']) ? $json['size'] : null;
+                    @endphp
                     <tr>
                         <td style="text-align: right;vertical-align: top;
                         border: 1px solid #000;
@@ -77,7 +81,7 @@
                         border: 1px solid #000;
                         border-collapse: collapse;
                         padding: 0.3em;
-                        caption-side: bottom;">{{ json_decode($item->product,true)['interne'] }}-{{ json_decode($item->product,true)['description'] }} / {{ json_decode($item->product,true)['size'] }}</td>
+                        caption-side: bottom;">{{ json_decode($item->product,true)['interne'] }}-{{ json_decode($item->product,true)['description'] }} {{ $size ? ' / '.$size :'' }}</td>
                         <td style="text-align: right;vertical-align: top;
                         border: 1px solid #000;
                         border-collapse: collapse;

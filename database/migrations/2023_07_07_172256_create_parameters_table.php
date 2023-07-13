@@ -30,14 +30,14 @@ return new class extends Migration
             'json_query_data'   => null,
             'value_default'     => '18'
         ]);
-
         Parameter::create([
             'parameter_code'    => 'P000002',
-            'description'       => 'Tipo de afectación del IGV por defecto compras y ventas',
+            'description'       => 'Tipo de operacion Venta - Catalog. 51 Sunat',
             'control_type'      => 'se',
             'json_query_data'   => null,
-            'value_default'     => '10'
+            'value_default'     => '0101'
         ]);
+
 
         Parameter::create([
             'parameter_code'    => 'P000003',
@@ -69,6 +69,13 @@ return new class extends Migration
             'control_type'      => 'in',
             'json_query_data'   => null,
             'value_default'     => null
+        ]);
+        Parameter::create([
+            'parameter_code'    => 'P000008',
+            'description'       => 'Tipo de afectación del IGV por defecto compras y ventas',
+            'control_type'      => 'se',
+            'json_query_data'   => null,
+            'value_default'     => '10'
         ]);
     }
 

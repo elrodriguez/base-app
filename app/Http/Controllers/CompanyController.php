@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\District;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,8 +12,19 @@ class CompanyController extends Controller
     public function show()
     {
         $company = Company::first();
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
         return Inertia::render('Company/Show', [
-            'company' => $company ? $company : []
+            'company'   => $company ? $company : [],
+            'ubigeo'    => $ubigeo,
         ]);
     }
     public function updateCreate(Request $request)
@@ -24,10 +36,12 @@ class CompanyController extends Controller
             'tradename'  => 'required|max:300',
             'fiscal_address'  => 'required|max:300',
             'phone'  => 'required|max:15',
-            'email'  => 'required|max:150'
+            'email'  => 'required|max:150',
+            'mode'  => 'required'
         ]);
 
         $path = '';
+        $path176x32 = '';
         $destination = 'uploads/company';
         $file = $request->file('logo');
         $file176x32 = $request->file('logo_document');
@@ -67,7 +81,9 @@ class CompanyController extends Controller
                 'representative'    => $request->get('representative'),
                 'email'             => $request->get('email'),
                 'logo'              => $path ? $path : Company::where('ruc', '=', $request->get('ruc'))->first()->logo,
-                'logo_document'     => $path176x32 ? $path176x32 : Company::where('ruc', '=', $request->get('ruc'))->first()->logo
+                'logo_document'     => $path176x32 ? $path176x32 : Company::where('ruc', '=', $request->get('ruc'))->first()->logo,
+                'mode'              => $request->get('mode'),
+                'ubigeo'            => $request->get('ubigeo')
             ]
         );
 

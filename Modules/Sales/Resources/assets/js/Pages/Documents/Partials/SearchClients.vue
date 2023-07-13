@@ -47,7 +47,8 @@
         email: '',
         address: '',
         ubigeo: '',
-        ubigeo_description: ''
+        ubigeo_description: '',
+        presentations: false
     });
     
     const disabledBtnSelect = ref(true);
@@ -174,19 +175,15 @@
                     <div class="col-span-6 sm:col-span-3">
                         <InputLabel for="address" value="Ciudad" />
                         
-                        <TextInput 
-                        v-model="form.ubigeo_description" 
-                        @input="filterCities"
-                        placeholder="Buscar Distrito"
-                        type="text" 
-                        class="block w-full mt-1" />
-                        <div style="max-height: 200px;z-index: 99999;" class="overflow-y-auto mt-1">
-                            <ul v-if="searchUbigeos && searchUbigeos.length > 0" class="text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                <li v-for="item in searchUbigeos"
-                                    :key="item.id"
-                                    class="w-full px-4 py-2 border-b border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-gray-200"
-                                    @click="selectCity(item)"
-                                >
+                        <div class="relative">
+                            <TextInput 
+                            v-model="form.ubigeo_description" 
+                            @input="filterCities"
+                            placeholder="Buscar Distrito"
+                            type="text" 
+                            class="block w-full mt-1" />
+                            <ul v-if="searchUbigeos && searchUbigeos.length > 0" class="list-disc list-inside absolute z-50 w-full bg-white border border-gray-300 rounded-md mt-1">
+                                <li v-for="item in searchUbigeos" :key="item.id" class="px-4 cursor-pointer hover:bg-gray-100" @click="selectCity(item)">
                                     {{ item.department_name+'-'+item.province_name+'-'+item.district_name }}
                                 </li>
                             </ul>

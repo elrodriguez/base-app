@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('client_ubigeo_description')->nullable();
             $table->string('client_phone')->nullable();
             $table->string('client_email')->nullable();
+            $table->string('invoice_document_name', 150)->nullable()->comment('Nombre del documento (RUC-TIPODOC-SERIE-CORRELATIVO)');
             $table->string('invoice_form_payment')->nullable();
             $table->string('invoice_ubl_version')->nullable();
             $table->string('invoice_type_operation')->nullable();
@@ -29,7 +30,7 @@ return new class extends Migration
             $table->string('invoice_type_currency')->nullable();
             $table->date('invoice_broadcast_date')->nullable()->comment('fecha de emision');
             $table->date('invoice_due_date')->nullable()->comment('fecha de vencimiento');
-            $table->date('invoice_send_date')->nullable()->comment('fecha que se envio a sunat');
+            $table->dateTime('invoice_send_date')->nullable()->comment('fecha que se envio a sunat');
             $table->decimal('invoice_mto_oper_taxed', 10, 2)->nullable()->comment('monto operaciones onerosas');
             $table->decimal('invoice_mto_igv', 10, 2)->nullable();
             $table->decimal('invoice_icbper', 10, 2)->nullable();
@@ -41,12 +42,13 @@ return new class extends Migration
             $table->string('invoice_legend_code')->nullable();
             $table->string('invoice_legend_description')->nullable();
             $table->string('invoice_sunat_points')->nullable();
-            $table->string('invoice_cdr')->nullable();
-            $table->string('invoice_xml')->nullable();
-            $table->string('invoice_pdf')->nullable();
-            $table->string('invoice_response_code')->nullable();
-            $table->string('invoice_response_description')->nullable();
-            $table->string('invoice_status')->nullable();
+            $table->string('invoice_cdr', 500)->nullable();
+            $table->string('invoice_xml', 500)->nullable();
+            $table->string('invoice_pdf', 500)->nullable();
+            $table->string('invoice_response_code', 10)->nullable();
+            $table->text('invoice_response_description')->nullable();
+            $table->json('invoice_notes')->nullable();
+            $table->string('invoice_status', 40)->nullable();
         });
     }
 

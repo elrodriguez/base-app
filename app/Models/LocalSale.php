@@ -13,7 +13,8 @@ class LocalSale extends Model
     protected $fillable = [
         'description',
         'address',
-        'phone'
+        'phone',
+        'ubigeo'
     ];
 
     public function getCreatedAtAttribute($value)

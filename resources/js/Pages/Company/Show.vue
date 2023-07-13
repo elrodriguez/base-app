@@ -6,7 +6,11 @@ const props = defineProps({
     company: {
         type: Object,
         default: () => ({}),
-    }
+    },
+    ubigeo: {
+        type: Object,
+        default: () => ({})
+    },
 });
 </script>
 
@@ -20,7 +24,7 @@ const props = defineProps({
 
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <InformationForm :company="company"></InformationForm>
+                <InformationForm :company="company" :ubigeo="ubigeo"></InformationForm>
             </div>
         </div>
     </AppLayout>

@@ -86,4 +86,8 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::get('sale_document_series/{id}', [SaleDocumentController::class, 'getSerieByDocumentType'])->name('sale_document_series');
 
     Route::post('saledocuments/store', [SaleDocumentController::class, 'store'])->name('saledocuments_store');
+
+    Route::get('saledocuments/list', [SaleDocumentController::class, 'index'])->name('saledocuments_list');
+
+    Route::get('saledocuments/send/{id}', [SaleDocumentController::class, 'sendSunatDocument'])->name('saledocuments_send');
 });

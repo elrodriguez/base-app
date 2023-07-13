@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SaleDocumentItem extends Model
 {
@@ -27,4 +28,9 @@ class SaleDocumentItem extends Model
         'mto_price_unit',
         'mto_total'
     ];
+
+    public function document(): BelongsTo
+    {
+        return $this->belongsTo(SaleDocument::class, 'document_id', 'id');
+    }
 }

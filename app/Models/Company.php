@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Company extends Model
 {
@@ -23,6 +24,12 @@ class Company extends Model
         'key_sunat',
         'user_sunat',
         'certificate_sunat',
-        'mode'
+        'mode',
+        'ubigeo'
     ];
+
+    public function district(): HasOne
+    {
+        return $this->hasOne(District::class, 'id', 'ubigeo');
+    }
 }
