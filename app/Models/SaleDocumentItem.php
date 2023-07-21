@@ -12,6 +12,7 @@ class SaleDocumentItem extends Model
 
     protected $fillable = [
         'document_id',
+        'product_id',
         'cod_product',
         'decription_product',
         'unit_type',
@@ -26,7 +27,10 @@ class SaleDocumentItem extends Model
         'mto_value_sale',
         'mto_value_unit',
         'mto_price_unit',
-        'mto_total'
+        'price_sale',
+        'mto_total',
+        'mto_discount',
+        'json_discounts',
     ];
 
     public function document(): BelongsTo

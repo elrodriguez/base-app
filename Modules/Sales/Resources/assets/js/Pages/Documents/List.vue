@@ -1,12 +1,13 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
     import { useForm } from '@inertiajs/vue3';
-    import { faTimes, faPaperPlane, faPrint, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+    import { faTimes, faPaperPlane, faPrint, faGear } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import Keypad from '@/Components/Keypad.vue';
+    import GreenButton from '@/Components/GreenButton.vue';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
-    import { ref } from 'vue';
-    import ModalSmall from '@/Components/ModalSmall.vue';
+    import { ref, onMounted } from 'vue';
+    import ModalLargeX from '@/Components/ModalLargeX.vue';
     import Swal from "sweetalert2";
     import { Link, router } from '@inertiajs/vue3';
 
@@ -19,45 +20,38 @@
             type: Object,
             default: () => ({}),
         },
+        affectations: {
+            type: Object,
+            default: () => ({}),
+        },
+        unitTypes:{
+            type: Object,
+            default: () => ({}),
+        }
     });
 
     const form = useForm({
         search: props.filters.search,
     });
     
-    const printTicket = (id) => {
-        //window.location.href = "../pdf/sales/ticket/" + id;
-        let url = route('ticketpdf_sales',id)
-        window.open(url, "_blank");
+    const displayModalDetails = ref(false);
+    const documentDetails = ref([]);
+    const disabledButtonDetailsSave = ref(false);
+    const opemModalDetails = async (sales) => {
+        if(sales.invoice_status ==='registrado' || sales.invoice_status ==='Rechazada'){
+            disabledButtonDetailsSave.value = false
+        }else{
+            disabledButtonDetailsSave.value = true
+        }
+
+        documentDetails.value = sales.documents[0];
+        initializeDropdownItems();
+        displayModalDetails.value = true;
     }
 
-
-    const displayModalPrint = ref(false);
-
-    const formPrint = useForm({
-        date: '',
-    });
-
-    const openPrintSaleDay = async () => {
-        
-        var fecha = new Date(); //Fecha actual
-        var mes = fecha.getMonth()+1; //obteniendo mes
-        var dia = fecha.getDate(); //obteniendo dia
-        var ano = fecha.getFullYear(); //obteniendo año
-        if(dia<10)dia='0'+dia; //agrega cero si el menor de 10
-        if(mes<10)mes='0'+mes //agrega cero si el menor de 10
-        fecha = ano + "-" + mes + "-" + dia;
-        formPrint.date = fecha;
-        displayModalPrint.value = true;
-    }
-    const closePrintSaleDay = async () => {
-        displayModalPrint.value = false;
-    }
-
-    const printSales = () => {
-        let url = route('print_sale_user',formPrint.date)
-        window.open(url, "_blank");
-        //window.location.href = "../print/sales/user/" + formPrint.date;
+    const closeModalDetails = async () => {
+        displayModalDetails.value = false;
+        showteButtonSave.value = false;
     }
 
     const formDelete= useForm({});
@@ -82,7 +76,7 @@
     }
 
     const sendSunatDocument = (document) => {
-
+        initializeDropdownItems();
         Swal.fire({
             title: document.serie+'-'+document.number,
             text: 'Enviar documento',
@@ -90,11 +84,15 @@
             confirmButtonText: 'Enviar',
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                return axios.get(route('saledocuments_send', document.document_id)).then((res) => {
+                return axios.get(route('saledocuments_send', [document.document_id,document.invoice_type_doc])).then((res) => {
                     if (!res.data.success) {
-                        Swal.showValidationMessage(
-                            `Error código: ${res.data.code}<br>Descripción:${res.data.message}`
-                        )
+                        var cadena = `Error código: ${res.data.code}<br>Descripción:${res.data.message}`;
+                        let notes = res.data.notes;
+                        if (notes) {
+                            cadena += `<br>Nota: ${notes}`;
+                        }
+                        Swal.showValidationMessage(cadena)
+                        
                     }
                     return res
                 });
@@ -121,7 +119,64 @@
             }
         });
     }
+    const dropdownItems = ref([]);
 
+    const toggleDropdown = (index) => {
+        dropdownItems.value = dropdownItems.value.map((item, i) => ({
+            ...item,
+            showDropdown: i === index ? !item.showDropdown : false
+        }));
+    };
+    const initializeDropdownItems = () => {
+        dropdownItems.value = props.documents.data.map(() => ({ showDropdown: false }));
+    };
+
+    onMounted(() => {
+        initializeDropdownItems();
+    });
+
+    const getAffectation = (id) => {
+        const selectedAffectation = props.affectations.find(affectation => affectation.id === id);
+        //console.log(selectedAffectation.description)
+        if (selectedAffectation) {
+            return selectedAffectation.description;
+        } else {
+            return null;
+        }
+    }
+    const getUnitTypes = (id) => {
+        const selectedUnitType = props.unitTypes.find(unitType => unitType.id === id);
+        //console.log(selectedAffectation.description)
+        if (selectedUnitType) {
+            return selectedUnitType.description;
+        } else {
+            return null;
+        }
+    }
+    const showteButtonSave = ref(false);
+    const editDetailsDocument = () => {
+        showteButtonSave.value = !showteButtonSave.value;
+    }
+
+    const saveChangesDetails = () =>{
+        axios.post(route('saledocuments_update_details'), documentDetails.value ).then((response) => {
+        });
+    };
+    const calculateItemTotals = (key) => {
+        let c = parseFloat(documentDetails.value.items[key].quantity) ?? 0;
+        let p = parseFloat(documentDetails.value.items[key].mto_price_unit) ?? 0;
+        let d = parseFloat(documentDetails.value.items[key].mto_discount) ?? 0;
+
+        let st = (c * p) - d;
+
+        // Verificar si el resultado es NaN y asignar 0 en su lugar
+        if (isNaN(st)) {
+            st = 0;
+        }
+
+        documentDetails.value.items[key].mto_total = st.toFixed(2);
+
+    }
 </script>
 
 <template>
@@ -158,7 +213,7 @@
                     <div class="w-full p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
-                                <form @submit.prevent="form.get(route('sales.index'))">
+                                <form @submit.prevent="form.get(route('saledocuments_list'))">
                                 <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -187,7 +242,7 @@
                         <table class="w-full table-auto">
                             <thead class="border-b border-stroke">
                                 <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th class="py-1 px-4 text-center font-medium text-black dark:text-white">
+                                    <th style="width: 75px;" class="py-1 px-4 text-center font-medium text-black dark:text-white">
                                         Acciones
                                     </th>
                                     <th class="py-1 px-4 font-medium text-black dark:text-white">
@@ -210,24 +265,59 @@
                             <tbody>
                                 <template v-for="(document, index) in documents.data" :key="document.id">
                                     <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" :class="document.invoice_status ==='registrado' ? 'border-b border-stroke' : ''">
-                                        <td :rowspan="document.invoice_status ==='registrado' ? 1 : 2" class="text-center py-1 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                                            <button @click="printTicket(document.id)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                <font-awesome-icon :icon="faPrint" />
-                                            </button>
-                                            <template v-if="document.invoice_status != 'Aceptada'">
-                                                <button v-can="'invo_documento_envio_sunat'" type="button" title="Enviar a Sunat" class="px-2.5 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
-                                                    @click="sendSunatDocument(document)"
-                                                    >
-                                                    <font-awesome-icon :icon="faPaperPlane" />
-                                                </button>
-                                            </template>
-                                            <button v-role="'admin'" type="button" class="px-3 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                                                @click="deleteSale(document.id)"
+                                        <td :rowspan="document.invoice_status ==='registrado' ? 1 : 2" class="text-center py-1 px-4 dark:border-strokedark">
+                                            <div class="flex relative justify-center">
+                                                <button
+                                                    :id="'dropdownButton'+index"
+                                                    @click="toggleDropdown(index)"
+                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500"
+                                                    type="button"
                                                 >
-                                                <font-awesome-icon :icon="faTimes" />
-                                            </button>
+                                                <font-awesome-icon :icon="faGear" />
+                                                </button>
+                                                <!-- Dropdown menu -->
+                                                <div
+                                                    :id="'dropdown-'+index"
+                                                    v-show="dropdownItems[index]?.showDropdown"
+                                                    style="margin-top: 44px;"
+                                                    class="absolute mt-40 z-99 text-base list-none border border-gray-200 bg-gray-100 divide-y divide-gray-100 shadow w-auto dark:bg-gray-700"
+                                                >
+                                                    <ul class="py-2" :aria-labelledby="'dropdownButton'+index">
+                                                        <template v-if="document.invoice_status != 'Aceptada'">
+                                                            <li v-can="'help_tableros_editar'">
+                                                                <button @click="showModalEditPanel(index)"
+                                                                type="button"
+                                                                class="block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                                >Editar</button>
+                                                            </li>
+                                                        </template>
+                                                        <template v-if="document.invoice_status != 'Aceptada'">
+                                                            <li v-can="'help_tableros_editar'">
+                                                                <button v-can="'invo_documento_envio_sunat'" @click="sendSunatDocument(document)"
+                                                                type="button"
+                                                                class="block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                                >Enviar a Sunat</button>
+                                                            </li>
+                                                        </template>
+                                                        <template v-if="document.invoice_status != 'Aceptada'">
+                                                            <li v-can="'help_tableros_eliminar'">
+                                                                <button @click="deletePanel(index,board.id)"
+                                                                type="button"
+                                                                class="block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                                >Eliminar</button>
+                                                            </li>
+                                                        </template>
+                                                        <li>
+                                                            <button @click="opemModalDetails(document)"
+                                                            type="button"
+                                                            class="block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                            >Detalles</button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </td>
-                                        <td class="w-32 py-1 px-4 dark:border-strokedark">
+                                        <td class="w-32 py-1 dark:border-strokedark">
                                             {{ document.serie }}-{{ document.number }}
                                         </td>
                                         <td class="py-1 px-4 dark:border-strokedark">
@@ -247,16 +337,15 @@
                                     <template v-if="document.invoice_status !='registrado'" >
                                         <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" class="border-b border-stroke" >
                                             <td colspan="4" class="text-xs">
-                                               
-                                                    <code v-if="document.invoice_response_code != 0">
-                                                        Código: {{ document.invoice_response_code }}
-                                                    </code>
-                                                    <code>
-                                                        Descripción: {{ document.invoice_response_description }}
-                                                    </code>
+                                                <code v-if="document.invoice_response_code != 0">
+                                                    Código: {{ document.invoice_response_code }}
+                                                </code>
+                                                <code>
+                                                    Descripción: {{ document.invoice_response_description }}
+                                                </code>
                                             </td>
                                             <td class="text-center text-xs">
-                                                <small>Estado Sunat</small>
+                                                <small>Estado Sunat:</small>
                                                 {{ document.invoice_status }}
                                             </td>
                                         </tr>
@@ -269,24 +358,127 @@
                 </div>
             </div>
         </div>
-        <ModalSmall
-            :show="displayModalPrint"
-            :onClose="closePrintSaleDay"
+        <ModalLargeX
+            :show="displayModalDetails"
+            :onClose="closeModalDetails"
+            :icon="'/img/bienes.png'"
         >
             <template #title>
-                Imprimir Ventas del Día
+                Detalles de la venta
+            </template>
+            <template #message>
+                Lista de Productos o Servicios Vendidos
             </template>
             <template #content>
-                <input type="date" v-model="formPrint.date"
-                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none dark:text-white dark:bg-gray-700"
-                />
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th style="width: 70px;" class="px-6 py-3 text-center">
+                                    Código
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Descripción
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Medida
+                                </th>
+                                <th style="display: none;" scope="col" class="px-6 py-3">
+                                    Tipo de Afectación del IGV
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Cantidad
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Precio
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Sub Total
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Descuento
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Total
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item,ko) in documentDetails.items" class="bg-white border-b border-stroke dark:bg-gray-900 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ item.cod_product }}
+                                </th>
+                                <td class="px-4 py-2">
+                                    <span v-show="!showteButtonSave">{{ item.decription_product }}</span>
+                                    <textarea v-show="showteButtonSave" v-model="item.decription_product" class="invoice-textarea"></textarea>
+                                </td>
+                                <td class="px-4 py-2 text-center">
+                                    <span v-show="!showteButtonSave">{{ getUnitTypes(item.unit_type) }}</span>
+                                    <select v-show="showteButtonSave" v-model="item.unit_type" class="invoice-select">
+                                        <option v-for="(row, ci) in unitTypes" :value="row.id">{{ row.description }}</option>
+                                    </select>
+                                </td>
+                                <td style="display: none;" class="px-4 py-2">
+                                    <span v-show="!showteButtonSave">{{ getAffectation(item.type_afe_igv) }}</span>
+                                    <select v-show="showteButtonSave" v-model="item.type_afe_igv" class="invoice-select">
+                                        <option v-for="(row, ci) in affectations" :value="row.id">{{ row.description }}</option>
+                                    </select>
+                                </td>
+                                <td style="width: 110px;" class="px-4 py-2 text-right">
+                                    <span v-show="!showteButtonSave">{{ item.quantity }}</span>
+                                    <input v-show="showteButtonSave" v-model="item.quantity" @input="calculateItemTotals(ko)"  class="invoice-imput text-right" type="text" />
+                                </td>
+                                <td style="width: 110px;" class="px-4 py-2 text-right">
+                                    <span v-show="!showteButtonSave">{{ item.mto_price_unit }}</span>
+                                    <input v-show="showteButtonSave" v-model="item.mto_price_unit" @input="calculateItemTotals(ko)"  class="invoice-imput text-right" type="text" />
+                                </td>
+                                <td style="width: 120px;" class="px-4 py-2 text-right">
+                                    {{ (item.quantity * item.mto_price_unit).toFixed(2) }}
+                                </td>
+                                <td style="width: 120px;" class="px-4 py-2 text-right">
+                                    <span v-show="!showteButtonSave">{{ item.mto_discount }}</span>
+                                    <input v-show="showteButtonSave" v-model="item.mto_discount" @input="calculateItemTotals(ko)"  class="invoice-imput text-right" type="text" />
+                                </td>
+                                <td style="width: 120px;" class="px-4 py-2 text-right">
+                                    {{ item.mto_total }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </template>
             <template #buttons>
-               <PrimaryButton
-                    @click="printSales()"
+                <GreenButton
+                    :disabled="disabledButtonDetailsSave"
+                    @click="editDetailsDocument"
                     class="mr-2"
-               >Imprimir</PrimaryButton> 
+               >Modificar</GreenButton> 
+               <PrimaryButton v-if="showteButtonSave" class="mr-2"
+               @click="saveChangesDetails"
+               >Guardar Cambios</PrimaryButton> 
             </template>
-        </ModalSmall>
+        </ModalLargeX>
     </AppLayout>
 </template>
+<style scoped>
+.invoice-select{
+    margin: 0px !important;
+    padding: 1px !important;
+    height: 26px !important;
+    width: 100% !important;
+    font-size: 12px;
+}
+.invoice-imput{
+    margin: 0px !important;
+    padding: 1px !important;
+    height: 26px !important;
+    width: 100% !important;
+    font-size: 12px;
+}
+.invoice-textarea{
+    margin: 0px !important;
+    padding: 1px !important;
+    width: 100% !important;
+    font-size: 12px;
+}
+</style>

@@ -15,7 +15,6 @@ use Greenter\Report\PdfReport;
 use Greenter\Report\Resolver\DefaultTemplateResolver;
 use Greenter\Report\XmlUtils;
 use Greenter\See;
-use Greenter\Model\Company\Address;
 use Greenter\Ws\Services\SunatEndpoints;
 
 final class Util
@@ -117,26 +116,6 @@ final class Util
         return (new \Greenter\Model\Company\Company())
             ->setRuc($this->company->ruc)
             ->setRazonSocial($this->company->business_name);
-    }
-
-    public function getCompany()
-    {
-        $company = new \Greenter\Model\Company\Company();
-
-        $province = $this->company->district->province;
-        $department = $province->department;
-
-        $company->setRuc($this->company->ruc)
-            ->setRazonSocial($this->company->business_name)
-            ->setNombreComercial($this->company->tradename)
-            ->setAddress((new Address())
-                ->setUbigueo($this->company->ubigeo)
-                ->setDepartamento($department->name)
-                ->setProvincia($province->name)
-                ->setDistrito($this->company->district->name)
-                //->setUrbanizacion('Albar')
-                ->setDireccion($this->company->fiscal_address));
-        return $company;
     }
 
     public function getErrorResponse(\Greenter\Model\Response\Error $error): string

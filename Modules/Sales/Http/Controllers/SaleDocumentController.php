@@ -27,7 +27,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Illuminate\Support\Str;
+use App\Helpers\Invoice\Documents\Factura;
 
 class SaleDocumentController extends Controller
 {
@@ -88,7 +88,8 @@ class SaleDocumentController extends Controller
                 'sale_documents.invoice_notes',
                 'sale_documents.status',
                 'series.description AS serie',
-                'sale_documents.number'
+                'sale_documents.number',
+                'sale_documents.invoice_type_doc'
             )
             ->whereIn('series.document_type_id', [1, 2])
             //->whereDate('sales.created_at', '=', $current_date)
@@ -99,12 +100,18 @@ class SaleDocumentController extends Controller
                 return $q->whereRaw('CONCAT("series.description","-",sale_documents.number) = ?', [$search])
                     ->orWhere('people.full_name', 'like', '%' . $search . '%');
             })
+            ->with('documents.items') //agregar los detalles de documento
             ->paginate(10)
             ->onEachSide(2);
+
+        $affectations = DB::table('sunat_affectation_igv_types')->get();
+        $unitTypes = DB::table('sunat_unit_types')->get();
 
         return Inertia::render('Sales::Documents/List', [
             'documents' => $sales,
             'filters' => request()->all('search'),
+            'affectations' => $affectations,
+            'unitTypes' => $unitTypes
         ]);
     }
 
@@ -115,8 +122,6 @@ class SaleDocumentController extends Controller
      */
     public function create()
     {
-        $success = true;
-
         $payments = PaymentMethod::all();
         $company = Company::first();
 
@@ -266,17 +271,10 @@ class SaleDocumentController extends Controller
                     /// o si sera creado para esta venta, verificaremos esto por el id del producto
                     /// si el id es nulo quiere decir que es un producto nuevo y procedemos a crearlo
                     $product_id = null;
+                    $interne = null;
                     if ($produc['id']) {
-                        SaleProduct::create([
-                            'sale_id' => $sale->id,
-                            'product_id' => $produc['id'],
-                            'product' => json_encode($produc),
-                            'price' => $produc['unit_price'],
-                            'discount' => $produc['discount'],
-                            'quantity' => $produc['quantity'],
-                            'total' => $produc['total']
-                        ]);
                         $product_id = $produc['id'];
+                        $interne = $produc['interne'];
                     } else {
                         $length = 9; // Longitud del número aleatorio
                         $randomNumber = random_int(0, 999999999); // Genera un número aleatorio entre 0 y 999999999
@@ -303,6 +301,7 @@ class SaleDocumentController extends Controller
                             'status'                        => true
                         ]);
                         $product_id = $new_product->id;
+                        $interne = $randomNumberPadded;
                         // le creamos un kardex en caso de ser un producto
                         if ($produc['is_product']) {
                             Kardex::create([
@@ -314,16 +313,6 @@ class SaleDocumentController extends Controller
                                 'description'       => 'Stock Inicial',
                             ]);
                         }
-                        /// insertamos en el detalle de la venta
-                        SaleProduct::create([
-                            'sale_id' => $sale->id,
-                            'product_id' => $new_product->id,
-                            'product' => json_encode(array("id" => $new_product->id, "size" => null, "price" => $produc['unit_price'], "total" => $produc['unit_price'], "interne" => $randomNumber, "quantity" => $produc['quantity'], "description" => $produc['description'])),
-                            'price' => $produc['unit_price'],
-                            'discount' => $produc['discount'],
-                            'quantity' => $produc['quantity'],
-                            'total' => $produc['total']
-                        ]);
                         $item = $new_product;
                     }
 
@@ -339,11 +328,27 @@ class SaleDocumentController extends Controller
                     $icbper = 0;
                     $value_sale = 0;
 
+                    $mto_discount = 0;
+                    $array_discounts = [];
+
                     if ($produc['afe_igv'] == '10') {
                         $value_unit = $unit_price / $factorIGV;
                         $mto_base_igv = $value_unit  * $quantity;
+                        //descuento por unidad
+                        //$discount_percentage = (($produc['discount'] * 100) / $unit_price) / 100;
+                        //descuento al total de venta del item
+                        $factor = (($produc['discount'] * 100) / $mto_base_igv) / 100;
+
                         $igv =  ($unit_price - $value_unit) * $quantity;
                         $value_sale = $value_unit * $quantity;
+
+                        $array_discounts[0] = array(
+                            'type'      => '00',
+                            'base'      => $mto_base_igv,
+                            'factor'    => $factor,
+                            'monto'     => $produc['discount']
+                        );
+                        $mto_discount = $produc['discount'];
                     }
                     if ($produc['afe_igv'] == '20') { //Exonerated
 
@@ -357,7 +362,8 @@ class SaleDocumentController extends Controller
                     //se inserta los datos al detalle del documento 
                     SaleDocumentItem::create([
                         'document_id'           => $document->id,
-                        'cod_product'           => $product_id,
+                        'product_id'            => $product_id,
+                        'cod_product'           => $interne,
                         'decription_product'    => $produc['description'],
                         'unit_type'             => $produc['unit_type'],
                         'quantity'              => $produc['quantity'],
@@ -371,7 +377,9 @@ class SaleDocumentController extends Controller
                         'mto_value_sale'        => $value_sale,
                         'mto_value_unit'        => $value_unit,
                         'mto_price_unit'        => $produc['unit_price'],
-                        'mto_total'             => $produc['total']
+                        'mto_total'             => $produc['total'],
+                        'mto_discount'          => $mto_discount ?? 0,
+                        'json_discounts'        => json_encode($array_discounts)
                     ]);
 
 
@@ -393,7 +401,7 @@ class SaleDocumentController extends Controller
                                 'product_id' => $product_id,
                                 'local_id' => $local_id,
                                 'size'      => $produc['size'],
-                                'quantity'  => (-$produc['quantity'])
+                                'quantity'  => ($item['quantity'] * (-1))
                             ]);
                             $tallas = $product->sizes;
                             $n_tallas = [];
@@ -448,39 +456,6 @@ class SaleDocumentController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SaleDocument  $saleDocument
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SaleDocument $saleDocument)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SaleDocument  $saleDocument
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, SaleDocument $saleDocument)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\SaleDocument  $saleDocument
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SaleDocument $saleDocument)
-    {
-        //
-    }
 
     public function getSerieByDocumentType($id)
     {
@@ -501,11 +476,24 @@ class SaleDocumentController extends Controller
         ]);
     }
 
-    public function sendSunatDocument($id)
+    public function sendSunatDocument($id, $type)
     {
-        $boleta = new Boleta();
+        $result = array();
 
-        $result = $boleta->create($id);
+        switch ($type) {
+            case '01':
+                $factura = new Factura();
+                $result = $factura->create($id);
+                break;
+            case '03':
+                $boleta = new Boleta();
+                $result = $boleta->create($id);
+                break;
+            case 2:
+                echo "i es igual a 2";
+                break;
+        }
+
 
         return response()->json([
             'success' => $result['success'],
@@ -513,5 +501,195 @@ class SaleDocumentController extends Controller
             'message'   => $result['message'],
             'notes'   => $result['notes']
         ]);
+    }
+
+    public function updateDetailsAndHeader(Request $request)
+    {
+        //Los ejemplos de calculos para la version ubl 2.1 estan en una carpeta
+        //en el proyecto en la direccion storage\app\public\invoice\manuales_guias_sunat
+        try {
+            $res = DB::transaction(function () use ($request) {
+                $document = SaleDocument::find($request->get('id'));
+
+                $items = $request->get('items');
+
+                ///totales de la cabecera
+                $mto_oper_taxed = 0;
+                $mto_igv = 0;
+                $total_icbper = 0;
+                $porcentage_icbper = 0.20;
+                $total_discount = 0;
+                $total = 0;
+
+                foreach ($items as $t => $item) {
+                    /// imiciamos las variables para hacer los calculos por item;
+                    $percentage_igv = $this->igv;
+                    $mto_base_igv = 0;
+                    $unit_price = $item['mto_price_unit'];
+                    $factorIGV = round(($percentage_igv / 100) + 1, 2);
+                    $quantity = $item['quantity'];
+                    $value_unit = 0;
+                    $igv = 0;
+                    $total_tax = 0;
+                    $icbper = 0;
+                    $value_sale = 0;
+                    $total_item = 0;
+                    $mto_discount = 0;
+                    $array_discounts = [];
+
+                    if ($item['type_afe_igv'] == '10') {
+                        $value_unit = round($unit_price / $factorIGV, 2);
+
+                        $base = round($value_unit * $quantity, 2);
+
+                        $factor = (($item['mto_discount'] * 100) / $unit_price) / 100;
+                        $descuento_monto = $factor * $value_unit * $quantity;
+
+                        $mto_base_igv = ($value_unit * $quantity) - $descuento_monto;
+
+                        $igv = ($mto_base_igv * 0.18);
+                        $total_item = (($value_unit * $quantity) - $descuento_monto) + $igv;
+
+                        $value_sale = ($value_unit * $quantity) - $descuento_monto;
+
+                        if ($item['mto_discount'] > 0) {
+                            //(Valor venta + Total Impuestos) / Cantidad
+                            $price_sale = round(($value_sale + $igv) / $quantity, 2);
+                            $array_discounts[0] = array(
+                                'type'      => '00',
+                                'base'      => round($base, 2),
+                                'factor'    => $factor,
+                                'monto'     => round($descuento_monto, 2)
+                            );
+                        } else {
+                            $price_sale = $unit_price;
+                        }
+
+
+                        //$mto_base_igv = $mto_base_igv - $item['mto_discount'];
+                        $mto_discount = $item['mto_discount'];
+                    }
+
+                    if ($item['type_afe_igv'] == '20') { //Exonerated
+
+                    }
+                    if ($item['type_afe_igv'] == '30') { //Unaffected
+
+                    }
+                    if ($item['icbper'] == 1) {
+                        $porcentage_item_icbper = $porcentage_icbper;
+                        $icbper = ($quantity * $porcentage_item_icbper);
+                    } else {
+                        $porcentage_item_icbper = 0;
+                        $icbper = 0;
+                    }
+                    $total_tax = $igv + $icbper;
+
+                    //se inserta los datos al detalle del documento 
+                    SaleDocumentItem::where('id', $item['id'])->update([
+                        'decription_product'    => $item['decription_product'] ?? 'No Especificado',
+                        'unit_type'             => $item['unit_type'],
+                        'quantity'              => $quantity,
+                        'mto_base_igv'          => $mto_base_igv,
+                        'percentage_igv'        => $this->igv,
+                        'igv'                   => $igv,
+                        'total_tax'             => $total_tax,
+                        'type_afe_igv'          => $item['type_afe_igv'],
+                        'icbper'                => $icbper,
+                        'factor_icbper'         => $porcentage_item_icbper,
+                        'mto_value_sale'        => $value_sale,
+                        'mto_value_unit'        => $value_unit,
+                        'mto_price_unit'        => $price_sale,
+                        'price_sale'            => $unit_price,
+                        'mto_total'             => round($total_item, 2),
+                        'mto_discount'          => $mto_discount ?? 0,
+                        'json_discounts'        => json_encode($array_discounts)
+                    ]);
+
+                    $product = Product::find($item['id']);
+                    if ($item['quantity'] > 0) {
+                        if ($product->is_product) {
+                            $k = Kardex::where('document_id', $document->id)
+                                ->where('document_entity', SaleDocument::class)
+                                ->first();
+
+                            $quantity_old = $k->quantity;
+                            $product->increment('stock', $quantity_old);
+                            $k->update(['quantity' => $item['quantity'] * (-1)]);
+
+                            if ($product->presentations) {
+                                KardexSize::where('kardex_id', $k->id)->update([
+                                    'quantity'  => $item['quantity'] * (-1)
+                                ]);
+                                $tallas = $product->sizes;
+                                $n_tallas = [];
+                                foreach (json_decode($tallas, true) as $k => $talla) {
+                                    if ($talla['size'] == $product->size) {
+                                        $n_tallas[$k] = array(
+                                            'size' => $talla['size'],
+                                            'quantity' => ($talla['quantity'] + $quantity_old)
+                                        );
+                                    } else {
+                                        $n_tallas[$k] = array(
+                                            'size' => $talla['size'],
+                                            'quantity' => $talla['quantity']
+                                        );
+                                    }
+                                }
+                                foreach (json_decode($tallas, true) as $k => $talla) {
+                                    if ($talla['size'] == $product->size) {
+                                        $n_tallas[$k] = array(
+                                            'size' => $talla['size'],
+                                            'quantity' => ($talla['quantity'] - $item['quantity'])
+                                        );
+                                    } else {
+                                        $n_tallas[$k] = array(
+                                            'size' => $talla['size'],
+                                            'quantity' => $talla['quantity']
+                                        );
+                                    }
+                                }
+                                $product->update([
+                                    'sizes' => json_encode($n_tallas)
+                                ]);
+                            }
+                            $product->decrement('stock', $item['quantity']);
+                        }
+                    }
+                    $mto_igv = $mto_igv + $igv;
+                    $total_icbper = $total_icbper + $icbper;
+                    $mto_oper_taxed = $mto_oper_taxed + $value_sale;
+                    $total = $total + round($total_item, 2);
+                }
+                $total_taxes = $mto_igv + $total_icbper;
+                $subtotal = $total_taxes + $mto_oper_taxed;
+                $ttotal = round($total, 2);
+                $difference = abs($ttotal - $subtotal);
+                $rounding = number_format($difference, 2);
+
+                $document->update([
+                    'invoice_mto_oper_taxed'    => $mto_oper_taxed,
+                    'invoice_mto_igv'           => $mto_igv,
+                    'invoice_icbper'            => $total_icbper,
+                    'invoice_total_taxes'       => $total_taxes,
+                    'invoice_value_sale'        => $mto_oper_taxed,
+                    'invoice_subtotal'          => $subtotal,
+                    'invoice_rounding'          => $rounding,
+                    'invoice_mto_imp_sale'      => $ttotal,
+                    'invoice_sunat_points'      => null,
+                ]);
+
+                Sale::where('id', $document->sale_id)->update([
+                    'total' => $ttotal,
+                    'advancement' => $ttotal,
+                    'total_discount' => $total_discount,
+                ]);
+                return $document->id;
+            });
+
+            return response()->json(['message' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
     }
 }

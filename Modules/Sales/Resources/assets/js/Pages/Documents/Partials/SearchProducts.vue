@@ -104,7 +104,8 @@
                     form.data.total = total;
                     let data = {
                         id: form.data.id,
-                        description: form.data.interne+' - '+form.data.description,
+                        interne: form.data.interne,
+                        description: form.data.description,
                         is_product: form.product.is_product == 1 ? true : false,
                         unit_type: form.product.type_unit_measure_id,
                         quantity: form.data.quantity,
@@ -131,7 +132,8 @@
                 form.data.total = total;
                 let data = {
                     id: form.data.id,
-                    description: form.data.interne+' - '+form.data.description,
+                    interne: form.data.interne,
+                    description: form.data.description,
                     is_product: form.product.is_product == 1 ? true : false,
                     unit_type: form.product.type_unit_measure_id,
                     quantity: form.data.quantity,

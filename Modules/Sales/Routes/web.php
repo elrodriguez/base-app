@@ -89,5 +89,7 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
 
     Route::get('saledocuments/list', [SaleDocumentController::class, 'index'])->name('saledocuments_list');
 
-    Route::get('saledocuments/send/{id}', [SaleDocumentController::class, 'sendSunatDocument'])->name('saledocuments_send');
+    Route::get('saledocuments/send/{id}/{type}', [SaleDocumentController::class, 'sendSunatDocument'])->name('saledocuments_send');
+
+    Route::post('saledocuments/update/details', [SaleDocumentController::class, 'updateDetailsAndHeader'])->name('saledocuments_update_details');
 });

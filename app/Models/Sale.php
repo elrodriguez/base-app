@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Sale extends Model
 {
@@ -22,7 +23,7 @@ class Sale extends Model
         'status'
     ];
 
-    public function saleProduct()
+    public function saleProduct(): HasMany
     {
         return $this->hasMany(SaleProduct::class, 'sale_id', 'id');
     }
@@ -30,5 +31,9 @@ class Sale extends Model
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y');
+    }
+    public function documents(): HasMany
+    {
+        return $this->hasMany(SaleDocument::class, 'sale_id', 'id');
     }
 }

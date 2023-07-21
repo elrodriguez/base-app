@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SaleDocument extends Model
@@ -50,11 +51,17 @@ class SaleDocument extends Model
         'invoice_response_code',
         'invoice_response_description',
         'invoice_notes',
-        'invoice_status'
+        'invoice_status',
+        'invoice_mto_discount',
+        'invoice_json_discounts',
     ];
 
     public function items(): HasMany
     {
         return $this->hasMany(SaleDocumentItem::class, 'document_id', 'id');
+    }
+    public function sale(): BelongsTo
+    {
+        return $this->belongsTo(Sale::class, 'sale_id', 'id');
     }
 }

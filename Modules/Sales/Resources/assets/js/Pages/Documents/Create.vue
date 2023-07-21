@@ -206,44 +206,68 @@
 
     const saveDocument = () => {
         formDocument.processing = true
-        axios.post(route('saledocuments_store'), formDocument ).then((res) => {
-            formDocument.client_id = props.client.id,
-            formDocument.client_name = props.client.number+"-"+props.client.full_name,
-            formDocument.client_ubigeo = props.client.ubigeo,
-            formDocument.client_dti = props.client.document_type_id,
-            formDocument.client_number = props.client.number,
-            formDocument.client_ubigeo_description = props.company.city,
-            formDocument.client_direction = props.company.fiscal_address,
-            formDocument.client_phone = props.client.telephone,
-            formDocument.client_email = props.client.email,
-            formDocument.sale_documenttype_id = 2,
-            formDocument.type_operation = props.type_operation,
 
-            formDocument.items = [];
-            formDocument.total_discount = 0;
-            formDocument.total = 0;
-            formDocument.payments = [{
-                type:1,
-                reference: null,
-                amount:0
-            }];
-            getSeriesByDocumentType();
-            formDocument.processing =  false;
-            // Swal2.fire({
-            //     title: 'Comprobante',
-            //     text: "¿Desea imprimir el Comprobante?",
-            //     icon: 'info',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#3085d6',
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'Imprimir',
-            //     cancelButtonText: 'Cancelar'
-            // }).then((result) => {
-            //     if (result.isConfirmed) {
-            //         printPdf(res.data.id);
-            //     }
-            // });
-        });
+        if(formDocument.serie){
+            if(formDocument.client_dti != 6 && formDocument.sale_documenttype_id == 1){
+                Swal2.fire({
+                    title: 'Información Importante',
+                    text: "El cliente debe tener ruc para emitir una factura",
+                    icon: 'error',
+                });
+                formDocument.processing = false
+                return;
+                
+            }
+
+            axios.post(route('saledocuments_store'), formDocument ).then((res) => {
+                formDocument.client_id = props.client.id,
+                formDocument.client_name = props.client.number+"-"+props.client.full_name,
+                formDocument.client_ubigeo = props.client.ubigeo,
+                formDocument.client_dti = props.client.document_type_id,
+                formDocument.client_number = props.client.number,
+                formDocument.client_ubigeo_description = props.company.city,
+                formDocument.client_direction = props.company.fiscal_address,
+                formDocument.client_phone = props.client.telephone,
+                formDocument.client_email = props.client.email,
+                formDocument.sale_documenttype_id = 2,
+                formDocument.type_operation = props.type_operation,
+                formDocument.serie = null
+                formDocument.items = [];
+                formDocument.total_discount = 0;
+                formDocument.total = 0;
+                formDocument.payments = [{
+                    type:1,
+                    reference: null,
+                    amount:0
+                }];
+                getSeriesByDocumentType();
+                formDocument.processing =  false;
+                // Swal2.fire({
+                //     title: 'Comprobante',
+                //     text: "¿Desea imprimir el Comprobante?",
+                //     icon: 'info',
+                //     showCancelButton: true,
+                //     confirmButtonColor: '#3085d6',
+                //     cancelButtonColor: '#d33',
+                //     confirmButtonText: 'Imprimir',
+                //     cancelButtonText: 'Cancelar'
+                // }).then((result) => {
+                //     if (result.isConfirmed) {
+                //         printPdf(res.data.id);
+                //     }
+                // });
+            }).catch(function (error) {
+                console.log(error)
+            });
+        }else{
+            Swal2.fire({
+                title: 'Información Importante',
+                text: "Elejir serie de documento",
+                icon: 'error',
+            });
+            formDocument.processing = false
+            return;
+        }
     }
     const addPayment = () => {
         let ar = {
@@ -332,6 +356,7 @@
                                         :saleDocumentTypes="saleDocumentTypesId"
                                         :ubigeo="departments"
                                     />
+                                   <div><InputError :message="formDocument.errors.client_id" class="mt-2" /></div> 
                                 </div>
                             </div>
                             <div class="grid grid-cols-3 gap-4 justify-between mb-1">
@@ -354,18 +379,21 @@
                                     <select v-model="formDocument.serie" class="invoice-select dark:text-gray-400 dark:bg-gray-700">
                                         <option v-for="(serie) in series" :value="serie.id" >{{ serie.description }}</option>
                                     </select>
+                                    <InputError :message="formDocument.errors.serie" class="mt-2" />
                                 </div>
                             </div>
                             <div class="flex justify-between mb-1">
                                 <div style="font-size: 14px;" class="flex-1 uppercase">Fecha de Emisión:</div>
                                 <div class="flex-1 ltr:text-right rtl:text-left">
                                     <input v-model="formDocument.date_issue" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="date" />
+                                    <InputError :message="formDocument.errors.date_issue" class="mt-2" />
                                 </div>
                             </div>
                             <div class="flex justify-between mb-1">
                                 <div style="font-size: 14px;" class="flex-1 uppercase">Fecha de vencimiento:</div>
                                 <div class="flex-1 ltr:text-right rtl:text-left">
                                     <input v-model="formDocument.date_end" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="date" />
+                                    <InputError :message="formDocument.errors.date_end" class="mt-2" />
                                 </div>
                             </div>
                         </div>

@@ -8,19 +8,24 @@ use Greenter\Model\Sale\Legend;
 use Greenter\Model\Sale\Invoice;
 use App\Models\SaleDocument;
 use App\Helpers\Invoice\Util;
+use Greenter\Model\Company\Company;
 use Carbon\Carbon;
 use DateTime;
-
-use function Pest\Laravel\json;
+use App\Models\Company as MyCompany;
+use Greenter\Model\Company\Address;
+use Greenter\Model\Sale\Charge;
 
 class Boleta
 {
     protected $see;
     protected $util;
+    protected $mycompany;
+
 
     public function __construct()
     {
         $this->util = Util::getInstance();
+        $this->mycompany = MyCompany::first();
     }
 
     public function create($document_id)
@@ -35,6 +40,22 @@ class Boleta
             ->setNumDoc($document->client_number)
             ->setRznSocial($document->client_rzn_social);
 
+        $company = new Company();
+
+        $province = $this->mycompany->district->province;
+        $department = $province->department;
+
+        $company->setRuc($this->mycompany->ruc)
+            ->setRazonSocial($this->mycompany->business_name)
+            ->setNombreComercial($this->mycompany->tradename)
+            ->setAddress((new Address())
+                ->setUbigueo($this->mycompany->ubigeo)
+                ->setDepartamento($department->name)
+                ->setProvincia($province->name)
+                ->setDistrito($this->mycompany->district->name)
+                ->setUrbanizacion('-')
+                ->setDireccion($this->mycompany->fiscal_address));
+
         $invoice = new Invoice();
 
         $invoice->setUblVersion($document->invoice_ubl_version)
@@ -44,7 +65,7 @@ class Boleta
             ->setCorrelativo($document->invoice_correlative)
             ->setFechaEmision($broadcast_date)
             ->setTipoMoneda('PEN')
-            ->setCompany($this->util->getCompany())
+            ->setCompany($company)
             ->setClient($client)
             ->setMtoOperGravadas($document->invoice_mto_oper_taxed)
             ->setMtoIGV($document->invoice_mto_igv)
@@ -69,6 +90,25 @@ class Boleta
                 ->setMtoValorVenta($detail->mto_value_sale)
                 ->setMtoValorUnitario($detail->mto_value_unit)
                 ->setMtoPrecioUnitario($detail->mto_price_unit);
+
+            $descuent = $detail->mto_discount;
+
+            if ($descuent > 0) {
+                $json_discounts = json_decode($detail->json_discounts);
+
+                $charges = [];
+
+                foreach ($json_discounts as $k => $json_discount) {
+                    $charges[$k] = (new Charge())
+                        ->setCodTipo($json_discount->type)
+                        ->setMontoBase($json_discount->base)
+                        ->setFactor($json_discount->factor)
+                        ->setMonto($json_discount->monto);
+                }
+
+                $item->setDescuentos($charges);
+            }
+
             array_push($items, $item);
         }
         $legend = new Legend();
@@ -84,7 +124,7 @@ class Boleta
         $document->invoice_send_date = Carbon::now();
 
         $document->invoice_xml = $this->util->writeXml($invoice, $see->getFactory()->getLastXml());
-        $document->invoice_document_name = $invoice->getName();;
+        $document->invoice_document_name = $invoice->getName();
         $notes = null;
         $status = null;
         if ($res->isSuccess()) {

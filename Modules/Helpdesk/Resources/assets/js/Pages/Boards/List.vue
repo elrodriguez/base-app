@@ -158,6 +158,7 @@
             errorBag: 'saveBoardLevels',
             preserveScroll: true,
             onSuccess: () => { 
+                initializeDropdownItems();
                 displayModalLevels.value = false;
                 Swal2.fire('Enhorabuena','Registro exitoso.','success')
             },

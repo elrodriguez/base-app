@@ -17,6 +17,7 @@ return new class extends Migration
         });
         Schema::table('local_sales', function (Blueprint $table) {
             $table->string('ubigeo')->nullable();
+            $table->string('sunat_code')->nullable()->default('0000')->comment('Codigo de establecimiento asignado por SUNAT, 0000 por defecto');
             $table->foreign('ubigeo', 'local_sale_ubigeo_fk')->references('id')->on('districts');
         });
     }
@@ -33,6 +34,7 @@ return new class extends Migration
         Schema::table('local_sales', function (Blueprint $table) {
             $table->dropForeign('local_sale_ubigeo_fk');
             $table->dropColumn('ubigeo')->nullable();
+            $table->dropColumn('sunat_code')->nullable();
         });
     }
 };

@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LocalSale extends Model
 {
@@ -14,7 +15,8 @@ class LocalSale extends Model
         'description',
         'address',
         'phone',
-        'ubigeo'
+        'ubigeo',
+        'sunat_code'
     ];
 
     public function getCreatedAtAttribute($value)
@@ -25,5 +27,10 @@ class LocalSale extends Model
     public function series()
     {
         return $this->hasMany(Serie::class, 'local_id');
+    }
+
+    public function district(): HasOne
+    {
+        return $this->hasOne(District::class, 'id', 'ubigeo');
     }
 }

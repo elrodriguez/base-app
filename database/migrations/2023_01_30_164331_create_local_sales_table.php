@@ -23,7 +23,7 @@ return new class extends Migration
         });
 
         DB::table('local_sales')->insert([
-            ['description' => 'Local Principal', 'address' => 'Viru', 'phone' => '99999999', 'ubigeo' => '021801']
+            ['description' => 'Local Principal', 'address' => 'Viru', 'phone' => '99999999']
         ]);
     }
 
