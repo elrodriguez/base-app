@@ -105,7 +105,7 @@
                     let data = {
                         id: form.data.id,
                         interne: form.data.interne,
-                        description: form.data.description,
+                        description: form.data.description + ' Talla-'+form.data.size,
                         is_product: form.product.is_product == 1 ? true : false,
                         unit_type: form.product.type_unit_measure_id,
                         quantity: form.data.quantity,
@@ -115,6 +115,9 @@
                         afe_igv: form.product.type_sale_affectation_id,
                         presentations: pre,
                         size: form.data.size,
+                        m_igv: 0,
+                        v_sale: 0,
+                        icbper: false
                     }
                     emit('eventdata',data);
                     displayModal.value = false;
@@ -141,7 +144,10 @@
                     discount: form.data.discount,
                     total: form.data.total.toFixed(2),
                     afe_igv: form.product.type_sale_affectation_id,
-                    presentations: pre
+                    presentations: pre,
+                    m_igv: 0,
+                    v_sale: 0,
+                    icbper: false
                 }
                 emit('eventdata',data);
                 displayModal.value = false;

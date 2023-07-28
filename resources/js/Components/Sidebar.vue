@@ -118,6 +118,12 @@ const menu = ref([
                 status: false,
                 text: 'Lista de Documentos',
                 permissions: 'invo_documento_lista',
+            },
+            {
+                route: route('salesummaries_list'),
+                status: false,
+                text: 'Resumen',
+                permissions: 'invo_resumenes_lista',
             }
         ]
     },

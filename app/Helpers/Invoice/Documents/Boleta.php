@@ -128,7 +128,6 @@ class Boleta
         $notes = null;
         $status = null;
         if ($res->isSuccess()) {
-            /**@var $res \Greenter\Model\Response\BillResult*/
             $cdr = $res->getCdrResponse();
             $codeError = $cdr->getCode();
             $messageError = $cdr->getDescription();

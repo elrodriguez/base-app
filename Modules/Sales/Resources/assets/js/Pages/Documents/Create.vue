@@ -43,12 +43,17 @@
         type_operation: {
             type: String,
             default: () => ({}),
+        },
+        taxes: {
+            type: Object,
+            default: () => ({}),
         }
     });
 
     const formDocument = useForm({
         client_id: props.client.id,
         client_name: props.client.number+"-"+props.client.full_name,
+        client_rzn_social: props.client.full_name,
         client_ubigeo: props.client.ubigeo,
         client_dti: props.client.document_type_id,
         client_number: props.client.number,
@@ -63,7 +68,10 @@
         date_end: null,
         items:[],
         total_discount: 0,
+        total_igv: 0,
+        percentage_igv: 0,
         total: 0,
+        total_taxed: 0, //operaciones gravadas
         payments: [{
             type:1,
             reference: null,
@@ -102,8 +110,21 @@
     onMounted(() => {
         getSeriesByDocumentType();
         getCurrentDate();
+        startTaxes();
     });
+    const taxes = ref({});
+    const startTaxes = () => {
+        
+        let igv = parseFloat(props.taxes.igv);
+        let icbper = parseFloat(props.taxes.icbper);
 
+        let xa = {
+            nfactorIGV: (igv / 100) + 1,
+            rfactorIGV: (igv / 100),
+            icbper: icbper
+        }
+        taxes.value = xa;
+    }
     const getCurrentDate = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -172,7 +193,9 @@
             total: 0,
             afe_igv: 10,
             size: null,
-            presentations: null
+            m_igv: 0,
+            presentations: null,
+            icbper: false
         }
         formDocument.items.push(item);
     }
@@ -182,29 +205,45 @@
         formDocument.items.splice(key,1);
     }
 
+   
 
     const calculateTotals = (key) => {
         let c = parseFloat(formDocument.items[key].quantity) ?? 0;
         let p = parseFloat(formDocument.items[key].unit_price) ?? 0;
         let d = parseFloat(formDocument.items[key].discount) ?? 0;
 
-        let st = (c * p) - d;
-
+        let vu = p / taxes.value.nfactorIGV; //valor unitario
+        let fa = ((d * 100) / p) / 100; //factor del descuento
+        let md = fa * vu * c; //monto del descuento
+        let bi = (vu * c) - md; //base igv
+        let mi = bi * taxes.value.rfactorIGV; //total igv por item
+        let st = ((vu * c) - md) + mi;
+        let vs = (vu * c) - md;
         // Verificar si el resultado es NaN y asignar 0 en su lugar
         if (isNaN(st)) {
             st = 0;
         }
-
+        if (isNaN(mi)) {
+            mi = 0;
+        }
+        if (isNaN(vs)) {
+            vs = 0;
+        }
+        formDocument.items[key].m_igv = mi.toFixed(2);
         formDocument.items[key].total = st.toFixed(2);
+        formDocument.items[key].v_sale = vs.toFixed(2);
 
         // Calcular la suma de los totales de todos los items
         formDocument.total = formDocument.items.reduce((acc, item) => acc + parseFloat(item.total), 0).toFixed(2);
-        formDocument.total_discount = formDocument.items.reduce((acc, item) => acc + parseFloat(item.discount), 0).toFixed(2);
-       
+        formDocument.total_discount = formDocument.items.reduce((acc, item) => acc + (parseFloat(item.discount)*c), 0).toFixed(2);
+        formDocument.total_taxed = formDocument.items.reduce((acc, item) => acc + parseFloat(item.v_sale), 0).toFixed(2);
+        formDocument.total_igv = formDocument.items.reduce((acc, item) => acc + parseFloat(item.m_igv), 0).toFixed(2);
         formDocument.payments[0].amount = formDocument.total;
+        
     }
 
     const saveDocument = () => {
+        
         formDocument.processing = true
 
         if(formDocument.serie){
@@ -234,7 +273,9 @@
                 formDocument.serie = null
                 formDocument.items = [];
                 formDocument.total_discount = 0;
+                formDocument.total_igv = 0;
                 formDocument.total = 0;
+                formDocument.total_taxed = 0;
                 formDocument.payments = [{
                     type:1,
                     reference: null,
@@ -242,20 +283,23 @@
                 }];
                 getSeriesByDocumentType();
                 formDocument.processing =  false;
-                // Swal2.fire({
-                //     title: 'Comprobante',
-                //     text: "¿Desea imprimir el Comprobante?",
-                //     icon: 'info',
-                //     showCancelButton: true,
-                //     confirmButtonColor: '#3085d6',
-                //     cancelButtonColor: '#d33',
-                //     confirmButtonText: 'Imprimir',
-                //     cancelButtonText: 'Cancelar'
-                // }).then((result) => {
-                //     if (result.isConfirmed) {
-                //         printPdf(res.data.id);
-                //     }
-                // });
+                Swal2.fire({
+                    title: 'Comprobante creado con éxito',
+                    text: "¿deseas enviar a sunat y/o Imprimir?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Enviar Ahora',
+                    cancelButtonText: 'Seguir vendiendo',
+                    showDenyButton: true,
+                    denyButtonText: `Solo Imprimir`,
+                    denyButtonColor: '#5E5A5A'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        printPdf(res.data.id);
+                    }
+                });
             }).catch(function (error) {
                 console.log(error)
             });
@@ -287,12 +331,47 @@
     const closeSearchProducus = () => {
         displaySearchProducts.value = false;
     }
-
+    
     const getDataTable = async (data) => {
-        let tt = (parseFloat(data.total) + parseFloat(formDocument.total));
-        let td = (parseFloat(data.discount) + parseFloat(formDocument.total_discount));
+        let c = parseFloat(data.quantity) ?? 0;
+        let p = parseFloat(data.unit_price) ?? 0;
+        let d = parseFloat(data.discount) ?? 0;
+
+        let vu = p / taxes.value.nfactorIGV; //valor unitario
+        let fa = ((d * 100) / p) / 100; //factor del descuento
+        let md = fa * vu * c; //monto del descuento
+        let bi = (vu * c) - md; //base igv
+        let mi = bi * taxes.value.rfactorIGV; //total igv por item
+        let st = ((vu * c) - md) + mi;
+        let vs = (vu * c) - md;
+        
+        // Verificar si el resultado es NaN y asignar 0 en su lugar
+        if (isNaN(st)) {
+            st = 0;
+        }
+        if (isNaN(mi)) {
+            mi = 0;
+        }
+        if (isNaN(vs)) {
+            vs = 0;
+        }
+        if (isNaN(md)) {
+            md = 0;
+        }
+        data.m_igv = mi.toFixed(2);
+        data.total = st.toFixed(2);
+        data.v_sale = vs.toFixed(2);
+
+        let tt = parseFloat(formDocument.total) + st;
+        let td = parseFloat(formDocument.total_discount) + md;
+        let tx = parseFloat(formDocument.total_taxed) + vs;
+        let ti = parseFloat(formDocument.total_igv) + mi;
+        // Calcular la suma de los totales de todos los items
+
         formDocument.total = tt.toFixed(2);
         formDocument.total_discount = td.toFixed(2);
+        formDocument.total_taxed = tx.toFixed(2);
+        formDocument.total_igv = ti.toFixed(2);
         formDocument.items.push(data);
         formDocument.payments[0].amount = formDocument.total;
         displaySearchProducts.value = false;
@@ -504,21 +583,21 @@
                                 </template>
                             </tbody>
                             <tfoot>
-                                <!-- <tr>
+                                <tr>
                                     <td colspan="3"></td>
                                     <td colspan="4" class="text-right text-xs uppercase"><b>OP. GRAVADAS: S/</b></td>
-                                    <td class="text-right text-xs">$290</td>
-                                </tr> -->
+                                    <td class="text-right text-xs">{{ formDocument.total_taxed }}</td>
+                                </tr>
                                 <tr>
                                     <td colspan="3"></td>
                                     <td colspan="4" class="text-right text-xs uppercase"><b>descuento: S/</b></td>
                                     <td class="text-right text-xs">{{ formDocument.total_discount  }}</td>
                                 </tr>
-                                <!-- <tr>
+                                <tr>
                                     <td colspan="3"></td>
                                     <td colspan="4" class="text-right text-xs uppercase"><b>IGV: S/</b></td>
-                                    <td class="text-right text-xs">5%</td>
-                                </tr> -->
+                                    <td class="text-right text-xs">{{ formDocument.total_igv }}</td>
+                                </tr>
                                 <tr>
                                     <td colspan="3"></td>
                                     <td colspan="4" class="text-right text-xs uppercase"><b>TOTAL A PAGAR: S/</b></td>

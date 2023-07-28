@@ -32,6 +32,10 @@ return new class extends Migration
             $table->date('invoice_due_date')->nullable()->comment('fecha de vencimiento');
             $table->dateTime('invoice_send_date')->nullable()->comment('fecha que se envio a sunat');
             $table->decimal('invoice_mto_oper_taxed', 12, 2)->nullable()->comment('monto operaciones onerosas');
+            $table->decimal('invoice_mto_oper_unaffected', 12, 2)->nullable()->default(0)->comment('monto operaciones inafectas');
+            $table->decimal('invoice_mto_oper_exonerated', 12, 2)->nullable()->default(0)->comment('monto operaciones exoneradas');
+            $table->decimal('invoice_mto_oper_export', 12, 2)->nullable()->default(0)->comment('monto operaciones exportación');
+            $table->decimal('invoice_mto_oper_other_charges', 12, 2)->nullable()->default(0)->comment('monto operaciones Otros Cargos');
             $table->decimal('invoice_mto_igv', 12, 2)->nullable();
             $table->decimal('invoice_icbper', 12, 2)->nullable();
             $table->decimal('invoice_total_taxes', 12, 2)->nullable()->comment('total impuestos');

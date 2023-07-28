@@ -19,6 +19,7 @@ use Modules\Sales\Http\Controllers\ProviderController;
 use Modules\Sales\Http\Controllers\ReportController;
 use Modules\Sales\Http\Controllers\SaleController;
 use Modules\Sales\Http\Controllers\SaleDocumentController;
+use Modules\Sales\Http\Controllers\SaleSummaryController;
 use Modules\Sales\Http\Controllers\SerieController;
 
 Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
@@ -92,4 +93,10 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::get('saledocuments/send/{id}/{type}', [SaleDocumentController::class, 'sendSunatDocument'])->name('saledocuments_send');
 
     Route::post('saledocuments/update/details', [SaleDocumentController::class, 'updateDetailsAndHeader'])->name('saledocuments_update_details');
+
+    Route::post('saledocuments/update/details', [SaleDocumentController::class, 'updateDetailsAndHeader'])->name('saledocuments_update_details');
+
+    Route::get('salesummary/list', [SaleSummaryController::class, 'index'])->name('salesummaries_list');
+    Route::get('salesummary/search/{date}', [SaleSummaryController::class, 'searchDocuments'])->name('salesummaries_search_date');
+    Route::post('salesummary/store', [SaleSummaryController::class, 'store'])->name('salesummaries_store_date');
 });

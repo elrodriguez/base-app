@@ -164,10 +164,12 @@
     };
     const calculateItemTotals = (key) => {
         let c = parseFloat(documentDetails.value.items[key].quantity) ?? 0;
-        let p = parseFloat(documentDetails.value.items[key].mto_price_unit) ?? 0;
+        let p = parseFloat(documentDetails.value.items[key].price_sale) ?? 0;
         let d = parseFloat(documentDetails.value.items[key].mto_discount) ?? 0;
 
-        let st = (c * p) - d;
+        p = p - d;
+
+        let st = (c * p);
 
         // Verificar si el resultado es NaN y asignar 0 en su lugar
         if (isNaN(st)) {
@@ -180,7 +182,7 @@
 </script>
 
 <template>
-    <AppLayout title="Ventas">
+    <AppLayout title="Documentos">
         <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
             <!-- Breadcrumb Start -->
             <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
@@ -195,13 +197,13 @@
                         <div class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                         <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Ventas</span>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Facturación Electrónica</span>
                         </div>
                     </li>
                     <li aria-current="page">
                         <div class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Listado</span>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Lista de Documentos</span>
                         </div>
                     </li>
                 </ol>
@@ -429,11 +431,11 @@
                                     <input v-show="showteButtonSave" v-model="item.quantity" @input="calculateItemTotals(ko)"  class="invoice-imput text-right" type="text" />
                                 </td>
                                 <td style="width: 110px;" class="px-4 py-2 text-right">
-                                    <span v-show="!showteButtonSave">{{ item.mto_price_unit }}</span>
-                                    <input v-show="showteButtonSave" v-model="item.mto_price_unit" @input="calculateItemTotals(ko)"  class="invoice-imput text-right" type="text" />
+                                    <span v-show="!showteButtonSave">{{ item.price_sale }}</span>
+                                    <input v-show="showteButtonSave" v-model="item.price_sale" @input="calculateItemTotals(ko)"  class="invoice-imput text-right" type="text" />
                                 </td>
                                 <td style="width: 120px;" class="px-4 py-2 text-right">
-                                    {{ (item.quantity * item.mto_price_unit).toFixed(2) }}
+                                    {{ (item.quantity * item.price_sale).toFixed(2) }}
                                 </td>
                                 <td style="width: 120px;" class="px-4 py-2 text-right">
                                     <span v-show="!showteButtonSave">{{ item.mto_discount }}</span>
