@@ -25,10 +25,6 @@ return new class extends Migration
             $table->foreign('local_id', 'series_local_sale_id_fk')->references('id')->on('local_sales')->onDelete('cascade');
             $table->foreign('user_id', 'series_user_id_fk')->references('id')->on('users')->onDelete('cascade');
         });
-
-        DB::table('series')->insert([
-            ['document_type_id' => 5, 'description' => 'NV01', 'number' => 1, 'local_id' => 1]
-        ]);
     }
 
     /**

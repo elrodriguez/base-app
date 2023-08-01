@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Company;
 use Illuminate\Support\ServiceProvider;
 use App\Rules\SizeExistence;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +34,26 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::component('blog-web-nav-dev', \Modules\Blog\View\Components\BlogWebNavDev::class);
         Blade::component('blog-footer-dev', \Modules\Blog\View\Components\BlogWebFooterDev::class);
+
+        Inertia::share('company', function () {
+            return Company::select(
+                'ruc',
+                'name',
+                'business_name',
+                'tradename',
+                'fiscal_address',
+                'phone',
+                'representative',
+                'email',
+                'logo',
+                'logo_document',
+                'ubigeo',
+                'logo_negative',
+                'logo_dark',
+                'isotipo',
+                'isotipo_negative',
+                'isotipo_dark'
+            )->first();
+        });
     }
 }

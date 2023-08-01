@@ -92,7 +92,7 @@
                             cadena += `<br>Nota: ${notes}`;
                         }
                         Swal.showValidationMessage(cadena)
-                        
+                        router.visit(route('saledocuments_list'), { replace: true });
                     }
                     return res
                 });
@@ -179,6 +179,12 @@
         documentDetails.value.items[key].mto_total = st.toFixed(2);
 
     }
+
+    const downloadDocument = (id,type,file) => {
+        let url = route('saledocuments_download',[id, type,file])
+        window.open(url, "_blank");      
+    }
+
 </script>
 
 <template>
@@ -228,12 +234,6 @@
                             <div class="col-span-3 sm:col-span-2">
                                 <Keypad>
                                     <template #botones>
-                                        <PrimaryButton
-                                            class="mr-2"
-                                            @click="openPrintSaleDay()"
-                                        >
-                                            Imprimir Ventas Del día
-                                        </PrimaryButton>
                                         <Link :href="route('saledocuments_create')" class="inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Nuevo</Link>
                                     </template>
                                 </Keypad>
@@ -268,7 +268,7 @@
                                 <template v-for="(document, index) in documents.data" :key="document.id">
                                     <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" :class="document.invoice_status ==='registrado' ? 'border-b border-stroke' : ''">
                                         <td :rowspan="document.invoice_status ==='registrado' ? 1 : 2" class="text-center py-1 px-4 dark:border-strokedark">
-                                            <div class="flex relative justify-center">
+                                            <div style="position: relative;" class="flex justify-center">
                                                 <button
                                                     :id="'dropdownButton'+index"
                                                     @click="toggleDropdown(index)"
@@ -281,40 +281,64 @@
                                                 <div
                                                     :id="'dropdown-'+index"
                                                     v-show="dropdownItems[index]?.showDropdown"
-                                                    style="margin-top: 44px;"
-                                                    class="absolute mt-40 z-99 text-base list-none border border-gray-200 bg-gray-100 divide-y divide-gray-100 shadow w-auto dark:bg-gray-700"
+                                                    style="margin-top: 44px;position: absolute;z-index: 9999;"
+                                                    class="text-base rounded-lg list-none border border-blue-700 bg-gray-100 divide-y divide-gray-100 shadow dark:bg-gray-700"
                                                 >
-                                                    <ul class="py-2" :aria-labelledby="'dropdownButton'+index">
+                                                    <ul :aria-labelledby="'dropdownButton'+index">
                                                         <template v-if="document.invoice_status != 'Aceptada'">
-                                                            <li v-can="'help_tableros_editar'">
+                                                            <li class="border-b border-blue-700" v-can="'help_tableros_editar'">
                                                                 <button @click="showModalEditPanel(index)"
                                                                 type="button"
-                                                                class="block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                                                                 >Editar</button>
                                                             </li>
                                                         </template>
                                                         <template v-if="document.invoice_status != 'Aceptada'">
-                                                            <li v-can="'help_tableros_editar'">
+                                                            <li class="border-b border-blue-700" v-can="'help_tableros_editar'">
                                                                 <button v-can="'invo_documento_envio_sunat'" @click="sendSunatDocument(document)"
                                                                 type="button"
-                                                                class="block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                                                                 >Enviar a Sunat</button>
                                                             </li>
                                                         </template>
                                                         <template v-if="document.invoice_status != 'Aceptada'">
-                                                            <li v-can="'help_tableros_eliminar'">
+                                                            <li class="border-b border-blue-700" v-can="'help_tableros_eliminar'">
                                                                 <button @click="deletePanel(index,board.id)"
                                                                 type="button"
-                                                                class="block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                                class="rounded-lg px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                                                                 >Eliminar</button>
                                                             </li>
                                                         </template>
-                                                        <li>
+                                                        <li class="text-center">
                                                             <button @click="opemModalDetails(document)"
                                                             type="button"
-                                                            class="block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                            class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                                                             >Detalles</button>
                                                         </li>
+                                                        <template v-if="document.invoice_status === 'Aceptada'">
+                                                            <li class="border-t border-blue-700">
+                                                                <button @click="downloadDocument(document.document_id,document.invoice_type_doc,'PDF')"
+                                                                type="button"
+                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                                >Imprimir PDF</button>
+                                                            </li>
+                                                        </template>
+                                                        <template v-if="document.invoice_status === 'Aceptada'">
+                                                            <li class="border-t border-blue-700">
+                                                                <button @click="downloadDocument(document.document_id,document.invoice_type_doc,'XML')"
+                                                                type="button"
+                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                                >Descargar XML</button>
+                                                            </li>
+                                                        </template>
+                                                        <template v-if="document.invoice_status === 'Aceptada'">
+                                                            <li class="border-t border-blue-700">
+                                                                <button @click="downloadDocument(document.document_id,document.invoice_type_doc,'CDR')"
+                                                                type="button"
+                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                                >Descargar CDR</button>
+                                                            </li>
+                                                        </template>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -460,6 +484,7 @@
                >Guardar Cambios</PrimaryButton> 
             </template>
         </ModalLargeX>
+
     </AppLayout>
 </template>
 <style scoped>

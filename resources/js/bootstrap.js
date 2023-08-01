@@ -9,6 +9,24 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+// Interceptor para capturar respuestas con código de estado 401
+window.axios.interceptors.response.use(
+    (response) => {
+      // Si la respuesta es exitosa, simplemente devuélvela para que sea manejada normalmente.
+      return response;
+    },
+    (error) => {
+      if (error.response && error.response.status === 401) {
+        // Si la respuesta tiene un código de estado 401, significa que el usuario no está autenticado.
+        // Aquí redirigiremos al usuario a la página de inicio de sesión.
+  
+        // Redirigir al usuario a la página de inicio de sesión (reemplaza "/login" con la ruta real)
+        window.location.href = '/login';
+      }
+      return Promise.reject(error);
+    }
+);
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

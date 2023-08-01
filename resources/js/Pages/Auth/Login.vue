@@ -35,7 +35,7 @@ const submit = () => {
         <div class="w-full p-4 sm:p-12.5 xl:p-17.5">
             <span class="mb-1.5 block font-medium">Empezar</span>
             <h2 class="mb-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Iniciar sesión en delventas
+                Iniciar sesión en {{ $page.props.company.name }}
             </h2>
 
             <form @submit.prevent="submit">
@@ -87,7 +87,7 @@ const submit = () => {
                     </label>
                 </div>
                 <div class="mb-5">
-                    <input :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit" value="Sign In" class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90" />
+                    <input :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit" value="Iniciar sesión" class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90" />
                 </div>
                 <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                     {{ status }}
@@ -123,9 +123,9 @@ const submit = () => {
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        class="underline text-sm text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                     >
-                        Forgot your password?
+                        ¿Olvidaste tu contraseña?
                     </Link>
                 </div>
             </form>

@@ -5,6 +5,7 @@ namespace Modules\Sales\Http\Controllers;
 use App\Helpers\Invoice\Documents\Resumen;
 use App\Models\SaleDocument;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -46,15 +47,6 @@ class SaleSummaryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('sales::create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      * @param Request $request
      * @return Renderable
@@ -83,6 +75,8 @@ class SaleSummaryController extends Controller
                 'status'                    => $document['status'],
                 'total'                     => $document['invoice_mto_imp_sale']
             ]);
+            SaleDocument::where('id', $document['id'])
+                ->update(['invoice_status' => 'Enviada']);
         }
 
         $factura = new Resumen();
@@ -108,8 +102,10 @@ class SaleSummaryController extends Controller
         $documents = SaleDocument::select(
             'sale_documents.*',
             DB::raw('(SELECT description FROM sale_document_types WHERE sunat_id=invoice_type_doc) AS type_description')
-        )->whereDate('invoice_broadcast_date', $date)
+        )
+            ->whereDate('invoice_broadcast_date', $date)
             ->whereIn('invoice_type_doc', ['03', '07'])
+            ->where('invoice_status', 'Pendiente')
             ->get();
 
         if (count($documents) > 0) {
@@ -129,29 +125,44 @@ class SaleSummaryController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
+    public function checkSummary($id, $ticket)
     {
-        return view('sales::edit');
+        $summary = new Resumen();
+        $result = $summary->checkSummary($id, $ticket);
+
+        return response()->json([
+            'success' => $result['success'],
+            'code'  => $result['code'],
+            'message'   => $result['message'],
+            'notes'   => $result['notes']
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
+    public function destroySummary($id)
     {
-        //
-    }
+        try {
+            $summary = SaleSummary::find($id);
+            $documents = SaleDocument::join('sale_summary_details', 'document_id', 'sale_documents.id')
+                ->select('sale_documents.*')
+                ->where('summary_id', $summary->id)
+                ->get();
+            foreach ($documents as $document) {
+                SaleDocument::where('id', $document['id'])
+                    ->update([
+                        'invoice_status' => 'Pendiente',
+                        'invoice_response_code' => 0,
+                        'invoice_response_description' => null
+                    ]);
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+            $summary->delete();
+
+            return array(
+                'success' => true,
+                'message' => 'resumen eliminado'
+            );
+        } catch (Exception $e) {
+            var_dump($e);
+        }
     }
 }

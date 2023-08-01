@@ -97,24 +97,55 @@
     const emit = defineEmits(['eventdata']);
 
     const addProduct = (pre) => {
-        if (pre){
-            if(form.data.size){
+        if(form.data.stock > 0 && form.data.stock >= form.data.quantity){
+            if (pre){
+                if(form.data.size){
+                    if(form.data.price){
+                        let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
+                        form.data.total = total;
+                        let data = {
+                            id: form.data.id,
+                            interne: form.data.interne,
+                            description: form.data.description + ' Talla-'+form.data.size,
+                            is_product: form.product.is_product == 1 ? true : false,
+                            unit_type: form.product.type_unit_measure_id,
+                            quantity: form.data.quantity,
+                            unit_price: form.data.price,
+                            discount: form.data.discount,
+                            total: form.data.total,
+                            afe_igv: form.product.type_sale_affectation_id,
+                            presentations: pre,
+                            size: form.data.size,
+                            m_igv: 0,
+                            v_sale: 0,
+                            icbper: false
+                        }
+                        emit('eventdata',data);
+                        displayModal.value = false;
+                        form.data.size = null;
+                        displayResultSearch.value = false;
+                    }else{
+                        swal('Seleccionar Precio')
+                    }
+                }else{
+                    swal('Seleccionar Talla')
+                }
+            }else{
                 if(form.data.price){
                     let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
                     form.data.total = total;
                     let data = {
                         id: form.data.id,
                         interne: form.data.interne,
-                        description: form.data.description + ' Talla-'+form.data.size,
+                        description: form.data.description,
                         is_product: form.product.is_product == 1 ? true : false,
                         unit_type: form.product.type_unit_measure_id,
                         quantity: form.data.quantity,
                         unit_price: form.data.price,
                         discount: form.data.discount,
-                        total: form.data.total,
+                        total: form.data.total.toFixed(2),
                         afe_igv: form.product.type_sale_affectation_id,
                         presentations: pre,
-                        size: form.data.size,
                         m_igv: 0,
                         v_sale: 0,
                         icbper: false
@@ -126,38 +157,10 @@
                 }else{
                     swal('Seleccionar Precio')
                 }
-            }else{
-                swal('Seleccionar Talla')
             }
         }else{
-            if(form.data.price){
-                let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
-                form.data.total = total;
-                let data = {
-                    id: form.data.id,
-                    interne: form.data.interne,
-                    description: form.data.description,
-                    is_product: form.product.is_product == 1 ? true : false,
-                    unit_type: form.product.type_unit_measure_id,
-                    quantity: form.data.quantity,
-                    unit_price: form.data.price,
-                    discount: form.data.discount,
-                    total: form.data.total.toFixed(2),
-                    afe_igv: form.product.type_sale_affectation_id,
-                    presentations: pre,
-                    m_igv: 0,
-                    v_sale: 0,
-                    icbper: false
-                }
-                emit('eventdata',data);
-                displayModal.value = false;
-                form.data.size = null;
-                displayResultSearch.value = false;
-            }else{
-                swal('Seleccionar Precio')
-            }
+            swal('Stock insuficiente')
         }
-        
     }
 </script>
 

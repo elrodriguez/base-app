@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
 use App\Models\LocalSale;
 use App\Models\SaleDocumentType;
 use App\Models\Serie;
@@ -18,6 +19,7 @@ class LocalSaleController extends Controller
      */
     public function index()
     {
+
         $locals = (new LocalSale())->newQuery();
         if (request()->has('search')) {
             $locals->where('local_sales.description', 'Like', '%' . request()->input('search') . '%');
@@ -57,8 +59,18 @@ class LocalSaleController extends Controller
      */
     public function create()
     {
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
         $users = User::all();
         return Inertia::render('Establishments/Create', [
+            'ubigeo' => $ubigeo,
             'users' => $users
         ]);
     }
@@ -74,6 +86,7 @@ class LocalSaleController extends Controller
         $this->validate($request, [
             'description'   => 'required',
             'address'       => 'required',
+            'ubigeo'        => 'required'
         ]);
         if ($request->get('user_id')) {
             $this->validate($request, [
@@ -81,9 +94,10 @@ class LocalSaleController extends Controller
             ]);
         }
         $l = LocalSale::create([
-            'description' => $request->get('description'),
-            'address' => $request->get('address'),
-            'phone' => $request->get('phone')
+            'description'   => $request->get('description'),
+            'address'       => $request->get('address'),
+            'phone'         => $request->get('phone'),
+            'ubigeo'        => $request->get('ubigeo')
         ]);
 
         if ($request->get('user_id')) {
@@ -107,7 +121,18 @@ class LocalSaleController extends Controller
     public function edit($id)
     {
         $users = User::all();
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
         return Inertia::render('Establishments/Edit', [
+            'ubigeo' => $ubigeo,
             'users' => $users,
             'local' => LocalSale::find($id),
             'seller' => User::where('local_id', $id)->first()
@@ -134,9 +159,10 @@ class LocalSaleController extends Controller
             ]);
         }
         LocalSale::find($id)->update([
-            'description' => $request->get('description'),
-            'address' => $request->get('address'),
-            'phone' => $request->get('phone')
+            'description'   => $request->get('description'),
+            'address'       => $request->get('address'),
+            'phone'         => $request->get('phone'),
+            'ubigeo'        => $request->get('ubigeo')
         ]);
 
         if ($request->get('user_id')) {

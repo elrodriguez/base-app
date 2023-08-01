@@ -45,7 +45,7 @@ const showSidebarToggle = async () => {
                 </button>
             <!-- Hamburger Toggle BTN -->
             <Link class="block flex-shrink-0 lg:hidden" :href="route('dashboard')">
-                <img src="/storage/uploads/company/logo.png" alt="Logo" />
+                <img :src="$page.props.company.isotipo" alt="Logo" style="max-width: 36px;height: 36px;" />
             </Link>
             </div>
             <div class="hidden sm:block">

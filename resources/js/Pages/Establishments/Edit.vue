@@ -14,9 +14,13 @@
         seller:{
             type: Object,
             default: () => ({}),
+        },
+        ubigeo: {
+            type: Object,
+            default: () => ({}),
         }
     });
-    console.log(props.local)
+
 </script>
 
 <template>
@@ -28,7 +32,7 @@
         </template>
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <EditForm :users="users" :local="local" :seller="seller" />
+                <EditForm :users="users" :local="local" :seller="seller" :ubigeo="ubigeo" />
             </div>
         </div>
     </AppLayout>

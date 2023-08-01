@@ -58,6 +58,7 @@ class UserRole extends Seeder
         array_push($permissions, Permission::create(['name' => 'invo_documento_lista']));
         array_push($permissions, Permission::create(['name' => 'invo_documento_envio_sunat']));
         array_push($permissions, Permission::create(['name' => 'invo_resumenes_lista']));
+        array_push($permissions, Permission::create(['name' => 'invo_comunicacion_baja']));
 
         array_push($permissions, Permission::create(['name' => 'blog_dashboard']));
         array_push($permissions, Permission::create(['name' => 'blog_categorias']));
@@ -68,6 +69,7 @@ class UserRole extends Seeder
         array_push($permissions, Permission::create(['name' => 'blog_articulos_nuevo']));
         array_push($permissions, Permission::create(['name' => 'blog_articulos_editar']));
         array_push($permissions, Permission::create(['name' => 'blog_articulos_eliminar']));
+
 
         array_push($permissions, Permission::create(['name' => 'help_dashboard']));
         array_push($permissions, Permission::create(['name' => 'help_tableros']));
@@ -89,7 +91,8 @@ class UserRole extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
-            'local_id' => 1
+            'local_id' => 1,
+            'company_id' => 1
         ]);
 
         $user->assignRole('admin');

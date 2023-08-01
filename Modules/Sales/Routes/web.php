@@ -19,6 +19,7 @@ use Modules\Sales\Http\Controllers\ProviderController;
 use Modules\Sales\Http\Controllers\ReportController;
 use Modules\Sales\Http\Controllers\SaleController;
 use Modules\Sales\Http\Controllers\SaleDocumentController;
+use Modules\Sales\Http\Controllers\SaleLowCommunicationController;
 use Modules\Sales\Http\Controllers\SaleSummaryController;
 use Modules\Sales\Http\Controllers\SerieController;
 
@@ -86,17 +87,22 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
 
     Route::get('sale_document_series/{id}', [SaleDocumentController::class, 'getSerieByDocumentType'])->name('sale_document_series');
 
+    ///rutas de docuemntos de ventas boletas y facturas
     Route::post('saledocuments/store', [SaleDocumentController::class, 'store'])->name('saledocuments_store');
-
     Route::get('saledocuments/list', [SaleDocumentController::class, 'index'])->name('saledocuments_list');
-
     Route::get('saledocuments/send/{id}/{type}', [SaleDocumentController::class, 'sendSunatDocument'])->name('saledocuments_send');
-
     Route::post('saledocuments/update/details', [SaleDocumentController::class, 'updateDetailsAndHeader'])->name('saledocuments_update_details');
-
     Route::post('saledocuments/update/details', [SaleDocumentController::class, 'updateDetailsAndHeader'])->name('saledocuments_update_details');
+    Route::get('saledocuments/download/{id}/{type}/{file}', [SaleDocumentController::class, 'printDocument'])->name('saledocuments_download');
 
+    ////rutas de resumen diario
     Route::get('salesummary/list', [SaleSummaryController::class, 'index'])->name('salesummaries_list');
     Route::get('salesummary/search/{date}', [SaleSummaryController::class, 'searchDocuments'])->name('salesummaries_search_date');
     Route::post('salesummary/store', [SaleSummaryController::class, 'store'])->name('salesummaries_store_date');
+    Route::get('salesummary/check/{id}/{ticket}', [SaleSummaryController::class, 'checkSummary'])->name('salesummaries_store_check');
+    Route::get('salesummary/destroy/{id}', [SaleSummaryController::class, 'destroySummary'])->name('salesummaries_destroy');
+
+    ////rutas de comunicacion de baja
+    Route::get('lowcommunication/list', [SaleLowCommunicationController::class, 'index'])->name('low_communication_list');
+    Route::get('lowcommunication/search/{date}', [SaleLowCommunicationController::class, 'searchDocuments'])->name('low_communication_search_date');
 });

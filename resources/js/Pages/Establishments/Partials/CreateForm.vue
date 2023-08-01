@@ -1,16 +1,19 @@
 <script setup>
-    import { useForm } from '@inertiajs/vue3';
+    import { useForm,Link } from '@inertiajs/vue3';
     import FormSection from '@/Components/FormSection.vue';
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import { library } from "@fortawesome/fontawesome-svg-core";
-    import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+    import { ref } from "vue";
     import swal from 'sweetalert';
     import Keypad from '@/Components/Keypad.vue';
 
     const props = defineProps({
+        ubigeo: {
+            type: Object,
+            default: () => ({})
+        },
         users: {
             type: Object,
             default: () => ({}),
@@ -21,7 +24,9 @@
         description:'',
         address:'',
         phone:'',
-        user_id: ''
+        user_id: '',
+        ubigeo: '',
+        ubigeo_description: ''
     });
 
     const createEstablishment = () => {
@@ -34,7 +39,23 @@
             }
         });
     };
+    const searchUbigeos = ref([]); // Inicializa searchUbigeos como una matriz vacía en lugar de null
 
+    const filterCities = () => {
+        if (form.ubigeo_description.trim() === '') {
+            searchUbigeos.value = [];
+            return;
+        }
+
+        searchUbigeos.value = props.ubigeo.filter(row =>
+            row.district_name.toLowerCase().includes(form.ubigeo_description.toLowerCase())
+        );
+    }
+    const selectCity = (item) => {
+        form.ubigeo_description = item.department_name+'-'+item.province_name+'-'+item.district_name;
+        form.ubigeo = item.district_id;
+        searchUbigeos.value = []; // Limpiar la lista de búsqueda después de seleccionar una ciudad
+    }
  </script>
 
 <template>
@@ -89,6 +110,26 @@
                 </select>
                 <InputError :message="form.errors.user_id" class="mt-2" />
             </div>
+            <div class="col-span-6 ">
+                <InputLabel for="address" value="Ciudad" />
+                <div class="relative">
+                    <TextInput 
+                    v-model="form.ubigeo_description" 
+                    @input="filterCities"
+                    placeholder="Buscar Distrito"
+                    type="text" 
+                    class="block w-full mt-1" />
+                    <ul v-if="searchUbigeos && searchUbigeos.length > 0" class="list-disc list-inside absolute z-50 w-full bg-white border border-gray-300 rounded-md mt-1">
+                        <li v-for="item in searchUbigeos" :key="item.id" class="px-4 cursor-pointer hover:bg-gray-100" @click="selectCity(item)">
+                            {{ item.department_name+'-'+item.province_name+'-'+item.district_name }}
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <InputError :message="form.errors.ubigeo" class="mt-2" />
+                </div>
+            </div>
         </template>
 
         <template #actions>
@@ -97,7 +138,7 @@
                     <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Guardar
                 </PrimaryButton>
-                <a :href="route('establishments.index')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</a>
+                <Link :href="route('establishments.index')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
                 </template>
             </Keypad>
         </template>

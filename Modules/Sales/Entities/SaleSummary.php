@@ -22,7 +22,9 @@ class SaleSummary extends Model
         'response_code',
         'response_description',
         'notes',
-        'status'
+        'status',
+        'user_id',
+        'anio'
     ];
 
     protected static function newFactory()
@@ -39,16 +41,17 @@ class SaleSummary extends Model
             // Verificamos si la tabla está vacía
 
             $lastSummary = static::latest()->first();
-
+            $correlativo = null;
             if (!$lastSummary) {
                 // Si está vacía, establecemos el correlativo inicial a '00001'
                 $correlativo = '00001';
             } else {
+
                 // Si no está vacía, incrementamos el correlativo del último registro
-                $lastCorrelativo = $lastSummary->correlativo;
+                $lastCorrelativo = SaleSummary::where('id', '<>', $lastSummary->id)->max('correlative');
                 $correlativo = str_pad((int) $lastCorrelativo + 1, 5, '0', STR_PAD_LEFT);
             }
-            //dd('aca lleda');
+            //dd($correlativo);
             // Actualizamos el campo "correlativo" del registro recién insertado
             $summary->update(['correlative' => $correlativo]);
         });

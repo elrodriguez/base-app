@@ -25,7 +25,12 @@ class Company extends Model
         'user_sunat',
         'certificate_sunat',
         'mode',
-        'ubigeo'
+        'ubigeo',
+        'logo_negative',
+        'logo_dark',
+        'isotipo',
+        'isotipo_negative',
+        'isotipo_dark'
     ];
 
     public function district(): HasOne

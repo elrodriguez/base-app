@@ -170,7 +170,15 @@ span.flatpickr-weekday,
 }
 .swal2-container {
   z-index: 99999;
-};
+}
 .cursor-not-allowed {
   cursor: not-allowed;
+}
+.logo-w-m-sm{
+  max-width: 242px !important;
+  height: 53.2333px !important;
+}
+.logo-w-m{
+  max-width: 214px;
+  height: 47.0667;
 }

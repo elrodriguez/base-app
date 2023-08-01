@@ -140,6 +140,7 @@
         if(formDocument.sale_documenttype_id == 2){
             formDocument.client_id = data.id;
             formDocument.client_name = data.number+"-"+data.full_name;
+            formDocument.client_rzn_social = data.full_name;
             formDocument.client_ubigeo_description = data.city;
             formDocument.client_ubigeo = data.ubigeo;
             formDocument.client_direction = data.address;
@@ -158,6 +159,7 @@
                 formDocument.client_number = data.number;
                 formDocument.client_phone = data.telephone;
                 formDocument.client_email = data.email;
+                formDocument.client_rzn_social = data.full_name;
             }else{
                 Swal2.fire({
                     title: 'Información Importante',
@@ -241,6 +243,11 @@
         formDocument.payments[0].amount = formDocument.total;
         
     }
+    ////imprimir documento
+    const downloadDocument = (id,type,file) => {
+        let url = route('saledocuments_download',[id, type,file])
+        window.open(url, "_blank");      
+    }
 
     const saveDocument = () => {
         
@@ -297,7 +304,17 @@
                     denyButtonColor: '#5E5A5A'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        printPdf(res.data.id);
+                        if(res.data.invoice_type_doc == '01'){
+                            sendSunatDocumentCreated(res.data)
+                        }else{
+                            Swal2.fire({
+                                title: 'Información Importante',
+                                text: "Las boletas se envian mediante un resumen",
+                                icon: 'info',
+                            });
+                        }
+                    } else if (result.isDenied) {
+                        downloadDocument(res.data.id,res.data.invoice_type_doc,'PDF')
                     }
                 });
             }).catch(function (error) {
@@ -376,6 +393,51 @@
         formDocument.payments[0].amount = formDocument.total;
         displaySearchProducts.value = false;
     }
+
+    const sendSunatDocumentCreated = (document) => {
+        Swal2.fire({
+            title: document.invoice_serie+'-'+document.number,
+            text: 'Enviar documento',
+            showCancelButton: true,
+            confirmButtonText: 'Enviar',
+            showLoaderOnConfirm: true,
+            clickOutside: false,
+            preConfirm: () => {
+                return axios.get(route('saledocuments_send', [document.id,document.invoice_type_doc])).then((res) => {
+                    if (!res.data.success) {
+                        var cadena = `Error código: ${res.data.code}<br>Descripción:${res.data.message}`;
+                        let notes = res.data.notes;
+                        if (notes) {
+                            cadena += `<br>Nota: ${notes}`;
+                        }
+                        Swal2.showValidationMessage(cadena)
+                        router.visit(route('saledocuments_list'), { replace: true });
+                    }
+                    return res
+                });
+            },
+            allowOutsideClick: () => !Swal2.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var cadena = "";
+                let array = JSON.parse(result.value.data.notes);
+                for (var i = 0; i < array.length; i++) {
+                    cadena += array[i] + "<br>";
+                }
+
+                Swal2.fire({
+                    title: `${result.value.data.message}`,
+                    html: `${cadena}`,
+                    icon: 'success',
+                }).then(() => {
+                    router.visit(route('saledocuments_list'),{
+                        method: 'get'
+                    });
+                });
+
+            }
+        });
+    }
 </script>
 <template>
     <AppLayout title="Punto de Ventas">
@@ -410,7 +472,7 @@
                     <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700 mb-3">
                         <div class="flex flex-col">
                             <div class="text-3xl font-bold mb-1">
-                                <img style="width: 172px;height: 32px;" class="inline-block h-auto ltr:mr-2 rtl:ml-2" src="/storage/uploads/company/logo176x32.png">
+                                <img style="width: 242px;height: 53.2333px;" class="inline-block h-auto ltr:mr-2 rtl:ml-2" :src="company.logo">
                             </div>
                             <p class="text-sm">Ancash, Chimbote<br>{{ company.fiscal_address }}</p>
                         </div>

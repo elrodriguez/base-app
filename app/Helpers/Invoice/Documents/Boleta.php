@@ -12,6 +12,7 @@ use Greenter\Model\Company\Company;
 use Carbon\Carbon;
 use DateTime;
 use App\Models\Company as MyCompany;
+use Exception;
 use Greenter\Model\Company\Address;
 use Greenter\Model\Sale\Charge;
 
@@ -33,6 +34,45 @@ class Boleta
 
         $document = SaleDocument::find($document_id);
 
+        $invoice = $this->setDocument($document);
+
+        $see = $this->util->getSee();
+        $res = $see->send($invoice);
+        //fecha en la que se envio a sunat el documento
+        $document->invoice_send_date = Carbon::now();
+
+        $document->invoice_xml = $this->util->writeXml($invoice, $see->getFactory()->getLastXml());
+        $document->invoice_document_name = $invoice->getName();
+
+        $notes = null;
+        $status = null;
+        if ($res->isSuccess()) {
+            $cdr = $res->getCdrResponse();
+            $codeError = $cdr->getCode();
+            $messageError = $cdr->getDescription();
+            $notes = json_encode($cdr->getNotes(), JSON_UNESCAPED_UNICODE);
+            $status = $cdr->getCode() == 0 ? 'Aceptada' : null;
+            $document->invoice_cdr = $this->util->writeCdr($invoice, $res->getCdrZip());
+        } else {
+            $error = $res->getError();
+            $codeError = $error->getCode();
+            $messageError = $error->getMessage();
+            $status = 'Rechazada';
+            //return array('success' => $res->isSuccess(), 'details' => $this->util->getErrorResponse($res->getError()));
+
+        }
+        $document->invoice_response_code = $codeError;
+        $document->invoice_response_description = $messageError;
+        $document->invoice_notes = $notes;
+        $document->invoice_status = $status;
+
+        $document->save();
+
+        return array('success' => $res->isSuccess(), 'code' => $codeError, 'message' => $messageError, 'notes' => $notes);
+    }
+
+    public function setDocument($document)
+    {
         $broadcast_date = new DateTime($document->invoice_broadcast_date . ' ' . Carbon::parse($document->created_at)->format('H:m:s'));
 
         $client = new Client();
@@ -118,37 +158,50 @@ class Boleta
         $invoice->setDetails($items)
             ->setLegends([$legend]);
 
-        $see = $this->util->getSee();
-        $res = $see->send($invoice);
-        //fecha en la que se envio a sunat el documento
-        $document->invoice_send_date = Carbon::now();
+        return $invoice;
+    }
+    public function getBoletatPdf($id)
+    {
+        try {
+            $document = SaleDocument::find($id);
+            $invoice = $this->setDocument($document);
+            $pdf = $this->util->getPdf($invoice);
+            $filePath = $this->util->showPdf($pdf, $invoice->getName() . '.pdf');
+            $document->invoice_pdf = $filePath;
+            $document->save();
 
-        $document->invoice_xml = $this->util->writeXml($invoice, $see->getFactory()->getLastXml());
-        $document->invoice_document_name = $invoice->getName();
-        $notes = null;
-        $status = null;
-        if ($res->isSuccess()) {
-            $cdr = $res->getCdrResponse();
-            $codeError = $cdr->getCode();
-            $messageError = $cdr->getDescription();
-            $notes = json_encode($cdr->getNotes(), JSON_UNESCAPED_UNICODE);
-            $status = $cdr->getCode() == 0 ? 'Aceptada' : null;
-            $document->invoice_cdr = $this->util->writeCdr($invoice, $res->getCdrZip());
-        } else {
-            $error = $res->getError();
-            $codeError = $error->getCode();
-            $messageError = $error->getMessage();
-            $status = 'Rechazada';
-            //return array('success' => $res->isSuccess(), 'details' => $this->util->getErrorResponse($res->getError()));
-
+            return array(
+                'fileName' => $invoice->getName() . '.pdf',
+                'filePath' => $filePath
+            );
+        } catch (Exception $e) {
+            var_dump($e);
         }
-        $document->invoice_response_code = $codeError;
-        $document->invoice_response_description = $messageError;
-        $document->invoice_notes = $notes;
-        $document->invoice_status = $status;
+    }
+    public function getBoletaXML($id)
+    {
+        try {
+            $document = SaleDocument::find($id);
 
-        $document->save();
+            return array(
+                'fileName' => $document->invoice_document_name . '.xml',
+                'filePath' => $document->invoice_xml
+            );
+        } catch (Exception $e) {
+            var_dump($e);
+        }
+    }
+    public function getBoletaCDR($id)
+    {
+        try {
+            $document = SaleDocument::find($id);
 
-        return array('success' => $res->isSuccess(), 'code' => $codeError, 'message' => $messageError, 'notes' => $notes);
+            return array(
+                'fileName' => $document->invoice_document_name . '.zip',
+                'filePath' => $document->invoice_cdr
+            );
+        } catch (Exception $e) {
+            var_dump($e);
+        }
     }
 }

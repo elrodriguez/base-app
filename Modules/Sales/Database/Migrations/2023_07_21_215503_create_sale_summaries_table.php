@@ -28,6 +28,8 @@ return new class extends Migration
             $table->text('response_description')->nullable();
             $table->json('notes')->nullable();
             $table->string('status', 40)->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('anio', 4)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

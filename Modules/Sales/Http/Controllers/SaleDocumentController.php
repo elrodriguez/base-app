@@ -492,11 +492,12 @@ class SaleDocumentController extends Controller
                     'invoice_rounding'          => $rounding,
                     'invoice_mto_imp_sale'      => $ttotal,
                     'invoice_sunat_points'      => null,
+                    'invoice_status'            => 'Pendiente',
                 ]);
 
                 $serie->increment('number', 1);
 
-                return $document->id;
+                return $document;
             });
 
             return response()->json($res);
@@ -741,6 +742,7 @@ class SaleDocumentController extends Controller
                     'invoice_rounding'          => $rounding,
                     'invoice_mto_imp_sale'      => $ttotal,
                     'invoice_sunat_points'      => null,
+                    'invoice_status'            => 'Pendiente',
                 ]);
 
                 Sale::where('id', $document->sale_id)->update([
@@ -755,5 +757,46 @@ class SaleDocumentController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
+    }
+
+    public function printDocument($id, $type, $file)
+    {
+        $res = array();
+        $content_type = null;
+        switch ($type) {
+            case '01':
+                $factura = new Factura();
+                if ($file == 'PDF') {
+                    $res = $factura->getFacturaPdf($id);
+                    $content_type = 'application/pdf';
+                } else if ($file == 'XML') {
+                    $content_type =  'application/xml';
+                    $res = $factura->getFacturaXML($id);
+                } else {
+                    $content_type =  'application/zip';
+                    $res = $factura->getFacturaCDR($id);
+                }
+
+                break;
+            case '03':
+                $boleta = new Boleta();
+                if ($file == 'PDF') {
+                    $content_type = 'application/pdf';
+                    $res = $boleta->getBoletatPdf($id);
+                } else if ($file == 'XML') {
+                    $content_type =  'application/xml';
+                    $res = $boleta->getBoletaXML($id);
+                } else {
+                    $content_type =  'application/zip';
+                    $res = $boleta->getBoletaCDR($id);
+                }
+
+                break;
+            case 2:
+                echo "i es igual a 2";
+                break;
+        }
+        //return response()->file($res['filePath'], ['content-type' => 'application/pdf']);
+        return response()->download($res['filePath'], $res['fileName'], ['content-type' => $content_type]);
     }
 }

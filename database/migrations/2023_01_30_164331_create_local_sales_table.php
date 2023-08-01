@@ -21,10 +21,6 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->timestamps();
         });
-
-        DB::table('local_sales')->insert([
-            ['description' => 'Local Principal', 'address' => 'Viru', 'phone' => '99999999']
-        ]);
     }
 
     /**

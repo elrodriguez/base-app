@@ -4,7 +4,7 @@ import '../css/app.css';
 
 import { createApp, h } from 'vue';
 import VueGates from 'vue-gates'
-import { createInertiaApp } from '@inertiajs/vue3';
+import { createInertiaApp,router } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -24,14 +24,27 @@ createInertiaApp({
         }
     },
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(VueTheMask)
             .use(VueGates)
             .use(Permissions)
-            .component("font-awesome-icon", FontAwesomeIcon)
-            .mount(el);
+            .component("font-awesome-icon", FontAwesomeIcon);
+            //.mount(el);
+            // Agregar el código de manejo de redireccionamiento
+        app.mixin({
+            mounted() {
+                router.on('error', (error) => {
+                    console.log(error);
+                    if (error.response && error.response.status === 401) {
+                        // Redirigir al inicio de sesión cuando la sesión ha caducado
+                        router.visit('/login', { replace: true });
+                    }
+                });
+            },
+        });
+        return app.mount(el);
     },
     progress: {
         // The delay after which the progress bar will appear, in milliseconds...

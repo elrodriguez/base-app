@@ -35,6 +35,7 @@ final class Util
     protected $ruc;
     protected $mode;
     public $service;
+    public $folder;
 
     private function __construct()
     {
@@ -44,6 +45,7 @@ final class Util
 
         $this->setCredentials($this->company);
         $this->setServiceEndpoint();
+        $this->folder = public_path('storage' . DIRECTORY_SEPARATOR . 'invoice');
     }
 
     public static function getInstance(): Util
@@ -62,7 +64,7 @@ final class Util
             $this->user = $company->user_sunat;
             $this->password = $company->key_sunat;
         } else if ($this->mode == 'demo') {
-            $this->certificate = storage_path('app/public/uploads/company/certificates/certificate.pem');
+            $this->certificate = __DIR__ . DIRECTORY_SEPARATOR . 'certificates' . DIRECTORY_SEPARATOR . 'certificate.pem';
             $this->ruc = '20000000001';
             $this->user = 'MODDATOS';
             $this->password = 'moddatos';
@@ -143,9 +145,8 @@ final class Util
         if (getenv('GREENTER_NO_FILES')) {
             return '';
         }
-        //$fileDir = __DIR__ . '/../files';
-        $dir = 'app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'invoice';
-        $fileDir = storage_path($dir);
+
+        $fileDir = $this->folder;
 
         if (!file_exists($fileDir)) {
             mkdir($fileDir, 0777, true);
@@ -158,10 +159,12 @@ final class Util
 
     public function getPdf(DocumentInterface $document): ?string
     {
+        $fileDir = $this->folder . DIRECTORY_SEPARATOR . 'cache';
         $html = new HtmlReport('', [
-            'cache' => __DIR__ . '/../cache',
+            'cache' => $fileDir,
             'strict_variables' => true,
         ]);
+
         $resolver = new DefaultTemplateResolver();
         $template = $resolver->getTemplate($document);
         $html->setTemplate($template);
@@ -173,20 +176,24 @@ final class Util
             'viewport-size' => '1280x1024',
             'page-width' => '21cm',
             'page-height' => '29.7cm',
-            'footer-html' => __DIR__ . '/../resources/footer.html',
+            'footer-html' => __DIR__ . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'footer.html',
         ]);
+
         $binPath = self::getPathBin();
         if (file_exists($binPath)) {
             $render->setBinPath($binPath);
         }
+
         $hash = $this->getHash($document);
-        $params = self::getParametersPdf();
+        $params = self::getParametersPdf($this->company);
+
         $params['system']['hash'] = $hash;
         $params['user']['footer'] = '<div>consulte en <a href="https://github.com/giansalex/sufel">sufel.com</a></div>';
 
         $pdf = $render->render($document, $params);
 
         if ($pdf === null) {
+
             $error = $render->getExporter()->getError();
             echo 'Error: ' . $error;
             exit();
@@ -222,20 +229,21 @@ final class Util
         return $items;
     }
 
-    public function showPdf(?string $content, ?string $filename): void
+    public function showPdf(?string $content, ?string $filename): string
     {
-        $this->writeFile($filename, $content);
-        header('Content-type: application/pdf');
-        header('Content-Disposition: inline; filename="' . $filename . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . strlen($content));
+        $file = $this->writeFile($filename, $content);
+        // header('Content-type: application/pdf');
+        // header('Content-Disposition: inline; filename="' . $filename . '"');
+        // header('Content-Transfer-Encoding: binary');
+        // header('Content-Length: ' . strlen($content));
+        // echo $content;
 
-        echo $content;
+        return $file;
     }
 
     public static function getPathBin(): string
     {
-        $path = __DIR__ . '/../vendor/bin/wkhtmltopdf';
+        $path = __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'wkhtmltopdf';
         if (self::isWindows()) {
             $path .= '.exe';
         }
@@ -259,9 +267,11 @@ final class Util
     /**
      * @return array<string, array<string, array<int, array<string, string>>|bool|string>>
      */
-    private static function getParametersPdf(): array
+    private static function getParametersPdf($company): array
     {
-        $logo = file_get_contents(__DIR__ . '/../resources/logo.png');
+        $img = public_path($company->logo);
+
+        $logo = file_get_contents($img);
 
         return [
             'system' => [
@@ -270,7 +280,7 @@ final class Util
             ],
             'user' => [
                 'resolucion' => '212321',
-                'header' => 'Telf: <b>(056) 123375</b>',
+                'header' => $company->phone,
                 'extras' => [
                     ['name' => 'FORMA DE PAGO', 'value' => 'Contado'],
                     ['name' => 'VENDEDOR', 'value' => 'GITHUB SELLER'],
