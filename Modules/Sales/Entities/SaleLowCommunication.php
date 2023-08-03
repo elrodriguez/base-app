@@ -31,4 +31,29 @@ class SaleLowCommunication extends Model
     {
         return \Modules\Sales\Database\factories\SaleLowCommunicationFactory::new();
     }
+
+    // Definimos el evento "creating"
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($lowCommunication) {
+            // Verificamos si la tabla está vacía
+
+            $lastLow = static::latest()->first();
+            $correlativo = null;
+            if (!$lastLow) {
+                // Si está vacía, establecemos el correlativo inicial a '00001'
+                $correlativo = '00001';
+            } else {
+
+                // Si no está vacía, incrementamos el correlativo del último registro
+                $lastCorrelativo = SaleLowCommunication::where('id', '<>', $lastLow->id)->max('correlative');
+                $correlativo = str_pad((int) $lastCorrelativo + 1, 5, '0', STR_PAD_LEFT);
+            }
+            //dd($correlativo);
+            // Actualizamos el campo "correlativo" del registro recién insertado
+            $lowCommunication->update(['correlative' => $correlativo]);
+        });
+    }
 }

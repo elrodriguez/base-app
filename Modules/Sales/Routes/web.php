@@ -105,4 +105,7 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     ////rutas de comunicacion de baja
     Route::get('lowcommunication/list', [SaleLowCommunicationController::class, 'index'])->name('low_communication_list');
     Route::get('lowcommunication/search/{date}', [SaleLowCommunicationController::class, 'searchDocuments'])->name('low_communication_search_date');
+    Route::post('lowcommunication/store', [SaleLowCommunicationController::class, 'store'])->name('low_communication_store');
+    Route::get('lowcommunication/check/{id}/{ticket}', [SaleLowCommunicationController::class, 'check'])->name('low_communication_check');
+    Route::get('lowcommunication/destroy/{id}', [SaleLowCommunicationController::class, 'destroy'])->name('low_communication_destroy');
 });

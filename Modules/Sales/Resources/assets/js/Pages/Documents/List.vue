@@ -266,8 +266,8 @@
                             </thead>
                             <tbody>
                                 <template v-for="(document, index) in documents.data" :key="document.id">
-                                    <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" :class="document.invoice_status ==='registrado' ? 'border-b border-stroke' : ''">
-                                        <td :rowspan="document.invoice_status ==='registrado' ? 1 : 2" class="text-center py-1 px-4 dark:border-strokedark">
+                                    <tr :style="document.invoice_status ==='registrado' || document.invoice_status ==='Pendiente' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" :class="document.invoice_status ==='registrado' || document.invoice_status ==='Pendiente' ? 'border-b border-stroke' : ''">
+                                        <td :rowspan="document.invoice_status ==='registrado' || document.invoice_status ==='Pendiente' ? 1 : 2" class="text-center py-1 px-4 dark:border-strokedark">
                                             <div style="position: relative;" class="flex justify-center">
                                                 <button
                                                     :id="'dropdownButton'+index"
@@ -360,7 +360,7 @@
                                             <span v-else class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
                                         </td>
                                     </tr>
-                                    <template v-if="document.invoice_status !='registrado'" >
+                                    <template v-if="document.invoice_status =='Rechazada' || document.invoice_status === 'Aceptada'" >
                                         <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" class="border-b border-stroke" >
                                             <td colspan="4" class="text-xs">
                                                 <code v-if="document.invoice_response_code != 0">

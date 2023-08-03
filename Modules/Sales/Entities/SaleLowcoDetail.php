@@ -9,8 +9,17 @@ class SaleLowcoDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'document_id',
+        'lowco_id',
+        'model_name',
+        'invoice_type_doc',
+        'invoice_serie',
+        'invoice_document_name',
+        'invoice_correlative',
+        'invoice_description'
+    ];
+
     protected static function newFactory()
     {
         return \Modules\Sales\Database\factories\SaleLowcoDetailFactory::new();

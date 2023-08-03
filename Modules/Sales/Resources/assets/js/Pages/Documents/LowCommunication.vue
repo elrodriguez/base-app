@@ -9,6 +9,7 @@
     import Swal from "sweetalert2";
     import { Link, router } from '@inertiajs/vue3';
     import { faQuestion } from "@fortawesome/free-solid-svg-icons";
+    import InputError from '@/Components/InputError.vue';
 
     const props = defineProps({
         communications: {
@@ -34,8 +35,14 @@
         displayModalCreateCommunication.value = true;
     }
 
-    const documents = ref([]);
-    const searchDate = ref({});
+    
+
+    onMounted(() => {
+        activeMessage();
+    });
+
+    const displaySearchLoading = ref(false);
+
     const getCurrentDate = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -43,22 +50,20 @@
         const day = String(currentDate.getDate()).padStart(2, '0');
 
         // Formato de fecha: YYYY-MM-DD
-        searchDate.value = `${year}-${month}-${day}`;
+        return  `${year}-${month}-${day}`;
         //formDocument.date_end = `${year}-${month}-${day}`;
     };
 
-    onMounted(() => {
-        getCurrentDate();
-        activeMessage();
+    const formVoided = useForm({
+        searchDate: getCurrentDate(),
+        documents: []
     });
-
-    const displaySearchLoading = ref(false);
-    const displaySaveLoading = ref(false);
+    
     const searchDocumentEarring = () => {
         displaySearchLoading.value = true;
-        axios.get(route('low_communication_search_date', searchDate.value)).then((res) => {
+        axios.get(route('low_communication_search_date', formVoided.searchDate)).then((res) => {
             if (res.data.success) {
-                documents.value = res.data.documents
+                formVoided.documents = res.data.documents
             }else{
                 Swal.fire({
                     title: 'Información Importante',
@@ -69,59 +74,40 @@
             displaySearchLoading.value = false;
         });
     }
-    const saveSummary = () => {
-        displaySaveLoading.value = true;
-        let data = {
-            documents: documents.value,
-            generation_date: searchDate.value
-        }
-        axios.post(route('salesummaries_store_date'),data).then((res) => {
-            if (res.data.success) {
-                Swal.fire({
-                    title: 'Información Importante',
-                    text: 'El resumen se creó y envió correctamente',
-                    icon: 'success'
-                });
-                router.visit(route('salesummaries_list'), { replace: true });
-            }else{
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
-                    icon: 'error'
-                });
-            }
-            displaySaveLoading.value = false;
-        });
-    }
-
 
     const statusTicket = (id,ticket,index) => {
         
         let btnCheck = document.getElementById('btn-check-summary'+ index);
         let spCheck = document.getElementById('sp-check-summary'+ index);
+        const originalOpacity = btnCheck.style.opacity;
         btnCheck.style.width = '120';
         btnCheck.style.cursor = 'not-allowed';
         spCheck.style.display = 'block';
         btnCheck.style.opacity = '0.35';
-        axios.get(route('salesummaries_store_check',[id,ticket])).then((res) => {
+        axios.get(route('low_communication_check',[id,ticket])).then((res) => {
             if (res.data.success) {
                 Swal.fire({
                     title: 'Información Importante',
                     text: res.data.message,
-                    icon: 'success'
+                    icon: 'success',
                 });
-                router.visit(route('salesummaries_list'), { replace: true });
+                router.visit(route('low_communication_list'), { replace: true });
             }else{
                 Swal.fire({
                     title: 'Error',
                     text: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
-                    icon: 'error'
+                    icon: 'error',
                 });
-                router.visit(route('salesummaries_list'), { replace: true });
+                router.visit(route('low_communication_list'), { replace: true });
             }
+            
+            btnCheck.style.width = '120';
+            btnCheck.style.cursor = 'pointer';
+            spCheck.style.display = 'none';
+            btnCheck.style.opacity = originalOpacity;
         });
     }
-    const deleteSummary = (id,index) => {
+    const deleteCommunication = (id,index) => {
         
         let btnCheck = document.getElementById('btn-delete-summary'+ index);
         let spCheck = document.getElementById('sp-delete-summary'+ index);
@@ -129,14 +115,14 @@
         btnCheck.style.cursor = 'not-allowed';
         spCheck.style.display = 'block';
         btnCheck.style.opacity = '0.35';
-        axios.get(route('salesummaries_destroy',id)).then((res) => {
+        axios.get(route('low_communication_destroy',id)).then((res) => {
             if (res.data.success) {
                 Swal.fire({
                     title: 'Información Importante',
                     text: 'Se elimino correctamente',
                     icon: 'success'
                 });
-                router.visit(route('salesummaries_list'), { replace: true });
+                router.visit(route('low_communication_list'), { replace: true });
             }
         });
     }
@@ -156,6 +142,31 @@
             icon: 'info',
             title: 'Comunicacion de Baja',
             text: 'Para comunicar a SUNAT las anulaciones de facturas y sus notas de crédito/débito releacionadas, necesita hacerlo mediante el documento de comunicación de baja. El envío a los servicios de SUNAT se maneja de la misma forma que el resumen diario.'
+        });
+    }
+
+    const saveVoided = () => {
+        formVoided.processing = true;
+        axios.post(route('low_communication_store'),formVoided).then((res) => {
+            if (res.data.success) {
+                Swal.fire({
+                    title: 'Información Importante',
+                    text: 'El resumen se creó y envió correctamente',
+                    icon: 'success'
+                });
+                router.visit(route('low_communication_list'), { replace: true });
+            }else{
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
+                    icon: 'error'
+                });
+            }
+            formVoided.reset();
+            formVoided.processing = false;
+        }).catch(function (error) {
+            formVoided.processing = false;
+            formVoided.errors = error.response.data.errors;
         });
     }
 </script>
@@ -247,7 +258,7 @@
                                                 </svg>
                                                 Consultar
                                             </button>
-                                            <button :id="'btn-delete-summary'+index" @click="deleteSummary(communication.id,index)" v-if="communication.status ==='Rechazado'" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            <button :id="'btn-delete-summary'+index" @click="deleteCommunication(communication.id,index)" v-if="communication.status ==='Rechazado'" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 <svg :id="'sp-delete-summary'+index" style="display: none;" aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                                     <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
@@ -256,10 +267,10 @@
                                             </button>
                                         </td>
                                         <td class="py-2 dark:border-strokedark">
-                                            {{ communication.summary_name }}
+                                            {{ communication.communication_name }}
                                         </td>
                                         <td class="py-2 px-2 dark:border-strokedark">
-                                            {{ communication.summary_date }}
+                                            {{ communication.communication_date }}
                                         </td>
                                         <td  class="text-center py-2 px-2 dark:border-strokedark">
                                             <small>Estado Sunat:</small>
@@ -313,7 +324,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2"/>
                                     </svg>
                                 </div>
-                                <input v-model="searchDate" type="date" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search branch name..." required>
+                                <input v-model="formVoided.searchDate" type="date" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search branch name..." required>
                             </div>
                             <button @click="searchDocumentEarring" type="button" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <svg v-if="displaySearchLoading" aria-hidden="true" role="status" class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -332,9 +343,7 @@
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-2 py-3">
-                                    
-                                </th>
+                                
                                 <th scope="col" class="px-2 py-3">
                                     Tipo documento
                                 </th>
@@ -354,15 +363,16 @@
                                     estado
                                 </th>
                                 <th scope="col" class="px-2 py-3">
+                                    
+                                </th>
+                                <th scope="col" class="px-2 py-3">
                                     Motivo de baja
                                 </th>
                               </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item,ko) in documents" class="bg-white border-b border-stroke dark:bg-gray-900 dark:border-gray-700">
-                                <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    
-                                </th>
+                            <tr v-for="(item, ko) in formVoided.documents" class="bg-white border-b border-stroke dark:bg-gray-900 dark:border-gray-700">
+                                
                                 <td class="px-2 py-2">
                                    {{ item.type_description }}
                                 </td>
@@ -383,20 +393,32 @@
                                     <span v-if="item.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Registrado</span>
                                     <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
                                 </td>
+                                <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div class="flex items-center mr-4">
+                                        <input v-model="item.edit_low" type="checkbox" class="w-4 h-4 text-yellow-400 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500 dark:focus:ring-yellow-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    </div>
+                                </th>
                                 <td>
-                                    <textarea v-model="item.description_low" class="invoice-imput" ></textarea>
+                                    <textarea v-model="item.description_low" class="invoice-imput" :style="!item.edit_low ? 'background: #5EE588;border-color: #5EE588;cursor: not-allowed':''" :disabled="!item.edit_low" ></textarea>
+                                    <template v-for="error in formVoided.errors[`documents.${ko}.description_low`]">
+                                        <InputError :message="error" class="mt-2" />
+                                    </template>
+                                    
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                    <progress v-if="formVoided.progress" :value="formVoided.progress.percentage" max="100">
+                        {{ formVoided.progress.percentage }}%
+                    </progress>
                 </div>
             </template>
             <template #buttons>
                 <PrimaryButton class="mr-2"
-                :class="{ 'opacity-25': displaySaveLoading }" :disabled="displaySaveLoading"
-                @click="saveSummary()"
+                :class="{ 'opacity-25': formVoided.processing }" :disabled="formVoided.processing"
+                @click="saveVoided()"
                 >
-                    <svg v-show="displaySaveLoading" aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg v-show="formVoided.processing" aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                         <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
                     </svg>
