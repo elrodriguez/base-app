@@ -2,6 +2,7 @@
 
 namespace Modules\Sales\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Kardex;
 use App\Models\KardexSize;
 use App\Models\LocalSale;
@@ -69,7 +70,7 @@ class SaleController extends Controller
                 'sale_documents.number'
             )
             ->where('series.document_type_id', 5)
-            ->whereDate('sales.created_at', '=', $current_date)
+            //->whereDate('sales.created_at', '=', $current_date)
             ->when(!$isAdmin, function ($q) use ($search) {
                 return $q->where('sales.user_id', Auth::id());
             })
@@ -315,18 +316,21 @@ class SaleController extends Controller
         $document = SaleDocument::join('series', 'serie_id', 'series.id')
             ->select(
                 'series.description',
+                'sale_documents.created_at',
                 'sale_documents.number'
             )
             ->where('sale_documents.sale_id', $sale->id)
             ->first();
         $local = LocalSale::find($sale->local_id);
         $products = SaleProduct::where('sale_id', $sale->id)->get();
+        $company = Company::first();
 
         $data = [
-            'local' => $local,
-            'sale' => $sale,
-            'products' => $products,
-            'document' => $document
+            'local'     => $local,
+            'sale'      => $sale,
+            'products'  => $products,
+            'document'  => $document,
+            'company'   => $company
         ];
 
         $file = public_path('ticket/') . 'ticket.pdf';

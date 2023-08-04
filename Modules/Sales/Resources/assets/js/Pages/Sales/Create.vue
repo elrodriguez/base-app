@@ -172,7 +172,7 @@
                                             </div>
                                         </td>
                                         <td class="text-sm text-white font-medium px-2 py-2">
-                                            {{ product.interne  }} - {{ product.description  }} / {{ product.size  }}
+                                            {{ product.interne  }} - {{ product.description  }}  {{ product.size ? '/' + product.size : ''  }}
                                         </td>
                                         <td class="text-right text-sm text-white font-medium px-2 py-2">
                                             {{ product.quantity  }}

@@ -1,111 +1,98 @@
+
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Ticket</title>
         <style>
-        caption {
-            padding: 0.3em;
-            color: #fff;
-            background: #000;
-        }
-        .table th {
-            background: #eee;
-        }
+            * {
+                font-size: 14px;
+                font-family: 'Times New Roman';
+            }
+
+            td,
+            th,
+            tr,
+            table {
+                border-top: 1px solid black;
+                border-collapse: collapse;
+            }
+
+            /* td.producto,
+            th.producto {
+                width: 75px;
+                max-width: 75px;
+            } */
+
+            td.cantidad,
+            th.cantidad {
+                width: 40px;
+                max-width: 40px;
+                word-break: break-all;
+            }
+
+            td.precio,
+            th.precio {
+                width: 90px;
+                max-width: 90px;
+                word-break: break-all;
+            }
+
+            .centrado {
+                text-align: center;
+                align-content: center;
+            }
+
+            .ticket {
+                width: 155px;
+                max-width: 155px;
+            }
+
+            img {
+                max-width: 400;
+                width: 200;
+                aling: center;
+                margin: auto
+            }
         </style>
     </head>
-    <body>
-        <div style="width: 72mm;height: auto;padding: 0px;font-family: Arial, sans-serif;font-size: 12px;">
-            <div>
-                <table style="border: 0px;width: 100%">
+    <body style="padding: 0px">
+        <div >
+            <img
+                src="{{ public_path($company->logo) }}"
+                alt="Logotipo"
+                >
+            <p class="centrado">
+                {{-- {{ $company->name }} --}}
+                <br>{{ \Carbon\Carbon::parse($document->created_at)->format('Y-m-d H:i:s') }}</p>
+            <p class="centrado">{{ $document->description }} - {{ $document->number }}</p>
+            <table style="width: 100%">
+                <thead>
                     <tr>
-                        <td style="width:20%"><img src="{{ asset('img/logo.jpg') }}" alt="Logo" style="width: 60px"></td>
-                        <td style="width:80%"><h1>{{ env('APP_NAME','Laravel') }}</h1></td>
-                    </tr> 
-                </table>
-              
-            </div>
-            <span>Dirección: {{ $local->address }}</span>
-            <br>
-            <span>Teléfono: {{ $local->phone }}</span>
-            <br>
-            <br>
-            <div style="text-align: center">
-                
-                <h1>{{ $document->description }} - {{ $document->number }}</h1>
-            </div>
-            <table style="width: 100%;border: 1px solid #000;border-collapse: collapse;">
-                <tr>
-                    <td style="text-align: left;
-                    vertical-align: top;
-                    border: 1px solid #000;
-                    border-collapse: collapse;
-                    padding: 0.3em;
-                    caption-side: bottom;">Cant.</td>
-                    <td style="text-align: left;
-                    vertical-align: top;
-                    border: 1px solid #000;
-                    border-collapse: collapse;
-                    padding: 0.3em;
-                    caption-side: bottom;">Producto</td>
-                    <td style="text-align: left;
-                    vertical-align: top;
-                    border: 1px solid #000;
-                    border-collapse: collapse;
-                    padding: 0.3em;
-                    caption-side: bottom;">Precio U.</td>
-                    {{-- <td style="text-align: left;
-                    vertical-align: top;
-                    border: 1px solid #000;
-                    border-collapse: collapse;
-                    padding: 0.3em;
-                    caption-side: bottom;">Descuento.</td> --}}
-                    <td style="text-align: left;
-                    vertical-align: top;
-                    border: 1px solid #000;
-                    border-collapse: collapse;
-                    padding: 0.3em;
-                    caption-side: bottom;">Importe</td>
-                </tr>
-                @foreach ($products as $item)
+                        <th class="cantidad">CANT</th>
+                        <th style="text-align: left" class="producto">PRODUCTO</th>
+                        <th style="text-align: center" class="precio">S/.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($products as $item)
                     @php
                         $json = json_decode($item->product, true);
                         $size = isset($json['size']) ? $json['size'] : null;
                     @endphp
                     <tr>
-                        <td style="text-align: right;vertical-align: top;
-                        border: 1px solid #000;
-                        border-collapse: collapse;
-                        padding: 0.3em;
-                        caption-side: bottom;">{{ (int) $item->quantity }}</td> 
-                        <td style="vertical-align: top;
-                        border: 1px solid #000;
-                        border-collapse: collapse;
-                        padding: 0.3em;
-                        caption-side: bottom;">{{ json_decode($item->product,true)['interne'] }}-{{ json_decode($item->product,true)['description'] }} {{ $size ? ' / '.$size :'' }}</td>
-                        <td style="text-align: right;vertical-align: top;
-                        border: 1px solid #000;
-                        border-collapse: collapse;
-                        padding: 0.3em;
-                        caption-side: bottom;">{{ $item->price }}</td>
-                        {{-- <td style="text-align: right;vertical-align: top;
-                        border: 1px solid #000;
-                        border-collapse: collapse;
-                        padding: 0.3em;
-                        caption-side: bottom;">{{ $item->discount }}</td> --}}
-                        <td style="text-align: right;vertical-align: top;
-                        border: 1px solid #000;
-                        border-collapse: collapse;
-                        padding: 0.3em;
-                        caption-side: bottom;">{{ $item->total }}</td>
+                        <td style="text-align: center" class="cantidad">{{ (int) $item->quantity }}</td>
+                        <td class="producto">{{ json_decode($item->product,true)['interne'] }}-{{ json_decode($item->product,true)['description'] }} {{ $size ? ' / '.$size :'' }}</td>
+                        <td style="text-align: right" class="precio">{{ $item->total }}</td>
                     </tr>
-                @endforeach
+                    @endforeach
+                    <tr>
+                        <td class="cantidad"></td>
+                        <td style="text-align: right" class="producto">TOTAL</td>
+                        <td style="text-align: right" class="precio">{{ $sale->total }}</td>
+                    </tr>
+                </tbody>
             </table>
-            <table  style="border: 0px;width:100%">
-                <tr>
-                    <td style="text-align: right;width:80%">Total</td>
-                    <td style="text-align: right;width:20%">{{ $sale->total }}</td>
-                </tr>
-            </table>
+            <p class="centrado">¡GRACIAS POR SU COMPRA!
+                <br>{{ $company->name }}</p>
         </div>
     </body>
 </html>

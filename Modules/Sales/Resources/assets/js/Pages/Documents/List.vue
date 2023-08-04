@@ -360,7 +360,7 @@
                                             <span v-else class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
                                         </td>
                                     </tr>
-                                    <template v-if="document.invoice_status =='Rechazada' || document.invoice_status === 'Aceptada'" >
+                                    <template v-if="document.invoice_status =='Rechazada' || document.invoice_status === 'Aceptada' || document.invoice_status === 'Anulada'" >
                                         <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" class="border-b border-stroke" >
                                             <td colspan="4" class="text-xs">
                                                 <code v-if="document.invoice_response_code != 0">

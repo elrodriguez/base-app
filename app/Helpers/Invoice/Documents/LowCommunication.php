@@ -100,11 +100,11 @@ class LowCommunication
                     $notes = json_encode($cdr->getNotes(), JSON_UNESCAPED_UNICODE);
                 }
                 foreach ($documents as $document) {
-                    SaleDocument::where('id', $document['id'])
+                    SaleDocument::where('id', $document['document_id'])
                         ->update([
-                            'invoice_status' => 'Aceptada',
+                            'invoice_status' => 'Anulada',
                             'invoice_response_code' => 0,
-                            'invoice_response_description' => 'Emviado en resumen ' . $voided->communication_name . ' Número ticket: ' . $ticket
+                            'invoice_response_description' => 'Comunicacion de baja ' . $voided->communication_name . ' Número ticket: ' . $ticket
                         ]);
                 }
                 $status = $cdr->getCode() == 0 ? 'Aceptado' : null;
