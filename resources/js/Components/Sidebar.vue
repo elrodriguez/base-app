@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { faPoll, faGear, faCashRegister, faBolt, faUserGear } from "@fortawesome/free-solid-svg-icons";
+import { faPoll, faGear, faCashRegister, faBolt, faUserGear,faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -153,6 +153,22 @@ const menu = ref([
                 permissions: 'help_tableros',
             },
             
+        ]
+    },
+    {
+        status:false,
+        text: 'CMS',
+        icom: faEarthAmericas,
+        route: null,
+        permissions: 'cms_dashboard',
+        items: [
+            {
+                route: route('cms_pages_list'),
+                status: false,
+                text: 'Paginas',
+                permissions: 'cms_pagina',
+            },
+           
         ]
     }
 ]);

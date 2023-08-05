@@ -49,10 +49,10 @@ const showSidebarToggle = async () => {
             </Link>
             </div>
             <div class="hidden sm:block">
-                <Link :href="route('sales.create')" type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+                <!-- <Link :href="route('sales.create')" type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
                     <font-awesome-icon :icon="faMoneyBillWave" />
                     Vender
-                </Link>
+                </Link> -->
             </div>
 
             <div class="flex items-center gap-3 2xsm:gap-7">

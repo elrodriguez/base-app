@@ -3,5 +3,6 @@
     "Onlineshop": true,
     "Blog": true,
     "Sales": true,
-    "Helpdesk": true
+    "Helpdesk": true,
+    "CMS": true
 }
