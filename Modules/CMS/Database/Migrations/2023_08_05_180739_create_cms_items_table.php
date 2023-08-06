@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('content')->nullable()->comment('contenido del item (texto, un link, ruta de imagen o archivo)');
             $table->timestamps();
             $table->foreign('item_id')->references('id')->on('cms_items')->onDelete('cascade');
+            $table->foreign('type_id')->references('id')->on('cms_item_types')->onDelete('cascade');
         });
     }
 
