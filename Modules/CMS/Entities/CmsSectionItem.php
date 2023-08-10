@@ -9,8 +9,8 @@ class CmsSectionItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
+    protected $fillable = ['item_id', 'section_id', 'position', 'description'];
+
     protected static function newFactory()
     {
         return \Modules\CMS\Database\factories\CmsSectionItemFactory::new();

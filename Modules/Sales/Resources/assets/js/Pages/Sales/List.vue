@@ -1,7 +1,7 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
     import { useForm } from '@inertiajs/vue3';
-    import { faTimes, faPencilAlt, faPrint, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+    import { faTimes, faCopy, faPrint, faWarehouse } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import Keypad from '@/Components/Keypad.vue';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -179,6 +179,11 @@
                                             >
                                             <font-awesome-icon :icon="faTimes" />
                                         </button>
+                                        <Link v-role="'admin'" type="button" class="px-2.5 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+                                            :href="route('saledocuments_create_from_ticket',sale.id)"
+                                            >
+                                            <font-awesome-icon :icon="faCopy" />
+                                        </Link>
                                     </td>
                                     <td class="text-center border-b border-stroke py-4 px-4 pl-9 dark:border-strokedark xl:pl-11">
                                         {{ index + 1 }}

@@ -9,8 +9,8 @@ class CmsPageSection extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
+    protected $fillable = ['page_id', 'section_id', 'description'];
+
     protected static function newFactory()
     {
         return \Modules\CMS\Database\factories\CmsPageSectionFactory::new();

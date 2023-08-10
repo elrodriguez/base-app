@@ -76,6 +76,7 @@ class SaleDocumentController extends Controller
             ->join('series', 'sale_documents.serie_id', 'series.id')
             ->select(
                 'sales.id',
+                'sales.client_id',
                 'sale_documents.id AS document_id',
                 'people.full_name',
                 'total',
@@ -91,7 +92,16 @@ class SaleDocumentController extends Controller
                 'sale_documents.status',
                 'series.description AS serie',
                 'sale_documents.number',
-                'sale_documents.invoice_type_doc'
+                'sale_documents.invoice_type_doc',
+                'sale_documents.client_number',
+                'sale_documents.client_rzn_social',
+                'sale_documents.client_address',
+                'sale_documents.client_ubigeo_code',
+                'sale_documents.client_ubigeo_description',
+                'sale_documents.client_phone',
+                'sale_documents.client_email',
+                'sale_documents.invoice_broadcast_date',
+                'sale_documents.invoice_due_date'
             )
             ->whereIn('series.document_type_id', [1, 2])
             //->whereDate('sales.created_at', '=', $current_date)
@@ -753,9 +763,9 @@ class SaleDocumentController extends Controller
                 return $document->id;
             });
 
-            return response()->json(['message' => true]);
+            return response()->json(['success' => true, 'message' => 'Se modificó los detalles correctamente']);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
     }
 
@@ -798,5 +808,84 @@ class SaleDocumentController extends Controller
         }
         //return response()->file($res['filePath'], ['content-type' => 'application/pdf']);
         return response()->download($res['filePath'], $res['fileName'], ['content-type' => $content_type]);
+    }
+
+    public function createFromFicket($id)
+    {
+        $payments = PaymentMethod::all();
+        $company = Company::first();
+
+
+        $client = Person::find(1);
+        $unitTypes = DB::table('sunat_unit_types')->get();
+        $documentTypes = DB::table('identity_document_type')->get();
+        $saleDocumentTypes = DB::table('sale_document_types')->whereIn('sunat_id', ['01', '03'])->get();
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
+        $company->load('district.province.department');
+
+
+
+        // Obtener el nombre de la ciudad usando los datos relacionados
+        $city = $company->district->province->department->name . "-" . $company->district->province->name . "-" . $company->district->name;
+        $company->city = $city;
+
+        return Inertia::render('Sales::Documents/CreateFromTicket', [
+            'payments'          => $payments,
+            'client'            => $client,
+            'documentTypes'     => $documentTypes,
+            'saleDocumentTypes' => $saleDocumentTypes,
+            'company'           => $company,
+            'departments'       => $ubigeo,
+            'unitTypes'         => $unitTypes,
+            'type_operation'    => $this->top,
+            'taxes'             => array(
+                'igv' => $this->igv,
+                'icbper' => $this->icbper
+            )
+        ]);
+    }
+
+    public function updateHead(Request $request)
+    {
+        $this->validate($request, [
+            'client_number'             => 'required',
+            'client_rzn_social'         => 'required',
+            'client_address'            => 'required',
+            'client_ubigeo_code'        => 'required',
+            'invoice_broadcast_date'    => 'required',
+            'invoice_due_date'          => 'required'
+        ]);
+
+        SaleDocument::find($request->get('id'))
+            ->update([
+                'client_number'             => $request->get('client_number'),
+                'client_rzn_social'         => $request->get('client_rzn_social'),
+                'client_address'            => $request->get('client_address'),
+                'client_phone'              => $request->get('client_phone'),
+                'client_email'              => $request->get('client_email'),
+                'client_ubigeo_code'        => $request->get('client_ubigeo_code'),
+                'client_ubigeo_description' => $request->get('client_ubigeo_description'),
+                'invoice_broadcast_date'    => $request->get('invoice_broadcast_date'),
+                'invoice_due_date'          => $request->get('invoice_due_date')
+            ]);
+
+        Person::find($request->get('client_id'))
+            ->update([
+                'full_name' => $request->get('client_rzn_social'),
+                'number'    => $request->get('client_number'),
+                'telephone' => $request->get('client_phone'),
+                'email'     => $request->get('client_email'),
+                'address'   => $request->get('client_address'),
+                'ubigeo'    => $request->get('client_ubigeo_code')
+            ]);
     }
 }

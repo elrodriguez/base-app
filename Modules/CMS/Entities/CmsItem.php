@@ -9,8 +9,13 @@ class CmsItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'type_id',
+        'item_id',
+        'position',
+        'content'
+    ];
+
     protected static function newFactory()
     {
         return \Modules\CMS\Database\factories\CmsItemFactory::new();

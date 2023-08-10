@@ -83,17 +83,19 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
 
     Route::post('import/product/data', [ProductController::class, 'import'])->name('import_product_data');
 
-    Route::get('saledocuments', [SaleDocumentController::class, 'create'])->name('saledocuments_create');
+
 
     Route::get('sale_document_series/{id}', [SaleDocumentController::class, 'getSerieByDocumentType'])->name('sale_document_series');
 
     ///rutas de docuemntos de ventas boletas y facturas
+    Route::get('saledocuments', [SaleDocumentController::class, 'create'])->name('saledocuments_create');
     Route::post('saledocuments/store', [SaleDocumentController::class, 'store'])->name('saledocuments_store');
     Route::get('saledocuments/list', [SaleDocumentController::class, 'index'])->name('saledocuments_list');
     Route::get('saledocuments/send/{id}/{type}', [SaleDocumentController::class, 'sendSunatDocument'])->name('saledocuments_send');
     Route::post('saledocuments/update/details', [SaleDocumentController::class, 'updateDetailsAndHeader'])->name('saledocuments_update_details');
-    Route::post('saledocuments/update/details', [SaleDocumentController::class, 'updateDetailsAndHeader'])->name('saledocuments_update_details');
+    Route::get('saledocuments/create/fromticket/{id}', [SaleDocumentController::class, 'createFromFicket'])->name('saledocuments_create_from_ticket');
     Route::get('saledocuments/download/{id}/{type}/{file}', [SaleDocumentController::class, 'printDocument'])->name('saledocuments_download');
+    Route::post('saledocuments/update/head', [SaleDocumentController::class, 'updateHead'])->name('saledocuments_update_head');
 
     ////rutas de resumen diario
     Route::get('salesummary/list', [SaleSummaryController::class, 'index'])->name('salesummaries_list');

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('position')->default(0)->comment('de ser nesesario, saber en que  posicion se mostrara');
             $table->string('description')->nullable()->comment('de hacer falta una descripcion del nuevo componente');
             $table->timestamps();
+            $table->foreign('item_id')->references('id')->on('cms_items')->onDelete('cascade');
+            $table->foreign('section_id')->references('id')->on('cms_sections')->onDelete('cascade');
         });
     }
 

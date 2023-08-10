@@ -1,13 +1,18 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
     import { useForm } from '@inertiajs/vue3';
-    import { faTimes, faPaperPlane, faPrint, faGear } from "@fortawesome/free-solid-svg-icons";
+    import { faGear } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import Keypad from '@/Components/Keypad.vue';
     import GreenButton from '@/Components/GreenButton.vue';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import { ref, onMounted } from 'vue';
     import ModalLargeX from '@/Components/ModalLargeX.vue';
+    import InputLabel from '@/Components/InputLabel.vue';
+    import TextInput from '@/Components/TextInput.vue';
+    import InputError from '@/Components/InputError.vue';
+    import SecondaryButton from '@/Components/SecondaryButton.vue';
+    import DialogModal from '@/Components/DialogModal.vue';
     import Swal from "sweetalert2";
     import { Link, router } from '@inertiajs/vue3';
 
@@ -38,7 +43,7 @@
     const documentDetails = ref([]);
     const disabledButtonDetailsSave = ref(false);
     const opemModalDetails = async (sales) => {
-        if(sales.invoice_status ==='registrado' || sales.invoice_status ==='Rechazada'){
+        if(sales.invoice_status ==='registrado' || sales.invoice_status ==='Rechazada' || sales.invoice_status ==='Pendiente'){
             disabledButtonDetailsSave.value = false
         }else{
             disabledButtonDetailsSave.value = true
@@ -160,6 +165,23 @@
 
     const saveChangesDetails = () =>{
         axios.post(route('saledocuments_update_details'), documentDetails.value ).then((response) => {
+            if(response.data.success){
+                Swal.fire({
+                    title: `Enhorabuena`,
+                    html: `${response.data.message}`,
+                    icon: 'success',
+                }).then(() => {
+                    router.visit(route('saledocuments_list'),{
+                        method: 'get'
+                    });
+                });
+            }else{
+                Swal.fire({
+                    title: `Error`,
+                    html: `${response.data.message}`,
+                    icon: 'error',
+                });
+            }
         });
     };
     const calculateItemTotals = (key) => {
@@ -185,6 +207,56 @@
         window.open(url, "_blank");      
     }
 
+    const displayEditDocument = ref(false);
+    const formHead = useForm({
+        client_id: null,
+        id: null,
+        name: null,
+        client_number: null,
+        client_rzn_social: null,
+        client_address: null,
+        client_ubigeo_code: null,
+        client_ubigeo_description: null,
+        client_phone: null,
+        client_email: null,
+        invoice_broadcast_date: null,
+        invoice_due_date: null
+    });
+    const closeModalEditDocument = () => {
+        displayEditDocument.value = false ;
+    }
+    const showModalEditDocument = (document) => {
+        formHead.client_id = document.client_id;
+        formHead.id = document.document_id;
+        formHead.name = document.serie+'-'+document.number;
+        formHead.client_number = document.client_number;
+        formHead.client_rzn_social = document.client_rzn_social;
+        formHead.client_address = document.client_address;
+        formHead.client_ubigeo_code = document.client_ubigeo_code;
+        formHead.client_ubigeo_description = document.client_ubigeo_description;
+        formHead.client_phone = document.client_phone;
+        formHead.client_email = document.client_email;
+        formHead.invoice_broadcast_date = document.invoice_broadcast_date;
+        formHead.invoice_due_date = document.invoice_due_date;
+        displayEditDocument.value = true ;
+    }
+
+    const saveHeadDocument = () => {
+        formHead.post(route('saledocuments_update_head'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                Swal.fire({
+                    title: `Enhorabuena`,
+                    html: `Documento Actualizado correctamente`,
+                    icon: 'success',
+                });
+                formHead.reset();
+                router.visit(route('saledocuments_list'),{
+                    method: 'get'
+                });
+            }
+        });
+    }
 </script>
 
 <template>
@@ -287,7 +359,7 @@
                                                     <ul :aria-labelledby="'dropdownButton'+index">
                                                         <template v-if="document.invoice_status != 'Aceptada'">
                                                             <li class="border-b border-blue-700" v-can="'help_tableros_editar'">
-                                                                <button @click="showModalEditPanel(index)"
+                                                                <button @click="showModalEditDocument(document)"
                                                                 type="button"
                                                                 class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                                                                 >Editar</button>
@@ -484,7 +556,83 @@
                >Guardar Cambios</PrimaryButton> 
             </template>
         </ModalLargeX>
+        <DialogModal :show="displayEditDocument" @close="closeModalEditDocument">
+            <template #title>
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 dark:bg-green-800 sm:mx-0 sm:h-10 sm:w-10">
+                    <!-- Heroicon name: outline/check -->
+                        <img :src="'/img/editar-codigo.png'" />
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                            {{ formHead.name  }}
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Editar Cabecera del Documento
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </template>
 
+            <template #content>
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="col-span-6 sm:col-span-1">
+                        <InputLabel for="client_number" value="Cliente Num. Doc." />
+                        <TextInput id="client_number" v-model="formHead.client_number" type="text" class="block w-full mt-1"
+                            autofocus />
+                        <InputError :message="formHead.errors.client_number" class="mt-2" />
+                    </div>
+                    <div class="col-span-6 sm:col-span-3">
+                        <InputLabel for="client_rzn_social" value="Cliente Razon Social" />
+                        <TextInput id="client_rzn_social" v-model="formHead.client_rzn_social" type="text" class="block w-full mt-1"/>
+                        <InputError :message="formHead.errors.client_rzn_social" class="mt-2" />
+                    </div>
+                    <div class="col-span-6 sm:col-span-4">
+                        <InputLabel for="client_address" value="Cliente Dirección" />
+                        <TextInput id="client_address" v-model="formHead.client_address" type="text" class="block w-full mt-1"/>
+                        <InputError :message="formHead.errors.client_address" class="mt-2" />
+                    </div>
+                    <div class="col-span-6 sm:col-span-4">
+                        <InputLabel for="client_ubigeo_description" value="Departamento-Provincia-Distrito" />
+                        <TextInput id="client_ubigeo_description" v-model="formHead.client_ubigeo_description" type="text" class="block w-full mt-1"/>
+                        <InputError :message="formHead.errors.client_ubigeo_code" class="mt-2" />
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <InputLabel for="client_phone" value="Teléfono" />
+                        <TextInput id="client_phone" v-model="formHead.client_phone" type="text" class="block w-full mt-1"/>
+                        <InputError :message="formHead.errors.client_phone" class="mt-2" />
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <InputLabel for="client_email" value="Correo electrónico" />
+                        <TextInput id="client_email" v-model="formHead.client_email" type="text" class="block w-full mt-1"/>
+                        <InputError :message="formHead.errors.client_email" class="mt-2" />
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <InputLabel for="invoice_broadcast_date" value="Fecha Emisión" />
+                        <TextInput id="invoice_broadcast_date" v-model="formHead.invoice_broadcast_date" type="date" class="block w-full mt-1"/>
+                        <InputError :message="formHead.errors.invoice_broadcast_date" class="mt-2" />
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <InputLabel for="invoice_due_date" value="Fecha Vencimiento" />
+                        <TextInput id="invoice_due_date" v-model="formHead.invoice_due_date" type="date" class="block w-full mt-1"/>
+                        <InputError :message="formHead.errors.invoice_due_date" class="mt-2" />
+                    </div>
+                </div>
+            </template>
+
+            <template #footer>
+                <PrimaryButton class="mr-2"
+                    @click="saveHeadDocument"
+                >
+                    Guardar Cambios
+                </PrimaryButton> 
+                <SecondaryButton @click="closeModalEditDocument">
+                    Cancel
+                </SecondaryButton>
+            </template>
+        </DialogModal>
     </AppLayout>
 </template>
 <style scoped>
