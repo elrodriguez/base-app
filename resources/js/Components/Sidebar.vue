@@ -154,6 +154,27 @@ const menu = ref([
             },
             
         ]
+    },{
+        status:false,
+        text: 'Home Page',
+        icom: faUserGear,
+        route: null,
+        permissions: 'help_dashboard',
+        items: [
+            {
+                route: route('help-level.index'),
+                status: false,
+                text: 'Secciones',
+                permissions: 'homepage_manager',
+            },
+            {
+                route: route('help-boards.index'),
+                status: false,
+                text: 'Tableros',
+                permissions: 'help_tableros',
+            },
+            
+        ]
     },
     {
         status:false,
