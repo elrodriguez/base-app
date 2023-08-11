@@ -154,27 +154,6 @@ const menu = ref([
             },
             
         ]
-    },{
-        status:false,
-        text: 'Home Page',
-        icom: faUserGear,
-        route: null,
-        permissions: 'help_dashboard',
-        items: [
-            {
-                route: route('help-level.index'),
-                status: false,
-                text: 'Secciones',
-                permissions: 'homepage_manager',
-            },
-            {
-                route: route('help-boards.index'),
-                status: false,
-                text: 'Tableros',
-                permissions: 'help_tableros',
-            },
-            
-        ]
     },
     {
         status:false,
@@ -187,6 +166,12 @@ const menu = ref([
                 route: route('cms_pages_list'),
                 status: false,
                 text: 'Paginas',
+                permissions: 'cms_pagina',
+            },
+            {
+                route: route('cms_pages_section_list'),
+                status: false,
+                text: 'Secciones de Pagina',
                 permissions: 'cms_pagina',
             },
            

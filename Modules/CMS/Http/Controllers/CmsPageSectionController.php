@@ -5,6 +5,8 @@ namespace Modules\CMS\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\CMS\Entities\CmsPageSection;
+use Inertia\Inertia;
 
 class CmsPageSectionController extends Controller
 {
@@ -14,7 +16,30 @@ class CmsPageSectionController extends Controller
      */
     public function index()
     {
-        return view('cms::index');
+                // EDITANDO --- APRENDIENDO
+        
+                $pagesSections = (new CmsPageSection())->newQuery();
+                 if (request()->has('search')) {
+                     $pagesSections->whereDate('summardescriptiony_date', 'like', '%' . request()->input('search') . '%');
+                 }
+                if (request()->query('sort')) {
+                    $attribute = request()->query('sort');
+                    $sort_order = 'ASC';
+                    if (strncmp($attribute, '-', 1) === 0) {
+                        $sort_order = 'DESC';
+                        $attribute = substr($attribute, 1);
+                    }
+                    $pagesSections->orderBy($attribute, $sort_order);
+                } else {
+                    $pagesSections->latest();
+                }
+        
+                $pagesSections = $pagesSections->paginate(10)->onEachSide(2);
+        
+                
+                return Inertia::render('CMS::Pages/Sections/List', [
+                    'sections' => $pagesSections
+                ]); 
     }
 
     /**
@@ -23,7 +48,7 @@ class CmsPageSectionController extends Controller
      */
     public function create()
     {
-        return view('cms::create');
+
     }
 
     /**
