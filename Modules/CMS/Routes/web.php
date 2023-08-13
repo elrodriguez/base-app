@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
 
     
     
-    Route::get('cms/sections/', [CmsSectionController::class, 'index'])->name('cms_section_list');
+    Route::get('sections/', [CmsSectionController::class, 'index'])->name('cms_section_list');
 
 
 });

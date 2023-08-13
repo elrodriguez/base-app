@@ -16,7 +16,7 @@ class CmsPageSectionController extends Controller
      */
     public function index()
     {
-                // EDITANDO --- APRENDIENDO
+                // EDITANDO --- APRENDIENDO CORREGIR
         
                 $pagesSections = (new CmsPageSection())->newQuery();
                  if (request()->has('search')) {
