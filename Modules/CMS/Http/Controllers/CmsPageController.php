@@ -23,7 +23,7 @@ class CmsPageController extends Controller
     {
         $pages = (new CmsPage())->newQuery();
         if (request()->has('search')) {
-            $pages->whereDate('summardescriptiony_date', 'like', '%' . request()->input('search') . '%');
+            $pages->whereDate('description', 'like', '%' . request()->input('search') . '%');
         }
         if (request()->query('sort')) {
             $attribute = request()->query('sort');

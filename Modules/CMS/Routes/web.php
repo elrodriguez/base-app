@@ -11,6 +11,7 @@
 |
 */
 
+use Modules\CMS\Http\Controllers\CmsItemController;
 use Modules\CMS\Http\Controllers\CmsPageController;
 use Modules\CMS\Http\Controllers\CmsPageSectionController;
 use Modules\CMS\Http\Controllers\CmsSectionController;
@@ -23,13 +24,14 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::put('pages/update/{id}', [CmsPageController::class, 'update'])->name('cms_pages_update');
     Route::delete('pages/destroy/{id}', [CmsPageController::class, 'destroy'])->name('cms_pages_destroy');
 
-    
+
     Route::get('pages/sections/create', [CmsPageSectionController::class, 'create'])->name('cms_pages_section_create');
-    Route::get('pages/sections/', [CmsPageSectionController::class, 'index'])->name('cms_pages_section_list');
-
-    
-    
-    Route::get('cms/sections/', [CmsSectionController::class, 'index'])->name('cms_section_list');
+    Route::get('pages/sections', [CmsPageSectionController::class, 'index'])->name('cms_pages_section_list');
 
 
+
+    Route::get('sections', [CmsSectionController::class, 'index'])->name('cms_section_list');
+
+    Route::get('items', [CmsItemController::class, 'index'])->name('cms_items_list');
+    Route::get('items/create', [CmsItemController::class, 'create'])->name('cms_items_create');
 });

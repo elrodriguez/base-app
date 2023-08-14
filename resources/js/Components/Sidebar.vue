@@ -172,9 +172,14 @@ const menu = ref([
                 route: route('cms_pages_section_list'),
                 status: false,
                 text: 'Secciones de Pagina',
-                permissions: 'cms_pagina',
+                permissions: 'cms_seccion',
             },
-           
+            {
+                route: route('cms_items_list'),
+                status: false,
+                text: 'Items',
+                permissions: 'cms_items',
+            },
         ]
     }
 ]);
@@ -277,7 +282,7 @@ const toggleSubItems = (index) => {
                                     <ul class="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                                         <template v-for="(subItem, subIndex) in item.items" :key="subIndex">
                                             <li v-can="subItem.permissions">
-                                                <Link  :href="subItem.route" class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white">
+                                                <Link :href="subItem.route" class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white">
                                                     {{ subItem.text }}
                                                 </Link >
                                             </li>

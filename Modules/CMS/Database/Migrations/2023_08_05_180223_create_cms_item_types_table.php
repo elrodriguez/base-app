@@ -30,15 +30,6 @@ return new class extends Migration
             'description' => 'Archivo'
         ]);
         CmsItemType::create([
-            'description' => 'Link'
-        ]);
-        CmsItemType::create([
-            'description' => 'Boton'
-        ]);
-        CmsItemType::create([
-            'description' => 'Titulo'
-        ]);
-        CmsItemType::create([
             'description' => 'Texto'
         ]);
     }
