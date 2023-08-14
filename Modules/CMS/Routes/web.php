@@ -28,7 +28,7 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::get('pages/sections/create', [CmsPageSectionController::class, 'create'])->name('cms_pages_section_create');
     Route::get('pages/sections', [CmsPageSectionController::class, 'index'])->name('cms_pages_section_list');
 
-
+    Route::get('sections/', [CmsSectionController::class, 'index'])->name('cms_section_list');
 
     Route::get('sections', [CmsSectionController::class, 'index'])->name('cms_section_list');
 

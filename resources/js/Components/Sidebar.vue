@@ -163,6 +163,12 @@ const menu = ref([
         permissions: 'cms_dashboard',
         items: [
             {
+                route: route('cms_section_list'),
+                status: false,
+                text: 'CMS Secciones',
+                permissions: 'cms_seccion',
+            },
+            {
                 route: route('cms_pages_list'),
                 status: false,
                 text: 'Paginas',
