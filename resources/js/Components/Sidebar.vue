@@ -165,7 +165,7 @@ const menu = ref([
             {
                 route: route('cms_section_list'),
                 status: false,
-                text: 'CMS Secciones',
+                text: 'Secciones',
                 permissions: 'cms_seccion',
             },
             {

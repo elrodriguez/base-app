@@ -106,7 +106,7 @@
                             <div class="col-span-3 sm:col-span-2">
                                 <Keypad>
                                     <template #botones>
-                                        <Link v-can="'cms_pagina_nuevo'" :href="route('cms_pages_create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                        <Link v-can="'cms_editor'" :href="route('cms_pages_create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                             Nuevo
                                         </Link>
                                     </template>
@@ -121,20 +121,11 @@
                                     <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
                                         Acciones
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Icono
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th class="text-center py-2 px-4 font-medium text-black dark:text-white">
                                         Descripción
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Ruta
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Es principal
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Estado
+                                    <th class="text-center py-2 px-4 font-medium text-black dark:text-white">
+                                        Component_id
                                     </th>
                                 </tr>
                             </thead>
@@ -142,28 +133,18 @@
                                 <template v-for="(item, index) in sections.data" :key="item.id">
                                     <tr class="border-b border-stroke">
                                         <td class="text-center py-2 dark:border-strokedark">
-                                            <Link v-can="'cms_pagina_editar'" :href="route('cms_pages_edit',item.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            <Link v-can="'cms_editor'" :href="route('cms_pages_edit',item.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <font-awesome-icon :icon="faPencilAlt" />
                                             </Link>
-                                            <button v-can="'cms_pagina_eliminar'" @click="destroyPages(item.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            <button v-can="'cms_editor'" @click="destroyPages(item.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 <font-awesome-icon :icon="faTrashAlt" />
                                             </button>
                                         </td>
-                                        <td class="py-2 dark:border-strokedark">
-                                            {{ item.icon }}
-                                        </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
+                                        <td class="text-center py-2 px-2 dark:border-strokedark">
                                             {{ item.description }}
                                         </td>
                                         <td class="text-center py-2 px-2 dark:border-strokedark">
-                                            {{ item.route }}
-                                        </td>
-                                        <td class="text-center py-2 px-2 dark:border-strokedark">
-                                            <font-awesome-icon v-if="item.main" :icon="faCheck" class="ml-1" />
-                                        </td>
-                                        <td class="text-center py-2 px-2 dark:border-strokedark">
-                                            <span v-if="item.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
-                                            <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Inactivo</span>
+                                            {{ item.component_id }}
                                         </td>
                                     </tr>
                                 </template>
