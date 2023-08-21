@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Modules\Blog\Entities\BlogArticle;
+use Modules\Blog\Entities\BlogCategory;
 
 class BlogController extends Controller
 {
@@ -63,5 +64,17 @@ class BlogController extends Controller
     public function storiesContactUs()
     {
         return view('blog::stories.contact_us');
+    }
+
+
+    public function apiGetDataBlog()
+    {
+        $categories = BlogCategory::where('status', true)->get();
+        $articles = BlogArticle::where('status', true)->get();
+
+        return response()->json([
+            'categories'    => $categories,
+            'articles'      => $articles
+        ]);
     }
 }
