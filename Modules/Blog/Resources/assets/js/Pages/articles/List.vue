@@ -1,6 +1,6 @@
 <script setup>
     import { useForm } from "@inertiajs/vue3"
-    import AppLayout from '../../layouts/master.vue';
+    import AppLayout from '@/Layouts/AppLayout.vue';
     import Pagination from '@/Components/Pagination.vue';
     import { faTrashAlt, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
     import Keypad from '@/Components/Keypad.vue';
@@ -107,9 +107,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(article, index) in articles.data" :key="article.id" class="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="border px-6 py-4">
-                                        <img :src="article.imagen" :alt="article.title" class="object-cover" style="width: 100px;" />
-                                    </td>
+                                    
                                     <td class="border px-6 py-4">
                                         <a :href="route('blog-article.edit',article.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             <font-awesome-icon :icon="faPencilAlt" />
@@ -117,6 +115,9 @@
                                         <button @click="destroyArticle(article.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                             <font-awesome-icon :icon="faTrashAlt" />
                                         </button>
+                                    </td>
+                                    <td class="border px-6 py-4">
+                                        <img :src="article.imagen" :alt="article.title" class="object-cover" style="width: 100px;" />
                                     </td>
                                     <td class="border px-6 py-4">
                                         {{ article.title }}

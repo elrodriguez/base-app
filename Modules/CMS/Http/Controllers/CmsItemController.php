@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Modules\CMS\Entities\CmsItem;
 use Modules\CMS\Entities\CmsItemType;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\DB;
 
 class CmsItemController extends Controller
 {
@@ -22,7 +23,7 @@ class CmsItemController extends Controller
         $types = CmsItemType::all();
         $items = (new CmsItem())->newQuery();
         if (request()->has('search')) {
-            $items->whereDate('type_id', '=', request()->input('search'));
+            $items->where('description', 'like', '%' . request()->input('search') . '%');
         }
         if (request()->query('sort')) {
             $attribute = request()->query('sort');
@@ -67,29 +68,23 @@ class CmsItemController extends Controller
             [
                 'type_id' => 'required',
                 'content' => 'required',
+                'description' => 'required|max:255',
             ],
             [
-                'type_id.required' => 'el campo tipo es obligatorio',
-                'content.required' => 'el campo contenido es obligatorio',
+                'type_id.required' => 'el campo Tipo es obligatorio',
+                'content.required' => 'el campo Contenido es obligatorio',
+                'description.required' => 'el campo Descripción es obligatorio',
             ]
         );
 
         CmsItem::create([
-            'type_id',
-            'position',
-            'content'
+            'type_id' => $request->get('type_id'),
+            'position' => $request->get('position') ?? 0,
+            'content' => $request->get('content'),
+            'description' => $request->get('description')
         ]);
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('cms::show');
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -98,7 +93,11 @@ class CmsItemController extends Controller
      */
     public function edit($id)
     {
-        return view('cms::edit');
+        $types = CmsItemType::all();
+        return inertia::render('CMS::Items/Edit', [
+            'types' => $types,
+            'item' => CmsItem::find($id)
+        ]);
     }
 
     /**
@@ -109,7 +108,26 @@ class CmsItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'type_id' => 'required',
+                'content' => 'required',
+                'description' => 'required|max:255',
+            ],
+            [
+                'type_id.required' => 'el campo Tipo es obligatorio',
+                'content.required' => 'el campo Contenido es obligatorio',
+                'description.required' => 'el campo Descripción es obligatorio',
+            ]
+        );
+
+        CmsItem::find($id)->update([
+            'type_id' => $request->get('type_id'),
+            'position' => $request->get('position') ?? 0,
+            'content' => $request->get('content'),
+            'description' => $request->get('description')
+        ]);
     }
 
     /**
@@ -119,6 +137,33 @@ class CmsItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = null;
+        $success = false;
+        try {
+            // Usamos una transacción para asegurarnos de que la operación se realice de manera segura.
+            DB::beginTransaction();
+
+            // Verificamos si existe.
+            $item = CmsItem::findOrFail($id);
+
+            // Si no hay detalles asociados, eliminamos.
+            $item->delete();
+
+            // Si todo ha sido exitoso, confirmamos la transacción.
+            DB::commit();
+
+            $message =  'Item eliminado correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción durante la transacción, hacemos rollback para deshacer cualquier cambio.
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 }

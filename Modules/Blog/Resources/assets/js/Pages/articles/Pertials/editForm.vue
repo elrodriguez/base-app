@@ -9,8 +9,13 @@
     import TextInput from '@/Components/TextInput.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     import Editor from '@tinymce/tinymce-vue'
+    import swal from "sweetalert";
 
     const props = defineProps({
+        categories: {
+            type: Object,
+            default: () => ({})
+        },
         article: {
             type: Object,
             default: () => ({})
@@ -24,7 +29,8 @@
         status: props.article.status ? true : false,
         file_view: props.article.imagen,
         file: '',
-        description: props.article.short_description
+        description: props.article.short_description,
+        category_id: props.article.category_id
     });
 
     const photoPreview = ref(null);
@@ -186,6 +192,14 @@
 
                     <InputError :message="form.errors.file" class="mt-2" />
                 </div>
+            </div>
+            <div class="col-span-6 sm:col-span-3">
+                <InputLabel for="category_id" value="Categoría *" />
+                <select v-model="form.category_id" id="category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="" selected>Seleccionar</option>
+                    <option v-for="(category) in categories" :value="category.id">{{ category.description }}</option>
+                </select>
+                <InputError :message="form.errors.category_id" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-6">
                 <div class="flex items-center mb-6">

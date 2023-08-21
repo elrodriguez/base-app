@@ -18,15 +18,13 @@ const props = defineProps({
 
 const form = useForm({
     type_id: null,
-    icon: null,
-    route: null,
-    main: false,
-    status : true,
+    content: null,
+    description:null
 });
 
-const createPage = () => {
-    form.post(route('cms_pages_store'), {
-        errorBag: 'createPage',
+const createItem = () => {
+    form.post(route('cms_items_store'), {
+        errorBag: 'createItem',
         preserveScroll: true,
         onSuccess: () => {
             Swal2.fire({
@@ -41,7 +39,7 @@ const createPage = () => {
 </script>
 
 <template>
-    <FormSection @submitted="createPage" class="">
+    <FormSection @submitted="createItem" class="">
         <template #title>
             Items Detalles
         </template>
@@ -61,27 +59,31 @@ const createPage = () => {
             </div>
             <div class="col-span-6 sm:col-span-6 ">
                 <template v-if="form.type_id == 1">
-                    <InputLabel for="icon" value="Imagen" />
+                    <InputLabel for="content" value="Imagen *" />
                     <input @input="form.content = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                 </template>
                 <template v-if="form.type_id == 2">
-                    <InputLabel for="icon" value="Video" />
+                    <InputLabel for="content" value="Video *" />
                     <input @input="form.content = $event.target.files[0]" accept=".av1, .vp9, .mp4" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">AV1, VP9, MP4 (RECOMENDADO. 5-10 MB).</p>
                 </template>
                 <template v-if="form.type_id == 3">
-                    <InputLabel for="icon" value="Archivo" />
+                    <InputLabel for="content" value="Archivo *" />
                     <input @input="form.content = $event.target.files[0]" accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF, DOC, PPT o PPTX, XLS o XLSX (RECOMENDADO. 5-10 MB).</p>
                 </template>
                 <template v-if="form.type_id == 4">
-                    <InputLabel for="icon" value="Texto" />
+                    <InputLabel for="content" value="Texto *" />
                     <textarea v-model="form.content" id="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                 </template>
                 <InputError :message="form.errors.content" class="mt-2" />
             </div>
-
+            <div class="col-span-6 sm:col-span-6 ">
+                <InputLabel for="description" value="Descripción *" />
+                <textarea v-model="form.description" id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                <InputError :message="form.errors.description" class="mt-2" />
+            </div>
         </template>
 
         <template #actions>
@@ -97,7 +99,7 @@ const createPage = () => {
                         </svg>
                         Guardar
                     </PrimaryButton>
-                    <Link :href="route('cms_pages_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
+                    <Link :href="route('cms_items_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
                 </template>
             </Keypad>
         </template>

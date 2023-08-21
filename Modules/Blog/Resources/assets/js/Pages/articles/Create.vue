@@ -1,8 +1,13 @@
 <script setup>
-import AppLayout from '../../layouts/master.vue';
+    import AppLayout from '@/Layouts/AppLayout.vue';
 import CreateForm from './Pertials/createForm.vue';
 
-
+const props = defineProps({
+    categories: {
+        type: Object,
+        default: () => ({})
+    }
+});
 </script>
 
 <template>
@@ -15,7 +20,7 @@ import CreateForm from './Pertials/createForm.vue';
 
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <CreateForm></CreateForm>
+                <CreateForm :categories="categories"></CreateForm>
             </div>
         </div>
     </AppLayout>

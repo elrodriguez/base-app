@@ -1,13 +1,17 @@
 <script setup>
-import AppLayout from '../../layouts/master.vue';
-import editForm from './Pertials/editForm.vue';
+    import AppLayout from '@/Layouts/AppLayout.vue';
+    import editForm from './Pertials/editForm.vue';
 
-const props = defineProps({
-    article: {
-        type: Object,
-        default: () => ({}),
-    }
-});
+    const props = defineProps({
+        categories: {
+            type: Object,
+            default: () => ({})
+        },
+        article: {
+            type: Object,
+            default: () => ({})
+        }
+    });
 </script>
 
 <template>
@@ -20,7 +24,7 @@ const props = defineProps({
 
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <editForm :article="article"></editForm>
+                <editForm :article="article" :categories="categories"></editForm>
             </div>
         </div>
     </AppLayout>

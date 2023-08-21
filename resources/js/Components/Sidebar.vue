@@ -186,6 +186,18 @@ const menu = ref([
                 text: 'Items',
                 permissions: 'cms_items',
             },
+            {
+                route: route('blog-category.index'),
+                status: false,
+                text: 'Blog Categorías',
+                permissions: 'blog_categorias',
+            },
+            {
+                route: route('blog-article.index'),
+                status: false,
+                text: 'Blog Artículos',
+                permissions: 'blog_articulos',
+            },
         ]
     }
 ]);

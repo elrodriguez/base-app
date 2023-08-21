@@ -50,7 +50,8 @@ module.exports = {
         'gray-300': '#D1D5DB',
         'gray-400': '#9CA3AF',
         'gray-500': '#6B7280',
-        'gray-600': '#4B5563',
+        //'gray-600': '#4B5563', //ARACODE
+        'gray-600': '#4B5563', //Kentha
         'gray-700': '#374151',
         'gray-800': '#1F2937',
         'gray-900': '#111827',

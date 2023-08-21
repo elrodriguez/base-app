@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Modules\Blog\Entities\BlogArticle;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Str;
+use Modules\Blog\Entities\BlogCategory;
 
 class BlogArticlesController extends Controller
 {
@@ -52,7 +53,10 @@ class BlogArticlesController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Blog::articles/Create');
+        $categories = BlogCategory::all();
+        return Inertia::render('Blog::articles/Create', [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -65,7 +69,8 @@ class BlogArticlesController extends Controller
         $this->validate($request, [
             'title' => 'required|max:255|unique:blog_articles,url',
             'content_text' => 'required',
-            'description' => 'required'
+            'description' => 'required|max:255',
+            'category_id' => 'required'
         ]);
 
         BlogArticle::create([
@@ -73,7 +78,8 @@ class BlogArticlesController extends Controller
             'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
             'url'           => Str::slug($request->get('title')),
             'short_description'   => $request->get('description'),
-            'status'        => $request->get('status')
+            'status'        => $request->get('status'),
+            'category_id'   => $request->get('category_id')
         ]);
 
         return redirect()->route('blog-article.index')
@@ -87,7 +93,11 @@ class BlogArticlesController extends Controller
      */
     public function edit(BlogArticle $blogArticle)
     {
-        return Inertia::render('Blog::articles/Edit', ['article' => $blogArticle]);
+        $categories = BlogCategory::all();
+        return Inertia::render('Blog::articles/Edit', [
+            'categories' => $categories,
+            'article' => $blogArticle
+        ]);
     }
 
     /**
@@ -98,11 +108,12 @@ class BlogArticlesController extends Controller
      */
     public function update(Request $request, BlogArticle $blogArticle)
     {
-
+        //dd($request->all());
         $this->validate($request, [
             'title' => 'required|max:255|unique:blog_articles,url,' . $blogArticle->id,
             'content_text' => 'required',
-            'description' => 'required'
+            'description' => 'required|max:255',
+            'category_id' => 'required'
         ]);
 
         $blogArticle->update([
@@ -110,7 +121,8 @@ class BlogArticlesController extends Controller
             'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
             'short_description'   => $request->get('description'),
             'url'           => Str::slug($request->get('title')),
-            'status'        => $request->get('status')
+            'status'        => $request->get('status'),
+            'category_id'   => $request->get('category_id')
         ]);
 
         return redirect()->route('blog-article.edit', $blogArticle->id)
@@ -143,6 +155,7 @@ class BlogArticlesController extends Controller
         $blogArticle->url = Str::slug($request->get('title'));
         $blogArticle->short_description = $request->get('description');
         $blogArticle->status = $request->get('status');
+        $blogArticle->category_id   = $request->get('category_id');
 
         $path = 'img/imagen-no-disponible.jpeg';
         $destination = 'uploads/blog/articles';

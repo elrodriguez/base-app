@@ -23,7 +23,7 @@ class CmsPageController extends Controller
     {
         $pages = (new CmsPage())->newQuery();
         if (request()->has('search')) {
-            $pages->whereDate('description', 'like', '%' . request()->input('search') . '%');
+            $pages->where('description', 'like', '%' . request()->input('search') . '%');
         }
         if (request()->query('sort')) {
             $attribute = request()->query('sort');
@@ -151,7 +151,7 @@ class CmsPageController extends Controller
             // Verificamos si existe.
             $page = CmsPage::findOrFail($id);
 
-            // Verificamos si hay detalles asociados a este producto.
+            // Verificamos si hay detalles asociados
             // if ($page->detalles()->exists()) {
             //     $message =  'No se puede eliminar la pagina porque tiene detalles asociados.';
             //     $success = false;

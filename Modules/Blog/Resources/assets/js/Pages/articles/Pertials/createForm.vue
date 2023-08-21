@@ -9,9 +9,16 @@
     import Editor from '@tinymce/tinymce-vue'
     import TextInput from '@/Components/TextInput.vue';
 
+    const props = defineProps({
+        categories: {
+            type: Object,
+            default: () => ({})
+        }
+    });
 
     const form = useForm({
         title: '',
+        category_id: '',
         content_text: '',
         description:'',
         status: true
@@ -71,6 +78,7 @@
         </template>
 
         <template #form>
+            
             <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="title" value="Titulo *" />
                 <TextInput
@@ -101,7 +109,14 @@
                 />
                 <InputError :message="form.errors.content_text" class="mt-2" />
             </div>
-            
+            <div class="col-span-6 sm:col-span-3">
+                <InputLabel for="category_id" value="Categoría *" />
+                <select v-model="form.category_id" id="category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="" selected>Seleccionar</option>
+                    <option v-for="(category) in categories" :value="category.id">{{ category.description }}</option>
+                </select>
+                <InputError :message="form.errors.category_id" class="mt-2" />
+            </div>
             <div class="col-span-6 sm:col-span-6">
                 <div class="flex items-center mb-6">
                     <input v-model="form.status" id="checkboxStatus" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">

@@ -13,7 +13,8 @@ class CmsItem extends Model
         'type_id',
         'item_id',
         'position',
-        'content'
+        'content',
+        'description'
     ];
 
     protected static function newFactory()

@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '../../layouts/master.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import editForm from './Pertials/editForm.vue';
 
 const props = defineProps({
