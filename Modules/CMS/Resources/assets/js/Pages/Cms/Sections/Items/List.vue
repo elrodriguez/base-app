@@ -9,7 +9,7 @@
     import { faPencilAlt, faCheck, faTrashAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 
     const props = defineProps({
-        sections: {
+        items: {
             type: Object,
             default: () => ({}),
         },
@@ -84,6 +84,12 @@
                             <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Secciones</span>
                         </div>
                     </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Items</span>
+                        </div>
+                    </li>
                 </ol>
             </nav>
             <!-- ====== Table Section Start -->
@@ -130,7 +136,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <template v-for="(item, index) in sections.data" :key="item.id">
+                                <template v-for="(item, index) in items.data" :key="item.id">
                                     <tr class="border-b border-stroke">
                                         <td class="text-center py-2 dark:border-strokedark">
                                             <Link v-can="'cms_editor'" :href="route('cms_section_items',item.id)" class="mr-1 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" title="Agregar Items a esta sección">
@@ -153,8 +159,10 @@
                                 </template>
                             </tbody>
                         </table>
+                        
                     </div>
-                    <Pagination :data="sections" />
+
+                    <Pagination :data="items" />
                 </div>
             </div>
         </div>
