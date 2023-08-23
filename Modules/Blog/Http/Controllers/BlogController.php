@@ -70,7 +70,7 @@ class BlogController extends Controller
     public function apiGetDataBlog()
     {
         $categories = BlogCategory::where('status', true)->get();
-        $articles = BlogArticle::where('status', true)->get();
+        $articles = BlogArticle::with('author')->where('status', true)->paginate(10);
 
         return response()->json([
             'categories'    => $categories,

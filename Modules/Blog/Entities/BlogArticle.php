@@ -2,8 +2,10 @@
 
 namespace Modules\Blog\Entities;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class BlogArticle extends Model
 {
@@ -20,7 +22,8 @@ class BlogArticle extends Model
         'status',
         'keywords',
         'short_description',
-        'category_id'
+        'category_id',
+        'user_id'
     ];
 
     protected static function newFactory()
@@ -35,5 +38,10 @@ class BlogArticle extends Model
     public function getImagenAttribute($value)
     {
         return ($value != 'img/imagen-no-disponible.jpg' ? asset('storage/' . $value) : asset($value));
+    }
+
+    public function author(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 }
