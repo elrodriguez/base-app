@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Modules\Blog\Entities\BlogArticle;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Modules\Blog\Entities\BlogCategory;
 
@@ -79,7 +80,8 @@ class BlogArticlesController extends Controller
             'url'           => Str::slug($request->get('title')),
             'short_description'   => $request->get('description'),
             'status'        => $request->get('status'),
-            'category_id'   => $request->get('category_id')
+            'category_id'   => $request->get('category_id'),
+            'user_id'       => Auth::id()
         ]);
 
         return redirect()->route('blog-article.index')
@@ -122,7 +124,8 @@ class BlogArticlesController extends Controller
             'short_description'   => $request->get('description'),
             'url'           => Str::slug($request->get('title')),
             'status'        => $request->get('status'),
-            'category_id'   => $request->get('category_id')
+            'category_id'   => $request->get('category_id'),
+            'user_id'       => Auth::id()
         ]);
 
         return redirect()->route('blog-article.edit', $blogArticle->id)

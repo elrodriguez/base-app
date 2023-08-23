@@ -70,11 +70,26 @@ class BlogController extends Controller
     public function apiGetDataBlog()
     {
         $categories = BlogCategory::where('status', true)->get();
-        $articles = BlogArticle::with('author')->where('status', true)->paginate(10);
+
+        $articles = BlogArticle::with('category')->with('author')
+            ->where('status', true)
+            ->paginate(10);
+
+        $latest_articles = BlogArticle::select(
+            'title',
+            'imagen',
+            'url',
+            'created_at'
+        )
+            ->where('status', true)
+            ->latest('created_at') // Ordena por la columna created_at en orden descendente
+            ->take(4) // Limita el resultado a 4 registros
+            ->get();
 
         return response()->json([
-            'categories'    => $categories,
-            'articles'      => $articles
+            'categories'        => $categories,
+            'articles'          => $articles,
+            'latest_articles'   => $latest_articles
         ]);
     }
 }
