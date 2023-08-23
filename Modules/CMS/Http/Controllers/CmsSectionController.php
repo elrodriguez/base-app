@@ -20,7 +20,7 @@ class CmsSectionController extends Controller
      */
     public function index()
     {
-            // EDITANDO --- 
+        
             $sections = (new CmsSection())->newQuery();
             if (request()->has('search')) {
                 $sections->where('description', 'like', '%' . request()->input('search') . '%');
