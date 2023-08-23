@@ -6,7 +6,7 @@
 
     import Swal2 from "sweetalert2";
     import { Link, router } from '@inertiajs/vue3';
-    import { faPencilAlt, faCheck, faTrashAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+    import { faPencilAlt, faCheck, faTrashAlt, faPlus, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
     const props = defineProps({
         items: {
@@ -121,6 +121,60 @@
                         </div>
                     </div>
                     <div class="max-w-full overflow-x-auto">
+
+
+                        
+
+<div class="flex">
+  <div class="w-full px-4">
+    <div class="bg-white p-4 shadow-md rounded-lg">
+      <h2 class="text-lg font-medium">Items Disponibles</h2>
+      
+
+<ul>
+
+    <li class="relative cursor-pointer transition-colors duration-300 hover:bg-blue-100 focus:bg-blue-500 focus:outline-none">
+    <div class="hover:bg-blue-700 bg-blue-300 mr-2">
+        <img src="/img/img.png" style="max-width: 30px;">
+      <span>Imágen</span>
+    </div>
+  </li>
+
+  <li class="relative cursor-pointer transition-colors duration-300 hover:bg-blue-100 focus:bg-blue-500 focus:outline-none">
+    <div class="hover:bg-blue-700 bg-blue-300 mr-2">
+        <img src="/img/header.png" style="max-width: 30px;">
+      <span>Título</span>
+    </div>
+  </li>
+
+  <li class="relative cursor-pointer transition-colors duration-300 hover:bg-blue-100 focus:bg-blue-500 focus:outline-none">
+    <div class="hover:bg-blue-700 bg-blue-300 mr-2">
+        <img src="/img/sidebar.png" style="max-width: 30px;">
+      <span>Sidebar</span>
+    </div>
+  </li>
+
+</ul>
+      
+
+    </div>
+  </div>
+  <div class="w-3 px-5">
+        <button v-can="'cms_editor'" @click="destroySection(item.id)" type="button" class="mr-1 text-white bg-green-700 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+        <font-awesome-icon :icon="faArrowRight" />
+        </button>   
+    </div>
+  <div class="w-full px-4">
+    <div class="bg-white p-4 shadow-md rounded-lg">
+      <h2 class="text-lg font-medium">Tarjeta 2</h2>
+      <p>Contenido de la tarjeta 2</p>
+    </div>
+  </div>
+</div>
+
+
+
+
                         <table class="w-full table-auto">
                             <thead class="border-b border-stroke">
                                 <tr class="bg-gray-50 text-left dark:bg-meta-4">
