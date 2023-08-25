@@ -8,6 +8,7 @@
     import { Link, router } from '@inertiajs/vue3';
     import { faPencilAlt, faCheck, faTrashAlt, faPlus, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
+    let selected_id;
     const props = defineProps({
         items: {
             type: Object,
@@ -69,7 +70,13 @@
                 element.className = "lix";
             }
             document.getElementById(id).className = "lix bg-blue-900";
+            selected_id = id;
     }
+
+    const addItem =(id) =>{
+        
+        document.getElementById("listDestino").insertAdjacentHTML("beforeend", document.getElementById(id).innerHTML);
+}
 
 
 </script>
@@ -146,7 +153,7 @@
       <h2 class="text-lg font-medium">Items Disponibles</h2>
       
 
-<ul>
+<ul id="listOrigen">
 
     <li id="li1" @click="selectItem('img', 'li1')" data-item="img" class="lix">
     <div class="hover:bg-blue-700 bg-blue-300 mr-2">
@@ -175,14 +182,16 @@
     </div>
   </div>
   <div class="w-3 px-5">
-        <button v-can="'cms_editor'" @click="destroySection(item.id)" type="button" class="mr-1 text-white bg-green-700 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+        <button v-can="'cms_editor'" @click="addItem(selected_id)" type="button" class="mr-1 text-white bg-green-700 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
         <font-awesome-icon :icon="faArrowRight" />
         </button>   
     </div>
   <div class="w-full px-4">
     <div class="bg-white p-4 shadow-md rounded-lg">
-      <h2 class="text-lg font-medium">Tarjeta 2</h2>
-      <p>Contenido de la tarjeta 2</p>
+      <h2 class="text-lg font-medium">Items agregados</h2>
+      <ul id="listDestino">
+
+      </ul>
     </div>
   </div>
 </div>
