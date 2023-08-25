@@ -150,10 +150,13 @@
                     api-key="qv97v3surg08i8vhwvqxnj7ek17sk8xx2aqimzrrsgav6003"
                     v-model="form.content_text"
                     :init="{
-                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes autocorrect typography inlinecss',
-                        images_upload_handler: uploadImage
+                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                        images_upload_handler: uploadImage,
+                        language: 'es',
+                        relative_urls: false,
                     }"
                     :images_upload_url="route('blog_article_uploa_image_tiny')"
+
                 />
                 <InputError :message="form.errors.content_text" class="mt-2" />
             </div>

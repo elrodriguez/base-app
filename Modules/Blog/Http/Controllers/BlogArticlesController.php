@@ -74,13 +74,35 @@ class BlogArticlesController extends Controller
             'category_id' => 'required'
         ]);
 
+        $path = 'img/imagen-no-disponible.jpeg';
+        $destination = 'uploads/blog/articles';
+        $file = $request->file('file');
+
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = $request->get('id') . '.' . $extension;
+            $path = $request->file('file')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+        }
+
+        $baseUrl = env('APP_URL'); // Ruta base de tu aplicación
+        $content = $request->get('content_text');
+        // Reemplazar las rutas de imágenes en el contenido
+        $contentWithAbsoluteImagePaths = preg_replace('/src="([^"]+)"/', 'src="' . $baseUrl . '$1"', $content);
+
         BlogArticle::create([
             'title'         => $request->get('title'),
-            'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
+            'content_text'  => htmlentities($contentWithAbsoluteImagePaths, ENT_QUOTES, "UTF-8"),
             'url'           => Str::slug($request->get('title')),
             'short_description'   => $request->get('description'),
             'status'        => $request->get('status'),
             'category_id'   => $request->get('category_id'),
+            'imagen'        => $path,
             'user_id'       => Auth::id()
         ]);
 
@@ -118,6 +140,22 @@ class BlogArticlesController extends Controller
             'category_id' => 'required'
         ]);
 
+        $path = 'img/imagen-no-disponible.jpeg';
+        $destination = 'uploads/blog/articles';
+        $file = $request->file('file');
+
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = $request->get('id') . '.' . $extension;
+            $path = $request->file('file')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+        }
+
         $blogArticle->update([
             'title'         => $request->get('title'),
             'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
@@ -125,6 +163,7 @@ class BlogArticlesController extends Controller
             'url'           => Str::slug($request->get('title')),
             'status'        => $request->get('status'),
             'category_id'   => $request->get('category_id'),
+            'imagen'        => $path,
             'user_id'       => Auth::id()
         ]);
 
@@ -153,8 +192,14 @@ class BlogArticlesController extends Controller
             'content_text' => 'required',
         ]);
 
+        $baseUrl = env('APP_URL'); // Ruta base de tu aplicación
+        $content = $request->get('content_text');
+        // Reemplazar las rutas de imágenes en el contenido
+        $contentWithAbsoluteImagePaths = preg_replace('/src="([^"]+)"/', 'src="' . $baseUrl . '$1"', $content);
+
+
         $blogArticle->title = $request->get('title');
-        $blogArticle->content_text = htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8");
+        $blogArticle->content_text = htmlentities($contentWithAbsoluteImagePaths, ENT_QUOTES, "UTF-8");
         $blogArticle->url = Str::slug($request->get('title'));
         $blogArticle->short_description = $request->get('description');
         $blogArticle->status = $request->get('status');
@@ -198,7 +243,9 @@ class BlogArticlesController extends Controller
             $file_name,
             'public'
         );
+
         $url = asset('storage/' . $path);
+
         return response()->json(['location' =>  $url]);
     }
 }

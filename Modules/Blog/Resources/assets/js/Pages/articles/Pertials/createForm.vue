@@ -8,6 +8,7 @@
     import { ref, onMounted } from 'vue';
     import Editor from '@tinymce/tinymce-vue'
     import TextInput from '@/Components/TextInput.vue';
+    import SecondaryButton from '@/Components/SecondaryButton.vue';
 
     const props = defineProps({
         categories: {
@@ -21,12 +22,22 @@
         category_id: '',
         content_text: '',
         description:'',
-        status: true
+        status: true,
+        file: ''
     });
 
+    const photoPreview = ref(null);
+    const photoInput = ref(null);
+
     const createArticle = () => {
+        if (photoInput.value) {
+            form.file = photoInput.value.files[0];
+        }
+
         form.post(route('blog-article.store'), {
+            forceFormData: true,
             errorBag: 'createArticle',
+            preserveScroll: true,
             preserveScroll: true
         });
     };
@@ -57,15 +68,32 @@
                     reject('Invalid JSON: ' + JSON.stringify(json));
                     return;
                 }
-
                 resolve(json.location);
             }).catch(error => {
                 reject('Image upload failed due to a XHR Transport error. Error: ' + error.message);
             });
         });
     };
-</script>
 
+    const selectNewPhoto = () => {
+        photoInput.value.click();
+    };
+
+    const updatePhotoPreview = () => {
+        const photo = photoInput.value.files[0];
+
+        if (! photo) return;
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            photoPreview.value = e.target.result;
+        };
+
+        reader.readAsDataURL(photo);
+    };
+
+</script>
 
 <template>
     <FormSection @submitted="createArticle">
@@ -102,12 +130,52 @@
                     api-key="qv97v3surg08i8vhwvqxnj7ek17sk8xx2aqimzrrsgav6003"
                     v-model="form.content_text"
                     :init="{
-                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes autocorrect typography inlinecss',
-                        images_upload_handler: uploadImage
+                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                        images_upload_handler: uploadImage,
+                        language: 'es',
+                        relative_urls: false,
                     }"
+                    :images_file_types="'jpg,svg,webp'"
                     :images_upload_url="route('blog_article_uploa_image_tiny')"
                 />
+
                 <InputError :message="form.errors.content_text" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-6">
+                <div>
+                    <!-- Profile Photo File Input -->
+                    <input
+                        ref="photoInput"
+                        type="file"
+                        class="hidden"
+                        @change="updatePhotoPreview"
+                    >
+                    <InputLabel for="photo" value="Photo" />
+                    <!-- Current Profile Photo -->
+                    <div v-show="!photoPreview" class="mt-2">
+                        <img :src="form.file_view" :alt="form.title" class="object-cover" style="width: 200px;" />
+                    </div>
+
+                    <!-- New Profile Photo Preview -->
+                    <div v-show="photoPreview" class="mt-2">
+                        <img :src="photoPreview" :alt="form.title" class="object-cover" style="width: 200px;" />
+                    </div>
+
+                    <SecondaryButton class="mt-2 mr-2" type="button" @click.prevent="selectNewPhoto">
+                        Seleccione una nueva foto
+                    </SecondaryButton>
+
+                    <!-- <SecondaryButton
+                        v-if="form.file"
+                        type="button"
+                        class="mt-2"
+                        @click.prevent="deletePhoto"
+                    >
+                        Eliminar imagen
+                    </SecondaryButton> -->
+
+                    <InputError :message="form.errors.file" class="mt-2" />
+                </div>
             </div>
             <div class="col-span-6 sm:col-span-3">
                 <InputLabel for="category_id" value="Categoría *" />

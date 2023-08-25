@@ -30,7 +30,8 @@ createInertiaApp({
             .use(VueTheMask)
             .use(VueGates)
             .use(Permissions)
-            .component("font-awesome-icon", FontAwesomeIcon);
+            .component("font-awesome-icon", FontAwesomeIcon)
+
             //.mount(el);
             // Agregar el código de manejo de redireccionamiento
         app.mixin({
