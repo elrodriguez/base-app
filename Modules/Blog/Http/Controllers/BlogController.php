@@ -92,4 +92,29 @@ class BlogController extends Controller
             'latest_articles'   => $latest_articles
         ]);
     }
+
+    public function apiGetDataArticle($url)
+    {
+        $categories = BlogCategory::where('status', true)->get();
+
+        $article = BlogArticle::where('url', $url)
+            ->first();
+
+        $latest_articles = BlogArticle::select(
+            'title',
+            'imagen',
+            'url',
+            'created_at'
+        )
+            ->where('status', true)
+            ->latest('created_at') // Ordena por la columna created_at en orden descendente
+            ->take(4) // Limita el resultado a 4 registros
+            ->get();
+
+        return response()->json([
+            'categories'        => $categories,
+            'articles'          => $article,
+            'latest_articles'   => $latest_articles
+        ]);
+    }
 }
