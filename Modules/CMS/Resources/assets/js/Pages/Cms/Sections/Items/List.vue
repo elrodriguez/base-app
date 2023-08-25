@@ -56,7 +56,22 @@
             }
         });
     }
-    
+
+    const selectItem =(item, id) =>{
+        
+            console.log("item seleccionado: "+item);
+            const elements = document.getElementsByClassName("lix");
+            for (let i = 0; i < elements.length; i++) {
+                const element = elements[i];
+                // Limpiar el contenido de clase actual
+                element.className = "";
+                // Agregar la clase "lix"
+                element.className = "lix";
+            }
+            document.getElementById(id).className = "lix bg-blue-900";
+    }
+
+
 </script>
 
 <template>
@@ -133,21 +148,21 @@
 
 <ul>
 
-    <li class="relative cursor-pointer transition-colors duration-300 hover:bg-blue-100 focus:bg-blue-500 focus:outline-none">
+    <li id="li1" @click="selectItem('img', 'li1')" data-item="img" class="lix">
     <div class="hover:bg-blue-700 bg-blue-300 mr-2">
         <img src="/img/img.png" style="max-width: 30px;">
       <span>Imágen</span>
     </div>
   </li>
 
-  <li class="relative cursor-pointer transition-colors duration-300 hover:bg-blue-100 focus:bg-blue-500 focus:outline-none">
+  <li  id="li2" @click="selectItem('header', 'li2')" data-item="header" class="lix">
     <div class="hover:bg-blue-700 bg-blue-300 mr-2">
         <img src="/img/header.png" style="max-width: 30px;">
       <span>Título</span>
     </div>
   </li>
 
-  <li class="relative cursor-pointer transition-colors duration-300 hover:bg-blue-100 focus:bg-blue-500 focus:outline-none">
+  <li id="li3" @click="selectItem('sidebar', 'li3')" data-item="sidebar" class="lix">
     <div class="hover:bg-blue-700 bg-blue-300 mr-2">
         <img src="/img/sidebar.png" style="max-width: 30px;">
       <span>Sidebar</span>
