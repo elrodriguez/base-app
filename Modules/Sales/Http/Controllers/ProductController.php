@@ -29,11 +29,23 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = (new Product())->newQuery()->where('is_product', true);
+        $product = request()->input('displayProduct') ? request()->input('displayProduct') : true;
+
+        $true =  true;
+
+        if ($product === true || $product === 'true') {
+            $true =  true;
+        } else {
+            $true =  false;
+        }
+
+        $products = (new Product())->newQuery()->where('is_product', $true);
 
         if (request()->has('search')) {
-            $products->where('interne', '=', request()->input('search'))
-                ->orWhere('description', 'Like', '%' . request()->input('search') . '%');
+            $products->where(function ($query) {
+                $query->where('interne', '=', request()->input('search'))
+                    ->orWhere('description', 'Like', '%' . request()->input('search') . '%');
+            });
         }
         if (request()->query('sort')) {
             $attribute = request()->query('sort');
@@ -46,14 +58,19 @@ class ProductController extends Controller
         } else {
             $products->latest();
         }
-
+        //dd($products->toRawSql());
         $products = $products->paginate(10)->onEachSide(2);
+
+
         $establishments = LocalSale::all();
 
         return Inertia::render('Sales::Products/List', [
             'products' => $products,
             'establishments' => $establishments,
-            'filters' => request()->all('search'),
+            'filters' => [
+                'search' => request()->input('search'),
+                'displayProduct'  => $product
+            ],
         ]);
     }
 
@@ -68,7 +85,12 @@ class ProductController extends Controller
             'establishments' => LocalSale::all(),
         ]);
     }
-
+    public function createService()
+    {
+        return Inertia::render('Sales::Services/Create', [
+            'establishments' => LocalSale::all(),
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -103,7 +125,7 @@ class ProductController extends Controller
         }
         // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
         // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
-        $path = 'img/imagen-no-disponible.jpeg';
+        $path = 'img/imagen-no-disponible.jpg';
         $destination = 'uploads/products';
         $file = $request->file('image');
         if ($file) {
@@ -169,6 +191,36 @@ class ProductController extends Controller
         return redirect()->route('products.create')
             ->with('message', __('Producto creado con éxito'));
     }
+
+    public function storeService(Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'interne' => 'required|unique:products,interne',
+                'description' => 'required',
+                'sale_prices.high' => 'required'
+            ]
+        );
+        Product::create([
+            'usine' => $request->get('usine'),
+            'interne' => $request->get('interne'),
+            'description' => $request->get('description'),
+            'image' => 'img/imagen-no-disponible.jpg',
+            'purchase_prices' => 0,
+            'sale_prices' => json_encode($request->get('sale_prices')),
+            'sizes' => null,
+            'stock_min' => 1,
+            'stock' => 1,
+            'presentations' => false,
+            'is_product' => false,
+            'type_sale_affectation_id' => '10',
+            'type_purchase_affectation_id' => '10',
+            'type_unit_measure_id' => 'ZZ',
+            'status' => true
+        ]);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -339,28 +391,42 @@ class ProductController extends Controller
     public function saveInput(Request $request)
     {
         $p_id = $request->get('product_id');
+        $presentations = $request->get('presentations');
         $t_id = $request->get('type');
+
         $this->validate(
             $request,
             [
                 'product_id' => 'required',
-                'description' => 'required',
-                'sizes.*.size' => ['required', 'size_existence:' . $p_id . ',' . $t_id],
-                'sizes.*.quantity' => 'required|numeric',
-            ],
-            [
-                'sizes.*.size.required' => 'Ingrese Talla',
-                'sizes.*.quantity.required' => 'Ingrese Cantidad',
+                'description' => 'required'
             ]
         );
 
+        if ($presentations) {
+            $this->validate(
+                $request,
+                [
+                    'sizes.*.size' => ['required', 'size_existence:' . $p_id . ',' . $t_id],
+                    'sizes.*.quantity' => 'required|numeric',
+                ],
+                [
+                    'sizes.*.size.required' => 'Ingrese Talla',
+                    'sizes.*.quantity.required' => 'Ingrese Cantidad',
+                ]
+            );
+        }
+
         $product = Product::find($request->get('product_id'));
         $tallas = $product->sizes;
-        $new_sizes = [];
 
         $t = 0;
-        foreach ($request->get('sizes') as $item) {
-            $t += $item['quantity'];
+
+        if ($presentations) {
+            foreach ($request->get('sizes') as $item) {
+                $t += $item['quantity'];
+            }
+        } else {
+            $t = $request->get('quantity');
         }
 
         $kardex = Kardex::create([
@@ -372,61 +438,70 @@ class ProductController extends Controller
             'description' => $request->get('description'),
         ]);
 
-        $c = 0;
-        $pro_sizes = [];
+        $json_pro_sizes = null;
 
-        foreach (json_decode($tallas, true) as $k => $talla) {
-            $pro_sizes[$k] = array(
-                'size' => $talla['size'],
-                'quantity' => $talla['quantity'],
-            );
-        }
-        foreach ($request->get('sizes') as $g => $row) {
-            $t = $t + $row['quantity'];
+        if ($presentations) {
+            $c = 0;
+            $pro_sizes = [];
 
-            $key = array_search($row['size'], array_column($pro_sizes, 'size'));
-            if ($key === false) {
-                array_push($pro_sizes, [
+            foreach (json_decode($tallas, true) as $k => $talla) {
+                $pro_sizes[$k] = array(
+                    'size' => $talla['size'],
+                    'quantity' => $talla['quantity'],
+                );
+            }
+            foreach ($request->get('sizes') as $g => $row) {
+                $t = $t + $row['quantity'];
+
+                $key = array_search($row['size'], array_column($pro_sizes, 'size'));
+                if ($key === false) {
+                    array_push($pro_sizes, [
+                        'size' => $row['size'],
+                        'quantity' => 0,
+                    ]);
+                }
+            }
+
+            foreach ($request->get('sizes') as $row) {
+                if ($request->get('type') == 1) {
+                    $c = $row['quantity'];
+                } else {
+                    $c = -$row['quantity'];
+                }
+                KardexSize::create([
+                    'kardex_id' => $kardex->id,
+                    'product_id' => $request->get('product_id'),
+                    'local_id' => $request->get('local_id'),
                     'size' => $row['size'],
-                    'quantity' => 0,
+                    'quantity' => $c,
                 ]);
-            }
-        }
 
-        foreach ($request->get('sizes') as $row) {
-            if ($request->get('type') == 1) {
-                $c = $row['quantity'];
-            } else {
-                $c = -$row['quantity'];
-            }
-            KardexSize::create([
-                'kardex_id' => $kardex->id,
-                'product_id' => $request->get('product_id'),
-                'local_id' => $request->get('local_id'),
-                'size' => $row['size'],
-                'quantity' => $c,
-            ]);
-
-            for ($r = 0; $r < count($pro_sizes); $r++) {
-                if ($pro_sizes[$r]['size'] == $row['size']) {
-                    if ($request->get('type') == 1) {
-                        $pro_sizes[$r]['quantity'] = $pro_sizes[$r]['quantity'] + $row['quantity'];
-                    } elseif ($pro_sizes[$r]['quantity'] > $row['quantity']) {
-                        $pro_sizes[$r]['quantity'] = $pro_sizes[$r]['quantity'] - $row['quantity'];
-                    } else {
-                        $pro_sizes[$r]['quantity'] = 0;
+                for ($r = 0; $r < count($pro_sizes); $r++) {
+                    if ($pro_sizes[$r]['size'] == $row['size']) {
+                        if ($request->get('type') == 1) {
+                            $pro_sizes[$r]['quantity'] = $pro_sizes[$r]['quantity'] + $row['quantity'];
+                        } elseif ($pro_sizes[$r]['quantity'] > $row['quantity']) {
+                            $pro_sizes[$r]['quantity'] = $pro_sizes[$r]['quantity'] - $row['quantity'];
+                        } else {
+                            $pro_sizes[$r]['quantity'] = 0;
+                        }
                     }
                 }
             }
-        }
 
-        $pt = 0;
-        for ($r = 0; $r < count($pro_sizes); $r++) {
-            $pt = $pt + $pro_sizes[$r]['quantity'];
+            $pt = 0;
+            for ($r = 0; $r < count($pro_sizes); $r++) {
+                $pt = $pt + $pro_sizes[$r]['quantity'];
+            }
+
+            $json_pro_sizes = json_encode($pro_sizes);
+        } else {
+            $pt = $request->get('type') == 1 ? $product->stock + $t : $product->stock - $t;
+            $json_pro_sizes = null;
         }
 
         $product->update([
-            'sizes' => json_encode($pro_sizes),
+            'sizes' => $json_pro_sizes,
             'stock' => $pt,
         ]);
     }

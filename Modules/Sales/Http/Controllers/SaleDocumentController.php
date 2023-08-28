@@ -320,7 +320,7 @@ class SaleDocumentController extends Controller
                             'is_product'                    => $produc['is_product'],
                             'type_sale_affectation_id'      => '10',
                             'type_purchase_affectation_id'  => '10',
-                            'type_unit_measure_id'          => $produc['unit_type'],
+                            'type_unit_measure_id'          => $produc['is_product'] ? $produc['unit_type'] : 'ZZ',
                             'status'                        => true
                         ]);
                         $product_id = $new_product->id;

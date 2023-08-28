@@ -28,6 +28,9 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::resource('pettycash', PettyCashController::class);
     Route::resource('providers', ProviderController::class);
 
+    Route::get('service/create', [ProductController::class, 'createService'])->name('create_service');
+    Route::post('service/store', [ProductController::class, 'storeService'])->name('store_service');
+
     Route::post('petty/cash/close/{petty_id}', [PettyCashController::class, 'close_petty'])->name('close_petty_cash');
 
     Route::post('petty/cash/expense/store', [PettyCashController::class, 'store_expense'])->name('store_expense');
