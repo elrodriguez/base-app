@@ -19,6 +19,7 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    avatar: user.avatar,
 });
 </script>
 
@@ -64,16 +65,33 @@ const form = useForm({
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
+            <div>
+                <InputLabel for="avatar" value="Avatar" />
+
+                <TextInput
+                    id="avatar"
+                    type="file"
+                    accept="image/*"
+                    class="mt-1 block w-full"
+                    v-model="form.avatar"
+                    
+                    autocomplete="Avatar"
+                />
+
+                <InputError class="mt-2" :message="form.errors.avatar" />
+            </div>
+
+
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                    Your email address is unverified.
+                    Tu dirección de corre electrónico no ha sido VERIFICADA.
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
                         class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                     >
-                        Click here to re-send the verification email.
+                        Click aquí para re-enviar la verificación de Correo Electrónica.
                     </Link>
                 </p>
 
