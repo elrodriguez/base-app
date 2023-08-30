@@ -122,10 +122,7 @@
                 />
                 <InputError :message="form.errors[`sale_prices.under`]" class="mt-2" />
             </div>
-
-
         </template>
-
         <template #actions>
             <Keypad>
                 <template #botones>
