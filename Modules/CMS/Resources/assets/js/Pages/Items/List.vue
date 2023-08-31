@@ -56,7 +56,7 @@
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
                 });
-                router.visit(route('cms_pages_list'), { replace: true, method: 'get' });
+                router.visit(route('cms_items_list'), { replace: true, method: 'get' });
             }
         });
     }

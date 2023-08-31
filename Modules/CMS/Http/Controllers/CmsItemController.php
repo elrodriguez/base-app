@@ -76,11 +76,30 @@ class CmsItemController extends Controller
                 'description.required' => 'el campo Descripción es obligatorio',
             ]
         );
+        $destination = 'uploads/articles';
+        $type_id = $request->get('type_id');
+        $content = null;
+        if ($type_id == 1 || $type_id == 3) {
+            $file = $request->file('content');
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('content')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
 
+            $content = $type_id == 1 ? asset('storage/' . $path) : $path;
+        }
+        if ($type_id == 2 || $type_id == 4) {
+            $content = $request->get('content');
+        }
         CmsItem::create([
-            'type_id' => $request->get('type_id'),
+            'type_id' => $type_id,
             'position' => $request->get('position') ?? 0,
-            'content' => $request->get('content'),
+            'content' => $content,
             'description' => $request->get('description')
         ]);
     }
@@ -94,9 +113,11 @@ class CmsItemController extends Controller
     public function edit($id)
     {
         $types = CmsItemType::all();
+        $item = CmsItem::find($id);
+
         return inertia::render('CMS::Items/Edit', [
             'types' => $types,
-            'item' => CmsItem::find($id)
+            'item' => $item // Pasa la instancia del ítem que ahora contiene la ruta de la imagen
         ]);
     }
 
@@ -106,8 +127,10 @@ class CmsItemController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+
+        $id = $request->get('id');
         $this->validate(
             $request,
             [
@@ -122,10 +145,30 @@ class CmsItemController extends Controller
             ]
         );
 
+        $destination = 'uploads/articles';
+        $type_id = $request->get('type_id');
+        $content = null;
+        if ($type_id == 1 || $type_id == 3) {
+            $file = $request->file('content');
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('content')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+
+            $content = $type_id == 1 ? asset('storage/' . $path) : $path;
+        }
+        if ($type_id == 2 || $type_id == 4) {
+            $content = $request->get('content');
+        }
         CmsItem::find($id)->update([
             'type_id' => $request->get('type_id'),
             'position' => $request->get('position') ?? 0,
-            'content' => $request->get('content'),
+            'content' => $content,
             'description' => $request->get('description')
         ]);
     }

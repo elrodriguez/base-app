@@ -7,6 +7,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Keypad from '@/Components/Keypad.vue';
 import Swal2 from 'sweetalert2';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
     types: {
@@ -21,14 +22,17 @@ const props = defineProps({
 
 
 const form = useForm({
+    id: props.item.id,
     type_id: props.item.type_id,
-    content: props.item.content,
+    content: null,
+    image_old: props.item.content,
     description: props.item.description,
 });
 
 const updateItem = () => {
-    form.put(route('cms_items_update', props.item.id), {
+    form.post(route('cms_items_update'), {
         errorBag: 'updateItem',
+        forceFormData: true,
         preserveScroll: true,
         onSuccess: () => {
             Swal2.fire({
@@ -39,6 +43,16 @@ const updateItem = () => {
         },
     });
 }
+
+    watch(() => form.content, (newValue) => {
+        if(form.type_id == 1){
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                form.image_old  = e.target.result;
+            };
+            reader.readAsDataURL(newValue);
+        }
+    });
 </script>
 
 <template>
@@ -63,12 +77,25 @@ const updateItem = () => {
             <div class="col-span-6 sm:col-span-6 ">
                 <template v-if="form.type_id == 1">
                     <InputLabel for="content" value="Imagen *" />
+
+                    <div class="flex justify-center space-x-2">
+                        <figure class="max-w-lg">
+                            <img class="h-auto max-w-full rounded-lg" :src="form.image_old">
+                            <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
+                        </figure>
+                    </div>
+                    
                     <input @input="form.content = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                 </template>
                 <template v-if="form.type_id == 2">
-                    <InputLabel for="content" value="Video *" />
-                    <input @input="form.content = $event.target.files[0]" accept=".av1, .vp9, .mp4" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                    <InputLabel for="content" value="URL del Video *" />
+                    <TextInput
+                        id="content"
+                        v-model="form.content"
+                        type="text"
+                        class="block w-full mt-1"
+                    />
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">AV1, VP9, MP4 (RECOMENDADO. 5-10 MB).</p>
                 </template>
                 <template v-if="form.type_id == 3">

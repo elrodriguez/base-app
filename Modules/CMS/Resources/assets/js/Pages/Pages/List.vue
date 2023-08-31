@@ -6,7 +6,7 @@
 
     import Swal2 from "sweetalert2";
     import { Link, router } from '@inertiajs/vue3';
-    import { faPencilAlt, faCheck, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+    import { faPencilAlt, faCheck, faTrashAlt, faLayerGroup } from "@fortawesome/free-solid-svg-icons";
 
     const props = defineProps({
         pages: {
@@ -144,6 +144,9 @@
                                         <td class="text-center py-2 dark:border-strokedark">
                                             <Link v-can="'cms_pagina_editar'" :href="route('cms_pages_edit',item.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <font-awesome-icon :icon="faPencilAlt" />
+                                            </Link>
+                                            <Link v-can="'cms_pagina_seccion'" :href="route('cms_pages_section_list',item.id)" class="mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                                                <font-awesome-icon :icon="faLayerGroup" />
                                             </Link>
                                             <button v-can="'cms_pagina_eliminar'" @click="destroyPages(item.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 <font-awesome-icon :icon="faTrashAlt" />

@@ -10,6 +10,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Modules\CMS\Entities\CmsSectionItem;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Modules\CMS\Entities\CmsItem;
 
 class CmsSectionItemController extends Controller
 {
@@ -19,28 +20,28 @@ class CmsSectionItemController extends Controller
      */
     public function index()
     {
-                    // EDITANDO --- 
-                    $items = (new CmsSectionItem())->newQuery();
-                    if (request()->has('search')) {
-                        $items->where('description', 'like', '%' . request()->input('search') . '%');
-                    }
-                   if (request()->query('sort')) {
-                       $attribute = request()->query('sort');
-                       $sort_order = 'ASC';
-                       if (strncmp($attribute, '-', 1) === 0) {
-                           $sort_order = 'DESC';
-                           $attribute = substr($attribute, 1);
-                       }
-                       $items->orderBy($attribute, $sort_order);
-                   } else {
-                       $items->latest();
-                   }
-           
-                   $items = $items->paginate(10)->onEachSide(2);
-           
-                        return Inertia::render('CMS::Cms/Sections/Items/List', [
-                       'items' => $items
-                   ]); 
+        // EDITANDO --- 
+        $items = (new CmsItem())->newQuery();
+        if (request()->has('search')) {
+            $items->where('description', 'like', '%' . request()->input('search') . '%');
+        }
+        if (request()->query('sort')) {
+            $attribute = request()->query('sort');
+            $sort_order = 'ASC';
+            if (strncmp($attribute, '-', 1) === 0) {
+                $sort_order = 'DESC';
+                $attribute = substr($attribute, 1);
+            }
+            $items->orderBy($attribute, $sort_order);
+        } else {
+            $items->latest();
+        }
+
+        $items = $items->paginate(10)->onEachSide(2);
+
+        return Inertia::render('CMS::Sections/Items/List', [
+            'items' => $items
+        ]);
     }
 
     /**

@@ -39,7 +39,7 @@ class CmsSectionController extends Controller
    
            $sections = $sections->paginate(10)->onEachSide(2);
    
-                return Inertia::render('CMS::Cms/Sections/List', [
+                return Inertia::render('CMS::Sections/List', [
                'sections' => $sections
            ]); 
     }
@@ -50,7 +50,7 @@ class CmsSectionController extends Controller
      */
     public function create()
     {
-        return Inertia::render('CMS::Cms/Sections/Create');
+        return Inertia::render('CMS::Sections/Create');
     }
 
     /**
@@ -101,7 +101,7 @@ class CmsSectionController extends Controller
     public function edit($id)
     {
         $section =  CmsSection::find($id);
-        return Inertia::render('CMS::Cms/Sections/Edit', ['section' => $section]);
+        return Inertia::render('CMS::Sections/Edit', ['section' => $section]);
     }
 
     /**

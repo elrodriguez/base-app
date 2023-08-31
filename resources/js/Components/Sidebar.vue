@@ -163,6 +163,12 @@ const menu = ref([
         permissions: 'cms_dashboard',
         items: [
             {
+                route: route('cms_items_list'),
+                status: false,
+                text: 'Items',
+                permissions: 'cms_items',
+            },
+            {
                 route: route('cms_section_list'),
                 status: false,
                 text: 'Secciones',
@@ -173,18 +179,6 @@ const menu = ref([
                 status: false,
                 text: 'Paginas',
                 permissions: 'cms_pagina',
-            },
-            {
-                route: route('cms_pages_section_list'),
-                status: false,
-                text: 'Secciones de Pagina',
-                permissions: 'cms_seccion',
-            },
-            {
-                route: route('cms_items_list'),
-                status: false,
-                text: 'Items',
-                permissions: 'cms_items',
             },
             {
                 route: route('blog-category.index'),

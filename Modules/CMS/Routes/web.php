@@ -25,9 +25,7 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::put('pages/update/{id}', [CmsPageController::class, 'update'])->name('cms_pages_update');
     Route::delete('pages/destroy/{id}', [CmsPageController::class, 'destroy'])->name('cms_pages_destroy');
 
-
-    Route::get('pages/sections/create', [CmsPageSectionController::class, 'create'])->name('cms_pages_section_create');
-    Route::get('pages/sections', [CmsPageSectionController::class, 'index'])->name('cms_pages_section_list');
+    Route::get('pages/sections/{id}', [CmsPageSectionController::class, 'index'])->name('cms_pages_section_list');
 
 
     Route::get('sections', [CmsSectionController::class, 'index'])->name('cms_section_list');
@@ -44,6 +42,6 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::get('items/create', [CmsItemController::class, 'create'])->name('cms_items_create');
     Route::post('items/store', [CmsItemController::class, 'store'])->name('cms_items_store');
     Route::get('items/edit/{id}', [CmsItemController::class, 'edit'])->name('cms_items_edit');
-    Route::put('items/update/{id}', [CmsItemController::class, 'update'])->name('cms_items_update');
+    Route::post('items/update', [CmsItemController::class, 'update'])->name('cms_items_update');
     Route::delete('items/destroy/{id}', [CmsItemController::class, 'destroy'])->name('cms_items_destroy');
 });
