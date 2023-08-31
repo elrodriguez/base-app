@@ -26,7 +26,7 @@ function handleSubmit() {
   const formData = new FormData();
   formData.append('name', form.name);
   formData.append('email', form.email);
-  formData.append('image', form.avatar);
+  formData.append('avatar', form.avatar);
 
   form.put(route('profile.update'), formData);
 }
@@ -79,7 +79,7 @@ function handleImageUpload(event) {
             </div>
 
             <div>
-                <input required type="file" @input="form.avatar = $event.target.files[0]" />
+                <input required type="file" accept=".png, .jpg, .jpeg" @input="form.avatar = $event.target.files[0]" />
                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                 {{ form.progress.percentage }}%
                 </progress>
