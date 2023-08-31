@@ -29,17 +29,43 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
+    {  
+        
+        $content = $request->getContent();
+        // Separar las partes utilizando el delimitador
+        $parts = explode("-----------------------------", $content);
+    
+        // Recorrer las partes para encontrar la sección de la imagen
+        foreach ($parts as $part) {
+            if (strpos($part, 'Content-Disposition: form-data; name="avatar"') !== false) {
+                // Encontrada la sección de la imagen
+                
+                // Obtener el nombre de archivo
+                $fileName = '';
+                if (preg_match('/filename="([^"]+)"/', $part, $matches)) {
+                    $fileName = $matches[1];
+                }
+    
+                // Obtener el contenido de la imagen
+                $imageContent = substr($part, strpos($part, "\r\n\r\n") + 4, -2);
+                $random = rand(0, 99999);
+                $fileName = 'storage/users/avatars/'.$random.$fileName;
+                file_put_contents($fileName, $imageContent);
+        ///////////////////////////////////////////////////
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
+        $path = $fileName;
+        $request->user()->avatar = $path;
+        
         $request->user()->save();
 
         return Redirect::route('profile.edit');
     }
+}}
 
     /**
      * Delete the user's account.

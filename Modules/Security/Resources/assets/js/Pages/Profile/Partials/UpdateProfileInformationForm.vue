@@ -19,8 +19,21 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
-    avatar: user.avatar,
+    avatar: null,
 });
+
+function handleSubmit() {
+  const formData = new FormData();
+  formData.append('name', form.name);
+  formData.append('email', form.email);
+  formData.append('image', form.avatar);
+
+  form.put(route('profile.update'), formData);
+}
+
+function handleImageUpload(event) {
+  form.avatar = event.target.files[0]
+}
 </script>
 
 <template>
@@ -33,7 +46,7 @@ const form = useForm({
             </p>
         </header>
 
-        <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
+        <form @submit.prevent="handleSubmit" class="mt-6 space-y-6">
             <div>
                 <InputLabel for="name" value="Name" />
 
@@ -66,21 +79,11 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="avatar" value="Avatar" />
-
-                <TextInput
-                    id="avatar"
-                    type="file"
-                    accept="image/*"
-                    class="mt-1 block w-full"
-                    v-model="form.avatar"
-                    
-                    autocomplete="Avatar"
-                />
-
-                <InputError class="mt-2" :message="form.errors.avatar" />
+                <input required type="file" @input="form.avatar = $event.target.files[0]" />
+                <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                {{ form.progress.percentage }}%
+                </progress>
             </div>
-
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
