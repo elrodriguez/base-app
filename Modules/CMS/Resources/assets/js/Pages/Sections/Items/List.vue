@@ -1,16 +1,23 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import { useForm } from '@inertiajs/vue3';
     import Keypad from '@/Components/Keypad.vue';
     import Pagination from '@/Components/Pagination.vue';
-
+    import { ref, onMounted } from 'vue';
     import Swal2 from "sweetalert2";
-    import { Link, router } from '@inertiajs/vue3';
-    import { faFileCircleCheck, faCirclePlay, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-
+    import { useForm, Link, router } from '@inertiajs/vue3';
+    import { faFileCircleCheck, faCirclePlay } from "@fortawesome/free-solid-svg-icons";
+    import PrimaryButton from '@/Components/PrimaryButton.vue';
 
     const props = defineProps({
+        section:{
+            type: Object,
+            default: () => ({}),
+        },
         items: {
+            type: Object,
+            default: () => ({}),
+        },
+        sItems:{
             type: Object,
             default: () => ({}),
         },
@@ -22,8 +29,33 @@
 
     const form = useForm({
         search: props.filters.search,
+        items: props.items.data
     });
 
+    const arrayItems = ref({
+        section_id: props.section.id,
+        description: null,
+        data:[]
+    });
+
+    const setDataItems = () => {
+        if (props.sItems.length > 0) {
+            for (let i = 0; i < props.sItems.length; i++) {
+                const iitem = props.sItems[i];
+                arrayItems.value.data.push({
+                    sindex: i,
+                    id: iitem.id,
+                    content: iitem.content,
+                    type_id: iitem.type_id,
+                    description: iitem.description
+                });
+                arrayItems.value.description = iitem.si_description
+            }
+        }
+    }
+    onMounted(() => {
+        setDataItems()
+    });
     const deleteForm = useForm({});
 
     const destroySection = (id) => {
@@ -58,16 +90,38 @@
         });
     }
 
-    const selectItem =(index) =>{
-
+    const startEvent = ref(false);
+    const addItem = (row, index) => {
+        let xitem = {
+            sindex: index,
+            id: row.id,
+            content: row.content,
+            type_id: row.type_id,
+            description: row.description
+        }
+        let ritem = form.items[index];
+        ritem.display = false;
+        arrayItems.value.data.push(xitem);
     }
 
-    const addItem =() =>{
-        
-       
+    const saveItems = () => {
+        router.visit(route('cms_section_items_store'), {
+            method: 'post',
+            data: arrayItems.value,
+            replace: false,
+            preserveState: false,
+            preserveScroll: false,
+            onStart: visit => { startEvent.value = true },
+            onFinish: visit => { startEvent.value = false },
+            onSuccess: page => {
+                Swal2.fire({
+                    title: 'Enhorabuena',
+                    text: 'Items agregados correctamente',
+                    icon: 'success',
+                });
+            },
+        });
     }
-
-
 </script>
 
 <template>
@@ -98,6 +152,12 @@
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{{ section.description }}</span>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                             <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Items</span>
                         </div>
                     </li>
@@ -111,10 +171,64 @@
                         <div class="flex">
                             <div class="w-full">
                                 <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                    <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Items Disponibles</h2>
                                     <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-                                        <li v-for="(item, index) in items.data" class="py-3 sm:py-4">
+                                        <template v-for="(item, index) in form.items" >
+                                            <li v-if="item.display" class="py-3 sm:py-4">
+                                                <template v-if="item.type_id == 1">
+                                                    
+                                                    <label @click="addItem(item,index)" :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                                        <div class="block">
+                                                            <img  :src="item.content" style="width: 60px;" />
+                                                            <div class="w-full text-sm">{{ item.description }}</div>
+                                                            <!-- <a :href="item.content" target="_blank" class="w-full text-sm">{{ item.content }}</a> -->
+                                                        </div>
+                                                    </label>
+                                                </template>
+                                                <template v-if="item.type_id == 2">
+                                                    
+                                                    <label @click="addItem(item,index)" :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                                        <div class="block">
+                                                            <font-awesome-icon class="mb-2 w-7 h-7 text-sky-500"  :icon="faCirclePlay" />
+                                                            <div class="w-full text-sm">{{ item.description }}</div>
+                                                            <!-- <a :href="item.content" target="_blank" class="w-full text-sm">{{ item.content }}</a> -->
+                                                        </div>
+                                                    </label>
+                                                </template>
+                                                <template v-if="item.type_id == 3">
+                                                    
+                                                    <label @click="addItem(item,index)" :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                                        <div class="block">
+                                                            <font-awesome-icon class="mb-2 w-7 h-7 text-sky-500"  :icon="faFileCircleCheck" />
+                                                            <div class="w-full text-sm">{{ item.description }}</div>
+                                                            <a :href="item.content" target="_blank" class="w-full text-sm">{{ item.content }}</a>
+                                                        </div>
+                                                    </label>
+                                                </template>
+                                                <template v-if="item.type_id == 4">
+                                                
+                                                    <label @click="addItem(item,index)" :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                                        <div class="block">
+                                                            <div class="w-full text-lg font-semibold">{{ item.content }}</div>
+                                                            <div class="w-full text-sm">{{ item.description }}</div>
+                                                        </div>
+                                                    </label>
+                                                </template>
+
+                                            </li>
+                                        </template>
+                                    </ul>
+                                    <Pagination :data="items" />
+                                </div>
+                            </div>
+                            <div class="w-3 px-2"></div>
+                            <div class="w-full">
+                                <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                    <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Items Elegidos</h2>
+                                    <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                        <li v-for="(item, index) in arrayItems.data" class="py-3 sm:py-4">
                                             <template v-if="item.type_id == 1">
-                                                <input type="checkbox" :id="'react-option'+index" value="" class="hidden peer" required="">
+                                                
                                                 <label :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                                                     <div class="block">
                                                         <img  :src="item.content" style="width: 60px;" />
@@ -124,7 +238,7 @@
                                                 </label>
                                             </template>
                                             <template v-if="item.type_id == 2">
-                                                <input type="checkbox" :id="'react-option'+index" value="" class="hidden peer" required="">
+                                                
                                                 <label :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                                                     <div class="block">
                                                         <font-awesome-icon class="mb-2 w-7 h-7 text-sky-500"  :icon="faCirclePlay" />
@@ -134,7 +248,7 @@
                                                 </label>
                                             </template>
                                             <template v-if="item.type_id == 3">
-                                                <input type="checkbox" :id="'react-option'+index" value="" class="hidden peer" required="">
+                                                
                                                 <label :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                                                     <div class="block">
                                                         <font-awesome-icon class="mb-2 w-7 h-7 text-sky-500"  :icon="faFileCircleCheck" />
@@ -144,8 +258,8 @@
                                                 </label>
                                             </template>
                                             <template v-if="item.type_id == 4">
-                                                <input type="checkbox" :id="'react-option'+index" value="" class="hidden peer" required="">
-                                                <label :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                                
+                                                <label @click="addItem(item)" :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                                                     <div class="block">
                                                         <div class="w-full text-lg font-semibold">{{ item.content }}</div>
                                                         <div class="w-full text-sm">{{ item.description }}</div>
@@ -154,29 +268,26 @@
                                             </template>
                                         </li>
                                     </ul>
-                                    <Pagination :data="items" />
                                 </div>
-                            </div>
-                            <div class="w-3 px-4 pt-6 ">
-                                <button v-can="'cms_editor'" @click="addItem()" type="button" class="text-white bg-green-700 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                    <font-awesome-icon :icon="faArrowRight" />
-                                </button>   
-                            </div>
-                            <div class="w-full">
-                                <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                    <svg class="w-7 h-7 text-gray-500 dark:text-gray-400 mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M18 5h-.7c.229-.467.349-.98.351-1.5a3.5 3.5 0 0 0-3.5-3.5c-1.717 0-3.215 1.2-4.331 2.481C8.4.842 6.949 0 5.5 0A3.5 3.5 0 0 0 2 3.5c.003.52.123 1.033.351 1.5H2a2 2 0 0 0-2 2v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V7a2 2 0 0 0-2-2ZM8.058 5H5.5a1.5 1.5 0 0 1 0-3c.9 0 2 .754 3.092 2.122-.219.337-.392.635-.534.878Zm6.1 0h-3.742c.933-1.368 2.371-3 3.739-3a1.5 1.5 0 0 1 0 3h.003ZM11 13H9v7h2v-7Zm-4 0H2v5a2 2 0 0 0 2 2h3v-7Zm6 0v7h3a2 2 0 0 0 2-2v-5h-5Z"/>
-                                    </svg>
-                                    <a href="#">
-                                        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Need a help in Claim?</h5>
-                                    </a>
-                                    <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">Go to this step by step guideline process on how to certify for your weekly benefits:</p>
-                                    <a href="#" class="inline-flex items-center text-blue-600 hover:underline">
-                                        See our guideline
-                                        <svg class="w-3 h-3 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"/>
-                                        </svg>
-                                    </a>
+                                <div class="mt-4">
+                                    
+                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
+                                    <textarea id="message" v-model="arrayItems.description" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe aquí..."></textarea>
+
+                                </div>
+                                <div class="mt-4">
+                                    <Keypad>
+                                        <template #botones>
+                                            <PrimaryButton @click="saveItems" :class="{ 'opacity-25': startEvent }" :disabled="startEvent">
+                                                <svg v-show="startEvent" aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
+                                                </svg>
+                                                Guardar
+                                            </PrimaryButton>
+                                            <Link :href="route('cms_section_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
+                                        </template>
+                                    </Keypad>
                                 </div>
                             </div>
                         </div>                       
@@ -188,3 +299,8 @@
         
     </AppLayout>
 </template>
+<style>
+.fixed-button-add {
+    position: fixed;
+}
+</style>

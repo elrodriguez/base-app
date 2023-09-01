@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
 
 
     Route::get('sections/items/{id}', [CmsSectionItemController::class, 'index'])->name('cms_section_items');
+    Route::post('sections/items/store', [CmsSectionItemController::class, 'store'])->name('cms_section_items_store');
 
     Route::get('items', [CmsItemController::class, 'index'])->name('cms_items_list');
     Route::get('items/create', [CmsItemController::class, 'create'])->name('cms_items_create');
