@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
+
 defineProps({
     mustVerifyEmail: {
         type: Boolean,
@@ -22,22 +23,13 @@ const form = useForm({
     avatar: null,
 });
 
-function handleSubmit() {
-  const formData = new FormData();
-  formData.append('name', form.name);
-  formData.append('email', form.email);
-  formData.append('avatar', form.avatar);
-
-  form.put(route('profile.update'), formData);
-}
-
-function handleImageUpload(event) {
-  form.avatar = event.target.files[0]
+function submit() {
+  form.post(route('profile.update'))
 }
 </script>
 
 <template>
-    <section>
+        <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Profile Information</h2>
 
@@ -45,9 +37,8 @@ function handleImageUpload(event) {
                 Update your account's profile information and email address.
             </p>
         </header>
-
-        <form @submit.prevent="handleSubmit" class="mt-6 space-y-6">
-            <div>
+  <form @submit.prevent="submit" class="mt-6 space-y-6">
+    <div>
                 <InputLabel for="name" value="Name" />
 
                 <TextInput
@@ -79,7 +70,12 @@ function handleImageUpload(event) {
             </div>
 
             <div>
-                <input required type="file" accept=".png, .jpg, .jpeg" @input="form.avatar = $event.target.files[0]" />
+                <InputLabel for="avatar" value="Avatar" />
+                <input accept=".png, .jpg, .jpeg"                  
+                type="file" 
+                @input="form.avatar = $event.target.files[0]" 
+                class="mt-1 block w-full"
+                />
                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                 {{ form.progress.percentage }}%
                 </progress>
@@ -113,6 +109,9 @@ function handleImageUpload(event) {
                     <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
                 </Transition>
             </div>
-        </form>
-    </section>
+    
+  </form>
+</section>
 </template>
+
+
