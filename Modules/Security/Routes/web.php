@@ -18,7 +18,7 @@ Route::middleware('auth')->prefix('security')->group(function () {
     // Route::get('/', 'SecurityController@index');
 
     Route::get('profile', 'ProfileController@edit')->name('profile.edit');
-    Route::patch('profile', 'ProfileController@update')->name('profile.update');
+    Route::post('profile', 'ProfileController@update')->name('profile.update');
     Route::delete('profile', 'ProfileController@destroy')->name('profile.destroy');
 
     Route::get('/config', function () {

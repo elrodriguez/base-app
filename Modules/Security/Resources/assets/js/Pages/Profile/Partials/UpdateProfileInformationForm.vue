@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
+
 defineProps({
     mustVerifyEmail: {
         type: Boolean,
@@ -19,12 +20,16 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
-    avatar: user.avatar,
+    avatar: null,
 });
+
+function submit() {
+  form.post(route('profile.update'))
+}
 </script>
 
 <template>
-    <section>
+        <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Profile Information</h2>
 
@@ -32,9 +37,8 @@ const form = useForm({
                 Update your account's profile information and email address.
             </p>
         </header>
-
-        <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
-            <div>
+  <form @submit.prevent="submit" class="mt-6 space-y-6">
+    <div>
                 <InputLabel for="name" value="Name" />
 
                 <TextInput
@@ -67,20 +71,15 @@ const form = useForm({
 
             <div>
                 <InputLabel for="avatar" value="Avatar" />
-
-                <TextInput
-                    id="avatar"
-                    type="file"
-                    accept="image/*"
-                    class="mt-1 block w-full"
-                    v-model="form.avatar"
-                    
-                    autocomplete="Avatar"
+                <input accept=".png, .jpg, .jpeg"                  
+                type="file" 
+                @input="form.avatar = $event.target.files[0]" 
+                class="mt-1 block w-full"
                 />
-
-                <InputError class="mt-2" :message="form.errors.avatar" />
+                <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                {{ form.progress.percentage }}%
+                </progress>
             </div>
-
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
@@ -110,6 +109,9 @@ const form = useForm({
                     <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
                 </Transition>
             </div>
-        </form>
-    </section>
+    
+  </form>
+</section>
 </template>
+
+
