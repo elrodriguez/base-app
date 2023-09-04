@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Modules\CMS\Http\Controllers\CmsSubscriberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,8 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/cms', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('blog_v1')->group(function () {
+    Route::get('subscriber', [CmsSubscriberController::class, 'store']);
 });

@@ -9,8 +9,10 @@ class CmsSubscriber extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'full_name', 'email', 'phone', 'client_ip'
+    ];
+
     protected static function newFactory()
     {
         return \Modules\CMS\Database\factories\CmsSubscriberFactory::new();
