@@ -1,31 +1,36 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import { useForm } from '@inertiajs/vue3';
     import Keypad from '@/Components/Keypad.vue';
-    import Pagination from '@/Components/Pagination.vue';
-
+    import ModalSmall from '@/Components/ModalSmall.vue';
     import Swal2 from "sweetalert2";
-    import { Link, router } from '@inertiajs/vue3';
+    import { Link, router, useForm } from '@inertiajs/vue3';
     import { faPencilAlt, faCheck, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+    import { ref } from 'vue';
+    import PrimaryButton from '@/Components/PrimaryButton.vue';
+    import InputError from '@/Components/InputError.vue';
+    import InputLabel from '@/Components/InputLabel.vue';
+    import TextInput from '@/Components/TextInput.vue';
 
     const props = defineProps({
+        page: {
+            type: Object,
+            default: () => ({}),
+        },
         sections: {
             type: Object,
             default: () => ({}),
         },
-        filters: {
+        xsections: {
             type: Object,
             default: () => ({}),
         },
     });
 
-    const form = useForm({
-        search: props.filters.search,
-    });
+    const displaySections = ref(false);
 
-    const deleteForm = useForm({});
+    const deleteSection = useForm({});
 
-    const destroyPages = (id) => {
+    const destroySection = (id) => {
         Swal2.fire({
             title: '¿Estas seguro?',
             text: "¡No podrás revertir esto!",
@@ -37,7 +42,7 @@
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                return axios.delete(route('cms_pages_destroy', id)).then((res) => {
+                return axios.delete(route('cms_pages_section_items_delete', id)).then((res) => {
                     if (!res.data.success) {
                         Swal2.showValidationMessage(res.data.message)
                     }
@@ -52,11 +57,80 @@
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
                 });
-                router.visit(route('cms_pages_list'), { replace: true, method: 'get' });
+                router.visit(route('cms_pages_section_list', props.page.id), { replace: true, method: 'get' });
             }
         });
     }
     
+    const closeModalSections = () => {
+        displaySections.value = false;
+    }
+    const openModalSections = () => {
+        displaySections.value = true;
+    }
+
+    const sectionForm = useForm({
+        page_id: props.page.id,
+        section_id: null,
+        description: null
+    });
+
+    const addSection = () => {
+        router.visit(route('cms_pages_section_add'), {
+            method: 'post',
+            data: sectionForm
+        });
+    }
+    
+    const itemsForm = useForm({
+        items: []
+    });
+
+    const descriptionSection = ref(null);
+
+    const getSectionItems = (id,description) => {
+
+        descriptionSection.value = description;
+        const element = document.getElementById('link-section-'+id);
+        // Obtén todas las etiquetas <a> que tienen las clases y son diferentes al elemento con el ID
+        const todasLasEtiquetasA = document.querySelectorAll('a.bg-red-500.text-white:not(#link-section-' + id + ')');
+
+        // Itera a través de las etiquetas <a> y elimina las clases
+        todasLasEtiquetasA.forEach(etiquetaA => {
+            etiquetaA.classList.remove('bg-red-500');
+            etiquetaA.classList.remove('text-white');
+        });
+        
+        element.classList.add('bg-red-500');
+        element.classList.add('text-white');
+        axios.get(route('cms_pages_section_items_data',id)).then((res) => {
+            itemsForm.items = res.data.items;
+        });
+    }
+
+    const saveChangesItems = () => {
+        const formData = new FormData();
+
+        itemsForm.items.forEach((it, index) => {
+            if (it.item.content instanceof File) {
+                formData.append(`items[${index}][is_file]`, 'yes');
+            } else if (typeof it.item.content === 'string') {
+                formData.append(`items[${index}][is_file]`, 'no');
+            }
+            formData.append(`items[${index}][id]`, it.item.id);
+            formData.append(`items[${index}][type_id]`, it.item.type_id);
+            formData.append(`items[${index}][content]`, it.item.content);
+        });
+
+        axios.post(route('cms_pages_section_items_save'), formData).then((res) => {
+            Swal2.fire({
+                title: 'Enhorabuena',
+                text: 'Se registró correctamente',
+                icon: 'success',
+            });
+        });
+    }
+
 </script>
 
 <template>
@@ -78,10 +152,17 @@
                         <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">CMS</span>
                         </div>
                     </li>
+                    
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Paginas</span>
+                            <Link :href="route('cms_pages_list')"><span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Paginas</span></Link>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            <span class="ml-1 text-sm font-medium text-gray-8   00 md:ml-2 dark:text-gray-400">{{ page.description }}</span>
                         </div>
                     </li>
                     <li aria-current="page">
@@ -96,90 +177,133 @@
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
                 <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
-                        <div class="grid grid-cols-3">
-                            <div class="col-span-3 sm:col-span-1">
-                                <form @submit.prevent="form.get(route('saledocuments_list'))">
-                                <label for="table-search" class="sr-only">Search</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-                                        </div>
-                                        <input v-model="form.search" type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar por cliente">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-span-3 sm:col-span-2">
-                                <Keypad>
-                                    <template #botones>
-                                        <Link v-can="'cms_pagina_nuevo'" :href="route('cms_pages_create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                                            Nuevo
-                                        </Link>
-                                    </template>
-                                </Keypad>
+                    <div class="grid grid-cols-4">
+                        <div class="col-span-4 md:col-span-1 p-4">
+                            <div class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <template v-can="'cms_pagina_seccion_items'">
+                                    <a @click="openModalSections" href="#" aria-current="true" class="block w-full px-4 py-2 text-white bg-blue-700 border-b border-gray-200 rounded-t-lg cursor-pointer dark:bg-gray-800 dark:border-gray-600">
+                                        Secciones
+                                    </a>
+                                </template>
+                                <template v-for="(section, ke) in xsections">
+                                    <a @click="getSectionItems(section.id,section.page_sections_description)" :id="'link-section-'+section.id" href="#" class="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                                        {{ section.description }}
+                                    </a>
+                                    <button type="button" @click="destroySection(section.page_sections_id)" v-can="'cms_pagina_seccion_items_delete'">
+                                        Eliminar
+                                    </button>
+                                </template>
+                                
+                                
                             </div>
                         </div>
-                    </div>
-                    <div class="max-w-full overflow-x-auto">
-                        <table class="w-full table-auto">
-                            <thead class="border-b border-stroke">
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
-                                        Acciones
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Icono
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Descripción
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Ruta
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Es principal
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Estado
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template v-for="(item, index) in sections.data" :key="item.id">
-                                    <tr class="border-b border-stroke">
-                                        <td class="text-center py-2 dark:border-strokedark">
-                                            <Link v-can="'cms_pagina_editar'" :href="route('cms_pages_edit',item.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                <font-awesome-icon :icon="faPencilAlt" />
-                                            </Link>
-                                            <button v-can="'cms_pagina_eliminar'" @click="destroyPages(item.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                                <font-awesome-icon :icon="faTrashAlt" />
-                                            </button>
-                                        </td>
-                                        <td class="py-2 dark:border-strokedark">
-                                            {{ item.icon }}
-                                        </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
-                                            {{ item.description }}
-                                        </td>
-                                        <td class="text-center py-2 px-2 dark:border-strokedark">
-                                            {{ item.route }}
-                                        </td>
-                                        <td class="text-center py-2 px-2 dark:border-strokedark">
-                                            <font-awesome-icon v-if="item.main" :icon="faCheck" class="ml-1" />
-                                        </td>
-                                        <td class="text-center py-2 px-2 dark:border-strokedark">
-                                            <span v-if="item.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
-                                            <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Inactivo</span>
-                                        </td>
-                                    </tr>
+                        <div class="col-span-4 sm:col-span-3 p-4">
+                            <form @submit.prevent="saveChangesItems" enctype="multipart/form-data">
+                                <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">{{ descriptionSection }}</p>
+                                <template v-if="itemsForm.items.length > 0">
+                                    <div class="mb-4 p-2 border border-stroke dark:border-strokedark" v-for="(it, ky) in itemsForm.items">
+                                        <template v-if="it.item.type_id == 1">
+                                            <InputLabel for="content" value="Imagen *" />
+                                            <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+                                                {{ it.item.description }}
+                                            </p>
+                                            <div class="flex justify-center space-x-2">
+                                                <figure class="max-w-lg">
+                                                    <img class="h-auto max-w-full rounded-lg" :src="it.item.content">
+                                                    <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
+                                                </figure>
+                                            </div>
+                                            
+                                            <input @input="it.item.content = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+                                        </template>
+                                        <template v-if="it.item.type_id == 2">
+                                            <InputLabel for="content" value="URL del Video *" />
+                                            <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+                                                {{ it.item.description }}
+                                            </p>
+                                            <TextInput
+                                                id="content"
+                                                v-model="it.item.content"
+                                                type="text"
+                                                class="block w-full mt-1"
+                                            />
+                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">AV1, VP9, MP4 (RECOMENDADO. 5-10 MB).</p>
+                                        </template>
+                                        <template v-if="it.item.type_id == 3">
+                                            <InputLabel for="content" value="Archivo *" />
+                                            <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+                                                {{ it.item.description }}
+                                            </p>
+                                            <input @input="it.item.content = $event.target.files[0]" accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF, DOC, PPT o PPTX, XLS o XLSX (RECOMENDADO. 5-10 MB).</p>
+                                        </template>
+                                        <template v-if="it.item.type_id == 4">
+                                            <InputLabel for="content" value="Texto *" />
+                                            <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+                                                {{ it.item.description }}
+                                            </p>
+                                            <textarea v-model="it.item.content" id="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                        </template>
+                                        <!-- <InputError :message="form.errors.content" class="mt-2" /> -->
+                                    </div>
+                                    
                                 </template>
-                            </tbody>
-                        </table>
-                    </div>
-                    <Pagination :data="sections" />
+                                <template v-else>
+                                    <div class="flex border items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+                                        <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                        </svg>
+                                        <span class="sr-only">Info</span>
+                                        <div>
+                                            <span class="font-medium">Esta seccion aun no tiene items</span> comuniquese con el administrador del sistema
+                                        </div>
+                                    </div>
+                                </template>
+                                <Keypad>
+                                    <template #botones>
+                                        <PrimaryButton v-if="itemsForm.items.length > 0" :class="{ 'opacity-25': itemsForm.processing }" :disabled="itemsForm.processing">
+                                            <svg v-show="itemsForm.processing" aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"/>
+                                            </svg>
+                                            Guardar
+                                        </PrimaryButton>
+                                        <Link :href="route('cms_pages_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
+                                    </template>
+                                </Keypad>
+                            </form>
+                        </div>
+                    </div>                     
                 </div>
             </div>
         </div>
-        
+        <ModalSmall
+            :show="displaySections"
+            :onClose="closeModalSections"
+        >
+            <template #title>
+                Secciones
+            </template>
+            <template #content>
+                <div>
+                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
+                    <select v-model="sectionForm.section_id" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected value="">Seleccionar</option>
+                        <option v-for="(row, con) in sections" :value="row.id">{{ row.description }}</option>
+                    </select>
+                </div>
+                <div class="mt-2">
+                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
+                    <textarea v-model="sectionForm.description" id="message" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe aquí..."></textarea>
+                </div>
+            </template>
+            <template #buttons>
+               <PrimaryButton
+                    @click="addSection()"
+                    class="mr-2"
+               >Agregar</PrimaryButton> 
+            </template>
+        </ModalSmall>
     </AppLayout>
 </template>

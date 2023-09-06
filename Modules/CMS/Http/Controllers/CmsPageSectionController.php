@@ -7,39 +7,35 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\CMS\Entities\CmsPageSection;
 use Inertia\Inertia;
+use Modules\CMS\Entities\CmsPage;
+use Modules\CMS\Entities\CmsSection;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Modules\CMS\Entities\CmsItem;
+use Modules\CMS\Entities\CmsSectionItem;
 
 class CmsPageSectionController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index($id)
     {
-                // EDITANDO --- APRENDIENDO CORREGIR
-        
-                $pagesSections = (new CmsPageSection())->newQuery();
-                 if (request()->has('search')) {
-                     $pagesSections->whereDate('summardescriptiony_date', 'like', '%' . request()->input('search') . '%');
-                 }
-                if (request()->query('sort')) {
-                    $attribute = request()->query('sort');
-                    $sort_order = 'ASC';
-                    if (strncmp($attribute, '-', 1) === 0) {
-                        $sort_order = 'DESC';
-                        $attribute = substr($attribute, 1);
-                    }
-                    $pagesSections->orderBy($attribute, $sort_order);
-                } else {
-                    $pagesSections->latest();
-                }
-        
-                $pagesSections = $pagesSections->paginate(10)->onEachSide(2);
-        
-                
-                return Inertia::render('CMS::Pages/Sections/List', [
-                    'sections' => $pagesSections
-                ]); 
+        $xsections = CmsPageSection::join('cms_sections', 'section_id', 'cms_sections.id')
+            ->select(
+                'cms_sections.*',
+                'cms_page_sections.id AS page_sections_id',
+                'cms_page_sections.description AS page_sections_description'
+            )
+            ->where('page_id', $id)
+            ->get();
+
+        return Inertia::render('CMS::Pages/Sections/List', [
+            'page' => CmsPage::find($id),
+            'sections' => CmsSection::all(),
+            'xsections' => $xsections
+        ]);
     }
 
     /**
@@ -48,7 +44,6 @@ class CmsPageSectionController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -58,47 +53,81 @@ class CmsPageSectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'description' => 'required|string',
+                'section_id' => 'required',
+            ]
+        );
+
+        CmsPageSection::create([
+            'description'   => $request->get('description'),
+            'section_id'    => $request->get('section_id'),
+            'page_id'       => $request->get('page_id')
+        ]);
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
+    public function getSectionItems($id)
     {
-        return view('cms::show');
+        $items = CmsSectionItem::with('item')->where('section_id', $id)->get();
+
+        return response()->json([
+            'items' => $items
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
+    public function updateItems(Request $request)
     {
-        return view('cms::edit');
+        $destination = 'uploads/articles';
+        $items = $request->all();
+
+        foreach ($items['items'] as $key => $item) {
+
+            $type_id = $item['type_id'];
+
+            $content = null;
+
+            if ($type_id == 1 || $type_id == 3) {
+                if ($item['is_file'] === 'yes') {
+                    $file = $item['content'];
+                    $original_name = strtolower(trim($file->getClientOriginalName()));
+                    $original_name = str_replace(" ", "_", $original_name);
+                    $extension = $file->getClientOriginalExtension();
+                    $file_name = date('YmdHis') . '.' . $extension;
+                    $path = $item['content']->storeAs(
+                        $destination,
+                        $file_name,
+                        'public'
+                    );
+
+                    $content = $type_id == 1 ? asset('storage/' . $path) : $path;
+                } else {
+                    $content = $item['content'];
+                }
+            }
+
+            if ($type_id == 2 || $type_id == 4) {
+                $content = $item['content'];
+            }
+
+
+            CmsItem::find($item['id'])->update([
+                'content' => $content
+            ]);
+        }
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
+    public function destroySection($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        CmsPageSection::find($id)->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Se eliminó correctamente'
+        ]);
     }
 }
