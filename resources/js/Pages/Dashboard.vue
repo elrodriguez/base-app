@@ -14,14 +14,14 @@ import Shortcuts from '@/Components/Shortcuts.vue';
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden">
                     <Welcome />
                 </div>
                 <div class="bg-white overflow-hidden mt-4">
                     <Shortcuts />
                 </div>
-            </div>
+            </div> -->
         </div>
     </AppLayout>
 </template>
