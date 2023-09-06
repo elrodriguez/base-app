@@ -40,12 +40,8 @@ class CmsSectionItemController extends Controller
         }
 
         $items = $items->where(function ($query) use ($id) {
-            $query->select('cms_section_items.item_id')
-                ->from('cms_section_items')
-                ->whereColumn('cms_section_items.item_id', 'cms_items.id')
-                ->where('cms_section_items.section_id', $id)
-                ->doesntExist();
-        }, 'pro');
+            $query->whereRaw('(SELECT COUNT(item_id) FROM cms_section_items WHERE cms_section_items.item_id = cms_items.id AND cms_section_items.section_id = ?) = 0', [$id]);
+        });
 
 
 
@@ -101,6 +97,10 @@ class CmsSectionItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        CmsSectionItem::find($id)->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Se eliminó correctamente'
+        ]);
     }
 }

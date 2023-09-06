@@ -47,7 +47,8 @@
                     id: iitem.id,
                     content: iitem.content,
                     type_id: iitem.type_id,
-                    description: iitem.description
+                    description: iitem.description,
+                    si_id: iitem.si_id
                 });
                 arrayItems.value.description = iitem.si_description
             }
@@ -58,7 +59,7 @@
     });
     const deleteForm = useForm({});
 
-    const destroySection = (id) => {
+    const destroyItem = (id) => {
         Swal2.fire({
             title: '¿Estas seguro?',
             text: "¡No podrás revertir esto!",
@@ -70,7 +71,7 @@
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                return axios.delete(route('cms_section_destroy', id)).then((res) => {
+                return axios.delete(route('cms_section_items_destroy', id)).then((res) => {
                     if (!res.data.success) {
                         Swal2.showValidationMessage(res.data.message)
                     }
@@ -85,7 +86,7 @@
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
                 });
-                router.visit(route('cms_section_list'), { replace: true, method: 'get' });
+                router.visit(route('cms_section_items',props.section.id), { replace: true, method: 'get' });
             }
         });
     }
@@ -97,7 +98,8 @@
             id: row.id,
             content: row.content,
             type_id: row.type_id,
-            description: row.description
+            description: row.description,
+            si_id: row.si_id
         }
         let ritem = form.items[index];
         ritem.display = false;
@@ -266,6 +268,7 @@
                                                     </div>
                                                 </label>
                                             </template>
+                                            <button @click="destroyItem(item.si_id)" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-1">Eliminar Item</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -299,8 +302,3 @@
         
     </AppLayout>
 </template>
-<style>
-.fixed-button-add {
-    position: fixed;
-}
-</style>
