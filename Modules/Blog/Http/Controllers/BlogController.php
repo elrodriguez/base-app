@@ -93,12 +93,16 @@ class BlogController extends Controller
         ]);
     }
 
-    public function apiGetDataArticle($url)
+    public function apiGetDataArticle($url=null)
     {
         $categories = BlogCategory::where('status', true)->get();
 
-        $article = BlogArticle::where('url', $url)
+        $article = null; 
+
+        if($url != null ){
+            $article = BlogArticle::where('url', $url)
             ->first();
+        }
 
         $latest_articles = BlogArticle::select(
             'title',
@@ -113,8 +117,18 @@ class BlogController extends Controller
 
         return response()->json([
             'categories'        => $categories,
-            'articles'          => $article,
+            'article'          => $article,
             'latest_articles'   => $latest_articles
+        ]);
+    }
+
+    public function apiGetDataArticlesByCategories($id)
+    {
+        $articles = BlogArticle::where('category_id', $id)
+        ->get();
+
+        return response()->json([
+            'articles'          => $articles
         ]);
     }
 }
