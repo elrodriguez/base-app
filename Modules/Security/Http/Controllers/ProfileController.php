@@ -30,6 +30,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {  
+        
         $path = null;
         $destination = 'users/avatar';
         $file = $request->file('avatar');
@@ -52,6 +53,7 @@ class ProfileController extends Controller
         }        
         if($file_name != null)$request->user()->avatar = $path;
         
+        $request->user()->information = $request->get('information');
         $request->user()->save();
 
         return Redirect::route('profile.edit');

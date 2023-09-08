@@ -20,6 +20,7 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    information: user.information,
     avatar: null,
 });
 
@@ -67,6 +68,23 @@ function submit() {
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+
+            <div>
+                <InputLabel for="information" value="Information" />
+
+                <TextInput
+                    id="information"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.information"
+                    required
+                    autofocus
+                    name="information"
+                    autocomplete="information"
+                />
+
+                <InputError class="mt-2" :message="form.errors.information" />
             </div>
 
             <div>
