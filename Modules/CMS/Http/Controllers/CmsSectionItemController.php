@@ -80,9 +80,11 @@ class CmsSectionItemController extends Controller
 
         if (count($items) > 0) {
             foreach ($items as $k => $item) {
-                CmsSectionItem::create([
+
+                $exists = CmsSectionItem::firstOrCreate([
                     'item_id'       => $item['id'],
-                    'section_id'    => $section_id,
+                    'section_id'    => $section_id
+                ], [
                     'position'      => 0,
                     'description'   => $description
                 ]);
