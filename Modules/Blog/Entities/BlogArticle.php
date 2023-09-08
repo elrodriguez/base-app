@@ -41,9 +41,9 @@ class BlogArticle extends Model
         return ($value != 'img/imagen-no-disponible.jpg' ? asset('storage/' . $value) : asset($value));
     }
 
-    public function author(): HasOne
+    public function author(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function category(): BelongsTo

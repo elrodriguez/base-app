@@ -34,7 +34,7 @@ class CmsSubscriberController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function apiStore(Request $request)
     {
         $this->validate(
             $request,

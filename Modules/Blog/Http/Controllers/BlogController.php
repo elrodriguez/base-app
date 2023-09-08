@@ -93,15 +93,15 @@ class BlogController extends Controller
         ]);
     }
 
-    public function apiGetDataArticle($url=null)
+    public function apiGetDataArticle($url = null)
     {
         $categories = BlogCategory::where('status', true)->get();
 
-        $article = null; 
+        $article = null;
 
-        if($url != null ){
-            $article = BlogArticle::where('url', $url)
-            ->first();
+        if ($url != null) {
+            $article = BlogArticle::with('author')->where('url', $url)
+                ->first();
         }
 
         $latest_articles = BlogArticle::select(
@@ -125,7 +125,7 @@ class BlogController extends Controller
     public function apiGetDataArticlesByCategories($id)
     {
         $articles = BlogArticle::where('category_id', $id)
-        ->get();
+            ->get();
 
         return response()->json([
             'articles'          => $articles

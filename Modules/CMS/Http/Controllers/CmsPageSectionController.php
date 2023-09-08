@@ -39,14 +39,6 @@ class CmsPageSectionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-    }
-
-    /**
      * Store a newly created resource in storage.
      * @param Request $request
      * @return Renderable
@@ -71,7 +63,7 @@ class CmsPageSectionController extends Controller
     public function getSectionItems($id)
     {
         $items = CmsSectionItem::with('item')->where('section_id', $id)->get();
-
+        //dd($items->toRawSql());
         return response()->json([
             'items' => $items
         ]);
