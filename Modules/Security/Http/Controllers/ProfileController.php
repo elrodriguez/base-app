@@ -30,8 +30,9 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {  
+        
         $path = null;
-        $destination = 'users/avatar/';
+        $destination = 'users/avatar';
         $file = $request->file('avatar');
         $file_name = null;
         if ($file) {
@@ -50,8 +51,9 @@ class ProfileController extends Controller
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }        
-        if($file_name != null)$request->user()->avatar = $file_name;
+        if($file_name != null)$request->user()->avatar = $path;
         
+        $request->user()->information = $request->get('information');
         $request->user()->save();
 
         return Redirect::route('profile.edit');
