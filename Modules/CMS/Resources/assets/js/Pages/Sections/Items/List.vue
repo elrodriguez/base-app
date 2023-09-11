@@ -48,7 +48,8 @@
                     content: iitem.content,
                     type_id: iitem.type_id,
                     description: iitem.description,
-                    si_id: iitem.si_id
+                    si_id: iitem.si_id,
+                    si_position: iitem.si_position
                 });
                 arrayItems.value.description = iitem.si_description
             }
@@ -99,7 +100,8 @@
             content: row.content,
             type_id: row.type_id,
             description: row.description,
-            si_id: row.si_id
+            si_id: row.si_id,
+            si_position: row.si_position,
         }
         let ritem = form.items[index];
         ritem.display = false;
@@ -178,7 +180,6 @@
                                         <template v-for="(item, index) in form.items" >
                                             <li v-if="item.display" class="py-3 sm:py-4">
                                                 <template v-if="item.type_id == 1">
-                                                    
                                                     <label @click="addItem(item,index)" :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                                                         <div class="block">
                                                             <img  :src="item.content" style="width: 60px;" />
@@ -230,7 +231,6 @@
                                     <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
                                         <li v-for="(item, index) in arrayItems.data" class="py-3 sm:py-4">
                                             <template v-if="item.type_id == 1">
-                                                
                                                 <label :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                                                     <div class="block">
                                                         <img  :src="item.content" style="width: 60px;" />
@@ -261,13 +261,14 @@
                                             </template>
                                             <template v-if="item.type_id == 4">
                                                 
-                                                <label @click="addItem(item)" :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                                                <label :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                                                     <div class="block">
                                                         <div class="w-full text-lg font-semibold">{{ item.content }}</div>
                                                         <div class="w-full text-sm">{{ item.description }}</div>
                                                     </div>
                                                 </label>
                                             </template>
+                                            <input style="width: 70px;" class="mt-1 mr-2" type="number" v-model="item.si_position">
                                             <button @click="destroyItem(item.si_id)" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-1">Eliminar Item</button>
                                         </li>
                                     </ul>

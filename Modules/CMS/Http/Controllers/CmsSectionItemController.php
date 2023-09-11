@@ -61,9 +61,12 @@ class CmsSectionItemController extends Controller
                 'cms_items.content',
                 'cms_items.description',
                 'cms_section_items.id AS si_id',
-                'cms_section_items.description AS si_description'
+                'cms_section_items.description AS si_description',
+                'cms_section_items.position AS si_position'
             )
-            ->where('section_id', $id)->get();
+            ->where('section_id', $id)
+            ->orderBy('cms_section_items.position')
+            ->get();
 
         return Inertia::render('CMS::Sections/Items/List', [
             'section'   => CmsSection::find($id),
@@ -77,15 +80,15 @@ class CmsSectionItemController extends Controller
         $items = $request->get('data');
         $section_id = $request->get('section_id');
         $description = $request->get('description');
-
+        //dd($items);
         if (count($items) > 0) {
             foreach ($items as $k => $item) {
-
-                $exists = CmsSectionItem::firstOrCreate([
+                //CmsSectionItem::firstOrCreate([ //crea o busca si no existe lo crea
+                CmsSectionItem::updateOrCreate([ //si existe lo modifica si no lo crea
                     'item_id'       => $item['id'],
                     'section_id'    => $section_id
                 ], [
-                    'position'      => 0,
+                    'position'      => $item['si_position'],
                     'description'   => $description
                 ]);
             }
