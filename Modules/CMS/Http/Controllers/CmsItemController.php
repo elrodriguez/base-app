@@ -37,7 +37,7 @@ class CmsItemController extends Controller
             $items->latest();
         }
 
-        $items = $items->paginate(10)->onEachSide(2);
+        $items = $items->paginate(20)->onEachSide(2);
 
         return Inertia::render('CMS::Items/List', [
             'types' => $types,

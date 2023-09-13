@@ -1,6 +1,14 @@
 <script setup>
 import { ref } from 'vue';
-import { faPoll, faGear, faCashRegister, faBolt, faUserGear,faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
+import { 
+    faPoll, 
+    faGear, 
+    faCashRegister, 
+    faBolt, 
+    faUserGear,
+    faEarthAmericas,
+    faCartShopping
+ } from "@fortawesome/free-solid-svg-icons";
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -53,6 +61,28 @@ const menu = ref([
                 text: 'usuarios',
                 permissions: 'usuarios',
             }
+        ]
+    },
+    {
+        status:false,
+        text: 'Compras',
+        icom: faCartShopping,
+        route: null,
+        permissions: 'purc_dashboard',
+        items: [
+            {
+                route: route('purc_documents_list'),
+                status: false,
+                text: 'Documentos',
+                permissions: 'purc_documentos_listado',
+            },
+            {
+                route: route('clients.index'),
+                status: false,
+                text: 'Reporte',
+                permissions: 'purc_reporte',
+            },
+            
         ]
     },
     {

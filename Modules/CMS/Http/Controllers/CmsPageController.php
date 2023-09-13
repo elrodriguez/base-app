@@ -37,7 +37,7 @@ class CmsPageController extends Controller
             $pages->latest();
         }
 
-        $pages = $pages->paginate(10)->onEachSide(2);
+        $pages = $pages->paginate(20)->onEachSide(2);
 
         return Inertia::render('CMS::Pages/List', [
             'pages' => $pages

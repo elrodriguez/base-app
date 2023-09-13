@@ -20,28 +20,28 @@ class CmsSectionController extends Controller
      */
     public function index()
     {
-        
-            $sections = (new CmsSection())->newQuery();
-            if (request()->has('search')) {
-                $sections->where('description', 'like', '%' . request()->input('search') . '%');
+
+        $sections = (new CmsSection())->newQuery();
+        if (request()->has('search')) {
+            $sections->where('description', 'like', '%' . request()->input('search') . '%');
+        }
+        if (request()->query('sort')) {
+            $attribute = request()->query('sort');
+            $sort_order = 'ASC';
+            if (strncmp($attribute, '-', 1) === 0) {
+                $sort_order = 'DESC';
+                $attribute = substr($attribute, 1);
             }
-           if (request()->query('sort')) {
-               $attribute = request()->query('sort');
-               $sort_order = 'ASC';
-               if (strncmp($attribute, '-', 1) === 0) {
-                   $sort_order = 'DESC';
-                   $attribute = substr($attribute, 1);
-               }
-               $sections->orderBy($attribute, $sort_order);
-           } else {
-               $sections->latest();
-           }
-   
-           $sections = $sections->paginate(10)->onEachSide(2);
-   
-                return Inertia::render('CMS::Sections/List', [
-               'sections' => $sections
-           ]); 
+            $sections->orderBy($attribute, $sort_order);
+        } else {
+            $sections->latest();
+        }
+
+        $sections = $sections->paginate(20)->onEachSide(2);
+
+        return Inertia::render('CMS::Sections/List', [
+            'sections' => $sections
+        ]);
     }
 
     /**
@@ -73,14 +73,13 @@ class CmsSectionController extends Controller
         $section = CmsSection::create([
             'description'   => $request->get('description')
         ]);
-            $description = $section->description;
+        $description = $section->description;
 
-            // Reemplazar letras acentuadas por letras sin acento
-            $description = $this->eliminar_acentos($description);
+        // Reemplazar letras acentuadas por letras sin acento
+        $description = $this->eliminar_acentos($description);
 
-        $section->component_id = $description."_".$section->id;
+        $section->component_id = $description . "_" . $section->id;
         $section->save();
-        
     }
 
     /**
@@ -129,7 +128,7 @@ class CmsSectionController extends Controller
 
         CmsSection::find($id)->update([
             'description'   => $request->get('description'),
-            'component_id'  => $description."_".$id,
+            'component_id'  => $description . "_" . $id,
         ]);
     }
 
@@ -176,20 +175,21 @@ class CmsSectionController extends Controller
         ]);
     }
 
-    public function eliminar_acentos($cadena){
+    public function eliminar_acentos($cadena)
+    {
 
         // Reemplazar espacios por guiones bajos
         $cadena = str_replace(' ', '_', $cadena);
 
         // Convertir a minúsculas
-        $cadena = strtolower($cadena);     
-        
+        $cadena = strtolower($cadena);
 
-        $no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
-        $permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
-        $cadena = str_replace($no_permitidas, $permitidas ,$cadena);
+
+        $no_permitidas = array("á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú", "ñ", "À", "Ã", "Ì", "Ò", "Ù", "Ã™", "Ã ", "Ã¨", "Ã¬", "Ã²", "Ã¹", "ç", "Ç", "Ã¢", "ê", "Ã®", "Ã´", "Ã»", "Ã‚", "ÃŠ", "ÃŽ", "Ã”", "Ã›", "ü", "Ã¶", "Ã–", "Ã¯", "Ã¤", "«", "Ò", "Ã", "Ã„", "Ã‹");
+        $permitidas = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "n", "N", "A", "E", "I", "O", "U", "a", "e", "i", "o", "u", "c", "C", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "u", "o", "O", "i", "a", "e", "U", "I", "A", "E");
+        $cadena = str_replace($no_permitidas, $permitidas, $cadena);
         // Eliminar caracteres especiales
         $cadena = preg_replace('/[^a-z0-9_]/i', '', $cadena);
         return $cadena;
-        }
+    }
 }

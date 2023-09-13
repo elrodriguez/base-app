@@ -4,5 +4,6 @@
     "Blog": true,
     "Sales": true,
     "Helpdesk": true,
-    "CMS": true
+    "CMS": true,
+    "Purchases": true
 }
