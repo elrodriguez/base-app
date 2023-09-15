@@ -68,7 +68,7 @@ watch(() => form.content, (newValue) => {
                     <option value="" selected>Seleccionar</option>
                     <option v-for="(type) in types" :value="type.id">{{ type.description }}</option>
                 </select>
-                <InputError :message="form.errors.description" class="mt-2" />
+                <InputError :message="form.errors.type_id" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-6 ">
                 <template v-if="form.type_id == 1">

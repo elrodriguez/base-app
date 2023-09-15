@@ -21,4 +21,9 @@ class CmsSectionItem extends Model
     {
         return $this->belongsTo(CmsItem::class, 'item_id');
     }
+
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(CmsItem::class, 'item_id');
+    }
 }

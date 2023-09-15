@@ -11,10 +11,12 @@ use Modules\CMS\Entities\CmsSectionItem;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Modules\CMS\Entities\CmsItem;
+use Modules\CMS\Entities\CmsItemType;
 use Modules\CMS\Entities\CmsSection;
 
 class CmsSectionItemController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -106,6 +108,63 @@ class CmsSectionItemController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Se eliminó correctamente'
+        ]);
+    }
+
+    public function groupItems($id)
+    {
+        $types = CmsItemType::all();
+
+        $groups = CmsSectionItem::with('group.items')->where('section_id', $id)->get();
+        // return response()->json([
+        //     'types'     => $types,
+        //     'section'   => CmsSection::find($id),
+        //     'groups'    => $groups
+        // ]);
+        return Inertia::render('CMS::Sections/GroupItems', [
+            'types'     => $types,
+            'section'   => CmsSection::find($id),
+            'groups'    => $groups
+        ]);
+    }
+
+    public function groupItemsStore(Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'description' => 'required|max:255',
+                'contents.*.type_id' => 'required',
+                'contents.*.description' => 'required',
+            ],
+            [
+                'contents.*.type_id.required' => 'Seleccionar Tipo',
+                'contents.*.description.required' => 'El campo Descripción es obligatorio',
+                'description.required' => 'El campo Descripción es obligatorio',
+            ]
+        );
+
+        $items = $request->get('contents');
+        $group = CmsItem::create([
+            'type_id'       => 5,
+            'position'      => 1,
+            'description'   => $request->get('description')
+        ]);
+
+        foreach ($items as $k => $item) {
+            CmsItem::create([
+                'type_id'       => $item['type_id'],
+                'item_id'       => $group->id,
+                'position'      => $k + 1,
+                'description'   => $item['description']
+            ]);
+        }
+
+        CmsSectionItem::create([
+            'item_id'       => $group->id,
+            'section_id'    => $request->get('section_id'),
+            'position'      => 1,
+            'description'   => $request->get('section_description')
         ]);
     }
 }

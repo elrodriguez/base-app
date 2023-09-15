@@ -32,6 +32,9 @@ return new class extends Migration
         CmsItemType::create([
             'description' => 'Texto'
         ]);
+        CmsItemType::create([
+            'description' => 'Grupo'
+        ]);
     }
 
     /**
