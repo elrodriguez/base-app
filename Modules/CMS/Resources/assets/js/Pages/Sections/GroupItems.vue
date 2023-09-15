@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import GroupItemsForm from './items/GroupItemsForm.vue';
+import GroupItemsForm from './Partials/GroupItemsForm.vue';
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
