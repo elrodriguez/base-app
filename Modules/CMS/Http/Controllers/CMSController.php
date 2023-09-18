@@ -6,6 +6,8 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\CMS\Entities\CmsPageSection;
+use Modules\CMS\Entities\CmsSection;
+use Modules\CMS\Entities\CmsSectionItem;
 
 class CMSController extends Controller
 {
@@ -19,6 +21,15 @@ class CMSController extends Controller
 
         return response()->json([
             'page' => $page
+        ]);
+    }
+    public function apiGetSectionGroupData($id)
+    {
+        $section = CmsSection::where('component_id', $id)->first();
+        $items = CmsSectionItem::with('item.items')->where('section_id', $section->id)->get();
+
+        return response()->json([
+            'items' => $items
         ]);
     }
 }
