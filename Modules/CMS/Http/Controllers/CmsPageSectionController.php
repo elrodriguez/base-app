@@ -62,7 +62,7 @@ class CmsPageSectionController extends Controller
 
     public function getSectionItems($id)
     {
-        $items = CmsSectionItem::with('item')->where('section_id', $id)->get();
+        $items = CmsSectionItem::with('item.items')->where('section_id', $id)->get();
         //dd($items->toRawSql());
         return response()->json([
             'items' => $items
@@ -120,6 +120,33 @@ class CmsPageSectionController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Se eliminó correctamente'
+        ]);
+    }
+
+    public function groupSectionStore(Request $request)
+    {
+        $items = CmsItem::where('item_id', $request->get('group_id'))->get();
+
+        $group = CmsItem::create([
+            'type_id'       => 5,
+            'position'      => 1,
+            'description'   => $request->get('group_description')
+        ]);
+
+        foreach ($items as $k => $item) {
+            CmsItem::create([
+                'type_id'       => $item->type_id,
+                'item_id'       => $group->id,
+                'position'      => $item->position,
+                'description'   => $item->description
+            ]);
+        }
+
+        CmsSectionItem::create([
+            'item_id'       => $group->id,
+            'section_id'    => $request->get('section_id'),
+            'position'      => 1,
+            'description'   => 'grupo copiado'
         ]);
     }
 }

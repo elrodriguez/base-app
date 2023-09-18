@@ -52,7 +52,7 @@ class CmsItemController extends Controller
      */
     public function create()
     {
-        $types = CmsItemType::all();
+        $types = CmsItemType::where('id', '<>', 5)->get();
         return inertia::render('CMS::Items/Create', ['types' => $types,]);
     }
 
@@ -112,7 +112,7 @@ class CmsItemController extends Controller
      */
     public function edit($id)
     {
-        $types = CmsItemType::all();
+        $types = CmsItemType::where('id', '<>', 5)->get();
         $item = CmsItem::find($id);
 
         return inertia::render('CMS::Items/Edit', [

@@ -23,8 +23,6 @@
         search: props.filters.search,
     });
 
-    const deleteForm = useForm({});
-
     const destroySection = (id) => {
         Swal2.fire({
             title: '¿Estas seguro?',

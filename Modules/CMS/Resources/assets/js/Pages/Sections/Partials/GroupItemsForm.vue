@@ -1,5 +1,5 @@
 <script setup>
-import { useForm, Link } from '@inertiajs/vue3';
+import { useForm, Link, router } from '@inertiajs/vue3';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -53,6 +53,7 @@ const createGroupItems = () => {
                 description: null,
                 position: 0
             }];
+            router.visit(route('cms_section_group_items',props.section.id), { replace: true, method: 'get' });
         },
     });
 }
@@ -106,6 +107,39 @@ const saveChangeItem = (data,id) => {
     });
 
 }
+
+const destroyGroup = (id) => {
+    Swal2.fire({
+        title: '¿Estas seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '¡Sí, Eliminar!',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            return axios.delete(route('cms_section_group_items_destroy', id)).then((res) => {
+                if (!res.data.success) {
+                    Swal2.showValidationMessage(res.data.message)
+                }
+                return res
+            });
+        },
+        allowOutsideClick: () => !Swal2.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal2.fire({
+                title: 'Enhorabuena',
+                text: 'Se Eliminó correctamente',
+                icon: 'success',
+            });
+            router.visit(route('cms_section_group_items',props.section.id), { replace: true, method: 'get' });
+        }
+    });
+}
+
 </script>
 
 <template>
@@ -131,7 +165,7 @@ const saveChangeItem = (data,id) => {
                 <InputError :message="form.errors.description" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-3 ">
-                        CONTENIDO
+                CONTENIDO
             </div>
             <div class="col-span-6 sm:col-span-3 ">
                 <button @click="addItemInSection" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Agregar</button>
@@ -187,7 +221,7 @@ const saveChangeItem = (data,id) => {
             <template v-if="gr.group">
                 <div class="max-w-sm bg-white p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <div class="flex justify-end px-4 pt-4">
-                        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <button @click="destroyGroup(gr.group.id)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <font-awesome-icon :icon="faTrashAlt" />
                         </button>
                     </div>

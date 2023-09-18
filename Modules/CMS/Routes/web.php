@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::get('pages/section_item_data/{id}', [CmsPageSectionController::class, 'getSectionItems'])->name('cms_pages_section_items_data');
     Route::post('pages/section_item_data_save', [CmsPageSectionController::class, 'updateItems'])->name('cms_pages_section_items_save');
     Route::delete('pages/section_item_data_delete/{id}', [CmsPageSectionController::class, 'destroySection'])->name('cms_pages_section_items_delete');
+    Route::post('pages/section_group_create', [CmsPageSectionController::class, 'groupSectionStore'])->name('cms_pages_section_group_save');
 
     Route::get('sections', [CmsSectionController::class, 'index'])->name('cms_section_list');
     Route::get('sections/create', [CmsSectionController::class, 'create'])->name('cms_section_create');
@@ -44,6 +45,7 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::delete('sections/items/destroy/{id}', [CmsSectionItemController::class, 'destroy'])->name('cms_section_items_destroy');
     Route::get('sections/group/items/{id}', [CmsSectionItemController::class, 'groupItems'])->name('cms_section_group_items');
     Route::post('sections/store/group/items', [CmsSectionItemController::class, 'groupItemsStore'])->name('cms_section_group_items_store');
+    Route::delete('sections/destroy/group/{id}', [CmsSectionItemController::class, 'groupItemsDestroy'])->name('cms_section_group_items_destroy');
 
     Route::get('items', [CmsItemController::class, 'index'])->name('cms_items_list');
     Route::get('items/create', [CmsItemController::class, 'create'])->name('cms_items_create');

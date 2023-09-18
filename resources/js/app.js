@@ -37,7 +37,7 @@ createInertiaApp({
         app.mixin({
             mounted() {
                 router.on('error', (error) => {
-                    console.log(error);
+                    //console.log(error);
                     if (error.response && error.response.status === 401) {
                         // Redirigir al inicio de sesión cuando la sesión ha caducado
                         router.visit('/login', { replace: true });

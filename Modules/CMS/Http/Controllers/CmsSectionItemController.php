@@ -113,7 +113,7 @@ class CmsSectionItemController extends Controller
 
     public function groupItems($id)
     {
-        $types = CmsItemType::all();
+        $types = CmsItemType::where('id', '<>', 5)->get();
 
         $groups = CmsSectionItem::with(['group' => function ($query) {
             $query->where('type_id', 5); // Ordena por el campo 'position' de la tabla 'cms_section_items'
@@ -169,6 +169,20 @@ class CmsSectionItemController extends Controller
             'section_id'    => $request->get('section_id'),
             'position'      => 1,
             'description'   => $request->get('section_description')
+        ]);
+    }
+
+    public function groupItemsDestroy($id)
+    {
+        CmsItem::find($id)->delete();
+        CmsSectionItem::where('item_id', $id)->delete();
+
+        $message =  'Grupo eliminado correctamente';
+        $success = true;
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
         ]);
     }
 }
