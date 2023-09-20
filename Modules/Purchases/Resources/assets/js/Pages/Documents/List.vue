@@ -1,16 +1,23 @@
 <script setup>
+    import AppLayout from '@/Layouts/AppLayout.vue';
+    import { useForm, router, Link } from '@inertiajs/vue3';
+    import { ref } from 'vue';
+    import swal from 'sweetalert';
+    import Keypad from '@/Components/Keypad.vue';
 
-const props = defineProps({
-    documents: {
-        type: Object,
-        default: () => ({}),
-    },
-    filters: {
-        type: Object,
-        default: () => ({}),
-    },
-})
-
+    const props = defineProps({
+        documents: {
+            type: Object,
+            default: () => ({}),
+        },
+        filters: {
+            type: Object,
+            default: () => ({}),
+        },
+    })
+    const form = useForm({
+        search: props.filters.search
+    });
 </script>
 
 <template>
@@ -29,13 +36,13 @@ const props = defineProps({
                         <div class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                         <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Facturación Electrónica</span>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Compras</span>
                         </div>
                     </li>
                     <li aria-current="page">
                         <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Lista de Documentos</span>
+                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Lista de Documentos</span>
                         </div>
                     </li>
                 </ol>
@@ -53,14 +60,14 @@ const props = defineProps({
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                                         </div>
-                                        <input v-model="form.search" type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar por cliente">
+                                        <input v-model="form.search" type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar">
                                     </div>
                                 </form>
                             </div>
                             <div class="col-span-3 sm:col-span-2">
                                 <Keypad>
                                     <template #botones>
-                                        <Link :href="route('saledocuments_create')" class="inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Nuevo</Link>
+                                        <Link :href="route('purc_documents_create')" class="inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Nuevo</Link>
                                     </template>
                                 </Keypad>
                             </div>
@@ -74,13 +81,16 @@ const props = defineProps({
                                         Acciones
                                     </th>
                                     <th class="py-1 px-4 font-medium text-black dark:text-white">
+                                        Tipo
+                                    </th>
+                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
                                         Nmr. Documento
                                     </th>
                                     <th class="py-1 px-4 font-medium text-black dark:text-white">
                                         Fecha
                                     </th>
                                     <th class="py-1 px-4 font-medium text-black dark:text-white">
-                                        Cliente
+                                        Proveedor
                                     </th>
                                     <th class="py-1 px-4 font-medium text-black dark:text-white">
                                         Total
@@ -92,82 +102,12 @@ const props = defineProps({
                             </thead>
                             <tbody>
                                 <template v-for="(document, index) in documents.data" :key="document.id">
-                                    <tr :style="document.invoice_status ==='registrado' || document.invoice_status ==='Pendiente' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" :class="document.invoice_status ==='registrado' || document.invoice_status ==='Pendiente' ? 'border-b border-stroke' : ''">
-                                        <td :rowspan="document.invoice_status ==='registrado' || document.invoice_status ==='Pendiente' ? 1 : 2" class="text-center py-1 px-4 dark:border-strokedark">
-                                            <div style="position: relative;" class="flex justify-center">
-                                                <button
-                                                    :id="'dropdownButton'+index"
-                                                    @click="toggleDropdown(index)"
-                                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500"
-                                                    type="button"
-                                                >
-                                                <font-awesome-icon :icon="faGear" />
-                                                </button>
-                                                <!-- Dropdown menu -->
-                                                <div
-                                                    :id="'dropdown-'+index"
-                                                    v-show="dropdownItems[index]?.showDropdown"
-                                                    style="margin-top: 44px;position: absolute;z-index: 9999;"
-                                                    class="text-base rounded-lg list-none border border-blue-700 bg-gray-100 divide-y divide-gray-100 shadow dark:bg-gray-700"
-                                                >
-                                                    <ul :aria-labelledby="'dropdownButton'+index">
-                                                        <template v-if="document.invoice_status != 'Aceptada'">
-                                                            <li class="border-b border-blue-700" v-can="'help_tableros_editar'">
-                                                                <button @click="showModalEditDocument(document)"
-                                                                type="button"
-                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                                >Editar</button>
-                                                            </li>
-                                                        </template>
-                                                        <template v-if="document.invoice_status != 'Aceptada'">
-                                                            <li class="border-b border-blue-700" v-can="'help_tableros_editar'">
-                                                                <button v-can="'invo_documento_envio_sunat'" @click="sendSunatDocument(document)"
-                                                                type="button"
-                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                                >Enviar a Sunat</button>
-                                                            </li>
-                                                        </template>
-                                                        <template v-if="document.invoice_status != 'Aceptada'">
-                                                            <li class="border-b border-blue-700" v-can="'help_tableros_eliminar'">
-                                                                <button @click="deletePanel(index,board.id)"
-                                                                type="button"
-                                                                class="rounded-lg px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                                >Eliminar</button>
-                                                            </li>
-                                                        </template>
-                                                        <li class="text-center">
-                                                            <button @click="opemModalDetails(document)"
-                                                            type="button"
-                                                            class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                            >Detalles</button>
-                                                        </li>
-                                                        <template v-if="document.invoice_status === 'Aceptada'">
-                                                            <li class="border-t border-blue-700">
-                                                                <button @click="downloadDocument(document.document_id,document.invoice_type_doc,'PDF')"
-                                                                type="button"
-                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                                >Imprimir PDF</button>
-                                                            </li>
-                                                        </template>
-                                                        <template v-if="document.invoice_status === 'Aceptada'">
-                                                            <li class="border-t border-blue-700">
-                                                                <button @click="downloadDocument(document.document_id,document.invoice_type_doc,'XML')"
-                                                                type="button"
-                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                                >Descargar XML</button>
-                                                            </li>
-                                                        </template>
-                                                        <template v-if="document.invoice_status === 'Aceptada'">
-                                                            <li class="border-t border-blue-700">
-                                                                <button @click="downloadDocument(document.document_id,document.invoice_type_doc,'CDR')"
-                                                                type="button"
-                                                                class="rounded-lg block px-4 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                                >Descargar CDR</button>
-                                                            </li>
-                                                        </template>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                    <tr >
+                                        <td>
+                                            
+                                        </td>
+                                        <td class="w-32 py-1 dark:border-strokedark">
+                                            {{ document.type.description }}
                                         </td>
                                         <td class="w-32 py-1 dark:border-strokedark">
                                             {{ document.serie }}-{{ document.number }}
@@ -186,22 +126,6 @@ const props = defineProps({
                                             <span v-else class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
                                         </td>
                                     </tr>
-                                    <template v-if="document.invoice_status =='Rechazada' || document.invoice_status === 'Aceptada' || document.invoice_status === 'Anulada'" >
-                                        <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" class="border-b border-stroke" >
-                                            <td colspan="4" class="text-xs">
-                                                <code v-if="document.invoice_response_code != 0">
-                                                    Código: {{ document.invoice_response_code }}
-                                                </code>
-                                                <code>
-                                                    Descripción: {{ document.invoice_response_description }}
-                                                </code>
-                                            </td>
-                                            <td class="text-center text-xs">
-                                                <small>Estado Sunat:</small>
-                                                {{ document.invoice_status }}
-                                            </td>
-                                        </tr>
-                                    </template>
                                 </template>
                             </tbody>
                         </table>

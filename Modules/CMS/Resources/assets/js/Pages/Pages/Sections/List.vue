@@ -137,6 +137,7 @@
             });
             itemsForm.items = res.data.items;
         });
+
     }
 
     const saveChangesItems = () => {
@@ -378,6 +379,7 @@ const saveChangesGroupItems = (key) => {
                                             </p>
                                             <textarea v-model="it.item.content" id="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                                         </template>
+                                        
                                         <template v-if="it.item.type_id == 5">
                                            <div>
                                             <div class="flex justify-end px-4 pt-4">
@@ -389,7 +391,9 @@ const saveChangesGroupItems = (key) => {
                                                 </button>
                                             </div>
                                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ it.item.description }}</h5>
+                                            
                                             <template v-for="(itm, ky) in it.item.items">
+                                                
                                                 <template v-if="itm.type_id == 1">
                                                     <InputLabel for="content" value="Imagen *" />
                                                     <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">

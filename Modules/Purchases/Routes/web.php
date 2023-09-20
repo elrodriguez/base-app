@@ -18,4 +18,5 @@ Route::middleware(['auth', 'verified'])->prefix('purchases')->group(function () 
     Route::get('/', 'PurchasesController@index');
 
     Route::get('documents', [PurcDocumentController::class, 'index'])->name('purc_documents_list');
+    Route::get('documents/create', [PurcDocumentController::class, 'create'])->name('purc_documents_create');
 });

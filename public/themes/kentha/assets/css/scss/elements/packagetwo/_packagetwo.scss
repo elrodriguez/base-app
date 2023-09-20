@@ -1,0 +1,224 @@
+// pack age_two_css
+
+.object_banner_fit {
+    img{
+        object-fit: cover;
+        object-position: top;
+    }
+}
+
+
+
+// job_grid_box
+
+.job_grid_box{
+    position: relative;
+    background: var(--primary-color-three);
+    border: 1px solid var(--border-color-dark);
+    padding: 30px 30px;
+    border-radius: 5px;
+    margin-bottom: 30px; 
+    .inner_bx{
+        position: relative;
+        .logo_bx{
+            position: absolute;
+            width: 105px;
+            top: 0; 
+            left: 0;
+            img{
+                width: 80px;
+            }
+        }
+        .content_bx{
+            position: relative;
+            margin-left: 105px;
+            .meta{ 
+                position: relative;
+                margin-top: 18px;
+                margin-bottom: 0px;
+                padding-bottom: 0px;
+                padding-left: 0px;
+                margin-left: 0px;
+                padding-top: 18px;
+                border-top: 1px solid var(--border-color-dark);
+                li{
+                    display: inline-block;
+                    margin-right: 18px;
+                    margin-bottom: 0px;
+                    position: relative;
+                    padding-left: 25px;
+                    text-transform: capitalize;
+                    font-size: 15px;
+                    &::before{
+                        position: absolute;
+                        font-family: 'icomoon';
+                        font-size: 18px;
+                        color: var(--primary-color-one);
+                        left: 0;
+                        top: 0;
+                        bottom: 0;
+                        margin: auto;
+                        line-height: 20px;
+                    }
+                    &:first-child{
+                        &::before{
+                            content: unicode('e9e6');
+                        }
+                    }
+                    &.job-type{
+                        &:before{
+                            content: unicode('e978');
+                        }
+                    }
+                    &.date{
+                        &:before{
+                            content: unicode('e98b');
+                        }
+                    }
+                }
+            }
+            h3{
+                font-size: 22px;
+                font-weight: 700;
+                margin-bottom: 7px;
+                line-height: 32px;
+            }
+            .company{
+                position: relative;
+            }
+        }
+    }
+  
+}
+
+.wp-video{
+    width: 100%!important;
+    height: 100%!important;
+}
+// single job post
+.single_job_listing .meta .location::before , .single_job_listing .company .company_twitter::before , .single_job_listing .meta .date-posted::before ,
+.single_job_listing .company .website::before{
+    color: var(--primary-color-one)!important;
+}
+.single_job_listing .meta .full-time{
+    background-color: var(--primary-color-one)!important;
+    padding: 10px 20px;
+    border-radius: 30px;
+}
+.single_job_listing .company , .single_job_listing .company .company_video{
+    border-color: var(--border-color-dark)!important;
+}
+
+.single_job_listing{
+    .com_inner{
+        display: flex;
+        .company_logo{
+            position: relative;
+            float: unset;
+            margin-right: 30px;
+            max-width: 3rem;
+        }
+        .comp_content{
+           .list_meta{
+               padding: 0px;
+               margin: 0px 0px 5px;
+               li{
+                   list-style: none;
+                   display: inline-block;
+                   margin-right: 15px;
+               }
+           } 
+           h2{
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 7px;
+            line-height: 32px;
+           }
+        }
+    }
+}
+.rp4wp-related-job_listing>ul li.job_listing a:hover, .rp4wp-related-job_listing>ul li.job_listing a:focus, .rp4wp-related-job_listing>ul li.no_job_listings_found a:hover, .rp4wp-related-job_listing>ul li.no_job_listings_found a:focus, ul.job_listings li.job_listing a:hover, ul.job_listings li.job_listing a:focus, ul.job_listings li.no_job_listings_found a:hover, ul.job_listings li.no_job_listings_found a:focus{
+    background-color: var(--primary-color-three)!important;
+}
+.job_filters {
+    .search_jobs{
+        background: var(--primary-color-three);
+        padding: 2rem 2rem 1rem 2rem!important;
+    }
+    .job_types{
+        padding: 1rem 0rem!important;
+        background: #fff!important;
+    }
+}
+.rp4wp-related-job_listing>ul, ul.job_listings , .job_filters .job_types{
+    border: unset!important; 
+}
+.rp4wp-related-job_listing>ul li.job_listing, .rp4wp-related-job_listing>ul li.no_job_listings_found, ul.job_listings li.job_listing, ul.job_listings li.no_job_listings_found{
+    border:1px solid var(--border-color-dark)!important;
+    margin-bottom: 10px!important;
+
+}
+.rp4wp-related-job_listing>ul li.job_listing a img.company_logo, .rp4wp-related-job_listing>ul li.no_job_listings_found a img.company_logo, ul.job_listings li.job_listing a img.company_logo, ul.job_listings li.no_job_listings_found a img.company_logo{
+    left: 25px!important;
+}
+.rp4wp-related-job_listing>ul li.job_listing a div.position, .rp4wp-related-job_listing>ul li.no_job_listings_found a div.position, ul.job_listings li.job_listing a div.position, ul.job_listings li.no_job_listings_found a div.position{
+    padding: 0 0 0 60px!important;
+}
+
+.rp4wp-related-job_listing>ul li.job_listing a, .rp4wp-related-job_listing>ul li.no_job_listings_found a, ul.job_listings li.job_listing a, ul.job_listings li.no_job_listings_found a{
+    padding: 2rem 2rem!important;
+}
+
+.rp4wp-related-job_listing>ul li.job_listing a .meta .job-type, .rp4wp-related-job_listing>ul li.no_job_listings_found a .meta .job-type, ul.job_listings li.job_listing a .meta .job-type, ul.job_listings li.no_job_listings_found a .meta .job-type{
+    font-size: 15px;
+    font-family: var(--creote-family-one)!important;
+}
+.rp4wp-related-job_listing>ul li.job_listing a div.location, .rp4wp-related-job_listing>ul li.no_job_listings_found a div.location, ul.job_listings li.job_listing a div.location, ul.job_listings li.no_job_listings_found a div.location{
+    text-transform: capitalize;
+    font-family: var(--creote-family-one)!important;
+    strong{
+        color: var(--primary-color-one)!important;
+    }
+}
+.rp4wp-related-job_listing>ul li.job_listing.job_position_featured a, .rp4wp-related-job_listing>ul li.no_job_listings_found.job_position_featured a, ul.job_listings li.job_listing.job_position_featured a, ul.job_listings li.no_job_listings_found.job_position_featured a{
+    opacity: 1!important;
+    
+}
+.rp4wp-related-job_listing>ul li.job_listing.job_position_featured , .rp4wp-related-job_listing>ul li.no_job_listings_found.job_position_featured ,
+ ul.job_listings li.job_listing.job_position_featured , ul.job_listings li.no_job_listings_found.job_position_featured {
+    border-color: #fefee5!important;
+    
+}
+.rp4wp-related-job_listing>ul li.job_listing, .rp4wp-related-job_listing>ul li.no_job_listings_found, ul.job_listings li.job_listing, ul.job_listings li.no_job_listings_found{
+
+    border-color: var(--primary-color-three)!important;
+}
+
+.rp4wp-related-job_listing>ul li.job_listing:hover, .rp4wp-related-job_listing>ul li.job_listing:focus, .rp4wp-related-job_listing>ul li.no_job_listings_found:hover, .rp4wp-related-job_listing>ul li.no_job_listings_found:focus, ul.job_listings li.job_listing:hover, ul.job_listings li.job_listing:focus, ul.job_listings li.no_job_listings_found:hover, ul.job_listings li.no_job_listings_found:focus{
+    border-color: var(--primary-color-three)!important;
+}
+
+.job-manager-form{
+    h2{
+        margin-bottom: 30px;
+        margin-top: 20px;
+    }
+    input[type="file"]{
+        padding: 10px 15px 10px 15px;
+    }
+   fieldset label:not(.full-line-checkbox-field label){
+       font-size: 16px;
+       color: var(--heading-dark);
+       line-height: 28px;
+       font-weight: 600;
+       font-family: var(--creote-family-one);
+   }
+}
+.job-manager-form .spinner {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+}
+.rp4wp-related-job_listing>ul li.job_listing a div.position h3, .rp4wp-related-job_listing>ul li.no_job_listings_found a div.position h3, ul.job_listings li.job_listing a div.position h3, ul.job_listings li.no_job_listings_found a div.position h3{
+    margin: 0px 0px 10px!important;
+}

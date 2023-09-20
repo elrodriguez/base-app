@@ -1,6 +1,6 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import { useForm, router } from '@inertiajs/vue3';
+    import { useForm, router, Link } from '@inertiajs/vue3';
     import { faTrashAlt, faPencilAlt, faPrint, faWarehouse, faDollarSign, faTruck } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import DialogModal from '@/Components/DialogModal.vue';
@@ -17,7 +17,7 @@
     import VueMagnifier from '@websitebeaver/vue-magnifier'
     import '@websitebeaver/vue-magnifier/styles.css'
     import Swal2 from 'sweetalert2';
-    import { Link } from '@inertiajs/vue3';
+
 
     const props = defineProps({
         products: {

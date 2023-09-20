@@ -1,0 +1,23 @@
+:root {
+  --primary-color-one: #3ead3c;
+  --menu-active-color: #3ead3c ;
+  --primary-color-two: #212121;
+  --heading-dark: #212121;
+  --link-color-dark: #212121;
+  --menu-color: #212121;
+  --menu-dropdown-color: #212121;
+  --primary-color-five: #212121;
+}
+
+.primarg_bg_color {
+  background: var(--primary-color-one) !important;
+  background-color: var(--primary-color-one) !important;
+}
+
+.primarg_border_color {
+  border-color: var(--primary-color-one) !important;
+}
+
+.footer_seven {
+  padding-top: 80px;
+}/*# sourceMappingURL=color2.css.map */

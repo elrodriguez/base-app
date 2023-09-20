@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WebController;
 use Modules\Blog\Http\Controllers\BlogController;
 
-//Route::get('/', [BlogController::class, 'index'])->name('blog_principal');
+
+Route::get('/', [WebController::class, 'index'])->name('cms_principal');
+
 Route::get('/article/{url}', [BlogController::class, 'article'])->name('blog_article_by_url');
 Route::get('/policies', [BlogController::class, 'policies'])->name('blog_policies');
 Route::get('/contact-us', [BlogController::class, 'contactUs'])->name('blog_contact_us');
@@ -21,14 +24,14 @@ Route::get('/stories/article/{url}', [BlogController::class, 'storiesArticle'])-
 Route::get('/stories/policies', [BlogController::class, 'storiesPolicies'])->name('blog_stories_policies');
 Route::get('/stories/contact-us', [BlogController::class, 'storiesContactUs'])->name('blog_stories_contact_us');
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

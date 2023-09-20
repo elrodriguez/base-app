@@ -1,0 +1,23 @@
+// package two header scss
+
+
+.header.header_default.style_nine {
+    .header_right_content{
+        .search-toggler , .theme-btn{
+            margin-left: 20px;
+        }
+    }
+    &.pack_two_style_two ,  &.pack_two_style_one{
+        position: relative;
+        .header_right_content{
+            position: relative;
+            .search-toggler{
+                border: 0px;
+                background: unset;
+                color: var(--heading-dark);
+                font-size: 20px;
+                line-height: 20px;
+            } 
+        }
+    }
+} 

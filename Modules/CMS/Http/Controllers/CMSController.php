@@ -25,8 +25,8 @@ class CMSController extends Controller
     }
     public function apiGetSectionGroupData($id)
     {
-        $section = CmsSection::where('component_id', $id)->first();
-        $items = CmsSectionItem::with('item.items')->where('section_id', $section->id)->get();
+        //$section = CmsSection::where('component_id', $id)->first();
+        $items = CmsSectionItem::with('item.items')->where('section_id', $id)->get();
 
         return response()->json([
             'items' => $items

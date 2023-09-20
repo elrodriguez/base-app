@@ -18,7 +18,7 @@ class PurcDocumentController extends Controller
     {
         $documents = (new PurcDocument())->newQuery();
         if (request()->has('search')) {
-            $documents->whereDate('summary_date', '=', '%' . request()->input('search') . '%');
+            $documents->whereDate('date_of_issue', '=', '%' . request()->input('search') . '%');
         }
         if (request()->query('sort')) {
             $attribute = request()->query('sort');
@@ -31,14 +31,13 @@ class PurcDocumentController extends Controller
         } else {
             $documents->latest();
         }
-
+        $documents = $documents->with('type');
         $documents = $documents->paginate(10)->onEachSide(2);
 
-        return Inertia::render('Sales::Documents/Summary', [
+        return Inertia::render('Purchases::Documents/List', [
             'documents' => $documents,
             'filters' => request()->all('search'),
         ]);
-        return Inertia::render('Purchases::Documents/List');
     }
 
     /**
@@ -47,7 +46,7 @@ class PurcDocumentController extends Controller
      */
     public function create()
     {
-        return view('purchases::create');
+        return Inertia::render('Purchases::Documents/Create');
     }
 
     /**
