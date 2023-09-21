@@ -7,7 +7,7 @@
                         <div class="top_left">
                           <ul class="top-links clearfix">
                             <li>
-                              <a href="http://demo.delventas.co.uk/login" target="_blank" class="get_a_quote"> Intranet </a>
+                              <a href="http://demo.delventas.co.uk/login" target="_blank" class="get_a_quote"> <i class="fa fa-sign-in" aria-hidden="true"></i></a>
                             </li>
                             <li>
                               <a href="https://kentha.cl/public/" target="_blank" class="get_a_quote"> Kentha Marketing </a>
@@ -23,20 +23,20 @@
                                     <p>
                                         <span class="icon-telephone"></span>
                                         <a href="tel:+98 060 712 34">
-                                            {{ $data[0]->item->content }}
+                                            {{ $data[4]->item->content }}
                                         </a>
                                     </p>
                                 </li>
                                 <li class="single">
                                     <p>
                                         <span class="icon-mail"></span>
-                                        <a href="mailto:{{ $data[1]->item->content }}">{{ $data[1]->item->content }}</a>
+                                        <a href="mailto:{{ $data[5]->item->content }}">{{ $data[5]->item->content }}</a>
                                     </p>
                                 </li>
                                 <li class="single">
                                     <p>
                                         <span class="icon-location2"></span>
-                                        {{ $data[2]->item->content }}
+                                        {{ $data[3]->item->content }}
                                     </p>
                                 </li>
                             </ul>

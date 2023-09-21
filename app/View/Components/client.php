@@ -7,16 +7,20 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Modules\CMS\Entities\CmsSectionItem;
 
-class FooterArea extends Component
+class client extends Component
 {
     /**
      * Create a new component instance.
      */
-    public $data;
-
+    
+     public $data;
+     
     public function __construct()
     {
-        $this->data = CmsSectionItem::with('item.items')->where('section_id', 14)->get();
+        $this->data = CmsSectionItem::with('item.items')
+                        ->where('section_id', 5)
+                        ->orderBy('position')
+                        ->get();
     }
 
     /**
@@ -24,7 +28,7 @@ class FooterArea extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.footer-area', [
+        return view('components.client', [
             'data' => $this->data
         ]);
     }

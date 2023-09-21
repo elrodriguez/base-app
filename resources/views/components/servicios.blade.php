@@ -1,7 +1,4 @@
-<div>
-    @php
-        dd($data);
-    @endphp
+{{-- <div>
 <!--service-->
 <section id="service" class="service-section bg_op_1 position-relative"
    style="background: url({{ asset('themes/kentha/assets/images/home-13-service-bg.jpg')}});"> 
@@ -117,4 +114,4 @@
    </div>
 </section>
 <!--service end-->
-</div>
+</div> --}}
