@@ -48,7 +48,7 @@
           <div class="row gutter_25px">
             <div class="col-lg-4 col-md-4 col-ms-12">
               <div class="theme_btn_all color_one">
-                <a href="about-us" rel="nofollow" class="theme-btn one">
+                <a href="{{ route('home_nosotros') }}" rel="nofollow" class="theme-btn one">
                   Leer Más
                 </a>
               </div>
