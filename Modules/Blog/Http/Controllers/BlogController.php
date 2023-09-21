@@ -17,8 +17,29 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $articles = BlogArticle::where('status', true)->get();
-        return view('blog::index_tutos')->with('articles', $articles);
+        $categories = BlogCategory::where('status', true)->get();
+
+        $articles = BlogArticle::with('category')->with('author')
+            ->where('status', true)
+            ->paginate(10);
+
+        $latest_articles = BlogArticle::select(
+            'title',
+            'imagen',
+            'url',
+            'created_at'
+        )
+            ->where('status', true)
+            ->latest('created_at') // Ordena por la columna created_at en orden descendente
+            ->take(4) // Limita el resultado a 4 registros
+            ->get();
+
+
+        return view('blog::index_kentha', [
+            'categories'        => $categories,
+            'articles'          => $articles,
+            'latest_articles'   => $latest_articles
+        ]);
     }
 
     /**
@@ -33,9 +54,36 @@ class BlogController extends Controller
 
     public function article($url)
     {
-        $article = BlogArticle::where('url', $url);
+        // $article = BlogArticle::where('url', $url);
+        // $article->increment('views');
+
+        $categories = BlogCategory::where('status', true)->get();
+
+        $article = null;
+
+        if ($url != null) {
+            $article = BlogArticle::with('author')->where('url', $url)
+                ->first();
+        }
+
+        $latest_articles = BlogArticle::select(
+            'title',
+            'imagen',
+            'url',
+            'created_at'
+        )
+            ->where('status', true)
+            ->latest('created_at') // Ordena por la columna created_at en orden descendente
+            ->take(4) // Limita el resultado a 4 registros
+            ->get();
+
         $article->increment('views');
-        return view('blog::tutorials.article')->with('article', $article->first());
+
+        return view('blog::kentha.article', [
+            'categories'        => $categories,
+            'article'           => $article,
+            'latest_articles'   => $latest_articles
+        ]);
     }
 
 

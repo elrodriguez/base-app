@@ -5,17 +5,19 @@
                 <div class="medium-container">
                     <div class="header_top_inner">
                         <div class="top_left">
-                          <ul class="top-links clearfix">
-                            <li>
-                              <a href="http://demo.delventas.co.uk/login" target="_blank" class="get_a_quote"> <i class="fa fa-sign-in" aria-hidden="true"></i></a>
-                            </li>
-                            <li>
-                              <a href="https://kentha.cl/public/" target="_blank" class="get_a_quote"> Kentha Marketing </a>
-                            </li>
-              
-                            <li></li>
-                            <li>Bienvenidos a Kentha servicios HVAC</li>
-                          </ul>
+                            <ul class="top-links clearfix">
+                                <li>
+                                    <a href="http://demo.delventas.co.uk/login" target="_blank" class="get_a_quote"> <i
+                                            class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                </li>
+                                <li>
+                                    <a href="https://kentha.cl/public/" target="_blank" class="get_a_quote"> Kentha
+                                        Marketing </a>
+                                </li>
+
+                                <li></li>
+                                <li>Bienvenidos a Kentha servicios HVAC</li>
+                            </ul>
                         </div>
                         <div class="top_right text-right">
                             <ul class="contact_info_two">
@@ -61,56 +63,44 @@
                             <span class="line"></span>
                         </div>
                         <div class="header_content header_content_collapse">
-                          <div class="header_menu_box">
-                            <div class="navigation_menu">
-                              <ul id="myNavbar" class="navbar_nav">
-                                <li
-                                  class="active menu-item menu-item-has-children dropdown nav-item"
-                                >
-                                  <a routerLink="inicio" class="dropdown-toggle nav-link">
-                                    <span>Home</span>
-                                  </a>
-                                </li>
-                                <li
-                                  class="menu-item menu-item-has-children dropdown nav-item"
-                                >
-                                  <a routerLink="nosotros" class="dropdown-toggle nav-link">
-                                    <span>Nosotros</span>
-                                  </a>
-                                </li>
-                                <li
-                                  class="menu-item menu-item-has-children dropdown nav-item"
-                                >
-                                  <a routerLink="servicios" class="dropdown-toggle nav-link">
-                                    <span>Servicios</span>
-                                  </a>
-                                </li>
-                                <li
-                                  class="menu-item menu-item-has-children dropdown nav-item"
-                                >
-                                  <a routerLink="proyectos" class="dropdown-toggle nav-link">
-                                    <span>Proyectos</span>
-                                  </a>
-                                </li>
-                                <li
-                                  class="menu-item menu-item-has-children dropdown nav-item"
-                                >
-                                  <a routerLink="blog" class="dropdown-toggle nav-link">
-                                    <span>Blog</span>
-                                  </a>
-                                </li>
-                                <li
-                                  class="menu-item menu-item-has-children dropdown nav-item"
-                                >
-                                  <a routerLink="contacto" class="dropdown-toggle nav-link">
-                                    <span>Contacto</span>
-                                  </a>
-                                </li>
-                              </ul>
+                            <div class="header_menu_box">
+                                <div class="navigation_menu">
+                                    <ul id="myNavbar" class="navbar_nav">
+                                        <li class="active menu-item menu-item-has-children dropdown nav-item">
+                                            <a routerLink="inicio" class="dropdown-toggle nav-link">
+                                                <span>Home</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-has-children dropdown nav-item">
+                                            <a routerLink="nosotros" class="dropdown-toggle nav-link">
+                                                <span>Nosotros</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-has-children dropdown nav-item">
+                                            <a routerLink="servicios" class="dropdown-toggle nav-link">
+                                                <span>Servicios</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-has-children dropdown nav-item">
+                                            <a routerLink="proyectos" class="dropdown-toggle nav-link">
+                                                <span>Proyectos</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-has-children dropdown nav-item">
+                                            <a href="{{ route('blog_principal') }}" class="dropdown-toggle nav-link">
+                                                <span>Blog</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-has-children dropdown nav-item">
+                                            <a routerLink="contacto" class="dropdown-toggle nav-link">
+                                                <span>Contacto</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                          </div>
-                          <ul class="navbar_right navbar_nav">
-                            <!--
+                            <ul class="navbar_right navbar_nav">
+                                <!--
                                           <li>
                                              <button type="button" class="search-toggler"><i class="icon-search"></i></button>
                                           </li>
@@ -122,13 +112,13 @@
                                              </div>
                                           </li>
                                           -->
-              
-                            <li>
-                              <button type="button" class="contact-toggler">
-                                <i class="icon-menu1"></i>
-                              </button>
-                            </li>
-                          </ul>
+
+                                <li>
+                                    <button type="button" class="contact-toggler">
+                                        <i class="icon-menu1"></i>
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
 
                     </nav>

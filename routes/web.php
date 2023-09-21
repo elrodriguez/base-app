@@ -17,6 +17,7 @@ use Modules\Blog\Http\Controllers\BlogController;
 
 Route::get('/', [WebController::class, 'index'])->name('cms_principal');
 
+Route::get('/blog/home', [BlogController::class, 'index'])->name('blog_principal');
 Route::get('/article/{url}', [BlogController::class, 'article'])->name('blog_article_by_url');
 Route::get('/policies', [BlogController::class, 'policies'])->name('blog_policies');
 Route::get('/contact-us', [BlogController::class, 'contactUs'])->name('blog_contact_us');
