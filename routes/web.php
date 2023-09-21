@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\LocalSaleController;
 use App\Http\Controllers\PersonController;
@@ -23,6 +24,8 @@ Route::get('/contact-us', [BlogController::class, 'contactUs'])->name('blog_cont
 Route::get('/stories/article/{url}', [BlogController::class, 'storiesArticle'])->name('blog_stories_article_by_url');
 Route::get('/stories/policies', [BlogController::class, 'storiesPolicies'])->name('blog_stories_policies');
 Route::get('/stories/contact-us', [BlogController::class, 'storiesContactUs'])->name('blog_stories_contact_us');
+
+Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('home_nosotros');
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
