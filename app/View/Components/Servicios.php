@@ -7,7 +7,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Modules\CMS\Entities\CmsSectionItem;
 
-class About extends Component
+class Servicios extends Component
 {
     /**
      * Create a new component instance.
@@ -15,7 +15,7 @@ class About extends Component
     public $data;
     public function __construct()
     {
-        $this->data = CmsSectionItem::with('item.items')->where('section_id', 4)->get();
+        $this->data = CmsSectionItem::with('item.items')->where('section_id', 15)->get();
     }
 
     /**
@@ -23,7 +23,7 @@ class About extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.about', [
+        return view('components.servicios', [
             'data' => $this->data
         ]);
     }

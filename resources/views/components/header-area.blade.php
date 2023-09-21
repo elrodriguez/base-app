@@ -1,4 +1,4 @@
-@if (count($data) > 0)
+@if (isset($data))
     <div class="header_area" id="header_contents">
         <header class="main-header header header_v13">
             <section class="header_top">
