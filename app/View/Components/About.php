@@ -15,7 +15,10 @@ class About extends Component
     public $data;
     public function __construct()
     {
-        $this->data = CmsSectionItem::with('item.items')->where('section_id', 4)->get();
+        $this->data = CmsSectionItem::with('item.items')
+                        ->where('section_id', 4)
+                        ->orderBy('position')
+                        ->get();
     }
 
     /**

@@ -4,9 +4,9 @@
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-   <title>Creote - Just another Html template</title>
+   <title>Kentha | Sitio Web</title>
    <!-- Fav Icon -->
-   <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+   <link rel="icon" href="themes/kentha/assets/images/isotipo.png" type="image/x-icon">
    <!-- Fav Icon -->
    <!-- Google Fonts -->
    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Spartan%3A400%2C500%2C600%2C700%2C800%2C900%7CInter%3A300%2C400%2C500%2C600%2C700%2C800%2C900&subset=latin%2Clatin-ext' type='text/css' media='all' />

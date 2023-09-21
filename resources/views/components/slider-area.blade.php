@@ -1,5 +1,5 @@
 <!--- slider-->
-@if (count($data) > 0)
+@if (count($data) >= 0)
     <section class="slider style_page_thirteen nav_position_one position-relative">
         <div class="banner_carousel owl-carousel owl_nav_block owl_dots_none theme_carousel owl-theme"
             data-options='{"loop": true, "margin": 0, "autoheight":true, "lazyload":true, "nav": true, "dots": true, "autoplay": true, "autoplayTimeout": 7000, "smartSpeed": 1800, "responsive":{ "0" :{ "items": "1" }, "768" :{ "items" : "1" } , "1000":{ "items" : "1" }}}'>

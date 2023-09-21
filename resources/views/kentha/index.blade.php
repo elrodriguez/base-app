@@ -2,47 +2,6 @@
 
 @section('content')
     <div id="page" class="page_wapper hfeed site">
-        <div class="style-switcher">
-            <a href="#" id="switcher-toggler"><i class="fa fa-cog"></i></a>
-            <h3>Color Skins</h3>
-            <ul id="colorschemeOptions" title="Switch Color"
-                data-css-path="{{ asset('themes/kentha/assets/css/scss/elements/color-switcher/') }}">
-                <li>
-                    <a href="#" data-theme="color" style="background-color: #078586;"> </a>
-                </li>
-                <li>
-                    <a href="#" data-theme="color1" style="background-color: #e5102a;"> </a>
-                </li>
-                <li>
-                    <a href="#" data-theme="color2" style="background-color: #3ead3c;"> </a>
-                </li>
-                <li>
-                    <a href="#" data-theme="color3" style="background-color: #fed000;"> </a>
-                </li>
-                <li>
-                    <a href="#" data-theme="color4" style="background-color: #ff5538;"> </a>
-                </li>
-                <li>
-                    <a href="#" data-theme="color5" style="background-color: #246af4;"> </a>
-                </li>
-            </ul>
-        </div>
-        <div id="wrapper_full" class="content_all_warpper">
-            <!----page-header----->
-            <div class="mini_cart_togglers fixed_cart">
-                <div class="mini-cart-count">
-                    0
-                </div>
-                <i class="icon-shopping-cart"></i>
-            </div>
-            <!----preloader----->
-            <div class="preloader-wrap">
-                <div class="preloader"
-                    style="background-image:url({{ asset('themes/kentha/assets/images/preloader.gif') }})">
-                </div>
-                <div class="overlay"></div>
-            </div>
-            <!----preloader end----->
             <!----header----->
             <x-header-area />
             <!----header end----->
@@ -58,95 +17,10 @@
                 <x-about />
                 <!---about end-->
                 <!--client-->
-                <section class="client-section text-center bg_op_1"
-                    style="background: url(assets/images/home-13-client-bg.jpg);">
-                    <!--===============spacing==============-->
-                    <div class="pd_top_60"></div>
-                    <!--===============spacing==============-->
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-lg-12">
-                                <div class="swiper-container"
-                                    data-swiper='{
-                         "autoplay": {
-                           "delay": 6000
-                         },
-                         "freeMode": true,
-                         "loop": true,
-                         "speed": 1000,
-                         "centeredSlides": false,
-                         "slidesPerView": 5,
-                         "spaceBetween": 30,
-                         "pagination": {
-                           "el": ".swiper-pagination",
-                           "clickable": true
-                         },
-                          
-                         "breakpoints": {
-                            "1200": {
-                               "slidesPerView": 5
-                            },
-                            "1024": {
-                             "slidesPerView": 4
-                            },
-                           "768": {
-                             "slidesPerView": 3
-                           },
-                           "576": {
-                             "slidesPerView": 2 
-                           },
-                           "250": {
-                             "slidesPerView": 2 
-                           },
-                           "0": {
-                             "slidesPerView": 1 
-                           }
-                         }
-                       }'>
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <div class="image">
-                                                <img src="assets/images/cecode-brand-1.png" alt="clients-logo"
-                                                    class="img-fluid" />
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="image">
-                                                <img src="assets/images/cecode-brand-2.png" alt="clients-logo"
-                                                    class="img-fluid" />
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="image">
-                                                <img src="assets/images/cecode-brand-3.png" alt="clients-logo"
-                                                    class="img-fluid" />
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="image">
-                                                <img src="assets/images/cecode-brand-4.png" alt="clients-logo"
-                                                    class="img-fluid" />
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="image">
-                                                <img src="assets/images/cecode-brand-5.png" alt="clients-logo"
-                                                    class="img-fluid" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--===============spacing==============-->
-                    <div class="pd_bottom_60"></div>
-                    <!--===============spacing==============-->
-                </section>
+                <x-client />
                 <!---client end-->
-                <!--service-->
-                <x-servicios />
+                <!--service
+                <x-servicios />-->
                 <!--service end-->
 
                 <!--content-->
@@ -1354,7 +1228,7 @@
                         <div class="col-lg-7 col-md-12 about_company_inner">
                             <div class="abt_content">
                                 <div class="logo">
-                                    <img src="assets/images/logo-default.png" alt="img" class="company_logo_modal">
+                                    <img src="{{ asset('themes/kentha/assets/images/HVAC_logo.png') }}" alt="img" class="Logo_Kentha">
                                 </div>
                                 <div class="text">
                                     <p> The great explorer of the truth, the master-builder of human happiness no one
