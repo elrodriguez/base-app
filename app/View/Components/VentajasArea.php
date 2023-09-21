@@ -7,17 +7,17 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Modules\CMS\Entities\CmsSectionItem;
 
-class Servicios extends Component
+class VentajasArea extends Component
 {
     /**
      * Create a new component instance.
      */
     public $titles;
     public $data;
-    
+
     public function __construct()
     {
-        $this->data = CmsSectionItem::with('item.items')->where('section_id', 15)
+        $this->data = CmsSectionItem::with('item.items')->where('section_id', 16)
                                                                 ->orderBy('position')   //hay que revisar el ORDEN aqui es medio raro funciona por ahora 21/09/2023
                                                                 ->get();
 
@@ -32,7 +32,7 @@ class Servicios extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.servicios', [
+        return view('components.ventajas-area', [
             'data' => $this->data,
             'titles' => $this->titles
         ]);

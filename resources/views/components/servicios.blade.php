@@ -7,40 +7,22 @@
    <div class="pd_top_90"></div>
    <!--===============spacing==============-->
    <div class="auto-container">
-      <!--<div class="row">
-                     <div class="col-lg-8 m-auto">
-                        <div class="title_all_box style_six text-center light_color">
-                           <div class="title_sections">
-                              <div class="before_title">
-                                 <span class="icon-briefcase icon"></span>
-                                 NUESTROS SERVICIOS
-                              </div>
-                              <div class="title"> Ofrecemos Diferentes Servicios</div>
-                              <p class="description_text">
-                                 There are many variations of passages of Lorem Ipsum available,
-                                 but the majority have suffered alteration in some form believable.
-                              </p>
-                           </div>
-                           <div class="pd_bottom_20"></div>
-                        </div>
-                     </div>
-                  </div>-->
       <div class="row">
-                     <div class="col-lg-8 m-auto">
-                        <div class="title_all_box style_six text-center light_color">
-                           <div class="title_sections">
-                              <div class="before_title">
-                                 <span class="icon-briefcase icon"></span>
-                                 {{ $titles[0]->item->content }}
-                              </div>
-                              <div class="title"> {{ $titles[1]->item->content }}</div>
-                              <p class="description_text">
-                                 {{ $titles[2]->item->content }}
-                              </p>
-                           </div>
-                           <div class="pd_bottom_20"></div>
-                        </div>
-                     </div>
+         <div class="col-lg-8 m-auto">
+            <div class="title_all_box style_six text-center light_color">
+               <div class="title_sections">
+                  <div class="before_title">
+                     <span class="icon-briefcase icon"></span>
+                     {{ $titles[0]->item->content }}
+                  </div>
+                  <div class="title"> {{ $titles[1]->item->content }}</div>
+                  <p class="description_text">
+                     {{ $titles[2]->item->content }}
+                  </p>
+               </div>
+               <div class="pd_bottom_20"></div>
+            </div>
+         </div>
       </div>
       
 

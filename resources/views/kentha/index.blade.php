@@ -11,145 +11,23 @@
 
                 <!--- slider-->
                 <x-slider-area />
-                
                 <!---slider-end--->
+
                 <!--about-->
                 <x-about />
                 <!---about end-->
+
                 <!--client-->
-                <x-client />
+                <x-clientes-area />
                 <!---client end-->
-                <!--service
-                    
-                <x-servicios />-->
+
+                <!--service-->
+                <x-servicios />
                 <!--service end-->
 
-                <!--content-->
-                <section class="content-section">
-                    <!--===============spacing==============-->
-                    <div class="pd_top_50"></div>
-                    <!--===============spacing==============-->
-                    <div class="auto-container">
-                        <div class="row">
-                            <div class="col-lg-8 m-auto">
-                                <div class="title_all_box style_six text-center">
-                                    <div class="title_sections">
-                                        <div class="before_title">
-                                            <span class="icon-briefcase icon"></span>
-                                            CHOICES & OCCURS
-                                        </div>
-                                        <div class="title">Why People Choose us</div>
-                                        <p class="description_text">
-                                            Explain to you how all this mistaken idea of denouncing pleasure and praising
-                                            pain was
-                                            born and I will give you a complete account of the system.
-                                        </p>
-                                    </div>
-                                    <!--===============spacing==============-->
-                                    <div class="pd_bottom_20"></div>
-                                    <!--===============spacing==============-->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                                <div class="choose_box  type_one">
-                                    <div class="image_box">
-                                        <img src="assets/images/24-hours-support.png" class="img-fluid svg_image"
-                                            alt="icon png">
-                                    </div>
-                                    <div class="content_box">
-                                        <span class="step_no">01</span>
-                                        <div class="text_box">
-                                            <h2>
-                                                <a href="#" target="_blank">
-                                                    24/7 support </a>
-                                            </h2>
-                                            <p>Alienssa pentalim ex arcu, ac ultricies tortor ultricies pellentesque.</p>
-
-                                            <a href="#" class="read_more type_one" target="_blank">
-                                                Read More <span class="icon-arrow-right"></span>
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                                <div class="choose_box  type_one">
-                                    <div class="image_box">
-                                        <img src="assets/images/email-marketing.png" class="img-fluid svg_image"
-                                            alt="icon png">
-                                    </div>
-                                    <div class="content_box">
-                                        <span class="step_no">02</span>
-                                        <div class="text_box">
-                                            <h2>
-                                                <a href="#" target="_blank">
-                                                    Quick Response </a>
-                                            </h2>
-                                            <p>Alienssa pentalim ex arcu, ac ultricies tortor ultricies pellentesque.</p>
-
-                                            <a href="#" class="read_more type_one" target="_blank">
-                                                Read More <span class="icon-arrow-right"></span>
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                                <div class="choose_box  type_one">
-                                    <div class="image_box">
-                                        <img src="assets/images/team-management.png" class="img-fluid svg_image"
-                                            alt="icon png">
-                                    </div>
-                                    <div class="content_box">
-                                        <span class="step_no">03</span>
-                                        <div class="text_box">
-                                            <h2>
-                                                <a href="#" target="_blank">
-                                                    Experience Team </a>
-                                            </h2>
-                                            <p>Alienssa pentalim ex arcu, ac ultricies tortor ultricies pellentesque.</p>
-
-                                            <a href="#" class="read_more type_one" target="_blank">
-                                                Read More <span class="icon-arrow-right"></span>
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                                <div class="choose_box  type_one">
-                                    <div class="image_box">
-                                        <img src="assets/images/solution-1.png" class="img-fluid svg_image"
-                                            alt="icon png">
-                                    </div>
-                                    <div class="content_box">
-                                        <span class="step_no">04</span>
-                                        <div class="text_box">
-                                            <h2>
-                                                <a href="#" target="_blank">
-                                                    Smart solutions </a>
-                                            </h2>
-                                            <p>Alienssa pentalim ex arcu, ac ultricies tortor ultricies pellentesque.</p>
-
-                                            <a href="#" class="read_more type_one" target="_blank">
-                                                Read More <span class="icon-arrow-right"></span>
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--===============spacing==============-->
-                    <div class="pd_bottom_65"></div>
-                    <!--===============spacing==============-->
-                </section>
+                <!--Ventajas-->
+                <x-ventajas-area />
+                <!--Ventajas end-->
 
                 <!--project-->
                 <section class="project-section bg_light_1 position-relative">
@@ -466,6 +344,7 @@
                     <!--===============shape==============-->
                 </section>
                 <!---project end-->
+
                 <!---testimonial-->
                 <section class="testimonial-section">
                     <!--===============spacing==============-->
@@ -591,6 +470,7 @@
                     <!--===============spacing==============-->
                 </section>
                 <!--testimonial end-->
+
                 <!---contact-->
                 <section class="contact-section bg_op_1 box_shadow_2"
                     style="background: url(assets/images/consult-bg.jpg);">
@@ -651,6 +531,7 @@
                     </div>
                 </section>
                 <!--contact end-->
+                
                 <!---pricing-->
                 <section class="pricing-section bg_light_1">
                     <!--===============spacing==============-->
