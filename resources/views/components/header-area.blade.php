@@ -22,7 +22,7 @@
                                 <li class="single">
                                     <p>
                                         <span class="icon-telephone"></span>
-                                        <a href="tel:+98 060 712 34">
+                                        <a href="tel:{{ $data[4]->item->content }}">
                                             {{ $data[4]->item->content }}
                                         </a>
                                     </p>
