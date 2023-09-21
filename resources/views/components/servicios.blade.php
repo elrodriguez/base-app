@@ -31,11 +31,11 @@
                            <div class="title_sections">
                               <div class="before_title">
                                  <span class="icon-briefcase icon"></span>
-                                 {{ $data[0]->item->content }}
+                                 {{ $titles[0]->item->content }}
                               </div>
-                              <div class="title"> {{ $data[1]->item->content }}</div>
+                              <div class="title"> {{ $titles[1]->item->content }}</div>
                               <p class="description_text">
-                                 {{ $data[2]->item->content }}
+                                 {{ $titles[2]->item->content }}
                               </p>
                            </div>
                            <div class="pd_bottom_20"></div>
@@ -49,7 +49,8 @@
             <div class="service_all_styles">
                <div class="container">
                   <div class="row">
-                    @foreach ($data as $k => $group)
+
+                    @foreach ($data as $k => $group)   
                                 <div class="col-md-4">
                                     <div class="service_box  type_one clearfix">
                                     <div class="image_box">
@@ -65,7 +66,7 @@
                                         <h2 class="entry-title">
                                             <a href="">{{ $group->item->items[1]->content }}</a>
                                         </h2>
-                                        <p>{{ $group->item->items[3]->content }}</p>
+                                        <p>{{ $group->item->items[2]->content }}</p>
                                             <a href="#" target="_blank" rel="nofollow" class="theme-btn one"> Leer Más </a>
                                     </div>
                                     </div>
