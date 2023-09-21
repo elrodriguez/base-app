@@ -1,7 +1,5 @@
 <div>
-    @php
-        dd($data);
-    @endphp
+
 <!--service-->
 <section id="service" class="service-section bg_op_1 position-relative"
    style="background: url({{ asset('themes/kentha/assets/images/home-13-service-bg.jpg')}});"> 
@@ -33,11 +31,11 @@
                            <div class="title_sections">
                               <div class="before_title">
                                  <span class="icon-briefcase icon"></span>
-                                 {{ $data[0]->item->content }}
+                                 dato1
                               </div>
-                              <div class="title"> {{ $data[1]->item->content }}</div>
+                              <div class="title"> tetolo</div>
                               <p class="description_text">
-                                 {{ $data[2]->item->content }}
+                                 descripcoibn3
                               </p>
                            </div>
                            <div class="pd_bottom_20"></div>
@@ -55,7 +53,7 @@
                                 <div class="col-md-4">
                                     <div class="service_box  type_one clearfix">
                                     <div class="image_box">
-                                        <img src="{{ $group->item->items[0]->content }}" class="img-fluid" alt="img" />
+                                        <img src="rul gruop" class="img-fluid" alt="img" />
                                         <div class="overlay"></div>
                                     </div>
                                     <div class="content_box">
@@ -65,9 +63,9 @@
                                             </div>
                                         </div>
                                         <h2 class="entry-title">
-                                            <a href="">{{ $group->item->items[1]->content }}</a>
+                                            <a href="">entry tilr</a>
                                         </h2>
-                                        <p>{{ $group->item->items[3]->content }}</p>
+                                        <p>parrafito</p>
                                             <a href="#" target="_blank" rel="nofollow" class="theme-btn one"> Leer Más </a>
                                     </div>
                                     </div>
