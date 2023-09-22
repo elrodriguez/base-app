@@ -42,32 +42,32 @@
 
                             <form class="contact-form" method="post" action="sendemail.php">
                                 <p>
-                                    <label> Your name<br />
+                                    <label> Nombre Completo<br />
                                         <input type="text" name="name" value="" size="40"
-                                            aria-required="true" aria-invalid="false" placeholder="Enter Your Name" />
+                                            aria-required="true" aria-invalid="false" placeholder="Nombre Completo" />
                                         <br />
                                         <i class="fa fa-user"></i><br />
                                     </label>
                                 </p>
-                                <p><label> Your email<br />
+                                <p>
+                                    <label> Subject<br />
+                                        <input type="text" name="phone" value="" size="40"
+                                            aria-required="true" aria-invalid="false" placeholder="Teléfono" />
+                                        <br />
+                                        <i class="fa fa-folder"></i><br />
+                                    </label>
+                                </p>
+                                <p><label> E-mail<br />
                                         <input type="email" name="email" value="" size="40"
-                                            aria-required="true" aria-invalid="false" placeholder="Enter Your Email" />
+                                            aria-required="true" aria-invalid="false" placeholder="E-mail" />
                                         <br />
                                         <i class="fa fa-envelope"></i><br />
                                     </label>
                                 </p>
                                 <p>
-                                    <label> Subject<br />
-                                        <input type="text" name="subject" value="" size="40"
-                                            aria-required="true" aria-invalid="false" placeholder="Enter Your Subject" />
-                                        <br />
-                                        <i class="fa fa-folder"></i><br />
-                                    </label>
-                                </p>
-                                <p>
-                                    <label> Your message (optional)<br />
+                                    <label> Tu Mensaje)<br />
                                         <textarea name="message" cols="40" rows="10" class="wpcf7-form-control wpcf7-textarea" aria-invalid="false"
-                                            placeholder="Enter Your Message"></textarea>
+                                            placeholder="Tu Mensaje"></textarea>
                                         <br />
                                         <i class="fa fa-comments"></i><br />
                                     </label>
@@ -85,51 +85,50 @@
                                     class="Logo_Kentha">
                             </div>
                             <div class="text">
-                                <p> The great explorer of the truth, the master-builder of human happiness no one
-                                    rejects
-                                    dislikes avoids pleasure itself because it is pleasure but because know who do not
-                                    those
-                                    how to pursue pleasures rationally encounter consequences that are extremely painful
-                                    desires to obtain.</p>
-                                <a href="#">Read More</a>
+                                <p> {{ $data[6]->item->content }}
+                                </p>
+                                <a href="nosotros">Sobre Nosotros</a>
                             </div>
-                            <div class="post_contet_modal">
-                                <h2> Latest News</h2>
-                                <div class="post_enable">
-                                    <div class="modal_post_grid">
-                                        <a href="blog-single.html">
-                                            <img width="852" height="812" src="assets/images/blog/blog-image-9.jpg"
-                                                class="main_img wp-post-image" alt="img" />
-                                        </a>
-                                    </div>
-                                    <div class="modal_post_grid">
-                                        <a href="blog-single.html">
-                                            <img width="852" height="812" src="assets/images/blog/blog-image-8.jpg"
-                                                class="main_img wp-post-image" alt="img" />
-                                        </a>
-                                    </div>
-                                    <div class="modal_post_grid">
-                                        <a href="blog-single.html">
-                                            <img width="852" height="812" src="assets/images/blog/blog-image-7.jpg"
-                                                class="main_img wp-post-image" alt="img" />
-                                        </a>
-                                    </div>
-                                    <div class="modal_post_grid">
-                                        <a href="blog-single.html">
-                                            <img width="852" height="812" src="assets/images/blog/blog-image-6.jpg"
-                                                class="main_img wp-post-image" alt="img" />
-                                        </a>
-                                    </div>
-                                    <div class="modal_post_grid">
-                                        <a href="blog-single.html">
-                                            <img width="852" height="812" src="assets/images/blog/blog-image-5.jpg"
-                                                class="main_img wp-post-image" alt="img" />
-                                        </a>
-                                    </div>
-                                </div>
+
+
+                            <div class="social_media_v_one style_two">
+                              <ul>
+                                <li>
+                                  <a href="{{ $redes_sociales[7]->item->content }}">
+                                    <span class="fa fa-facebook"></span>
+                                    <small>facebook</small>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="{{ $redes_sociales[8]->item->content }}">
+                                    <span class="fa fa-instagram"></span>
+                                    <small>instagram</small>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="{{ $redes_sociales[9]->item->content }}">
+                                    <span class="fa fa-twitter"></span>
+                                    <small>twitter</small>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="{{ $redes_sociales[10]->item->content }}">
+                                    <span class="fa fa-linkedin"></span>
+                                    <small>Linkedin</small>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="{{ $redes_sociales[11]->item->content }}">
+                                    <span class="fa fa-youtube-play"></span>
+                                    <small>Youtube</small>
+                                  </a>
+                                </li>
+                              </ul>
                             </div>
+                            
+                            <div class="pd_bottom_40"></div>
                             <div class="copright">
-                                © 2023 Creote. All Rights Reserved.
+                                © 2023 Aracode Perú. Todos los derechos reservados.
                             </div>
                         </div>
                     </div>
