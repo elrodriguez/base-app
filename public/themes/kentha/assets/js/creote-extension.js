@@ -205,7 +205,7 @@ $(document).ready(function() {
     console.log(CurrentUrlEnd);
     $(".navbar_nav li a").each(function() {
         var ThisUrl = $(this).attr('href');
-        var ThisUrlEnd = ThisUrl.split('/').filter(Boolean).pop();
+        var ThisUrlEnd = this.Url.split('/').filter(Boolean).pop();
   
         if (ThisUrlEnd == CurrentUrlEnd) {
             $(this).closest('.navbar_nav li').addClass('active');
