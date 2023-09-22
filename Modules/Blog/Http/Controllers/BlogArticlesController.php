@@ -199,7 +199,7 @@ class BlogArticlesController extends Controller
 
 
         $blogArticle->title = $request->get('title');
-        $blogArticle->content_text = htmlentities($contentWithAbsoluteImagePaths, ENT_QUOTES, "UTF-8");
+        $blogArticle->content_text = htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8");
         $blogArticle->url = Str::slug($request->get('title'));
         $blogArticle->short_description = $request->get('description');
         $blogArticle->status = $request->get('status');

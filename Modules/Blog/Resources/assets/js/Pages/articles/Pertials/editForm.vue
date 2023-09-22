@@ -153,7 +153,6 @@
                         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                         images_upload_handler: uploadImage,
                         language: 'es',
-                        relative_urls: false,
                     }"
                     :images_upload_url="route('blog_article_uploa_image_tiny')"
 
