@@ -63,7 +63,7 @@
                                                 <div class="content_inner">
                                                     <p class="post-date">
                                                         <span class="icon-calendar"></span>
-                                                        {{ formatShortMonth($artlatest_articleicle->created_at) }}
+                                                        {{ formatShortMonth($latest_article->created_at) }}
                                                     </p>
                                                     <h3>
                                                         <a href="blog-single.html">

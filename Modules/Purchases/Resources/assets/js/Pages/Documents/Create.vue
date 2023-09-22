@@ -1,6 +1,6 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import CreateForm from './Pertials/createForm.vue';
+    import CreateForm from './Pertials/CreateForm.vue';
     import { useForm, router, Link } from '@inertiajs/vue3';
 
 </script>
