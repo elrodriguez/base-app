@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
-use Modules\CMS\Entities\CmsSubscriber; 
+use Modules\CMS\Entities\CmsSubscriber;
 use Inertia\Inertia;
 
 class CmsSubscriberController extends Controller
@@ -61,7 +61,10 @@ class CmsSubscriberController extends Controller
             'full_name'     => $request->get('full_name') ?? null,
             'email'         => $request->get('email'),
             'phone'         => $request->get('phone') ?? null,
-            'client_ip'     => $request->ip()
+            'client_ip'     => $request->ip(),
+            'read'          => 0,
+            'subject'       => $request->get('subject') ?? null,
+            'message'       => $request->get('message') ?? null,
         ]);
 
         return response()->json([
@@ -111,13 +114,14 @@ class CmsSubscriberController extends Controller
         //
     }
 
-    public function list_subscribers(){
+    public function list_subscribers()
+    {
         $subscribers = (new CmsSubscriber())->newQuery();
         $subscribers = $subscribers->paginate(10)->onEachSide(2)->appends(request()->query());
         if (request()->has('search')) {
             $subscribers->where('description', 'Like', '%' . request()->input('search') . '%');
         }
-        
+
         return Inertia::render('CMS::Subscribers/List', [
             'subscribers' => $subscribers,
             'filters' => request()->all('search')
