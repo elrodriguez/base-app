@@ -1,5 +1,6 @@
 <div>
     <!---testimonial-->
+
 <section class="testimonial-section">
     <!--===============spacing==============-->
     <div class="pd_top_50"></div>
@@ -33,14 +34,14 @@
                     <div class="testimonial_inner">
                     <div class="description">
                         <p>
-                        {{ $group->item->items[1]->content }}
+                        {{ $group->item->items[0]->content }}
                         </p>
                     </div>
                     <div class="lower_content clearfix">
                         <div class="image_box">
                         <img
                             decoding="async"
-                            src="{{ $group->item->items[0]->content }}"
+                            src="{{ $group->item->items[1]->content }}"
                             alt="image"
                         />
                         </div>
