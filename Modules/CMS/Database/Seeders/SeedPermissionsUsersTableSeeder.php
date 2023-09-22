@@ -32,6 +32,11 @@ class SeedPermissionsUsersTableSeeder extends Seeder
         array_push($permissions, Permission::create(['name' => 'cms_pagina_seccion_items']));
         array_push($permissions, Permission::create(['name' => 'cms_pagina_seccion_items_delete']));
         array_push($permissions, Permission::create(['name' => 'cms_seccion']));
+        array_push($permissions, Permission::create(['name' => 'cms_seccion_editar']));
+        array_push($permissions, Permission::create(['name' => 'cms_seccion_items']));
+        array_push($permissions, Permission::create(['name' => 'cms_seccion_grupos']));
+        array_push($permissions, Permission::create(['name' => 'cms_seccion_nuevo']));
+        array_push($permissions, Permission::create(['name' => 'cms_seccion_eliminar']));
         array_push($permissions, Permission::create(['name' => 'cms_editor']));
         array_push($permissions, Permission::create(['name' => 'cms_items']));
 
