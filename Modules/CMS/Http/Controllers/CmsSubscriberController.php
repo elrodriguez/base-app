@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Validator;
 use Modules\CMS\Entities\CmsSubscriber;
 
 class CmsSubscriberController extends Controller
@@ -36,8 +37,9 @@ class CmsSubscriberController extends Controller
      */
     public function apiStore(Request $request)
     {
-        $this->validate(
-            $request,
+
+        $validator = Validator::make(
+            $request->all(),
             [
                 'email' => 'required|email|unique:cms_subscribers,email|max:255',
             ],
@@ -49,6 +51,11 @@ class CmsSubscriberController extends Controller
             ]
         );
 
+        // Verificar si las validaciones fallaron
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         CmsSubscriber::create([
             'full_name'     => $request->get('full_name') ?? null,
             'email'         => $request->get('email'),
@@ -57,7 +64,8 @@ class CmsSubscriberController extends Controller
         ]);
 
         return response()->json([
-            'success' => true
+            'success' => true,
+            'message' => 'Datos registrados con exito'
         ]);
     }
 

@@ -179,4 +179,33 @@ class BlogController extends Controller
             'articles'          => $articles
         ]);
     }
+
+    public function category($id)
+    {
+        $categories = BlogCategory::where('status', true)->get();
+
+        $articles = BlogArticle::with('category')->with('author')
+            ->where('status', true)
+            ->where('category_id', $id)
+            ->paginate(10);
+
+        $latest_articles = BlogArticle::select(
+            'title',
+            'imagen',
+            'url',
+            'created_at'
+        )
+            ->where('status', true)
+            ->latest('created_at') // Ordena por la columna created_at en orden descendente
+            ->take(4) // Limita el resultado a 4 registros
+            ->get();
+
+
+        return view('blog::kentha/category', [
+            'category'          => BlogCategory::find($id),
+            'categories'        => $categories,
+            'articles'          => $articles,
+            'latest_articles'   => $latest_articles
+        ]);
+    }
 }

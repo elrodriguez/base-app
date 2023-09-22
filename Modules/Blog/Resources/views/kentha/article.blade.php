@@ -44,7 +44,8 @@
                                         <ul class="wp-block-categories">
                                             @foreach ($categories as $category)
                                                 <li>
-                                                    <a href="#">{{ $category->description }}</a>
+                                                    <a
+                                                        href="{{ route('blog_category', $category->id) }}">{{ $category->description }}</a>
                                                 </li>
                                             @endforeach
                                         </ul>
@@ -82,7 +83,7 @@
                     </div>
                 </div>
                 <!---newsteller--->
-                {{-- <app-newsteller></app-newsteller> --}}
+                <x-news-teller-area></x-news-teller-area>
                 <!---newsteller end--->
             </div>
         @endif

@@ -69,6 +69,7 @@
     <!-- main-js -->
     <script type='text/javascript' src='{{ asset('themes/kentha/assets/js/creote-extension.js') }}'></script>
     <!---========================== javascript ==========================-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

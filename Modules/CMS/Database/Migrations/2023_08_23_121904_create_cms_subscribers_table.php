@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('cms_subscribers', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
+            $table->string('full_name')->nullable();
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('client_ip')->nullable();

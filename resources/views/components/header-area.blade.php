@@ -67,7 +67,7 @@
                                 <div class="navigation_menu">
                                     <ul id="myNavbar" class="navbar_nav">
                                         <li class="active menu-item menu-item-has-children dropdown nav-item">
-                                            <a routerLink="inicio" class="dropdown-toggle nav-link">
+                                            <a href="{{ route('cms_principal') }}" class="dropdown-toggle nav-link">
                                                 <span>Home</span>
                                             </a>
                                         </li>

@@ -17,15 +17,16 @@
                         <div class="col-md-12">
                             <div class="banner_title_inner">
                                 <div class="title_page">
-                                    Blog & Noticias
+                                    Categoría / {{ $category->description }}
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="breadcrumbs creote">
                                 <ul class="breadcrumb m-auto">
-                                    <li><a href="inicio">Home</a></li>
-                                    <li class="active">Blog & Noticias</li>
+                                    <li><a href="{{ route('blog_principal') }}">Inicio</a></li>
+                                    <li>Categoría</li>
+                                    <li class="active">{{ $category->description }}</li>
                                 </ul>
                             </div>
                         </div>

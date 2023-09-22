@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/cms', function (Request $request) {
 });
 
 Route::prefix('blog_v1')->group(function () {
-    Route::post('subscriber', [CmsSubscriberController::class, 'apiStore']);
+    Route::post('subscriber', [CmsSubscriberController::class, 'apiStore'])->name('apisubscriber');
     Route::get('page/all_data/{id}', [CMSController::class, 'apiGetPageData']);
     Route::get('section/group/all_data/{id}', [CMSController::class, 'apiGetSectionGroupData']);
 });

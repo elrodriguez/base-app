@@ -97,7 +97,7 @@ class BlogArticlesController extends Controller
 
         BlogArticle::create([
             'title'         => $request->get('title'),
-            'content_text'  => htmlentities($contentWithAbsoluteImagePaths, ENT_QUOTES, "UTF-8"),
+            'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
             'url'           => Str::slug($request->get('title')),
             'short_description'   => $request->get('description'),
             'status'        => $request->get('status'),
