@@ -208,4 +208,5 @@ class BlogController extends Controller
             'latest_articles'   => $latest_articles
         ]);
     }
+
 }
