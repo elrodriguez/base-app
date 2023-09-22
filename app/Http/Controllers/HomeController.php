@@ -13,4 +13,8 @@ class HomeController extends Controller
     public function contacto(){
         return view('kentha/contacto');
     }
+
+    public function servicios(){
+        return view('kentha/servicios');
+    }
 }
