@@ -245,40 +245,6 @@
                 </section>
                 <!---blog-end--->
 
-                <!---newsteller--->
-                <section class="newsteller style_one bg_dark_1">
-                    <!--===============spacing==============-->
-                    <div class="pd_top_40"></div>
-                    <!--===============spacing==============-->
-                    <div class="auto-container">
-                       <div class="row align-items-center">
-                          <div class="col-lg-6 col-md-12">
-                             <div class="content">
-                                <h2>Únete a nuestro boletín</h2>
-                                <p>Para recibir nuestras noticias y actualizaciones directamente en su bandeja de entrada. </p>
-                             </div>
-                          </div>
-                          <div class="col-lg-6 col-md-12">
-                             <div class="item_scubscribe">
-                                <div class="input_group">
-                                   <form class="mc4wp-form" method="post" data-name="Subscibe">
-                                      <div class="mc4wp-form-fields">
-                                         <input type="email" name="EMAIL" placeholder="Tu correo electrónico" required="">
-                                         <input type="submit" value="Sign up">
-                                      </div>
-                                   </form>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    <!--===============spacing==============-->
-                    <div class="pd_bottom_40"></div>
-                    <!--===============spacing==============-->
-                 </section>
-                 
-                <!---newsteller-end--->
-
             </div>
             <!--===============PAGE CONTENT==============-->
             <!--===============PAGE CONTENT==============-->
