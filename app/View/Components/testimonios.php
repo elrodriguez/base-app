@@ -12,9 +12,11 @@ class testimonios extends Component
     /**
      * Create a new component instance.
      */
+    public $data;
+    public $titles;
     public function __construct()
     {
-        $this->data = CmsSectionItem::with('item.items')->where('section_id', 15)
+        $this->data = CmsSectionItem::with('item.items')->where('section_id', 18)
         ->orderBy('position')   //hay que revisar el ORDEN aqui es medio raro funciona por ahora 21/09/2023
         ->get();
 
