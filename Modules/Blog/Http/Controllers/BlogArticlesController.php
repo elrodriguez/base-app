@@ -195,7 +195,7 @@ class BlogArticlesController extends Controller
         $baseUrl = env('APP_URL'); // Ruta base de tu aplicación
         $content = $request->get('content_text');
         // Reemplazar las rutas de imágenes en el contenido
-        $contentWithAbsoluteImagePaths = preg_replace('/src="\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '$1"', $content);
+        $contentWithAbsoluteImagePaths = preg_replace('/src="\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '/storage/articles/$1"', $content);
 
 
         $blogArticle->title = $request->get('title');
