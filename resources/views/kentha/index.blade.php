@@ -34,7 +34,7 @@
                 <!---projectos end-->
 
                 <!---testimonial-->
-                <x-testimonios />
+                <x-testimonios-area />
                 <!--testimonial end-->
 
                 <!---contact-->
