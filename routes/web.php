@@ -26,7 +26,8 @@ Route::get('/stories/article/{url}', [BlogController::class, 'storiesArticle'])-
 Route::get('/stories/policies', [BlogController::class, 'storiesPolicies'])->name('blog_stories_policies');
 Route::get('/stories/contact-us', [BlogController::class, 'storiesContactUs'])->name('blog_stories_contact_us');
 
-Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('home_nosotros');
+Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('nosotros');
+Route::get('/contacto', [HomeController::class, 'contacto'])->name('contacto');
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
