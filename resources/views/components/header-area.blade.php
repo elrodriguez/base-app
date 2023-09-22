@@ -7,7 +7,7 @@
                         <div class="top_left">
                             <ul class="top-links clearfix">
                                 <li>
-                                    <a href="http://demo.delventas.co.uk/login" target="_blank" class="get_a_quote"> <i
+                                    <a href="{{ route('login') }}" target="_blank" class="get_a_quote"> <i
                                             class="fa fa-sign-in" aria-hidden="true"></i></a>
                                 </li>
                                 <li>
