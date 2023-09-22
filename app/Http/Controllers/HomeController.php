@@ -17,4 +17,8 @@ class HomeController extends Controller
     public function servicios(){
         return view('kentha/servicios');
     }
+
+    public function proyectos(){
+        return view('kentha/proyectos');
+    }
 }

@@ -82,7 +82,7 @@
                                             </a>
                                         </li>
                                         <li class="menu-item menu-item-has-children dropdown nav-item">
-                                            <a routerLink="proyectos" class="dropdown-toggle nav-link">
+                                            <a href="proyectos" class="dropdown-toggle nav-link">
                                                 <span>Proyectos</span>
                                             </a>
                                         </li>
@@ -100,19 +100,6 @@
                                 </div>
                             </div>
                             <ul class="navbar_right navbar_nav">
-                                <!--
-                                          <li>
-                                             <button type="button" class="search-toggler"><i class="icon-search"></i></button>
-                                          </li>
-                                          <li>
-                                             <div class="mini_cart_togglers header_side_cart">
-                                                <div class="mini-cart-count">
-                                                   0 </div>
-                                                <i class="icon-shopping-bag1"></i>
-                                             </div>
-                                          </li>
-                                          -->
-
                                 <li>
                                     <button type="button" class="contact-toggler">
                                         <i class="icon-menu1"></i>
