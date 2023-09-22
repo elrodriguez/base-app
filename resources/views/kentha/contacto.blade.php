@@ -34,3 +34,6 @@
 <x-contacto-area-pagina />
 
 <x-footer-area />
+
+
+<x-modal-area />

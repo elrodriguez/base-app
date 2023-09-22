@@ -36,3 +36,6 @@
 <x-mision-area />
 
 <x-footer-area />
+
+
+<x-modal-area />

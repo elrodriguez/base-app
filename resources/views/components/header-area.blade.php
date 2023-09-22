@@ -72,12 +72,12 @@
                                             </a>
                                         </li>
                                         <li class="menu-item menu-item-has-children dropdown nav-item">
-                                            <a routerLink="nosotros" class="dropdown-toggle nav-link">
+                                            <a href="nosotros" class="dropdown-toggle nav-link">
                                                 <span>Nosotros</span>
                                             </a>
                                         </li>
                                         <li class="menu-item menu-item-has-children dropdown nav-item">
-                                            <a routerLink="servicios" class="dropdown-toggle nav-link">
+                                            <a href="servicios" class="dropdown-toggle nav-link">
                                                 <span>Servicios</span>
                                             </a>
                                         </li>
@@ -92,7 +92,7 @@
                                             </a>
                                         </li>
                                         <li class="menu-item menu-item-has-children dropdown nav-item">
-                                            <a routerLink="contacto" class="dropdown-toggle nav-link">
+                                            <a href="contacto" class="dropdown-toggle nav-link">
                                                 <span>Contacto</span>
                                             </a>
                                         </li>
