@@ -27,7 +27,7 @@
               class="owl-carousel owl_nav_block owl_dots_none owl_type_two theme_carousel owl-theme"
               data-options='{"loop": true, "margin": 0, "autoheight":true, "lazyload":true, "nav": true, "dots": true, "autoplay": true, "autoplayTimeout": 7000, "smartSpeed": 1800, "responsive":{ "0" :{ "items": "1" }, "768" :{ "items" : "3" } , "1000":{ "items" : "2" }}}'
             >
-
+{{-- 
             @foreach ($data as $group)
                 <div class="testimonial_box type_one">
                     <span class="icon-quote"></span>
@@ -52,7 +52,7 @@
                     </div>
                     </div>
                 </div>    
-            @endforeach
+            @endforeach --}}
 
             </div>
           </div>
