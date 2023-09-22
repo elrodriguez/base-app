@@ -9,4 +9,8 @@ class HomeController extends Controller
     public function nosotros(){
         return view('kentha/nosotros');
     }
+    
+    public function contacto(){
+        return view('kentha/contacto');
+    }
 }

@@ -7,18 +7,16 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Modules\CMS\Entities\CmsSectionItem;
 
-class client extends Component
+class ContactoAreaPagina extends Component
 {
     /**
      * Create a new component instance.
      */
-    
-     public $data;
-     
+    public $data;
     public function __construct()
     {
         $this->data = CmsSectionItem::with('item.items')
-                        ->where('section_id', 5)
+                        ->where('section_id', 14)
                         ->orderBy('position')
                         ->get();
     }
@@ -28,7 +26,7 @@ class client extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.client', [
+        return view('components.contacto-area-pagina', [
             'data' => $this->data
         ]);
     }
