@@ -1,8 +1,6 @@
 <div>
     <!---testimonial-->
-@php
-    dd($titles, $data);
-@endphp
+
 <section class="testimonial-section">
     <!--===============spacing==============-->
     <div class="pd_top_50"></div>
