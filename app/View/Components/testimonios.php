@@ -26,7 +26,6 @@ class Testimonios extends Component
 
     public function render(): View|Closure|string
     {
-        dd($this->titles);
         return view('components.testimonios', [
             'data' => $this->data,
             'titles' => $this->titles

@@ -12,10 +12,10 @@
             <div class="title_sections">
               <div class="before_title">
                 <span class="icon-briefcase icon"></span>
-               
+                {{ $titles[0]->item->content }}
               </div>
-              <div class="title"></div>
-              <p></p>
+              <div class="title">{{ $titles[1]->item->content }}</div>
+              <p>{{ $titles[2]->item->content }}</p>
             </div>
           </div>
         </div>
@@ -27,8 +27,8 @@
               class="owl-carousel owl_nav_block owl_dots_none owl_type_two theme_carousel owl-theme"
               data-options='{"loop": true, "margin": 0, "autoheight":true, "lazyload":true, "nav": true, "dots": true, "autoplay": true, "autoplayTimeout": 7000, "smartSpeed": 1800, "responsive":{ "0" :{ "items": "1" }, "768" :{ "items" : "3" } , "1000":{ "items" : "2" }}}'
             >
-{{-- 
-            @foreach ($data as $group)
+
+            @foreach ($data as $k => $group)
                 <div class="testimonial_box type_one">
                     <span class="icon-quote"></span>
                     <div class="testimonial_inner">
@@ -52,7 +52,7 @@
                     </div>
                     </div>
                 </div>    
-            @endforeach --}}
+            @endforeach
 
             </div>
           </div>
