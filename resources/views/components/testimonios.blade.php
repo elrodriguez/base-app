@@ -12,10 +12,10 @@
             <div class="title_sections">
               <div class="before_title">
                 <span class="icon-briefcase icon"></span>
-                {{ $titles[0]->item->content }}
+               
               </div>
-              <div class="title">{{ $titles[1]->item->content }}</div>
-              <p>{{ $titles[2]->item->content }}</p>
+              <div class="title"></div>
+              <p></p>
             </div>
           </div>
         </div>
