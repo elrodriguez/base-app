@@ -55,8 +55,7 @@
                             <div class="col-lg-8 m-auto">
                                 <div class="title_all_box style_six text-center  dark_color">
                                     <div class="title_sections">
-                                        <div class="before_title"> <span class="icon-briefcase icon"></span> NEWS &
-                                            UPDATES</div>
+                                        <div class="before_title"> <span class="icon-briefcase icon"></span> Blog & Noticias</div>
                                         <h2>Featured News and Updates</h2>
                                         <p>We work with your company to identify position requirements, implement
                                             recruitment
@@ -79,7 +78,7 @@
                                     <div class="news_box type_one clearfix">
                                         <div class="news_inner">
                                             <div class="image_box">
-                                                <img src="assets/images/blog/blog-image-9.jpg" class="img-fluid"
+                                                <img src="themes/kentha/assets/images/blog/blog-image-7.jpg" class="img-fluid"
                                                     alt="img">
                                                 <div class="overlay"></div>
                                                 <div class="post-category">
@@ -129,7 +128,7 @@
                                     <div class="news_box type_one clearfix">
                                         <div class="news_inner">
                                             <div class="image_box">
-                                                <img src="assets/images/blog/blog-image-7.jpg" class="img-fluid"
+                                                <img src="themes/kentha/assets/images/blog/blog-image-7.jpg" class="img-fluid"
                                                     alt="img">
                                                 <div class="overlay"></div>
                                                 <div class="post-category">
@@ -184,48 +183,53 @@
                                     <div class="news_box type_one clearfix">
                                         <div class="news_inner">
                                             <div class="image_box">
-                                                <img width="750" height="420"
-                                                    src="assets/images/blog/blog-image-6.jpg" class="img-fluid"
-                                                    alt="" decoding="async" loading="lazy"
-                                                    srcset="assets/images/blog/blog-image-6.jpg 750w, assets/images/blog/blog-image-6-600x336.jpg 600w, assets/images/blog/blog-image-6-300x168.jpg 300w"
-                                                    sizes="(max-width: 750px) 100vw, 750px">
+                                                <img src="themes/kentha/assets/images/blog/blog-image-7.jpg" class="img-fluid"
+                                                    alt="img">
                                                 <div class="overlay"></div>
                                                 <div class="post-category">
-                                                    <a href="https://themepanthers.com/wp/creote/v2-new/category/recruiting/"
-                                                        class="categories"><i class="icon-folder"></i>Recruiting</a>
+                                                    <a href="blog-single.html" class="categories">
+                                                        <i class="icon-folder"></i>
+                                                        HR Consulting
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div class="content_box">
                                                 <ul class="post-info clearfix">
-                                                    <li class="authour_name"><i class="far fa-user"></i><a
-                                                            href="">
-                                                            Evan Thomas </a> </li>
-                                                    <li class="date"> <a
-                                                            href="https://themepanthers.com/wp/creote/v2-new/2023/10/08/retaining-good-employees-motivated/"><i
-                                                                class="far  fa-calendar"></i>8 Oct ,
-                                                            2023 </a> </li>
+                                                    <li class="authour_name">
+                                                        <i class="far fa-user"></i>
+                                                        <a href="blog-single.html">
+                                                            Evan Thomas
+                                                        </a>
+                                                    </li>
+                                                    <li class="date">
+                                                        <a href="blog-single.html"><i class="far  fa-calendar"></i>
+                                                            8 Oct , 2023
+                                                        </a>
+                                                    </li>
                                                 </ul>
-                                                <h2 class="entry-title"><a
-                                                        href="https://themepanthers.com/wp/creote/v2-new/2023/10/08/retaining-good-employees-motivated/">Retaining
-                                                        Good Employees & Motivated</a></h2>
+                                                <h2 class="entry-title">
+                                                    <a href="blog-single.html">
+                                                        How to Handle Employee With Works
+                                                    </a>
+                                                </h2>
                                                 <p class="short_desc">How well this mistaken ideas off denouncing
                                                     pleasure & praisings will give you complete.</p>
                                                 <div class="bottom_content clearfix">
                                                     <div class="continure_reading">
-                                                        <a href="https://themepanthers.com/wp/creote/v2-new/2023/10/08/retaining-good-employees-motivated/"
-                                                            class="read_more type_one">
+                                                        <a href="blog-single.html" class="read_more type_one">
                                                             Read More <span class="icon-arrow-right"></span></a>
                                                     </div>
                                                     <div class="comments">
                                                         <i class="icon-text"></i>
                                                         <span class="Comments are Closed">Comments Off<span
-                                                                class="screen-reader-text"> on Retaining Good
-                                                                Employees & Motivated</span></span>
+                                                                class="screen-reader-text"> on How to Handle Employee
+                                                                With Works</span></span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
 
                                 </div><!-- /.col-lg-3 -->
                             </div>
@@ -240,6 +244,40 @@
                     <!--===============spacing==============-->
                 </section>
                 <!---blog-end--->
+
+                <!---newsteller--->
+                <section class="newsteller style_one bg_dark_1">
+                    <!--===============spacing==============-->
+                    <div class="pd_top_40"></div>
+                    <!--===============spacing==============-->
+                    <div class="auto-container">
+                       <div class="row align-items-center">
+                          <div class="col-lg-6 col-md-12">
+                             <div class="content">
+                                <h2>Únete a nuestro boletín</h2>
+                                <p>Para recibir nuestras noticias y actualizaciones directamente en su bandeja de entrada. </p>
+                             </div>
+                          </div>
+                          <div class="col-lg-6 col-md-12">
+                             <div class="item_scubscribe">
+                                <div class="input_group">
+                                   <form class="mc4wp-form" method="post" data-name="Subscibe">
+                                      <div class="mc4wp-form-fields">
+                                         <input type="email" name="EMAIL" placeholder="Tu correo electrónico" required="">
+                                         <input type="submit" value="Sign up">
+                                      </div>
+                                   </form>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    <!--===============spacing==============-->
+                    <div class="pd_bottom_40"></div>
+                    <!--===============spacing==============-->
+                 </section>
+                 
+                <!---newsteller-end--->
 
             </div>
             <!--===============PAGE CONTENT==============-->
