@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Validator;
-use Modules\CMS\Entities\CmsSubscriber;
+use Modules\CMS\Entities\CmsSubscriber; 
+use Inertia\Inertia;
 
 class CmsSubscriberController extends Controller
 {
@@ -108,5 +109,18 @@ class CmsSubscriberController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function list_subscribers(){
+        $subscribers = (new CmsSubscriber())->newQuery();
+        $subscribers = $subscribers->paginate(10)->onEachSide(2)->appends(request()->query());
+        if (request()->has('search')) {
+            $subscribers->where('description', 'Like', '%' . request()->input('search') . '%');
+        }
+        
+        return Inertia::render('CMS::Subscribers/List', [
+            'subscribers' => $subscribers,
+            'filters' => request()->all('search')
+        ]);
     }
 }

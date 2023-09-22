@@ -54,4 +54,6 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::get('items/edit/{id}', [CmsItemController::class, 'edit'])->name('cms_items_edit');
     Route::post('items/update', [CmsItemController::class, 'update'])->name('cms_items_update');
     Route::delete('items/destroy/{id}', [CmsItemController::class, 'destroy'])->name('cms_items_destroy');
+    
+    Route::get('blog-subscriber', 'CmsSubscriberController@list_subscribers')->name('blog_subscriber');
 });
