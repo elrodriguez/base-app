@@ -26,7 +26,7 @@
                                                 <a href="services" class="theme-btn one">Servicios</a>
                                             </li>
                                             <li class="theme_btn_all ">
-                                                <a href="proyects" class="theme-btn one color_white">Proyectos</a>
+                                                <a href="proyectos" class="theme-btn one color_white">Proyectos</a>
                                             </li>
                                         </ul>
                                         <br>
@@ -65,7 +65,7 @@
                                   <a href="services" class="theme-btn one">Servicios</a>
                                </li>
                                <li class="theme_btn_all ">
-                                  <a href="proyects" class="theme-btn one color_white">Proyectos</a>
+                                  <a href="proyectos" class="theme-btn one color_white">Proyectos</a>
                                </li>
                             </ul>
                             <br>
@@ -99,7 +99,7 @@
                                   <a href="services" class="theme-btn one">Servicios</a>
                                </li>
                                <li class="theme_btn_all ">
-                                  <a href="proyects" class="theme-btn one color_white">Proyectos</a>
+                                  <a href="proyectos" class="theme-btn one color_white">Proyectos</a>
                                </li>
                             </ul>
                             <br>
@@ -133,7 +133,7 @@
                                   <a href="services" class="theme-btn one">Servicios</a>
                                </li>
                                <li class="theme_btn_all ">
-                                  <a href="proyects" class="theme-btn one color_white">Proyectos</a>
+                                  <a href="proyectos" class="theme-btn one color_white">Proyectos</a>
                                </li>
                             </ul>
                             <br>
@@ -170,7 +170,7 @@
                                  <a href="services" class="theme-btn one">Servicios</a>
                               </li>
                               <li class="theme_btn_all ">
-                                 <a href="proyects" class="theme-btn one color_white">Proyectos</a>
+                                 <a href="proyectos" class="theme-btn one color_white">Proyectos</a>
                               </li>
                            </ul>
                            <br>
@@ -204,7 +204,7 @@
                                  <a href="services" class="theme-btn one">Servicios</a>
                               </li>
                               <li class="theme_btn_all ">
-                                 <a href="proyects" class="theme-btn one color_white">Proyectos</a>
+                                 <a href="proyectos" class="theme-btn one color_white">Proyectos</a>
                               </li>
                            </ul>
                            <br>
@@ -238,7 +238,7 @@
                                  <a href="services" class="theme-btn one">Servicios</a>
                               </li>
                               <li class="theme_btn_all ">
-                                 <a href="proyects" class="theme-btn one color_white">Proyectos</a>
+                                 <a href="proyectos" class="theme-btn one color_white">Proyectos</a>
                               </li>
                            </ul>
                            <br>

@@ -26,7 +26,7 @@ class TestimoniosArea extends Component
 
     public function render(): View|Closure|string
     {
-        return view('components.testimonios', [
+        return view('components.testimonios-area', [
             'data' => $this->data,
             'titles' => $this->titles
         ]);
