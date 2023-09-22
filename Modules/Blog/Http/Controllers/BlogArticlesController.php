@@ -93,11 +93,11 @@ class BlogArticlesController extends Controller
         $baseUrl = env('APP_URL'); // Ruta base de tu aplicación
         $content = $request->get('content_text');
         // Reemplazar las rutas de imágenes en el contenido
-        $contentWithAbsoluteImagePaths = preg_replace('/src="([^"]+)"/', 'src="' . $baseUrl . '$1"', $content);
+        $contentWithAbsoluteImagePaths = preg_replace('/src="\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '$1"', $content);
 
         BlogArticle::create([
             'title'         => $request->get('title'),
-            'content_text'  => htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8"),
+            'content_text'  => htmlentities($contentWithAbsoluteImagePaths, ENT_QUOTES, "UTF-8"),
             'url'           => Str::slug($request->get('title')),
             'short_description'   => $request->get('description'),
             'status'        => $request->get('status'),
@@ -195,11 +195,11 @@ class BlogArticlesController extends Controller
         $baseUrl = env('APP_URL'); // Ruta base de tu aplicación
         $content = $request->get('content_text');
         // Reemplazar las rutas de imágenes en el contenido
-        $contentWithAbsoluteImagePaths = preg_replace('/src="([^"]+)"/', 'src="' . $baseUrl . '$1"', $content);
+        $contentWithAbsoluteImagePaths = preg_replace('/src="\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '$1"', $content);
 
 
         $blogArticle->title = $request->get('title');
-        $blogArticle->content_text = htmlentities($request->get('content_text'), ENT_QUOTES, "UTF-8");
+        $blogArticle->content_text = htmlentities($contentWithAbsoluteImagePaths, ENT_QUOTES, "UTF-8");
         $blogArticle->url = Str::slug($request->get('title'));
         $blogArticle->short_description = $request->get('description');
         $blogArticle->status = $request->get('status');
