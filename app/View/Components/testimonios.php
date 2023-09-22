@@ -17,8 +17,8 @@ class testimonios extends Component
     public function __construct()
     {
         $this->data = CmsSectionItem::with('item.items')->where('section_id', 18)
-        ->orderBy('position')   //hay que revisar el ORDEN aqui es medio raro funciona por ahora 21/09/2023
-        ->get();
+                                                                ->orderBy('position')   //hay que revisar el ORDEN aqui es medio raro funciona por ahora 21/09/2023
+                                                                ->get();
 
         $this->titles = $this->data;
         $this->data = $this->data->toArray();
