@@ -49,7 +49,9 @@
                                             <a href="">{{ $group->item->items[1]->content }}</a>
                                         </h2>
                                         <p>{{ $group->item->items[2]->content }}</p>
-                                            <a href="#" target="_blank" rel="nofollow" class="theme-btn one"> Leer Más </a>
+
+                                       <a rel="nofollow" class="theme-btn one"> Leer Más </a>  
+                                       {{-- Modal de boostrap para cargar la descripciópn del servicio {{ $group->item->items[3]->content }} --}}
                                     </div>
                                     </div>
                                 </div>
