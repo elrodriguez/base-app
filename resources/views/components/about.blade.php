@@ -9,11 +9,8 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="image_box_new type_one clearfix">
                         <div class="image_one">
-
                             <img src="{{ $data[0]->item->content }}" class="img-fluid height_570px object-fit-cover"
                                 alt="img" />
-
-
                         </div>
                         <div class="video_box video-inner text-center">
                             <a href="https://youtu.be/RN81h85V6D4" class="lightbox-image">
@@ -55,6 +52,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <!--===============spacing==============-->

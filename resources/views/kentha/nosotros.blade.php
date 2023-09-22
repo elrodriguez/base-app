@@ -20,7 +20,7 @@
              <div class="col-lg-12">
                 <div class="breadcrumbs creote">
                    <ul class="breadcrumb m-auto">
-                      <li><a href="{{ route('cms_principal') }}">Home</a></li>
+                      <li><a href="">Home</a></li>
                       <li class="active">Nosotros</li>
                    </ul>
                 </div>
