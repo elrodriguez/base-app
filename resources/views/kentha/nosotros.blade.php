@@ -1,5 +1,6 @@
 @extends('layouts.kentha')
 <x-header-area />
+
 <div class="page_header_default style_one ">
     <div class="parallax_cover">
        <div class="simpleParallax">
@@ -29,5 +30,9 @@
        </div>
     </div>
 </div>
+
 <x-about />
+
+<x-mision-area />
+
 <x-footer-area />
