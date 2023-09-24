@@ -266,7 +266,7 @@
                             container: 'sweet-modal-zindex' // Clase personalizada para controlar el z-index
                         }
                     });
-                    document.getElementById('email').value = null;
+                    formulario.reset();
                 } else if (xhr.status === 422) {
                     var errorResponse = JSON.parse(xhr.responseText);
                     // Maneja los errores de validación aquí, por ejemplo, mostrando los mensajes de error en algún lugar de tu página.
