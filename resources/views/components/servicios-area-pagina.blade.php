@@ -15,7 +15,7 @@
                       </div>
                       <h2 class="title_service"><a href="#" rel="bookmark">{{ $group->item->items[1]->content }}</a></h2>
                       <p class="short_desc">{{ $group->item->items[2]->content }}</p>
-                      <a class="read_more" href="#"> Leer Más<i class="icon-right-arrow-long"></i></a>
+                      {{-- <a class="read_more" href="#"> Leer Más<i class="icon-right-arrow-long"></i></a> OCULTO--}}
                    </div>
                 </div>
              </div>

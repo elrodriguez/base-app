@@ -19,6 +19,7 @@
                     <div class="input_group">
                         <form id="subscriberForm" action="{{ route('apisubscriber') }}" class="mc4wp-form"
                             method="post">
+                            @csrf
                             <div class="mc4wp-form-fields">
                                 <input id="email" type="email" name="email" placeholder="Ingresa tu E-mail" />
                                 <input id="submitButton" type="submit" value="Suscribirse" />

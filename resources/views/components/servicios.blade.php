@@ -50,7 +50,7 @@
                                         </h2>
                                         <p>{{ $group->item->items[2]->content }}</p>
 
-                                       <a rel="nofollow" class="theme-btn one"> Leer Más </a>  
+                                       {{-- <a rel="nofollow" class="theme-btn one service-toggler"> Leer Más </a>  OCULTO --}}
                                        {{-- Modal de boostrap para cargar la descripciópn del servicio {{ $group->item->items[3]->content }} --}}
                                     </div>
                                     </div>
@@ -61,8 +61,7 @@
                </div>
             </div>
          </div>
-      </div>
-      
+      </div>   
    </div>
    <!--===============spacing==============-->
    <div class="pd_bottom_90"></div>
@@ -99,5 +98,78 @@
                   </svg>
    </div>
 </section>
+   <!-- MODAL -->
+
+   <div class="modal_popup one modal_popup_service">
+      <div class="modal-popup-inner">
+          <div class="close-modal close-modal-service"><i class="fa fa-times"></i></div>
+          <div class="modal_box">
+              <div class="row">
+                  <div class="col-lg-5 col-md-12 form_inner">
+                      <div class="form_content">
+                          
+
+                      </div>
+                  </div>
+                  <div class="col-lg-7 col-md-12 about_company_inner">
+                      <div class="abt_content">
+                          <div class="logo">
+                              <img src="{{ asset('themes/kentha/assets/images/HVAC_logo.png') }}" alt="img"
+                                  class="Logo_Kentha">
+                          </div>
+                          <div class="text">
+                              <p> AQUI!!!!!!
+                              </p>
+                              <a href="nosotros">Sobre Nosotros</a>
+                          </div>
+
+
+                          <div class="social_media_v_one style_two">
+                              <ul>
+                                  <li>
+                                      <a href="asdasdasd">
+                                          <span class="fa fa-facebook"></span>
+                                          <small>facebook</small>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="asd">
+                                          <span class="fa fa-instagram"></span>
+                                          <small>instagram</small>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="asd">
+                                          <span class="fa fa-twitter"></span>
+                                          <small>twitter</small>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="asd">
+                                          <span class="fa fa-linkedin"></span>
+                                          <small>Linkedin</small>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="asd">
+                                          <span class="fa fa-youtube-play"></span>
+                                          <small>Youtube</small>
+                                      </a>
+                                  </li>
+                              </ul>
+                          </div>
+
+                          <div class="pd_bottom_40"></div>
+                          <div class="copright">
+                              © 2023 Aracode Perú. Todos los derechos reservados.
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+   <!-- END MODAL -->>
 <!--service end-->
 </div>

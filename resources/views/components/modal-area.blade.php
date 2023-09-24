@@ -45,8 +45,8 @@
                 <div class="row">
                     <div class="col-lg-5 col-md-12 form_inner">
                         <div class="form_content">
-                            <form class="contact-form" id="contactForm" method="post"
-                                action="{{ route('apisubscriber') }}">
+                            <form class="contact-form" id="contactForm" method="post">
+                                @csrf
                                 <p>
                                     <label> Nombre Completo<br />
                                         <input type="text" id="full_name" name="full_name" value=""
@@ -163,7 +163,7 @@
             var xhr = new XMLHttpRequest();
 
             // Configurar la solicitud POST al servidor
-            xhr.open('POST', form.action, true);
+            xhr.open('POST', "{{ route('apisubscriber') }}", true);
 
             // Configurar la función de callback para manejar la respuesta
             xhr.onload = function() {
@@ -180,7 +180,7 @@
                             container: 'sweet-modal-zindex' // Clase personalizada para controlar el z-index
                         }
                     });
-                    document.getElementById('email').value = null;
+                    formulario.reset();
                 } else if (xhr.status === 422) {
                     var errorResponse = JSON.parse(xhr.responseText);
                     // Maneja los errores de validación aquí, por ejemplo, mostrando los mensajes de error en algún lugar de tu página.
