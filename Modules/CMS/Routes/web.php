@@ -56,5 +56,6 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::delete('items/destroy/{id}', [CmsItemController::class, 'destroy'])->name('cms_items_destroy');
 
     Route::get('blog-subscriber', 'CmsSubscriberController@list_subscribers')->name('blog_subscriber');
-    Route::post('websubscriber', [CmsSubscriberController::class, 'apiStore'])->name('websubscriber');
 });
+
+Route::post('websubscriber', [CmsSubscriberController::class, 'apiStore'])->name('websubscriber');
