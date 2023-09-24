@@ -46,6 +46,7 @@
                     <div class="col-lg-5 col-md-12 form_inner">
                         <div class="form_content">
                             <form class="contact-form" id="contactForm" method="post">
+                                @csrf
                                 <p>
                                     <label> Nombre Completo<br />
                                         <input type="text" id="full_name" name="full_name" value=""
@@ -162,7 +163,7 @@
             var xhr = new XMLHttpRequest();
 
             // Configurar la solicitud POST al servidor
-            xhr.open('POST', {{ route('websubscriber') }}, true);
+            xhr.open('POST', "{{ route('apisubscriber') }}", true);
 
             // Configurar la función de callback para manejar la respuesta
             xhr.onload = function() {

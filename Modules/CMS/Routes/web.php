@@ -57,5 +57,3 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
 
     Route::get('blog-subscriber', 'CmsSubscriberController@list_subscribers')->name('blog_subscriber');
 });
-
-Route::post('websubscriber', [CmsSubscriberController::class, 'apiStore'])->name('websubscriber');
