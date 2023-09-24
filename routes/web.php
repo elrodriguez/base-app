@@ -27,10 +27,10 @@ Route::get('/stories/article/{url}', [BlogController::class, 'storiesArticle'])-
 Route::get('/stories/policies', [BlogController::class, 'storiesPolicies'])->name('blog_stories_policies');
 Route::get('/stories/contact-us', [BlogController::class, 'storiesContactUs'])->name('blog_stories_contact_us');
 
-Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('nosotros');
-Route::get('/servicios', [HomeController::class, 'servicios'])->name('servicios');
-Route::get('/proyectos', [HomeController::class, 'proyectos'])->name('proyectos');
-Route::get('/contacto', [HomeController::class, 'contacto'])->name('contacto');
+Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('web_nosotros');
+Route::get('/servicios', [HomeController::class, 'servicios'])->name('web_servicios');
+Route::get('/proyectos', [HomeController::class, 'proyectos'])->name('web_proyectos');
+Route::get('/contacto', [HomeController::class, 'contacto'])->name('web_contacto');
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [

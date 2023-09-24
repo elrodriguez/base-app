@@ -72,17 +72,17 @@
                                             </a>
                                         </li>
                                         <li class="menu-item menu-item-has-children dropdown nav-item">
-                                            <a href="nosotros" class="dropdown-toggle nav-link">
+                                            <a href="{{ route('web_nosotros') }}" class="dropdown-toggle nav-link">
                                                 <span>Nosotros</span>
                                             </a>
                                         </li>
                                         <li class="menu-item menu-item-has-children dropdown nav-item">
-                                            <a href="servicios" class="dropdown-toggle nav-link">
+                                            <a href="{{ route('web_servicios') }}" class="dropdown-toggle nav-link">
                                                 <span>Servicios</span>
                                             </a>
                                         </li>
                                         <li class="menu-item menu-item-has-children dropdown nav-item">
-                                            <a href="proyectos" class="dropdown-toggle nav-link">
+                                            <a href="{{ route('web_proyectos') }}" class="dropdown-toggle nav-link">
                                                 <span>Proyectos</span>
                                             </a>
                                         </li>
@@ -92,7 +92,7 @@
                                             </a>
                                         </li>
                                         <li class="menu-item menu-item-has-children dropdown nav-item">
-                                            <a href="contacto" class="dropdown-toggle nav-link">
+                                            <a href="{{ route('web_contacto') }}" class="dropdown-toggle nav-link">
                                                 <span>Contacto</span>
                                             </a>
                                         </li>
