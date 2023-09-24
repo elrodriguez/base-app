@@ -29,6 +29,7 @@ Route::get('/stories/contact-us', [BlogController::class, 'storiesContactUs'])->
 
 Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('nosotros');
 Route::get('/servicios', [HomeController::class, 'servicios'])->name('servicios');
+Route::get('/proyectos', [HomeController::class, 'proyectos'])->name('proyectos');
 Route::get('/contacto', [HomeController::class, 'contacto'])->name('contacto');
 
 // Route::get('/', function () {

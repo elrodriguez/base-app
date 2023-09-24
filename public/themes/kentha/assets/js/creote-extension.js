@@ -306,6 +306,22 @@ function creote_modal_popup () {
            $('.modal_popup').removeClass('contact-popup-visible');
        });
    }
+
+   if($('.modal_popup').length){  
+    //Show Popup
+    $('.service-toggler').on('click', function() {
+        $('.modal_popup_service').addClass('contact-popup-visible');
+    });
+    $(document).keydown(function(e){
+        if(e.keyCode === 27) {
+            $('.modal_popup_service').removeClass('contact-popup-visible');
+        }
+    });
+    //Hide Popup
+    $('.close-modal-service ').on('click', function() {
+        $('.modal_popup_service').removeClass('contact-popup-visible');
+    });
+}
 }
 /*---====================---theme carousel---======================---*/
 function creote_theme_owl_carousel() {
