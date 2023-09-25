@@ -5,6 +5,10 @@
    style="background: url({{ asset('themes/kentha/assets/images/home-13-service-bg.jpg')}});"> 
    <!--===============spacing==============-->
    <div class="pd_top_90"></div>
+
+
+
+   
    <!--===============spacing==============-->
    <div class="auto-container">
       <div class="row">
@@ -25,43 +29,53 @@
          </div>
       </div>
       
-
       <div class="row">
-         <div class="col-lg-12">
-            <div class="service_all_styles">
-               <div class="container">
-                  <div class="row">
+        <div class="col-lg-12">
+           <div class="service_all_styles carousel owl_new_one">
+              <div class="owl_nav_none owl_dots_none owl_type_two theme_carousel owl-theme owl-carousel owl-loaded owl-drag" data-options="{&quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;autoheight&quot;:true, &quot;lazyload&quot;:true, &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 7000, &quot;smartSpeed&quot;: 1800, &quot;responsive&quot;:{ &quot;0&quot; :{ &quot;items&quot;: &quot;1&quot; }, &quot;768&quot; :{ &quot;items&quot; : &quot;3&quot; } , &quot;1000&quot;:{ &quot;items&quot; : &quot;3&quot; }}}">
 
-                    @foreach ($data as $k => $group)   
-                                <div class="col-md-4">
-                                    <div class="service_box  type_one clearfix">
-                                    <div class="image_box">
-                                        <img src="{{ $group->item->items[0]->content }}" class="img-fluid" alt="img" />
-                                        <div class="overlay"></div>
-                                    </div>
-                                    <div class="content_box">
-                                        <div class="icon_box clearfix">
-                                            <div class="icon_box_inner">
-                                                <i class="icon icon-thumbs-up icon"></i>
-                                            </div>
-                                        </div>
-                                        <h2 class="entry-title">
-                                            <a href="">{{ $group->item->items[1]->content }}</a>
-                                        </h2>
-                                        <p>{{ $group->item->items[2]->content }}</p>
+                 
 
-                                       {{-- <a rel="nofollow" class="theme-btn one service-toggler"> Leer Más </a>  OCULTO --}}
-                                       {{-- Modal de boostrap para cargar la descripciópn del servicio {{ $group->item->items[3]->content }} --}}
-                                    </div>
-                                    </div>
+                 
+
+                 
+
+                <div class="owl-stage-outer">
+                    <div class="owl-stage" style="transform: translate3d(-1950px, 0px, 0px); transition: all 1.8s ease 0s; width: 3510px;">
+                    
+                        @foreach ($data as $k => $group) 
+                        <div class="owl-item cloned" style="width: 360px; margin-right: 30px;">
+                            <div class="service_box  type_one clearfix">
+                                <div class="image_box">
+                                    <img src="{{ $group->item->items[0]->content }}" class="img-fluid" alt="img">
+                                    <div class="overlay"></div>
                                 </div>
-                        
-                    @endforeach
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>   
+                                <div class="content_box">
+                                <div class="icon_box clearfix">
+
+                                <div class="icon_box_inner">
+                                    <i class="icon icon-thumbs-up icon"></i>
+                                </div>
+
+                                </div>
+                                <h2 class="entry-title">
+                                <a href="">{{ $group->item->items[1]->content }}</a>
+                                </h2>
+                                <p>{{ $group->item->items[2]->content }}</p>
+
+                                    {{-- <a rel="nofollow" class="theme-btn one service-toggler"> Leer Más </a>  OCULTO --}}
+                                    {{-- Modal de boostrap para cargar la descripciópn del servicio {{ $group->item->items[3]->content }} --}}
+                                
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                 <div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next"><span aria-label="Next">›</span></button></div><div class="owl-dots disabled"><button role="button" class="owl-dot active"><span></span></button></div></div>
+           </div>
+        </div>
+     </div>
    </div>
    <!--===============spacing==============-->
    <div class="pd_bottom_90"></div>
