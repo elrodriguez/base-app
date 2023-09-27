@@ -15,7 +15,7 @@ use App\Http\Controllers\WebController;
 use Modules\Blog\Http\Controllers\BlogController;
 
 
-Route::get('/', [WebController::class, 'index'])->name('cms_principal');
+// Route::get('/', [WebController::class, 'index'])->name('cms_principal');
 
 Route::get('/blog/home', [BlogController::class, 'index'])->name('blog_principal');
 Route::get('/article/{url}', [BlogController::class, 'article'])->name('blog_article_by_url');
@@ -32,14 +32,14 @@ Route::get('/servicios', [HomeController::class, 'servicios'])->name('servicios'
 Route::get('/proyectos', [HomeController::class, 'proyectos'])->name('proyectos');
 Route::get('/contacto', [HomeController::class, 'contacto'])->name('contacto');
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
         'save/person/update/create',
         [PersonController::class, 'saveUpdateOrCreate']
     )->name('save_person_update_create');
+
     Route::post(
         'search/person/full_name/number',
         [PersonController::class, 'searchByNameOrNumber']

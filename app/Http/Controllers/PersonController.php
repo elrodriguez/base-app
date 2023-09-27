@@ -150,7 +150,8 @@ class PersonController extends Controller
                 'telephone' => $request->input('telephone'),
                 'email' => $request->input('email'),
                 'address' => $request->input('address'),
-                'is_client' => true,
+                'is_client' => $request->input('is_client') ? true : false,
+                'is_provider' => $request->input('is_provider') ? true : false,
                 'ubigeo' => $request->input('ubigeo')
                 // otros campos que quieras actualizar o crear
             ]

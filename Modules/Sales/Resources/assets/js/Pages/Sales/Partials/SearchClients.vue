@@ -31,7 +31,8 @@
         telephone: '',
         full_name: '',
         email: '',
-        address: ''
+        address: '',
+        is_client: true
     });
     
     const searchClient = () => {
