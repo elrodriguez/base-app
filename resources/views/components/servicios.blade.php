@@ -34,12 +34,6 @@
            <div class="service_all_styles carousel owl_new_one">
               <div class="owl_nav_none owl_dots_none owl_type_two theme_carousel owl-theme owl-carousel owl-loaded owl-drag" data-options="{&quot;loop&quot;: true, &quot;margin&quot;: 30, &quot;autoheight&quot;:true, &quot;lazyload&quot;:true, &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 7000, &quot;smartSpeed&quot;: 1800, &quot;responsive&quot;:{ &quot;0&quot; :{ &quot;items&quot;: &quot;1&quot; }, &quot;768&quot; :{ &quot;items&quot; : &quot;3&quot; } , &quot;1000&quot;:{ &quot;items&quot; : &quot;3&quot; }}}">
 
-                 
-
-                 
-
-                 
-
                 <div class="owl-stage-outer">
                     <div class="owl-stage" style="transform: translate3d(-1950px, 0px, 0px); transition: all 1.8s ease 0s; width: 3510px;">
                     
