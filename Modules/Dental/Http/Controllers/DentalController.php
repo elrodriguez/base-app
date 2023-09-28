@@ -5,6 +5,7 @@ namespace Modules\Dental\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Inertia\Inertia;
 
 class DentalController extends Controller
 {
@@ -14,7 +15,7 @@ class DentalController extends Controller
      */
     public function index()
     {
-        return view('dental::index');
+        return Inertia::render('Dental::dashboard');
     }
 
     /**

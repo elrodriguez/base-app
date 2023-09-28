@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('dental')->group(function() {
-    Route::get('/', 'DentalController@index');
+Route::middleware(['auth', 'verified'])->prefix('dental')->group(function () {
+    Route::get('/', 'DentalController@index')->name('dental_dashboard');
 });

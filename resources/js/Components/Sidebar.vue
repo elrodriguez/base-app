@@ -244,7 +244,7 @@ const menu = ref([
                 permissions: 'cms_items',
             },
             {
-                route: route('cms_items_list'),
+                route: route('dental_dashboard'),
                 status: false,
                 text: 'Odontología',
                 permissions: 'cms_seccion',

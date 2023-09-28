@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('health')->group(function() {
-    Route::get('/', 'HealthController@index');
+Route::middleware(['auth', 'verified'])->prefix('health')->group(function () {
+    Route::get('Patients', 'HealthController@index');
 });
