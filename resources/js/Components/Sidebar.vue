@@ -7,7 +7,8 @@ import {
     faBolt, 
     faUserGear,
     faEarthAmericas,
-    faCartShopping
+    faCartShopping,
+    faKitMedical
  } from "@fortawesome/free-solid-svg-icons";
 import { Link } from '@inertiajs/vue3';
 
@@ -225,6 +226,27 @@ const menu = ref([
                 route: route('blog_subscriber'),
                 status: false,
                 text: 'Suscriptores',
+                permissions: 'cms_seccion',
+            },
+        ]
+    },
+    {
+        status:false,
+        text: 'Salud',
+        icom: faKitMedical,
+        route: null,
+        permissions: 'cms_dashboard',
+        items: [
+            {
+                route: route('cms_items_list'),
+                status: false,
+                text: 'Pacientes',
+                permissions: 'cms_items',
+            },
+            {
+                route: route('cms_items_list'),
+                status: false,
+                text: 'Odontología',
                 permissions: 'cms_seccion',
             },
         ]
