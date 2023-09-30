@@ -9,7 +9,14 @@ class HealPatient extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'last_name',
+        'dni',
+        'f_nacimiento',
+        'address'
+    ];
+
     
     protected static function newFactory()
     {
