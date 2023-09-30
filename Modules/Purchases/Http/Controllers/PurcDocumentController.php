@@ -131,7 +131,7 @@ class PurcDocumentController extends Controller
                 ///se crea la venta
                 $purchase = PurcDocument::create([
                     'user_id'               => Auth::id(),
-                    'provider_id'           => $request->get('supplier_id'),,
+                    'provider_id'           => $request->get('supplier_id'),
                     'local_id'              => $local_id,
                     'serie'                 => $request->get('serie'),
                     'number'                => $request->get('number'),
