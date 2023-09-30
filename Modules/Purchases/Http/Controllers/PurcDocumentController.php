@@ -126,51 +126,24 @@ class PurcDocumentController extends Controller
                 ///se crea una caja para poder hacer la venta
 
                 $local_id = Auth::user()->local_id;
-                ///se crea la venta
-                $purchase = PurcDocument::create([
-                    'user_id' => Auth::id(),
-                    'client_id' => $request->get('client_id'),
-                    'local_id' => $local_id,
-                    'total' => $request->get('total'),
-                    'advancement' => $request->get('total'),
-                    'total_discount' => $request->get('total_discount'),
-                    'payments' => json_encode($request->get('payments')),
-                ]);
-
-                ///obtenemos la serie elejida para hacer la venta
-                ///para traer tambien su numero correlativo
-
-
-                ///se convierte el total de la venta a letras
                 $numberletters = new NumberLetter();
                 $tido = SaleDocumentType::find($request->get('sale_documenttype_id'));
-                ///creamos el documento de la venta para enviar a sunat
-                $document = PurcDocumentItems::create([
-                    'sale_id'                       => $purchase->id,
-                    'serie_id'                      => $request->get('serie'),
-                    'number'                        => str_pad($request->get('number'), 9, '0', STR_PAD_LEFT),
-                    'status'                        => true,
-                    'client_type_doc'               => $request->get('client_dti'),
-                    'client_number'                 => $request->get('client_number'),
-                    'client_rzn_social'             => $request->get('client_rzn_social'),
-                    'client_address'                => $request->get('client_direction'),
-                    'client_ubigeo_code'            => $request->get('client_ubigeo'),
-                    'client_ubigeo_description'     => $request->get('client_ubigeo_description'),
-                    'client_phone'                  => $request->get('client_phone'),
-                    'client_email'                  => $request->get('client_email'),
-                    'invoice_ubl_version'           => $this->ubl,
-                    'invoice_type_operation'        => $request->get('type_operation'),
-                    'invoice_type_doc'              => $tido->sunat_id,
-                    'invoice_serie'                 => $request->get('serie'),
-                    'invoice_correlative'           => $request->get('number'),
-                    'invoice_type_currency'         => 'PEN',
-                    'invoice_broadcast_date'        => $request->get('date_issue'),
-                    'invoice_due_date'              => $request->get('date_end'),
-                    'invoice_send_date'             => Carbon::now()->format('Y-m-d'),
-                    'invoice_legend_code'           => '1000',
-                    'invoice_legend_description'    => $numberletters->convertToLetter($request->get('total')),
-                    'invoice_status'                => 'registrado'
+                ///se crea la venta
+                $purchase = PurcDocument::create([
+                    'user_id'               => Auth::id(),
+                    'provider_id'           => $request->get('supplier_id'),
+                    'local_id'              => $local_id,
+                    'serie'                 => $request->get('serie'),
+                    'number'                => $request->get('number'),
+                    'document_type_id'      => $request->get('supplier_dti'),
+                    'date_of_issue'         => $request->get('date_issue'),
+                    'date_of_due'           => $request->get('date_end'),
+                    'currency_type_id'      => 'PEN',
+                    'descripction'          => $request->get('descripction'),
+                    'total'                 => $request->get('total'),
+                    'legends'               => $numberletters->convertToLetter($request->get('total'))
                 ]);
+
 
                 ///obtenemos los productos o servicios para insertar en los 
                 ///detalles de la venta y el documento
@@ -308,28 +281,31 @@ class PurcDocumentController extends Controller
 
                     //se inserta los datos al detalle del documento 
                     PurcDocumentItems::create([
-                        'document_id'           => $document->id,
-                        'product_id'            => $product_id,
-                        'cod_product'           => $interne,
-                        'decription_product'    => $produc['description'],
-                        'unit_type'             => $produc['unit_type'],
-                        'quantity'              => $produc['quantity'],
-                        'mto_base_igv'          => $mto_base_igv,
-                        'percentage_igv'        => $this->igv,
-                        'igv'                   => $igv,
-                        'total_tax'             => $total_tax,
-                        'type_afe_igv'          => $produc['afe_igv'],
-                        'icbper'                => $icbper,
-                        'factor_icbper'         => $porcentage_item_icbper,
-                        'mto_value_sale'        => $value_sale,
-                        'mto_value_unit'        => $value_unit,
-                        'mto_price_unit'        => $unit_price,
-                        'price_sale'            => $price_sale,
-                        'mto_total'             => round($total_item, 2),
-                        'mto_discount'          => $mto_discount ?? 0,
-                        'json_discounts'        => json_encode($array_discounts)
-
+                        'purchase_id'               => $purchase->id,
+                        'product_id'                => $product_id,
+                        'date_of_due'               => Carbon::now()->format('Y-m-d'),
+                        'affectation_igv_type_id'   => '10',
+                        'price_type_id'             => '01',
+                        'quantity'                  => $produc['quantity'],
+                        'unit_value'                => $value_unit,
+                        'total_base_igv'            => $mto_base_igv,
+                        'percentage_igv'            => $this->igv,
+                        'total_igv'                 => $igv,
+                        'total_base_isc'            => 0,
+                        'percentage_isc'            => 0,
+                        'total_isc'                 => 0,
+                        'total_base_other_taxes'    => 0,
+                        'percentage_other_taxes'    => 0,
+                        'total_other_taxes'         => 0,
+                        'total_taxes'               => $total_tax,
+                        'unit_price'                => $unit_price,
+                        'total_value'               => $value_sale,
+                        'total_charge'              => 0,
+                        'total_discount'            => $mto_discount ?? 0,
+                        'total'                     => round($total_item, 2),
+                        'discounts'                 => json_encode($array_discounts)
                     ]);
+
 
 
 
@@ -346,16 +322,22 @@ class PurcDocumentController extends Controller
                 $rounding = number_format($difference, 2);
 
                 $purchase->update([
-                    'invoice_mto_oper_taxed'    => $mto_oper_taxed,
-                    'invoice_mto_igv'           => $mto_igv,
-                    'invoice_icbper'            => $total_icbper,
-                    'invoice_total_taxes'       => $total_taxes,
-                    'invoice_value_sale'        => $mto_oper_taxed,
-                    'invoice_subtotal'          => $subtotal,
-                    'invoice_rounding'          => $rounding,
-                    'invoice_mto_imp_sale'      => $ttotal,
-                    'invoice_sunat_points'      => null,
-                    'invoice_status'            => 'Pendiente',
+                    'total_prepayment'          => 0,
+                    'total_charge'              => 0,
+                    'total_discount'            => 0,
+                    'total_exportation'         => 0,
+                    'total_free'                => 0,
+                    'total_taxed'               => $mto_oper_taxed,
+                    'total_unaffected'          => 0,
+                    'total_exonerated'          => 0,
+                    'total_igv'                 => $mto_igv,
+                    'total_base_isc'            => 0,
+                    'total_isc'                 => 0,
+                    'total_base_other_taxes'    => 0,
+                    'total_other_taxes'         => 0,
+                    'total_taxes'               => $total_taxes,
+                    'total_value'               => $mto_oper_taxed,
+                    'total_canceled'            => 0,
                 ]);
 
                 return $purchase;

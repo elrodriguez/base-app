@@ -37,7 +37,7 @@ return new class extends Migration
             $table->decimal('total_charge', 12, 2);
             $table->decimal('total_discount', 12, 2);
             $table->decimal('total', 12, 2);
-            $table->decimal('discounts', 12, 2);
+            $table->json('discounts')->nullable();
             $table->timestamps();
             $table->foreign('purchase_id')->references('id')->on('purc_documents');
             $table->foreign('product_id')->references('id')->on('products');

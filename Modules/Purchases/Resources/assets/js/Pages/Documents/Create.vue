@@ -56,6 +56,7 @@
         sale_documenttype_id: 2,
         type_operation: props.type_operation,
         serie: null,
+        number: null,
         date_issue: null,
         date_end: null,
         items:[],
@@ -64,6 +65,7 @@
         percentage_igv: 0,
         total: 0,
         total_taxed: 0, //operaciones gravadas
+        descripction: null,
         payments: [{
             type:1,
             reference: null,
