@@ -16,7 +16,7 @@
             type: Object,
             default: () => ({}),
         },
-        document_types: {
+        documentTypes: {
             type: Object,
             default: () => ({}),
         },
@@ -39,9 +39,13 @@
         taxes: {
             type: Array,
             default: () => ({}),
+        },
+        ubigeo:{
+            type: Array,
+            default: () => ({}),
         }
     });
-
+    const displayModalSupplierSearch = ref(false);
     const formDocument = useForm({
         supplier_id: null,
         supplier_name: null,
@@ -102,7 +106,7 @@
         formDocument.date_end = `${year}-${month}-${day}`;
     };
 
-    const getDataClient = async (data) => {
+    const getDataSupplier = async (data) => {
         if(formDocument.sale_documenttype_id == 2){
             formDocument.supplier_id = data.id;
             formDocument.supplier_name = data.number+"-"+data.full_name;
@@ -134,20 +138,20 @@
                 });
             }
         }
-        displayModalClientSearch.value = false;
+        displayModalSupplierSearch.value = false;
         
     }
 
-    const displayModalClientSearch = ref(false);
+    
     const saleDocumentTypesId = ref({});
     
-    const openModalClientSearch = () => {
-        displayModalClientSearch.value = true;
+    const openModalSupplierSearch = () => {
+        displayModalSupplierSearch.value = true;
         saleDocumentTypesId.value = formDocument.sale_documenttype_id
     }
-    const closeModalClientSearch = () => {
+    const closeModalSupplierSearch = () => {
         saleDocumentTypesId.value =  null;
-        displayModalClientSearch.value = false;
+        displayModalSupplierSearch.value = false;
     }
     const newItems = () => {
         let item = {
@@ -453,15 +457,15 @@
                             <div class="grid grid-cols-3 gap-4 justify-between mb-1">
                                 <div style="font-size: 14px;" class="col-span-3 sm:col-span-1 uppercase">Proveedor:</div>
                                 <div class="col-span-3 sm:col-span-2 ltr:text-right rtl:text-left">
-                                    <input @click="openModalClientSearch" @input="openModalClientSearch" :value="formDocument.supplier_name" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                    <input @click="openModalSupplierSearch" @input="openModalSupplierSearch" :value="formDocument.supplier_name" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
                                     <SearchSupplier 
-                                        :display="displayModalClientSearch" 
-                                        :closeModalClient="closeModalClientSearch"
-                                        @supplierId="getDataClient" 
+                                        :display="displayModalSupplierSearch" 
+                                        :closeModalSupplier="closeModalSupplierSearch"
+                                        @supplierId="getDataSupplier" 
                                         :supplierDefault="supplier" 
                                         :documentTypes="documentTypes"
                                         :saleDocumentTypes="saleDocumentTypesId"
-                                        :ubigeo="departments"
+                                        :ubigeo="ubigeo"
                                     />
                                    <div><InputError :message="formDocument.errors.supplier_id" class="mt-2" /></div> 
                                 </div>
@@ -481,10 +485,19 @@
                         </div>
                         <div class="flex-1">
                             <div class="flex justify-between mb-1">
-                                <div style="font-size: 14px;" class="flex-1 uppercase">Serie:</div>
-                                <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input :value="formDocument.serie" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
-                                    <InputError :message="formDocument.errors.serie" class="mt-2" />
+                                <div class="flex">
+                                    <div style="font-size: 14px;" class="flex-1 uppercase">Serie:</div>
+                                    <div class="flex-1 ltr:text-right rtl:text-left">
+                                        <input :value="formDocument.serie" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                        <InputError :message="formDocument.errors.serie" class="mt-2" />
+                                    </div>
+                                </div>
+                                <div class="flex">
+                                    <div style="font-size: 14px;" class="flex-1 uppercase">Número:</div>
+                                    <div class="flex-1 ltr:text-right rtl:text-left">
+                                        <input :value="formDocument.number" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                        <InputError :message="formDocument.errors.number" class="mt-2" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex justify-between mb-1">

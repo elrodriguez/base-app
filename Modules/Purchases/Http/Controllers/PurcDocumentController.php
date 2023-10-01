@@ -3,7 +3,9 @@
 namespace Modules\Purchases\Http\Controllers;
 
 use App\Helpers\NumberLetter;
+use App\Models\District;
 use App\Models\Kardex;
+use App\Models\KardexSize;
 use App\Models\PaymentMethod;
 use App\Models\SaleDocumentType;
 use Illuminate\Contracts\Support\Renderable;
@@ -73,6 +75,15 @@ class PurcDocumentController extends Controller
         $payments = PaymentMethod::all();
         $documentTypes = DB::table('identity_document_type')->get();
         $unitTypes = DB::table('sunat_unit_types')->get();
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
 
         return Inertia::render('Purchases::Documents/Create', [
             'documentTypes'     => $documentTypes,
@@ -80,6 +91,7 @@ class PurcDocumentController extends Controller
             'saleDocumentTypes' => $saleDocumentTypes,
             'unitTypes'         => $unitTypes,
             'type_operation'    => $this->top,
+            'ubigeo'            => $ubigeo,
             'taxes'             => array(
                 'igv' => $this->igv,
                 'icbper' => $this->icbper
@@ -193,17 +205,6 @@ class PurcDocumentController extends Controller
                         ]);
                         $product_id = $new_product->id;
                         $interne = $randomNumberPadded;
-                        // le creamos un kardex en caso de ser un producto
-                        if ($produc['is_product']) {
-                            Kardex::create([
-                                'date_of_issue'     => Carbon::now()->format('Y-m-d'),
-                                'motion'            => 'purchase',
-                                'product_id'        => $new_product->id,
-                                'local_id'          => Auth::user()->local_id,
-                                'quantity'          => $produc['quantity'],
-                                'description'       => 'Stock Inicial',
-                            ]);
-                        }
                         $item = $new_product;
                     }
 
@@ -306,7 +307,47 @@ class PurcDocumentController extends Controller
                         'discounts'                 => json_encode($array_discounts)
                     ]);
 
-
+                    if ($produc['is_product']) {
+                        $k = Kardex::create([
+                            'date_of_issue' => Carbon::now()->format('Y-m-d'),
+                            'motion' => 'sale',
+                            'product_id' => $product_id,
+                            'local_id' => $local_id,
+                            'quantity' => $produc['quantity'],
+                            'document_id' => $purchase->id,
+                            'document_entity' => PurcDocument::class,
+                            'description' => 'Compra'
+                        ]);
+                        $product = Product::find($product_id);
+                        if ($product->presentations) {
+                            KardexSize::create([
+                                'kardex_id' => $k->id,
+                                'product_id' => $product_id,
+                                'local_id' => $local_id,
+                                'size'      => $produc['size'],
+                                'quantity'  => ($produc['quantity'])
+                            ]);
+                            $tallas = $product->sizes;
+                            $n_tallas = [];
+                            foreach (json_decode($tallas, true) as $k => $talla) {
+                                if ($talla['size'] == $produc['size']) {
+                                    $n_tallas[$k] = array(
+                                        'size' => $talla['size'],
+                                        'quantity' => ($talla['quantity'] + $produc['quantity'])
+                                    );
+                                } else {
+                                    $n_tallas[$k] = array(
+                                        'size' => $talla['size'],
+                                        'quantity' => $talla['quantity']
+                                    );
+                                }
+                            }
+                            $product->update([
+                                'sizes' => json_encode($n_tallas)
+                            ]);
+                        }
+                        Product::find($product_id)->decrement('stock', $produc['quantity']);
+                    }
 
 
                     $mto_igv = $mto_igv + $igv; //total del igv

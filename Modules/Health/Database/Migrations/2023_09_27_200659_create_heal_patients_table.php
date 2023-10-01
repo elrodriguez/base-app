@@ -15,13 +15,17 @@ return new class extends Migration
     {
         Schema::create('heal_patients', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('last_name');
-            $table->string('dni');
-            $table->date('f_nacimiento');
-            $table->string('address');
+            $table->unsignedBigInteger('person_id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('patient_code');
             $table->softDeletes();
             $table->timestamps();
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+
+        Schema::table('people', function (Blueprint $table) {
+            $table->date('birthdate')->nullable()->comment('fecha de nacimiento');
         });
     }
 
@@ -33,5 +37,9 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('heal_patients');
+
+        Schema::table('people', function (Blueprint $table) {
+            $table->dropColumn('birthdate');
+        });
     }
 };

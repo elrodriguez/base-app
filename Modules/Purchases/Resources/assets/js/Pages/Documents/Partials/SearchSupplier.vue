@@ -20,7 +20,7 @@
             type: Boolean,
             default: () => ({})
         },
-        closeModalClient: {
+        closeModalSupplier: {
             type: Function,
             default: () => ({})
         },
@@ -73,7 +73,7 @@
         });
     }
 
-    const emit = defineEmits(['clientId']);
+    const emit = defineEmits(['supplierId']);
     
     const saveNewSearchClient = () => {
         axios.post(route('save_person_update_create'), form).then((res) => {
@@ -93,8 +93,8 @@
     });
 
     const selectPersonNew = () => {
+        emit('supplierId', person.value);
         form.reset();
-        emit('clientId', person.value);
     }
 
     const displayResultUbigeo = ref(false);
