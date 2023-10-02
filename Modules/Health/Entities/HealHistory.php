@@ -9,7 +9,10 @@ class HealHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'patient_id',
+        'history_code'
+    ];
     
     protected static function newFactory()
     {
