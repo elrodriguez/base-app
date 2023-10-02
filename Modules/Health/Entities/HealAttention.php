@@ -9,7 +9,18 @@ class HealAttention extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'history_id',
+        'age',
+        'age_type',
+        'hour',
+        'who_takes_care_of_child',
+        'father_invoolvement',
+        'affection_child',
+        'information',
+        'reason',
+        'doctor_id'
+    ];
     
     protected static function newFactory()
     {
