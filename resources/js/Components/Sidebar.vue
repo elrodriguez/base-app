@@ -235,13 +235,13 @@ const menu = ref([
         text: 'Salud',
         icom: faKitMedical,
         route: null,
-        permissions: 'cms_dashboard',
+        permissions: 'heal_dashboard',
         items: [
             {
                 route: route('heal_patients_list'),
                 status: false,
                 text: 'Pacientes',
-                permissions: 'cms_items',
+                permissions: 'heal_pacientes_listado',
             },
             {
                 route: route('dental_dashboard'),
