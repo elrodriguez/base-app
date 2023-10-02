@@ -5,6 +5,9 @@ namespace Modules\Health\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Modules\Health\Entities\HealPatient;
 
 class HealPatientController extends Controller
 {
@@ -14,7 +17,40 @@ class HealPatientController extends Controller
      */
     public function index()
     {
-        return view('health::index');
+        $patients = (new HealPatient())->newQuery();
+        $patients = $patients->join('people', 'heal_patients.person_id', 'people.id')
+            ->select(
+                'heal_patients.id',
+                'heal_patients.patient_code',
+                'people.document_type_id',
+                'people.full_name',
+                'people.number',
+                'people.telephone',
+                'people.email',
+                'people.address',
+                'people.birthdate'
+            );
+        if (request()->has('search')) {
+            $patients->where('people.full_name', 'Like', '%' . request()->input('search') . '%');
+        }
+
+        if (request()->query('sort')) {
+            $attribute = request()->query('sort');
+            $sort_order = 'ASC';
+            if (strncmp($attribute, '-', 1) === 0) {
+                $sort_order = 'DESC';
+                $attribute = substr($attribute, 1);
+            }
+            $patients->orderBy($attribute, $sort_order);
+        } else {
+            $patients->latest();
+        }
+
+        $patients = $patients->paginate(10);
+
+        return Inertia::render('Health::Patients/List', [
+            'patients' => $patients
+        ]);
     }
 
     /**
@@ -23,7 +59,10 @@ class HealPatientController extends Controller
      */
     public function create()
     {
-        return view('health::create');
+        $identityDocumentType = DB::table('identity_document_type')->get();
+        return view('health::create', [
+            'identityDocumentType' => $identityDocumentType
+        ]);
     }
 
     /**

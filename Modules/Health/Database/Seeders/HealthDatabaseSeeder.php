@@ -14,8 +14,8 @@ class HealthDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
-        // $this->call("OthersTableSeeder");
+        $this->call([
+            PermissionsHealthTableSeeder::class
+        ]);
     }
 }

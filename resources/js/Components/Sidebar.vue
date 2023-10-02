@@ -238,7 +238,7 @@ const menu = ref([
         permissions: 'cms_dashboard',
         items: [
             {
-                route: route('cms_items_list'),
+                route: route('heal_patients_list'),
                 status: false,
                 text: 'Pacientes',
                 permissions: 'cms_items',

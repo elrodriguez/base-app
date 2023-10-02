@@ -26,6 +26,9 @@ return new class extends Migration
 
         Schema::table('people', function (Blueprint $table) {
             $table->date('birthdate')->nullable()->comment('fecha de nacimiento');
+            $table->string('names')->nullable()->comment('nombres');
+            $table->string('father_lastname')->nullable()->comment('apellido paterno');
+            $table->string('mother_lastname')->nullable()->comment('apallido materno');
         });
     }
 

@@ -25,7 +25,11 @@ class Person extends Model
         'contact_telephone',
         'contact_name',
         'contact_email',
-        'ubigeo'
+        'ubigeo',
+        'birthdate',
+        'names',
+        'father_lastname',
+        'mother_lastname'
     ];
 
     public function getImageAttribute($value)
