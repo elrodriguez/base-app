@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('parameter_code')->unique();
             $table->string('description');
-            $table->char('control_type', 2)->nullable()->comment('in=text,ra=radio,se=select,ch=checkbox,tx=textarea,rg=range,fl=file');
+            $table->char('control_type', 2)->nullable()->comment('in=text,ra=radio,sq=select(query),sa=select(json),ch=checkbox,tx=textarea,rg=range,fl=file');
             $table->text('json_query_data')->nullable();
             $table->text('value_default')->nullable();
             $table->timestamps();

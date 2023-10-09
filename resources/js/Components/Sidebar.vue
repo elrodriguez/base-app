@@ -61,6 +61,12 @@ const menu = ref([
                 status: false,
                 text: 'usuarios',
                 permissions: 'usuarios',
+            },
+            {
+                route: route('parameters'),
+                status: false,
+                text: 'Parámetros del sistema',
+                permissions: 'parametros',
             }
         ]
     },

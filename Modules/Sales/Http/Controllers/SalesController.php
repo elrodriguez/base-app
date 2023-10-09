@@ -21,7 +21,7 @@ class SalesController extends Controller
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function parameters()
     {
         return view('sales::create');
     }

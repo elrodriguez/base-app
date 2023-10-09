@@ -49,7 +49,8 @@ class HealPatientController extends Controller
         $patients = $patients->paginate(10);
 
         return Inertia::render('Health::Patients/List', [
-            'patients' => $patients
+            'patients' => $patients,
+            'filters' => request()->all('search')
         ]);
     }
 

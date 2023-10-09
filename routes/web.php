@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\LocalSaleController;
+use App\Http\Controllers\ParametersController;
 use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -95,6 +96,10 @@ Route::middleware('auth')->group(function () {
         'company/getdata',
         [CompanyController::class, 'getdata']
     )->middleware(['auth', 'verified'])->name('datosempresa');
+
+    Route::get('parameters/list', [ParametersController::class, 'index'])->name('parameters');
+    Route::get('parameters/create', [ParametersController::class, 'create'])->name('parameters_create');
+    Route::post('parameters/store', [ParametersController::class, 'store'])->name('parameters_store');
 });
 
 require __DIR__ . '/auth.php';

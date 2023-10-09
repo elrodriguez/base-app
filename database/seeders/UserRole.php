@@ -32,6 +32,10 @@ class UserRole extends Seeder
         array_push($permissions, Permission::create(['name' => 'usuarios_ver']));
         array_push($permissions, Permission::create(['name' => 'roles']));
         array_push($permissions, Permission::create(['name' => 'permisos']));
+        array_push($permissions, Permission::create(['name' => 'parametros']));
+        array_push($permissions, Permission::create(['name' => 'parametros_nuevo']));
+        array_push($permissions, Permission::create(['name' => 'parametros_editar']));
+        array_push($permissions, Permission::create(['name' => 'parametros_eliminar']));
 
         array_push($permissions, Permission::create(['name' => 'sale_dashboard']));
         array_push($permissions, Permission::create(['name' => 'productos']));
