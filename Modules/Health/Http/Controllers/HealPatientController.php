@@ -3,15 +3,19 @@
 namespace Modules\Health\Http\Controllers;
 
 use App\Models\District;
+use App\Models\Person;
+use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Modules\Health\Entities\HealPatient;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class HealPatientController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -29,7 +33,8 @@ class HealPatientController extends Controller
                 'people.telephone',
                 'people.email',
                 'people.address',
-                'people.birthdate'
+                'people.birthdate',
+                'heal_patients.created_at'
             );
         if (request()->has('search')) {
             $patients->where('people.full_name', 'Like', '%' . request()->input('search') . '%');
@@ -47,7 +52,7 @@ class HealPatientController extends Controller
             $patients->latest();
         }
 
-        $patients = $patients->paginate(10);
+        $patients = $patients->paginate(10)->onEachSide(2);
 
         return Inertia::render('Health::Patients/List', [
             'patients' => $patients,
@@ -86,7 +91,71 @@ class HealPatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $update_id = null;
+
+        $this->validate(
+
+            $request,
+            [
+                'document_type_id'  => 'required',
+                'number'            => 'required|max:12',
+                'number'            => 'unique:people,number,' . $update_id . ',id,document_type_id,' . $request->get('document_type_id'),
+                'telephone'         => 'required|max:12',
+                'email'             => 'required|max:255',
+                'address'           => 'required|max:255',
+                'ubigeo'            => 'required|max:255',
+                'birthdate'         => 'required|',
+                'names'             => 'required|max:255',
+                'father_lastname'   => 'required|max:255',
+                'mother_lastname'   => 'required|max:255',
+            ]
+        );
+
+        // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
+        // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
+        $path = null;
+        $destination = 'uploads/patients';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+        }
+
+        $per = Person::create([
+            'document_type_id'      => $request->get('document_type_id'),
+            'short_name'            => $request->get('names'),
+            'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
+            'description'           => 'Paciente',
+            'number'                => $request->get('number'),
+            'telephone'             => $request->get('telephone'),
+            'email'                 => $request->get('email'),
+            'image'                 => $path,
+            'address'               => $request->get('address'),
+            'is_provider'           => false,
+            'is_client'             => true,
+            'ubigeo'                => $request->get('ubigeo'),
+            'birthdate'             => $request->get('birthdate'),
+            'names'                 => $request->get('names'),
+            'father_lastname'       => $request->get('father_lastname'),
+            'mother_lastname'       => $request->get('mother_lastname')
+        ]);
+
+        User::create([]);
+
+        HealPatient::create([
+            'person_id'     => $per->id,
+            'patient_code'  => $request->get('number')
+        ]);
+
+        return redirect()->route('heal_patients_create')
+            ->with('message', __('Producto creado con éxito'));
     }
 
     /**

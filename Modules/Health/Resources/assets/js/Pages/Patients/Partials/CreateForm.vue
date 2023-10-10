@@ -37,10 +37,10 @@ const form = useForm({
     ubigeo_description: null
 });
 
-const createItem = () => {
-    form.post(route('cms_items_store'), {
+const createPatient = () => {
+    form.post(route('heal_patients_store'), {
         forceFormData: true,
-        errorBag: 'createItem',
+        errorBag: 'createPatient',
         preserveScroll: true,
         onSuccess: () => {
             Swal2.fire({
@@ -92,13 +92,13 @@ const loadFile = (event) => {
 </script>
 
 <template>
-    <FormSection @submitted="createItem" class="">
+    <FormSection @submitted="createPatient" class="">
         <template #title>
-            Items Detalles
+            Paciente Detalles
         </template>
 
         <template #description>
-            Crear nuevo Items, Los campos con * son obligatorios
+            Crear nuevo Paciente, Los campos con * son obligatorios
         </template>
 
         <template #form>
@@ -138,14 +138,14 @@ const loadFile = (event) => {
                         <img id='preview_img' class="h-16 w-16 object-cover rounded-full" :src="form.image_preview" alt="Current profile photo" />
                     </div>
                     <label class="block ml-1">
-                        <span class="sr-only">Choose profile photo</span>
+                        <span class="sr-only">Elige foto</span>
                         <input  type="file" @change="loadFile" class="block w-full text-sm text-slate-500
-                            file:mr-4 file:py-2 file:px-4
-                            file:rounded-full file:border-0
-                            file:text-sm file:font-semibold
-                            file:bg-violet-50 file:text-violet-700
-                            hover:file:bg-violet-100
-                        "/>
+                            mr-4 py-2 px-4
+                            rounded-full border-0
+                            text-sm font-semibold
+                            bg-violet-50 text-violet-700
+                            hover:bg-violet-100
+                        " />
                     </label>
                 </div>
             </div>
@@ -221,7 +221,7 @@ const loadFile = (event) => {
                 />
                 <InputError :message="form.errors.telephone" class="mt-2" />
             </div>
-            <div class="col-span-6 sm:col-span-3 ">
+            <div class="col-span-6 sm:col-span-3">
                 <InputLabel for="email" value="Email *" />
                 <TextInput
                     id="email"
@@ -235,9 +235,7 @@ const loadFile = (event) => {
         </template>
 
         <template #actions>
-            <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                {{ form.progress.percentage }}%
-            </progress>
+            
             <Keypad>
                 <template #botones>
                     <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -247,7 +245,7 @@ const loadFile = (event) => {
                         </svg>
                         Guardar
                     </PrimaryButton>
-                    <Link :href="route('cms_items_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
+                    <Link :href="route('heal_patients_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
                 </template>
             </Keypad>
         </template>
