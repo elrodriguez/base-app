@@ -2,6 +2,7 @@
 
 namespace Modules\Health\Http\Controllers;
 
+use App\Models\District;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -60,9 +61,21 @@ class HealPatientController extends Controller
      */
     public function create()
     {
-        $identityDocumentType = DB::table('identity_document_type')->get();
-        return view('health::create', [
-            'identityDocumentType' => $identityDocumentType
+        $identityDocumentTypes = DB::table('identity_document_type')->get();
+
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
+        return Inertia::render('Health::Patients/Create', [
+            'identityDocumentTypes' => $identityDocumentTypes,
+            'ubigeo'       => $ubigeo,
         ]);
     }
 
