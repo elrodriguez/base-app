@@ -13,7 +13,7 @@
 
 Route::middleware(['auth', 'verified'])->prefix('health')->group(function () {
     Route::get('dashboard', 'HealthController@index');
-    Route::get('Patients', 'HealPatientController@index')->name('heal_patients_list');
-    Route::get('Patients/create', 'HealPatientController@create')->name('heal_patients_create');
-    Route::post('Patients/store', 'HealPatientController@store')->name('heal_patients_store');
+    Route::get('patients', 'HealPatientController@index')->name('heal_patients_list');
+    Route::get('patients/create', 'HealPatientController@create')->name('heal_patients_create');
+    Route::post('patients/store', 'HealPatientController@store')->name('heal_patients_store');
 });

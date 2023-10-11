@@ -8,7 +8,8 @@ import {
     faUserGear,
     faEarthAmericas,
     faCartShopping,
-    faKitMedical
+    faKitMedical,
+    faBook
  } from "@fortawesome/free-solid-svg-icons";
 import { Link } from '@inertiajs/vue3';
 
@@ -254,6 +255,27 @@ const menu = ref([
                 status: false,
                 text: 'Odontología',
                 permissions: 'cms_seccion',
+            },
+        ]
+    },
+    {
+        status:false,
+        text: 'Académico',
+        icom: faBook,
+        route: null,
+        permissions: 'aca_dashboard',
+        items: [
+            {
+                route: route('aca_students_list'),
+                status: false,
+                text: 'Estudiantes',
+                permissions: 'aca_estudiante_listado',
+            },
+            {
+                route: route('dental_dashboard'),
+                status: false,
+                text: 'Cursos',
+                permissions: 'aca_cursos_listado',
             },
         ]
     }

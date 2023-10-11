@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('course_id');
+            $table->unsignedBigInteger('type_id')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
             $table->foreign('student_id')->references('id')->on('aca_students')->onDelete('cascade');
             $table->foreign('course_id')->references('id')->on('aca_courses')->onDelete('cascade');
+            $table->foreign('type_id')->references('id')->on('aca_type_students')->onDelete('cascade');
         });
     }
 

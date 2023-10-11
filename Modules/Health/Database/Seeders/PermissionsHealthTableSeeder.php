@@ -35,8 +35,8 @@ class PermissionsHealthTableSeeder extends Seeder
             $role->givePermissionTo($permission->name);
         }
 
-        $user = User::find(1);
+        // $user = User::find(1);
 
-        $user->assignRole('webAdmin');
+        // $user->assignRole('webAdmin');
     }
 }

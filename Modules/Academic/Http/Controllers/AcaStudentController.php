@@ -2,19 +2,64 @@
 
 namespace Modules\Academic\Http\Controllers;
 
+use App\Models\District;
+use App\Models\Person;
+use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Modules\Academic\Entities\AcaStudent;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Modules\Academic\Entities\AcaEstudent;
+use Illuminate\Support\Facades\Hash;
 
 class AcaStudentController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index()
     {
-        return view('academic::index');
+        $students = (new AcaStudent())->newQuery();
+        $students = $students->join('people', 'aca_students.person_id', 'people.id')
+            ->select(
+                'aca_students.id',
+                'aca_students.student_code',
+                'people.document_type_id',
+                'people.full_name',
+                'people.number',
+                'people.telephone',
+                'people.email',
+                'people.address',
+                'people.birthdate',
+                'aca_students.created_at'
+            );
+        if (request()->has('search')) {
+            $students->where('people.full_name', 'Like', '%' . request()->input('search') . '%');
+        }
+
+        if (request()->query('sort')) {
+            $attribute = request()->query('sort');
+            $sort_order = 'ASC';
+            if (strncmp($attribute, '-', 1) === 0) {
+                $sort_order = 'DESC';
+                $attribute = substr($attribute, 1);
+            }
+            $students->orderBy($attribute, $sort_order);
+        } else {
+            $students->latest();
+        }
+
+        $students = $students->paginate(10)->onEachSide(2);
+
+        return Inertia::render('Academic::Students/List', [
+            'students' => $students,
+            'filters' => request()->all('search')
+        ]);
     }
 
     /**
@@ -23,7 +68,22 @@ class AcaStudentController extends Controller
      */
     public function create()
     {
-        return view('academic::create');
+        $identityDocumentTypes = DB::table('identity_document_type')->get();
+
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
+        return Inertia::render('Academic::Students/Create', [
+            'identityDocumentTypes' => $identityDocumentTypes,
+            'ubigeo'       => $ubigeo,
+        ]);
     }
 
     /**
@@ -33,7 +93,78 @@ class AcaStudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $update_id = null;
+
+        $this->validate(
+
+            $request,
+            [
+                'document_type_id'  => 'required',
+                'number'            => 'required|max:12',
+                'number'            => 'unique:people,number,' . $update_id . ',id,document_type_id,' . $request->get('document_type_id'),
+                'telephone'         => 'required|max:12',
+                'email'             => 'required|max:255',
+                'address'           => 'required|max:255',
+                'ubigeo'            => 'required|max:255',
+                'birthdate'         => 'required|',
+                'names'             => 'required|max:255',
+                'father_lastname'   => 'required|max:255',
+                'mother_lastname'   => 'required|max:255',
+            ]
+        );
+
+        // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
+        // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
+        $path = null;
+        $destination = 'uploads/students';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+        }
+
+        $per = Person::create([
+            'document_type_id'      => $request->get('document_type_id'),
+            'short_name'            => $request->get('names'),
+            'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
+            'description'           => $request->get('description'),
+            'number'                => $request->get('number'),
+            'telephone'             => $request->get('telephone'),
+            'email'                 => $request->get('email'),
+            'image'                 => $path,
+            'address'               => $request->get('address'),
+            'is_provider'           => false,
+            'is_client'             => true,
+            'ubigeo'                => $request->get('ubigeo'),
+            'birthdate'             => $request->get('birthdate'),
+            'names'                 => $request->get('names'),
+            'father_lastname'       => $request->get('father_lastname'),
+            'mother_lastname'       => $request->get('mother_lastname')
+        ]);
+
+        User::create([
+            'name'          => $request->get('names'),
+            'email'         => $request->get('email'),
+            'password'      => Hash::make($request->get('password')),
+            'information'   => $request->get('description'),
+            'avatar'        => $path,
+            'person_id'     => $per->id
+        ]);
+
+        AcaStudent::create([
+            'person_id'     => $per->id,
+            'student_code'  => $request->get('number'),
+        ]);
+
+        return redirect()->route('aca_students_list')
+            ->with('message', __('Estudiante creado con éxito'));
     }
 
     /**

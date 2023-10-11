@@ -147,8 +147,6 @@ class HealPatientController extends Controller
             'mother_lastname'       => $request->get('mother_lastname')
         ]);
 
-        User::create([]);
-
         HealPatient::create([
             'person_id'     => $per->id,
             'patient_code'  => $request->get('number')
