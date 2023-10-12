@@ -3,7 +3,8 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KenthaController;
+use App\Http\Controllers\CapperuController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\LocalSaleController;
 use App\Http\Controllers\ParametersController;
@@ -15,8 +16,17 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebController;
 use Modules\Blog\Http\Controllers\BlogController;
 
-
+/* Sitio Webs KENTHA
 Route::get('/kentha', [WebController::class, 'index'])->name('cms_principal');
+Route::get('/nosotros', [KenthaController::class, 'nosotros'])->name('web_nosotros');
+Route::get('/servicios', [KenthaController::class, 'servicios'])->name('web_servicios');
+Route::get('/proyectos', [KenthaController::class, 'proyectos'])->name('web_proyectos');
+Route::get('/contacto', [KenthaController::class, 'contacto'])->name('web_contacto');
+*/
+
+Route::get('/capperu', [WebController::class, 'index'])->name('cms_principal');
+Route::get('/nosotros', [CapperuController::class, 'nosotros'])->name('web_nosotros');
+Route::get('/contacto', [CapperuController::class, 'contacto'])->name('web_contacto');
 
 Route::get('/blog/home', [BlogController::class, 'index'])->name('blog_principal');
 Route::get('/article/{url}', [BlogController::class, 'article'])->name('blog_article_by_url');
@@ -28,10 +38,10 @@ Route::get('/stories/article/{url}', [BlogController::class, 'storiesArticle'])-
 Route::get('/stories/policies', [BlogController::class, 'storiesPolicies'])->name('blog_stories_policies');
 Route::get('/stories/contact-us', [BlogController::class, 'storiesContactUs'])->name('blog_stories_contact_us');
 
-Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('web_nosotros');
-Route::get('/servicios', [HomeController::class, 'servicios'])->name('web_servicios');
-Route::get('/proyectos', [HomeController::class, 'proyectos'])->name('web_proyectos');
-Route::get('/contacto', [HomeController::class, 'contacto'])->name('web_contacto');
+
+
+
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
