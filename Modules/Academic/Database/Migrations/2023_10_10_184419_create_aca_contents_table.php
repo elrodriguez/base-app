@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('content');
             $table->unsignedBigInteger('theme_id');
             $table->timestamps();
+            $table->boolean('is_file')->default(true);
             $table->foreign('theme_id')->references('id')->on('aca_themes')->onDelete('cascade');
         });
     }

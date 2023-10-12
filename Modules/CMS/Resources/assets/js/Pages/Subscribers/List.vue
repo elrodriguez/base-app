@@ -4,7 +4,9 @@
     import Pagination from '@/Components/Pagination.vue';
     import { faTrashAlt, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
     import Keypad from '@/Components/Keypad.vue';
-    import swal from "sweetalert";
+    //import swal from "sweetalert";
+    import * as XLSX from 'xlsx/dist/xlsx.full.min';
+    //import jsPDF from 'jspdf';
 
     const props = defineProps({
         subscribers: {
@@ -21,16 +23,39 @@
         search: props.filters.search,
     });
 
-    
+    function downloadExcel(){
+    const workbook = XLSX.utils.book_new();
+
+    // Obtén la tabla HTML que deseas convertir
+    const table = document.getElementById('table_export');
+
+    // Convierte la tabla HTML en una hoja de cálculo
+    const worksheet = XLSX.utils.table_to_sheet(table);
+    worksheet['!cols'] = [
+        {width:12}, // Columna "A" Fecha
+        { width: 25 }, // Columna "B" Nombres
+        {width:25}, // Columna "C" Correos
+        { width: 15 }, // Columna "D" Teléfonos
+        {width: 40}, //Mensajes
+        {width:9}, // Columna "F" 
+        {width:9}, // Columna "G" 
+        {width:9}, // Columna "H" 
+        {width:9}, // Columna "I" 
+    ];
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, form.start+'-'+form.end);
+    XLSX.writeFile(workbook, 'Suscriptores'+'.xlsx');
+}
+
 </script>
 
 <template>
-    <AppLayout title="Blog Categorias">
+    <AppLayout title="Blog Suscriptores">
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <div class="col-span-6 p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <div class="flex items-center justify-between pb-4 bg-white dark:bg-gray-900">
-                        <form @submit.prevent="form.get(route('roles.index'))">
+                        <form @submit.prevent="form.get(route('blog_subscriber'))">
                             <label for="table-search" class="sr-only">Search</label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -41,14 +66,17 @@
                         </form>
                         <div class="text-right">
                             <Keypad>
-                                <template #botones>
-                                  
+                                <template #botones>     
+                                    <button v-on:click="downloadExcel()"
+                                    class="inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                                     >Exportar en Excel
+                                    </button>
                                 </template>
                             </Keypad>
                         </div>
                     </div>
                     <div class="relative overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table id="table_export" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead class="text-gray-700 uppercase bg-gray-100 dark:text-gray-400">
                                 <tr class="border">
                                     <!-- <th scope="col" class="px-6 py-4 border">
@@ -56,20 +84,52 @@
                                     </th> -->
                                     <th scope="col" class="px-6 py-4">
                                         <div class="flex items-center">
-                                            Suscriptores
+                                            Fecha
                                             <a href="">
                                                 <img style="max-width: 12px;height: auto;" class="svg-img" src="/icons-svg/clasificar.svg" alt="Descripción de la imagen">
                                             </a>
                                         </div>
                                     </th>
-                                    <!-- <th scope="col" class="px-6 py-4">
+                                    <th scope="col" class="px-6 py-4">
                                         <div class="flex items-center">
-                                            Estado
+                                            Nombres
+                                            <a href="">
+                                                <img style="max-width: 12px;height: auto;" class="svg-img" src="/icons-svg/clasificar.svg" alt="Descripción de la imagen">
+                                            </a>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            Correo
+                                            <a href="">
+                                                <img style="max-width: 12px;height: auto;" class="svg-img" src="/icons-svg/clasificar.svg" alt="Descripción de la imagen">
+                                            </a>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            Teléfono
+                                            <a href="">
+                                                <img style="max-width: 12px;height: auto;" class="svg-img" src="/icons-svg/clasificar.svg" alt="Descripción de la imagen">
+                                            </a>
+                                        </div>
+                                    </th>
+                                     <!-- <th scope="col" class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            Asunto de mensaje
                                             <a href="">
                                                 <img style="max-width: 12px;height: auto;" class="svg-img" src="/icons-svg/clasificar.svg" alt="Descripción de la imagen">
                                             </a>
                                         </div>
                                     </th> -->
+                                    <th scope="col" class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            Mensaje
+                                            <a href="">
+                                                <img style="max-width: 12px;height: auto;" class="svg-img" src="/icons-svg/clasificar.svg" alt="Descripción de la imagen">
+                                            </a>
+                                        </div>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -81,12 +141,23 @@
                                      
                                     </td> -->
                                     <td class="border px-6 py-4">
+                                        {{ formatDateTime(subscriber.created_at) }}
+                                    </td>
+                                    <td class="border px-6 py-4">
+                                        {{ subscriber.full_name }}
+                                    </td>
+                                    <td class="border px-6 py-4">
                                         {{ subscriber.email }}
                                     </td>
+                                    <td class="border px-6 py-4">
+                                        {{ subscriber.phone }}
+                                    </td>
                                     <!-- <td class="border px-6 py-4">
-                                        <span v-if="subscriber.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
-                                        <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Inactivo</span>
+                                         {{ subscriber.subject }}
                                     </td> -->
+                                    <td class="border px-6 py-4">
+                                        {{ subscriber.message }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -99,3 +170,11 @@
         </div>
     </AppLayout>
 </template>
+<script>
+function formatDateTime(dateTimeString) {
+  const date = new Date(dateTimeString);
+  const formattedDate = date.toISOString().slice(0, 10);
+  const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return `${formattedDate} ${formattedTime}`;
+}
+</script>

@@ -36,6 +36,7 @@ class AcaStudentController extends Controller
                 'people.email',
                 'people.address',
                 'people.birthdate',
+                DB::raw('CONCAT("' . asset('storage') . '/",people.image) AS people_image'),
                 'aca_students.created_at'
             );
         if (request()->has('search')) {
@@ -96,7 +97,6 @@ class AcaStudentController extends Controller
         $update_id = null;
 
         $this->validate(
-
             $request,
             [
                 'document_type_id'  => 'required',
@@ -184,7 +184,37 @@ class AcaStudentController extends Controller
      */
     public function edit($id)
     {
-        return view('academic::edit');
+        $identityDocumentTypes = DB::table('identity_document_type')->get();
+
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
+        $student = AcaStudent::join('people', 'person_id', 'people.id')
+            ->leftJoin('districts', 'ubigeo', 'districts.id')
+            ->leftJoin('provinces', 'districts.province_id', 'provinces.id')
+            ->leftJoin('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'people.*',
+                'aca_students.id AS student_id',
+                DB::raw('CONCAT(departments.name,"-",provinces.name,"-",districts.name) AS city')
+            )
+            ->where('aca_students.id', $id)
+            ->first();
+
+        $student->image_preview = asset('storage/' . $student->image);
+
+        return Inertia::render('Academic::Students/Edit', [
+            'identityDocumentTypes' => $identityDocumentTypes,
+            'ubigeo'                => $ubigeo,
+            'student'               => $student
+        ]);
     }
 
     /**
@@ -193,9 +223,79 @@ class AcaStudentController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $person_id = $request->get('id');
+        $student_id = $request->get('student_id');
+
+        $this->validate(
+
+            $request,
+            [
+                'document_type_id'  => 'required',
+                'number'            => 'required|max:12',
+                'number'            => 'unique:people,number,' . $person_id . ',id,document_type_id,' . $request->get('document_type_id'),
+                'telephone'         => 'required|max:12',
+                'email'             => 'required|max:255',
+                'address'           => 'required|max:255',
+                'ubigeo'            => 'required|max:255',
+                'birthdate'         => 'required|',
+                'names'             => 'required|max:255',
+                'father_lastname'   => 'required|max:255',
+                'mother_lastname'   => 'required|max:255',
+            ]
+        );
+
+        // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
+        // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
+        $path = null;
+        $destination = 'uploads/students';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+        }
+
+        Person::find($person_id)->update([
+            'document_type_id'      => $request->get('document_type_id'),
+            'short_name'            => $request->get('names'),
+            'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
+            'description'           => $request->get('description'),
+            'number'                => $request->get('number'),
+            'telephone'             => $request->get('telephone'),
+            'email'                 => $request->get('email'),
+            'image'                 => $path,
+            'address'               => $request->get('address'),
+            'is_provider'           => false,
+            'is_client'             => true,
+            'ubigeo'                => $request->get('ubigeo'),
+            'birthdate'             => $request->get('birthdate'),
+            'names'                 => $request->get('names'),
+            'father_lastname'       => $request->get('father_lastname'),
+            'mother_lastname'       => $request->get('mother_lastname')
+        ]);
+
+        User::where('person_id', $person_id)->update([
+            'name'          => $request->get('names'),
+            'email'         => $request->get('email'),
+            'password'      => Hash::make($request->get('password')),
+            'information'   => $request->get('description'),
+            'avatar'        => $path
+        ]);
+
+        AcaStudent::find($student_id)->update([
+            'student_code'  => $request->get('number'),
+        ]);
+
+        return redirect()->route('aca_students_edit', $student_id)
+            ->with('message', __('Estudiante creado con éxito'));
     }
 
     /**

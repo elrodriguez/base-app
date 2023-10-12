@@ -5,6 +5,16 @@
         <!----header----->
         <x-header-area />
         <!----header end----->
+        <!----preloader----->
+        <div class="preloader-wrap">
+            <div class="preloader"
+                style="
+                    background-image: url({{ asset('themes/kentha/assets/images/preloader.gif') }});
+                ">
+            </div>
+            <div class="overlay"></div>
+        </div>
+        <!----preloader end----->
         <!--===============PAGE CONTENT==============-->
         <!--===============PAGE CONTENT==============-->
         <div id="content" class="site-content ">
@@ -56,7 +66,6 @@
     <!---==============footer start =================-->
     <x-footer-area />
     <!---==============mobile menu =================-->
-    
-    <x-modal-area />
 
+    <x-modal-area />
 @endsection

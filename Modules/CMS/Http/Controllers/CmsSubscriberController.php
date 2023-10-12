@@ -117,11 +117,14 @@ class CmsSubscriberController extends Controller
     public function list_subscribers()
     {
         $subscribers = (new CmsSubscriber())->newQuery();
-        $subscribers = $subscribers->paginate(10)->onEachSide(2)->appends(request()->query());
+        $subscribers->orderBy('created_at', 'desc'); // Ordenar por la columna "created_at" de forma descendente
+        
         if (request()->has('search')) {
-            $subscribers->where('description', 'Like', '%' . request()->input('search') . '%');
+            $subscribers->where('email', 'like', '%' . request()->input('search') . '%');
         }
-
+        
+        $subscribers = $subscribers->paginate(20)->onEachSide(2)->appends(request()->query());
+        
         return Inertia::render('CMS::Subscribers/List', [
             'subscribers' => $subscribers,
             'filters' => request()->all('search')
