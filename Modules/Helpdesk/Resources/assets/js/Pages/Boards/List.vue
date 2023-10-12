@@ -326,7 +326,7 @@
                                 </div>
                             </div>
                             <div>
-                                <Pagination :data="sales" />
+                                <Pagination :data="boards" />
                             </div>
                         </div>
                     </div>

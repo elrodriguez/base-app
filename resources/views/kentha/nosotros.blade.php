@@ -1,7 +1,7 @@
 @extends('layouts.kentha')
 @section('content')
     <div id="page" class="page_wapper hfeed site">
-        <x-header-area />
+        <x-kentha.header-area />
         <!----preloader----->
         <div class="preloader-wrap">
             <div class="preloader"
@@ -45,7 +45,7 @@
 
         <x-mision-area />
 
-        <x-footer-area />
+        <x-kentha.footer-area />
 
 
         <x-modal-area />
