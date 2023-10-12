@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edufie - Online Courses Html Template</title>
+    <title>CAP | Sitio Web</title>
     <!--fivicon icon-->
-    <link rel="icon" href="{{ asset('themes/capperu/assets/img/fevicon.png') }}">
+    <link rel="icon" href="{{ asset('themes/capperu/assets/img/fevicon-cap.png') }}">
     <!--fivicon icon
     <link rel="icon" href="assets/img/fevicon.png">
     -->
@@ -77,7 +77,9 @@
                     </button>
                 </div>
                 <div class="logo">
-                    <a class="main-logo" href=""><img src="{{ asset('themes/capperu/assets/img/logo.png') }}" alt="img"></a>
+                    <a class="main-logo" href="">
+                        <img style="width:196px; height:61px;" src="{{ asset('themes/capperu/assets/img/logo-cap.png') }}" alt="img">
+                    </a>
                 </div>
                 <div class="nav-right-part nav-right-part-mobile">
                     <ul>
@@ -85,10 +87,13 @@
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse" id="themefie_main_menu">
+                    <!--
                     <div class="single-input-wrap">
-                        <input type="text" placeholder="Search your best courses">
+                        <input type="text" placeholder="buscar programa">
                         <button><i class="fa fa-search"></i></button>
                     </div>
+                    -->
+                    
                     <ul class="navbar-nav menu-open text-end">
                         <li>
                             <a href="">Home</a>
@@ -140,18 +145,14 @@
     <div class="category-responsive d-xl-none d-block">
         <div class="container">
             <div class="category-slider owl-carousel">
-                <div class="item">
-                    <a href="category.html">Development</a>
-                </div>
-                <div class="item"><a href="category.html">Design</a></div>
-                <div class="item"><a href="category.html">Marketing</a></div>
-                <div class="item"><a href="category.html">Business</a></div>
-                <div class="item"><a href="category.html">Office Productivity</a></div>
-                <div class="item"><a href="category.html">Photography</a></div>
-                <div class="item"><a href="category.html">Video</a></div>
-                <div class="item"><a href="category.html">Health & Fitness</a></div>
-                <div class="item"><a href="category.html">Music</a></div>
-                <div class="item"><a href="category.html">IT & Software</a></div>
+                <div class="item"><a href="categoria">Categoria 01</a></div>
+                <div class="item"><a href="categoria">Categoria 02</a></div>
+                <div class="item"><a href="categoria">Categoria 03</a></div>
+                <div class="item"><a href="categoria">Categoria 04</a></div>
+                <div class="item"><a href="categoria">Categoria 05</a></div>
+                <div class="item"><a href="categoria">Categoria 06</a></div>
+                <div class="item"><a href="categoria">Categoria 07</a></div>
+                <div class="item"><a href="categoria">Categoria 08</a></div>
             </div>
         </div>
     </div>
@@ -160,33 +161,16 @@
             <div class="container nav-container">
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav menu-open">
-                        <li>
-                            <a href="category.html">Development</a>
-                        </li>
-                        <li>
-                            <a href="category.html">Design</a>
-                        </li>
-                        <li>
-                            <a href="category.html">Marketing</a>
-                        </li>
-                        <li>
-                            <a href="category.html">Business</a>
-                        </li>
-                        <li>
-                            <a href="category.html">Office Productivity</a>
-                        </li>
-                        <li>
-                            <a href="category.html">Photography & Video</a>
-                        </li>
-                        <li>
-                            <a href="category.html">Health & Fitness</a>
-                        </li>
-                        <li>
-                            <a href="category.html">Music</a>
-                        </li>
-                        <li>
-                            <a href="category.html">IT & Software</a>
-                        </li>
+                        <li><a href="categoria">Categoria 01</a></li>
+                        <li><a href="categoria">Categoria 02</a></li>
+                        <li><a href="categoria">Categoria 03</a></li>
+                        <li><a href="categoria">Categoria 04</a></li>
+                        <li><a href="categoria">Categoria 05</a></li>
+                        <li><a href="categoria">Categoria 06</a></li>
+                        <li><a href="categoria">Categoria 07</a></li>
+                        <li><a href="categoria">Categoria 08</a></li>
+                        <li><a href="categoria">Categoria 09</a></li>
+                        <li><a href="categoria">Categoria 10</a></li>
                     </ul>
                 </div>
             </div>
@@ -200,11 +184,11 @@
             <div class="row justify-content-center">
                 <div class="col-xl-7 col-lg-8 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Studies can now be done online much easily</h1>
+                        <h1>Estudia en línea con mucha facilidad.</h1>
                         <div class="banner-content">
-                            <p>You can access 4900+ different courses from 300 professional trainers for free</p>                         
+                            <p>Puede acceder a más de 150 cursos diferentes formadores profesionales.</p>                         
                         </div>
-                        <a class="btn btn-base" href="contact.html">Discover your Course</a>
+                        <a class="btn btn-base" href="categoria">Más Programas de Estudios</a>
                     </div>
                 </div>
             </div>
@@ -224,8 +208,8 @@
                                     <img src="{{ asset('themes/capperu/assets/img/intro/001.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
-                                    <h6><a href="#">Digital Marketing</a></h6>
-                                    <p>236 Course Available</p>
+                                    <h6><a href="#">Laboral</a></h6>
+                                    <p>236 Programas</p>
                                 </div>
                             </div>
                         </div>
@@ -235,8 +219,8 @@
                                     <img src="{{ asset('themes/capperu/assets/img/intro/002.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
-                                    <h6><a href="#">Web Development</a></h6>
-                                    <p>236 Course Available</p>
+                                    <h6><a href="#">Penal</a></h6>
+                                    <p>236 Programas</p>
                                 </div>
                             </div>
                         </div>
@@ -246,8 +230,8 @@
                                     <img src="{{ asset('themes/capperu/assets/img/intro/003.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
-                                    <h6><a href="#">Photography</a></h6>
-                                    <p>236 Course Available</p>
+                                    <h6><a href="#">Laboral</a></h6>
+                                    <p>236 Programas</p>
                                 </div>
                             </div>
                         </div>
@@ -257,8 +241,8 @@
                                     <img src="{{ asset('themes/capperu/assets/img/intro/004.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
-                                    <h6><a href="#">Data & Analytics</a></h6>
-                                    <p>236 Course Available</p>
+                                    <h6><a href="#">Ofinatica</a></h6>
+                                    <p>236 Programas</p>
                                 </div>
                             </div>
                         </div>
@@ -268,8 +252,8 @@
                                     <img src="{{ asset('themes/capperu/assets/img/intro/005.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
-                                    <h6><a href="#">Graphics Design</a></h6>
-                                    <p>236 Course Available</p>
+                                    <h6><a href="#">Marketing</a></h6>
+                                    <p>236 Programas</p>
                                 </div>
                             </div>
                         </div>
@@ -286,28 +270,28 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>Most Trending Courses</h2>
+                        <h2>Nuevos Programas</h2>
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <ul class="edl-nav nav nav-pills">
                         <li class="nav-item">
-                            <button class="nav-link active" id="pills-1-tab" data-bs-toggle="pill" data-bs-target="#pills-1">All Course</button>
+                            <button class="nav-link active" id="pills-1-tab" data-bs-toggle="pill" data-bs-target="#pills-1">Todos los programas</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-2-tab" data-bs-toggle="pill" data-bs-target="#pills-2">Python</button>
+                            <button class="nav-link" id="pills-2-tab" data-bs-toggle="pill" data-bs-target="#pills-2">Categoria 01</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-3-tab" data-bs-toggle="pill" data-bs-target="#pills-3">UI Design</button>
+                            <button class="nav-link" id="pills-3-tab" data-bs-toggle="pill" data-bs-target="#pills-3">Categoria 02</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-4-tab" data-bs-toggle="pill" data-bs-target="#pills-4">Php</button>
+                            <button class="nav-link" id="pills-4-tab" data-bs-toggle="pill" data-bs-target="#pills-4">Categoria 03</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-5-tab" data-bs-toggle="pill" data-bs-target="#pills-5">HTML</button>
+                            <button class="nav-link" id="pills-5-tab" data-bs-toggle="pill" data-bs-target="#pills-5">Categoria 04</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-6-tab" data-bs-toggle="pill" data-bs-target="#pills-6">CSS</button>
+                            <button class="nav-link" id="pills-6-tab" data-bs-toggle="pill" data-bs-target="#pills-6">Categoria 05</button>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -1068,7 +1052,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="section-title">
-                        <h2>Exceptional opportunities</h2>
+                        <h2>Oportunidades excepcionales</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet .</p>
                     </div>
                 </div>
@@ -1125,13 +1109,13 @@
                     <div class="single-course-wrap">
                         <div class="thumb">
                             <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="assets/img/course/7.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
                         </div>
                         <div class="wrap-details">
                             <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
                             <div class="user-area">
                                 <div class="user-details">
-                                    <img src="assets/img/author/1.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                     <a href="#">Jessica Jessy</a>
                                 </div>
                                 <div class="user-rating">
@@ -1156,14 +1140,14 @@
                     <div class="single-course-wrap">
                         <div class="thumb">
                             <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="assets/img/course/5.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/course/5.png') }}" alt="img">
                         </div>
                         <div class="wrap-details">
                             <h6><a href="#">Java (Beginner) Programming Tutorials
                             </a></h6>
                             <div class="user-area">
                                 <div class="user-details">
-                                    <img src="assets/img/author/1.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                     <a href="#">Jessica Jessy</a>
                                 </div>
                                 <div class="user-rating">
@@ -1188,14 +1172,14 @@
                     <div class="single-course-wrap">
                         <div class="thumb">
                             <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="assets/img/course/4.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
                         </div>
                         <div class="wrap-details">
                             <h6><a href="#">About latest tips news and course for Illustration 2021
                             </a></h6>
                             <div class="user-area">
                                 <div class="user-details">
-                                    <img src="assets/img/author/1.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                     <a href="#">Jessica Jessy</a>
                                 </div>
                                 <div class="user-rating">
@@ -1220,14 +1204,14 @@
                     <div class="single-course-wrap">
                         <div class="thumb">
                             <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="assets/img/course/6.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/course/6.png') }}" alt="img">
                         </div>
                         <div class="wrap-details">
                             <h6><a href="#">Email & Affiliate Marketing Mastermind
                             </a></h6>
                             <div class="user-area">
                                 <div class="user-details">
-                                    <img src="assets/img/author/1.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                     <a href="#">Jessica Jessy</a>
                                 </div>
                                 <div class="user-rating">
@@ -1252,14 +1236,14 @@
                     <div class="single-course-wrap">
                         <div class="thumb">
                             <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="assets/img/course/3.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/course/3.png') }}" alt="img">
                         </div>
                         <div class="wrap-details">
                             <h6><a href="#">Time Management Mastery: Do More, Stress Less
                             </a></h6>
                             <div class="user-area">
                                 <div class="user-details">
-                                    <img src="assets/img/author/1.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                     <a href="#">Jessica Jessy</a>
                                 </div>
                                 <div class="user-rating">
@@ -1284,14 +1268,14 @@
                     <div class="single-course-wrap">
                         <div class="thumb">
                             <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="assets/img/course/1.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
                         </div>
                         <div class="wrap-details">
                             <h6><a href="#">Python Programming Tutorials (Computer Science)
                             </a></h6>
                             <div class="user-area">
                                 <div class="user-details">
-                                    <img src="assets/img/author/1.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                     <a href="#">Jessica Jessy</a>
                                 </div>
                                 <div class="user-rating">
@@ -1316,14 +1300,14 @@
                     <div class="single-course-wrap">
                         <div class="thumb">
                             <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="assets/img/course/2.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/course/2.png') }}" alt="img">
                         </div>
                         <div class="wrap-details">
                             <h6><a href="#">Best way learn fundamentals of design.
                             </a></h6>
                             <div class="user-area">
                                 <div class="user-details">
-                                    <img src="assets/img/author/1.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                     <a href="#">Jessica Jessy</a>
                                 </div>
                                 <div class="user-rating">
@@ -1348,14 +1332,14 @@
                     <div class="single-course-wrap">
                         <div class="thumb">
                             <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="assets/img/course/3.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/course/3.png') }}" alt="img">
                         </div>
                         <div class="wrap-details">
                             <h6><a href="#">Search Engine Optimization Tips and Tricks
                             </a></h6>
                             <div class="user-area">
                                 <div class="user-details">
-                                    <img src="assets/img/author/1.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                     <a href="#">Jessica Jessy</a>
                                 </div>
                                 <div class="user-rating">
@@ -1395,7 +1379,7 @@
                         <div class="item">
                             <div class="single-testimonial-wrap">
                                 <div class="thumb">
-                                    <img src="assets/img/quote.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/quote.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
                                     <h5><a href="#">Super fast WordPress themes</a></h5>
@@ -1408,7 +1392,7 @@
                         <div class="item">
                             <div class="single-testimonial-wrap">
                                 <div class="thumb">
-                                    <img src="assets/img/quote.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/quote.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
                                     <h5><a href="#">Super Courses of great quality</a></h5>
@@ -1421,7 +1405,7 @@
                         <div class="item">
                             <div class="single-testimonial-wrap">
                                 <div class="thumb">
-                                    <img src="assets/img/quote.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/quote.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
                                     <h5><a href="#">Super fast WordPress themes</a></h5>
@@ -1434,7 +1418,7 @@
                         <div class="item">
                             <div class="single-testimonial-wrap">
                                 <div class="thumb">
-                                    <img src="assets/img/quote.png" alt="img">
+                                    <img src="{{ asset('themes/capperu/assets/img/quote.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
                                     <h5><a href="#">Super Courses of great quality</a></h5>
@@ -1458,22 +1442,22 @@
                 <div class="col-lg-12">
                     <div class="client-slider owl-carousel">
                         <div class="item">
-                            <img src="assets/img/client/1.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/client/1.png') }}" alt="img">
                         </div>
                         <div class="item">
-                            <img src="assets/img/client/2.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/client/2.png') }}" alt="img">
                         </div>
                         <div class="item">
-                            <img src="assets/img/client/3.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/client/3.png') }}" alt="img">
                         </div>
                         <div class="item">
-                            <img src="assets/img/client/4.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/client/4.png') }}" alt="img">
                         </div>
                         <div class="item">
-                            <img src="assets/img/client/5.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/client/5.png') }}" alt="img">
                         </div>
                         <div class="item">
-                            <img src="assets/img/client/6.png" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/client/6.png') }}" alt="img">
                         </div>
                     </div>
                 </div>
