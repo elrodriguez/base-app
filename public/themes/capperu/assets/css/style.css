@@ -2998,8 +2998,12 @@ ul {
 .single-course-wrap .cat.cat-blue {
   background-color: var(--main-color);
 }
+/*
 .single-course-wrap .cat.cat-red {
   background-color: #eb5757;
+}*/
+.single-course-wrap .cat.cat-red {
+  background-color: #8b0e06;
 }
 .single-course-wrap .cat.cat-green {
   background-color: #27ae60;

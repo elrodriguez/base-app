@@ -104,14 +104,9 @@
                         <li class="menu-item-has-children">
                             <a href="#">Programa de Estudios</a>
                             <ul class="sub-menu">
-                                <li><a href="blog-cat.html">Blog Category</a></li>
-                                <li><a href="blog-details.html">Blog Details</a></li>
-                                <li><a href="course.html">Course</a></li>
-                                <li><a href="course-details.html">Course Details</a></li>
-                                <li><a href="category.html">Category</a></li>
-                                <li><a href="instructor.html">Instructor</a></li>
-                                <li><a href="instructor-details.html">Single Instructor</a></li>
-                                <li><a href="dashboard.html">Dashboard</a></li>
+                                <li><a href="">Sector: <b>Empresarial</b></a></li>
+                                <li><a href="">Sector: <b>Laboral</b></a></li>
+                                <li><a href="">Sector: <b>Penal</b></a></li>
                             </ul>
                         </li>
                         <li>
@@ -264,13 +259,333 @@
     </div>
     <!-- intro Area End -->
 
-    <!-- trending courses Area Start-->
-    <section class="trending-courses-area">
+
+    <!-- enllor courses Area Start-->
+    <section class="enllor-courses-area pd-top-50 pd-bottom-50">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
                         <h2>Nuevos Programas</h2>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="#" class="cat cat-blue">Curso</a>
+                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
+                            <div class="user-area">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                    <a href="#">Jessica Jessy</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span><i class="fa fa-users"></i>
+                                        </span>(76)
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <a href="#">Development</a>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <div class="price">$30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="#" class="cat cat-red">Diplomado</a>
+                            <img src="{{ asset('themes/capperu/assets/img/course/5.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h6><a href="#">Java (Beginner) Programming Tutorials
+                            </a></h6>
+                            <div class="user-area">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                    <a href="#">Jessica Jessy</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span><i class="fa fa-users"></i>
+                                        </span>(76)
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <a href="#">Development</a>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <div class="price">$30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="#" class="cat cat-red">Diplomado</a>
+                            <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h6><a href="#">About latest tips news and course for Illustration 2021
+                            </a></h6>
+                            <div class="user-area">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                    <a href="#">Jessica Jessy</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span><i class="fa fa-users"></i>
+                                        </span>(76)
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <a href="#">Development</a>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <div class="price">$30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="#" class="cat cat-blue">Curso</a>
+                            <img src="{{ asset('themes/capperu/assets/img/course/6.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h6><a href="#">Email & Affiliate Marketing Mastermind
+                            </a></h6>
+                            <div class="user-area">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                    <a href="#">Jessica Jessy</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span><i class="fa fa-users"></i>
+                                        </span>(76)
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <a href="#">Development</a>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <div class="price">$30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="#" class="cat cat-red">Diplomado</a>
+                            <img src="{{ asset('themes/capperu/assets/img/course/3.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h6><a href="#">Time Management Mastery: Do More, Stress Less
+                            </a></h6>
+                            <div class="user-area">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                    <a href="#">Jessica Jessy</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span><i class="fa fa-users"></i>
+                                        </span>(76)
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <a href="#">Development</a>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <div class="price">$30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="#" class="cat cat-blue">Curso</a>
+                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h6><a href="#">Python Programming Tutorials (Computer Science)
+                            </a></h6>
+                            <div class="user-area">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                    <a href="#">Jessica Jessy</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span><i class="fa fa-users"></i>
+                                        </span>(76)
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <a href="#">Development</a>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <div class="price">$30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="#" class="cat cat-blue">Curso</a>
+                            <img src="{{ asset('themes/capperu/assets/img/course/2.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h6><a href="#">Best way learn fundamentals of design.
+                            </a></h6>
+                            <div class="user-area">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                    <a href="#">Jessica Jessy</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span><i class="fa fa-users"></i>
+                                        </span>(76)
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <a href="#">Development</a>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <div class="price">$30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="#" class="cat cat-red">Diplomado</a>
+                            <img src="{{ asset('themes/capperu/assets/img/course/3.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h6><a href="#">Search Engine Optimization Tips and Tricks
+                            </a></h6>
+                            <div class="user-area">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                    <a href="#">Jessica Jessy</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span><i class="fa fa-users"></i>
+                                        </span>(76)
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-6">
+                                        <a href="#">Development</a>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <div class="price">$30</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- enllor courses Area End -->
+
+    <!-- intro Area Start-->
+    <div class="text-center pd-top-135 pd-top-50 pd-bottom-50">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-title">
+                        <h2>Nuestros Beneficios</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet .</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="single-intro-wrap-2">
+                        <div class="thumb">
+                            <img src="{{ asset('themes/capperu/assets/img/intro/01.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h4><a href="#">Convenios</a></h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dui praesent nam fermentum, est neque, dignissim. Phasellus feugiat elit vulputate convallis.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="single-intro-wrap-2">
+                        <div class="thumb">
+                            <img src="{{ asset('themes/capperu/assets/img/intro/02.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h4><a href="#">Campus Virtual</a></h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dui praesent nam fermentum, est neque, dignissim. Phasellus feugiat elit vulputate convallis.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="single-intro-wrap-2">
+                        <div class="thumb">
+                            <img src="{{ asset('themes/capperu/assets/img/intro/03.png') }}" alt="img">
+                        </div>
+                        <div class="wrap-details">
+                            <h4><a href="#">Certificados</a></h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dui praesent nam fermentum, est neque, dignissim. Phasellus feugiat elit vulputate convallis.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>            
+    </div>
+    <!-- intro Area End -->
+
+    <!-- trending courses Area Start-->
+    <section class="trending-courses-area pd-top-100 pd-bottom-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>Más Populares</h2>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -1046,332 +1361,14 @@
     </section>
     <!-- trending courses Area End -->
 
-    <!-- intro Area Start-->
-    <div class="text-center pd-top-135">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="section-title">
-                        <h2>Oportunidades excepcionales</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet .</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single-intro-wrap-2">
-                        <div class="thumb">
-                            <img src="{{ asset('themes/capperu/assets/img/intro/01.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h4><a href="#">Earn money</a></h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dui praesent nam fermentum, est neque, dignissim. Phasellus feugiat elit vulputate convallis.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single-intro-wrap-2">
-                        <div class="thumb">
-                            <img src="{{ asset('themes/capperu/assets/img/intro/02.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h4><a href="#">Inspire students</a></h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dui praesent nam fermentum, est neque, dignissim. Phasellus feugiat elit vulputate convallis.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single-intro-wrap-2">
-                        <div class="thumb">
-                            <img src="{{ asset('themes/capperu/assets/img/intro/03.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h4><a href="#">Join our community</a></h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dui praesent nam fermentum, est neque, dignissim. Phasellus feugiat elit vulputate convallis.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>            
-    </div>
-    <!-- intro Area End -->
-
-    <!-- enllor courses Area Start-->
-    <section class="enllor-courses-area pd-top-100 pd-bottom-140">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>Most Students Enllor</h2>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="#">Jessica Jessy</a>
-                                </div>
-                                <div class="user-rating">
-                                    <span><i class="fa fa-star"></i>
-                                        4.9</span>(76)
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <a href="#">Development</a>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <div class="price">$30</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="{{ asset('themes/capperu/assets/img/course/5.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h6><a href="#">Java (Beginner) Programming Tutorials
-                            </a></h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="#">Jessica Jessy</a>
-                                </div>
-                                <div class="user-rating">
-                                    <span><i class="fa fa-star"></i>
-                                        4.9</span>(76)
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <a href="#">Development</a>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <div class="price">$30</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h6><a href="#">About latest tips news and course for Illustration 2021
-                            </a></h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="#">Jessica Jessy</a>
-                                </div>
-                                <div class="user-rating">
-                                    <span><i class="fa fa-star"></i>
-                                        4.9</span>(76)
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <a href="#">Development</a>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <div class="price">$30</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="{{ asset('themes/capperu/assets/img/course/6.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h6><a href="#">Email & Affiliate Marketing Mastermind
-                            </a></h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="#">Jessica Jessy</a>
-                                </div>
-                                <div class="user-rating">
-                                    <span><i class="fa fa-star"></i>
-                                        4.9</span>(76)
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <a href="#">Development</a>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <div class="price">$30</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="{{ asset('themes/capperu/assets/img/course/3.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h6><a href="#">Time Management Mastery: Do More, Stress Less
-                            </a></h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="#">Jessica Jessy</a>
-                                </div>
-                                <div class="user-rating">
-                                    <span><i class="fa fa-star"></i>
-                                        4.9</span>(76)
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <a href="#">Development</a>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <div class="price">$30</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h6><a href="#">Python Programming Tutorials (Computer Science)
-                            </a></h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="#">Jessica Jessy</a>
-                                </div>
-                                <div class="user-rating">
-                                    <span><i class="fa fa-star"></i>
-                                        4.9</span>(76)
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <a href="#">Development</a>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <div class="price">$30</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="{{ asset('themes/capperu/assets/img/course/2.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h6><a href="#">Best way learn fundamentals of design.
-                            </a></h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="#">Jessica Jessy</a>
-                                </div>
-                                <div class="user-rating">
-                                    <span><i class="fa fa-star"></i>
-                                        4.9</span>(76)
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <a href="#">Development</a>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <div class="price">$30</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="#" class="cat cat-blue">Beginner</a>
-                            <img src="{{ asset('themes/capperu/assets/img/course/3.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h6><a href="#">Search Engine Optimization Tips and Tricks
-                            </a></h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="#">Jessica Jessy</a>
-                                </div>
-                                <div class="user-rating">
-                                    <span><i class="fa fa-star"></i>
-                                        4.9</span>(76)
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <a href="#">Development</a>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <div class="price">$30</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- enllor courses Area End -->
 
     <!-- testimonial courses Area Start-->
-    <section class="testimonial-courses-area pd-bottom-150">
+    <section class="testimonial-courses-area pd-top-100 pd-bottom-150">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>People <i style="color: var(--main-color);" class="fa fa-heart"></i> Edufie</h2>
+                        <h2><i style="color: var(--main-color);" class="fa fa-heart"></i> Testimonios</h2>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -1442,22 +1439,13 @@
                 <div class="col-lg-12">
                     <div class="client-slider owl-carousel">
                         <div class="item">
-                            <img src="{{ asset('themes/capperu/assets/img/client/1.png') }}" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/convenios/logoIng.png') }}" alt="img">
                         </div>
                         <div class="item">
-                            <img src="{{ asset('themes/capperu/assets/img/client/2.png') }}" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/convenios/logoCallao.png') }}" alt="img">
                         </div>
                         <div class="item">
-                            <img src="{{ asset('themes/capperu/assets/img/client/3.png') }}" alt="img">
-                        </div>
-                        <div class="item">
-                            <img src="{{ asset('themes/capperu/assets/img/client/4.png') }}" alt="img">
-                        </div>
-                        <div class="item">
-                            <img src="{{ asset('themes/capperu/assets/img/client/5.png') }}" alt="img">
-                        </div>
-                        <div class="item">
-                            <img src="{{ asset('themes/capperu/assets/img/client/6.png') }}" alt="img">
+                            <img src="{{ asset('themes/capperu/assets/img/convenios/logoAdm.png') }}" alt="img">
                         </div>
                     </div>
                 </div>
@@ -1543,28 +1531,25 @@
                 <div class="row">
                     <div class="col-xl-7 align-self-center">
                         <div class="d-md-flex align-items-center mb-4 mb-xl-0">
-                            <div class="logo d-inline-block">
-                                <img src="assets/img/logo.png" alt="img">
-                            </div>
                             <div class="copyright-area">
-                                <p>© 2021 - Themefie. All Rights Reserved</p>       
+                                <p>© 2023 - CAP PERU. Todos los derechos reservados | by <a href="https://aracodeperu.com/">Aracode Peru</a></p>       
                             </div>
                         </div>                        
                     </div>
                     <div class="col-xl-5 align-self-center text-xl-end">
                         <ul class="social-area d-inline-block">
                             <li><a class="active" href="#"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
                             <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
-                            <li><a href="#"><i class="fab fa-behance"></i></a></li>
+                            <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                            <li><a href="#"><i class="fab fa-youtube"></i></a></li>
                         </ul>
                         <select class="single-select float-sm-end">
-                            <option>English</option>
+                            <option>Español</option>
+                            <!--
                             <option value="asc">Bangla</option>
                             <option value="desc">Spanish</option>
                             <option value="pop">France</option>
+                            -->
                         </select>
                     </div>
                 </div>                
