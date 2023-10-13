@@ -289,11 +289,11 @@
                             </div>
                             <div class="price-wrap">
                                 <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <a href="#">Development</a>
+                                    <div class="col-8">
+                                        <a href="#" class="btn btn-primary"><i class="fa fa-cart-plus" aria-hidden="true"></i> Comprar</a>
                                     </div>
-                                    <div class="col-6 text-end">
-                                        <div class="price">$30</div>
+                                    <div class="col-4 text-end">
+                                        <div class="price">S/. 250</div>
                                     </div>
                                 </div>
                             </div>
