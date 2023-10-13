@@ -1459,67 +1459,119 @@
         <div class="footer-inner">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-8 col-md-4 col-sm-6">
+                    <div class="col-md-3">
                         <div class="footer-widget widget widget_link">
-                            <h4 class="widget-title">Categories</h4>
+                            <h4 class="widget-title">Sobre Nosotros</h4>
                             <div class="row">
-                                <div class="col-lg-4">
-                                    <ul class="pe-5">
-                                        <li><a href="category.html">Development</a></li>
-                                        <li><a href="category.html">Business</a></li>
-                                        <li><a href="category.html">Finance & Accounting</a></li>
-                                        <li><a href="category.html">IT & Software</a></li>
-                                        <li><a href="category.html">Office Productivity</a></li>
-                                        <li><a href="category.html">Design</a></li>
-                                        <li><a href="category.html">Marketing</a></li>
-                                    </ul>
+                                <div class="col-md-12">
+                                    <p>
+                                        El Centro de Actualización Profesional CAP – PERÚ 
+                                        SAC tiene como objetivo contribuir a la actualización 
+                                        y perfeccionamiento académico de profesionales y 
+                                        egresados de las diferentes carreras profesionales. 
+                                        
+                                    </p>
                                 </div>
-                                <div class="col-lg-4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="footer-widget widget widget_link">
+                            <h4 class="widget-title">Oficinas</h4>
+                            <div class="row">
+                                <div class="col-md-12">
                                     <ul class="pe-5">
-                                        <li><a href="category.html">Lifiestyle</a></li>
-                                        <li><a href="category.html">Photography & Video</a></li>
-                                        <li><a href="category.html">Health & Fitness</a></li>
-                                        <li><a href="category.html">Music</a></li>
-                                        <li><a href="category.html">UX Design</a></li>
-                                        <li><a href="category.html">Seo</a></li>
-                                        <li><a href="category.html">Business Analysis and Strategy</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-4">
-                                    <ul>
-                                        <li><a href="category.html">Customer Service</a></li>
-                                        <li><a href="category.html">Human Resources</a></li>
-                                        <li><a href="category.html">Leadership and Management
-                                        </a></li>
+                                        <li>
+                                            <b>
+                                                <i class="fa fa-home"></i> 
+                                                Sede Lima:
+                                            </b> 
+                                            Av. 2 de mayo 516 Of.201 - Miraflores
+                                        </li>
+                                        <li>
+                                            <b>
+                                                <i class="fa fa-home"></i> 
+                                                Sede Chimbote:
+                                            </b> 
+                                            Av. Francisco Bolognesi 549 Of.119
+                                        </li>
+                                        <li>
+                                            <b>
+                                                <i class="fa fa-phone"></i> 
+                                                Teléfonos:
+                                            </b> 
+                                            (01)7397026 – (043) 200324
+                                        </li>
+                                        <li>
+                                            <b>
+                                                <i class="fa fa-envelope"></i> 
+                                                E-mail:
+                                            </b> 
+                                            capperuacademica@gmail.com
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
+                    <div class="col-md-3">
                         <div class="footer-widget widget widget_link">
-                            <h4 class="widget-title">Link</h4>
-                            <ul class="pe-4">
-                                <li><a href="blog.html">News & Blogs
-                                </a></li>
-                                <li><a href="blog-cat.html">Blog Category</a></li>
-                                <li><a href="blog-details.html">Blog Details</a></li>
-                                <li><a href="course.html">Course</a></li>
-                                <li><a href="course-details.html">Course Details</a></li>
-                                <li><a href="instructor.html">Instructor</a></li>
-                                <li><a href="instructor-details.html">Instructor Details</a></li>
-                            </ul>
+                            <h4 class="widget-title">Horarios</h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>
+                                        Nuestro equipo de profesionales estan listos para brindarle el mejor servicio.
+                                    </p>
+                                    <ul class="pe-4">
+                                        <li>
+                                            <b>
+                                                <i class="fa fa-clock"></i> 
+                                                Lunes - Viernes:
+                                            </b> 
+                                            <br> 9:00 a. m. a 1:00 p. m.
+                                            <br> 2:00 p. m. a 6:00 p. m.
+                                        </li>
+                                        <li>
+                                            <b>
+                                                <i class="fa fa-clock"></i> 
+                                                Sabados:
+                                            </b> 
+                                            <br> 9:00 a. m. a 1:00 p. m.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
+                    <div class="col-md-3">
                         <div class="footer-widget widget widget_link">
-                            <h4 class="widget-title">Support</h4>
-                            <ul class="pe-4">
-                                <li><a href="home.html">Documentation</a></li>
-                                <li><a href="faq.html">FAQS</a></li>
-                                <li><a href="dashboard.html">Dashboard</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                            </ul>
+                            <h4 class="widget-title">Blog & Noticias</h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="pe-4">
+                                        <li>
+                                            <a href="">
+                                                Planificación de Posible escasez de refrigerantes
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                Planificación de Posible escasez de refrigerantes
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                Planificación de Posible escasez de refrigerantes
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                Planificación de Posible escasez de refrigerantes
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
