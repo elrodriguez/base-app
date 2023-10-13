@@ -17,11 +17,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id')->nullable();
             $table->unsignedBigInteger('registration_id');
+            $table->unsignedBigInteger('course_id')->nullable();
             $table->string('image')->nullable();
             $table->text('content')->nullable();
             $table->timestamps();
             $table->foreign('student_id')->references('id')->on('aca_students')->onDelete('cascade');
             $table->foreign('registration_id', 'reg_cer_fk')->references('id')->on('aca_cap_registrations')->onDelete('cascade');
+            $table->foreign('course_id')->references('id')->on('aca_courses')->onDelete('cascade');
         });
     }
 
