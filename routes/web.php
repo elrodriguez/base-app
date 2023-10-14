@@ -26,6 +26,7 @@ Route::get('/contacto', [KenthaController::class, 'contacto'])->name('web_contac
 
 Route::get('/capperu', [WebController::class, 'index'])->name('cms_principal');
 Route::get('/nosotros', [CapperuController::class, 'nosotros'])->name('web_nosotros');
+Route::get('/categorias', [CapperuController::class, 'categorias'])->name('web_categorias');
 Route::get('/contacto', [CapperuController::class, 'contacto'])->name('web_contacto');
 
 Route::get('/blog/home', [BlogController::class, 'index'])->name('blog_principal');

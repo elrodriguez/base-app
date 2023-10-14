@@ -43,6 +43,9 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="{{ route('web_categorias') }}">Categorias</a>
+                        </li>
+                        <li>
                             <a href="">Blog</a>
                         </li>
                         <li>
