@@ -16,6 +16,8 @@ class OnlineshopDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call("OthersTableSeeder");
+        $this->call([
+            OnliPermissionsTableSeeder::class
+        ]);
     }
 }

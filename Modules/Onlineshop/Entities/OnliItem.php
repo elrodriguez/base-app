@@ -5,21 +5,25 @@ namespace Modules\Onlineshop\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class OnliSaleDetail extends Model
+class OnliItem extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'sale_id',
         'item_id',
         'entitie',
+        'category_description',
+        'name',
+        'description',
+        'scor',
         'price',
-        'quantity',
-        'onli_item_id'
+        'discount',
+        'image',
+        'status'
     ];
 
     protected static function newFactory()
     {
-        return \Modules\Onlineshop\Database\factories\OnliSaleDetailFactory::new();
+        return \Modules\Onlineshop\Database\factories\OnliItemFactory::new();
     }
 }

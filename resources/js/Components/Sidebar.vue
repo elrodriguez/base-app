@@ -9,7 +9,8 @@ import {
     faEarthAmericas,
     faCartShopping,
     faKitMedical,
-    faBook
+    faBook,
+    faGlobe
  } from "@fortawesome/free-solid-svg-icons";
 import { Link } from '@inertiajs/vue3';
 
@@ -136,6 +137,27 @@ const menu = ref([
                 text: 'Reportes',
                 permissions: 'sale_reportes',
             }
+        ]
+    },
+    {
+        status:false,
+        text: 'Ventas en línea',
+        icom: faGlobe,
+        route: null,
+        permissions: 'onli_dashboard',
+        items: [
+            {
+                route: route('onlineshop_items'),
+                status: false,
+                text: 'Productos & servicios',
+                permissions: 'onli_items',
+            },
+            {
+                route: route('onlineshop_sales'),
+                status: false,
+                text: 'Pedidos',
+                permissions: 'onli_pedidos',
+            },
         ]
     },
     {
@@ -278,7 +300,8 @@ const menu = ref([
                 permissions: 'aca_cursos_listado',
             },
         ]
-    }
+    },
+    
 ]);
 
 const toggleSubItems = (index) => {
