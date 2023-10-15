@@ -554,21 +554,22 @@ ul {
     ## Button
 ---------------------------------------*/
 .btn {
-  height: 60px;
-  line-height: 60px;
-  padding: 0 30px;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 20px;
   overflow: hidden;
   position: relative;
   border: 0;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   display: inline-block;
   -webkit-transform: perspective(1px) translateZ(0);
           transform: perspective(1px) translateZ(0);
   border-radius: 8px;
 }
+
 .btn i,
 .btn svg {
   margin-left: 5px;
@@ -579,6 +580,7 @@ ul {
           box-shadow: none;
   color: #fff;
 }
+
 .btn:after {
   content: "";
   background: var(--main-color);
@@ -597,6 +599,8 @@ ul {
           transform-origin: top left;
   width: 0;
 }
+
+
 .btn img {
   margin-right: 7px;
   margin-top: -1px;
