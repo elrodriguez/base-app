@@ -17,6 +17,7 @@
                 <div class="nav-right-part nav-right-part-mobile">
                     <ul>
                         <li><a class="search header-search" href="#"><i class="fa fa-search"></i></a></li>
+                        <li><a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus"></i></a></li>
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse" id="themefie_main_menu">
@@ -55,14 +56,7 @@
                 </div>
                 <div class="nav-right-part nav-right-part-desktop">
                     <ul>
-                        <li class="right-search">
-                            <a href="#"><i class="fa fa-search"></i></a>
-                            <div class="single-input-wrap">
-                                <input type="text" placeholder="Search your best courses">
-                                <button><i class="fa fa-search"></i></button>
-                            </div>
-                        </li>
-                        <li><a href="#" class="btn btn-base-light"><i class="fa fa-cart-plus"></i></a></li>
+                        <li><a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus"></i></a></li>
                         <li>
                             <a href="" class="btn btn-primary">
                                 Campus Virtual
