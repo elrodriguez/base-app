@@ -14,6 +14,10 @@ class CapperuController extends Controller
         return view('Capperu/categorias');
     }
 
+    public function modalidadpresencial(){
+        return view('Capperu/modalidad-presencial');
+    }
+
     public function carrito(){
         return view('Capperu/carrito');
     }

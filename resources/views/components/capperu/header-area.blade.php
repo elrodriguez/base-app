@@ -70,14 +70,8 @@
     <div class="category-responsive d-xl-none d-block">
         <div class="container">
             <div class="category-slider owl-carousel">
-                <div class="item"><a href="categoria">Categoria 01</a></div>
-                <div class="item"><a href="categoria">Categoria 02</a></div>
-                <div class="item"><a href="categoria">Categoria 03</a></div>
-                <div class="item"><a href="categoria">Categoria 04</a></div>
-                <div class="item"><a href="categoria">Categoria 05</a></div>
-                <div class="item"><a href="categoria">Categoria 06</a></div>
-                <div class="item"><a href="categoria">Categoria 07</a></div>
-                <div class="item"><a href="categoria">Categoria 08</a></div>
+                <div class="item"><a href="categoria">Convenios</a></div>
+                <div class="item"><a href="categoria">Politica de Privacidad</a></div>
             </div>
         </div>
     </div>
@@ -86,16 +80,8 @@
             <div class="container nav-container">
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav menu-open">
-                        <li><a href="categoria">Categoria 01</a></li>
-                        <li><a href="categoria">Categoria 02</a></li>
-                        <li><a href="categoria">Categoria 03</a></li>
-                        <li><a href="categoria">Categoria 04</a></li>
-                        <li><a href="categoria">Categoria 05</a></li>
-                        <li><a href="categoria">Categoria 06</a></li>
-                        <li><a href="categoria">Categoria 07</a></li>
-                        <li><a href="categoria">Categoria 08</a></li>
-                        <li><a href="categoria">Categoria 09</a></li>
-                        <li><a href="categoria">Categoria 10</a></li>
+                        <li><a href="categoria">Convenios</a></li>
+                        <li><a href="categoria">Politica de Privacidad</a></li>
                     </ul>
                 </div>
             </div>
