@@ -17,6 +17,7 @@
                 <div class="nav-right-part nav-right-part-mobile">
                     <ul>
                         <li><a class="search header-search" href="#"><i class="fa fa-search"></i></a></li>
+                        <li><a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus"></i></a></li>
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse" id="themefie_main_menu">
@@ -55,14 +56,7 @@
                 </div>
                 <div class="nav-right-part nav-right-part-desktop">
                     <ul>
-                        <li class="right-search">
-                            <a href="#"><i class="fa fa-search"></i></a>
-                            <div class="single-input-wrap">
-                                <input type="text" placeholder="Search your best courses">
-                                <button><i class="fa fa-search"></i></button>
-                            </div>
-                        </li>
-                        <li><a href="#" class="btn btn-base-light"><i class="fa fa-cart-plus"></i></a></li>
+                        <li><a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus"></i></a></li>
                         <li>
                             <a href="" class="btn btn-primary">
                                 Campus Virtual
@@ -76,14 +70,8 @@
     <div class="category-responsive d-xl-none d-block">
         <div class="container">
             <div class="category-slider owl-carousel">
-                <div class="item"><a href="categoria">Categoria 01</a></div>
-                <div class="item"><a href="categoria">Categoria 02</a></div>
-                <div class="item"><a href="categoria">Categoria 03</a></div>
-                <div class="item"><a href="categoria">Categoria 04</a></div>
-                <div class="item"><a href="categoria">Categoria 05</a></div>
-                <div class="item"><a href="categoria">Categoria 06</a></div>
-                <div class="item"><a href="categoria">Categoria 07</a></div>
-                <div class="item"><a href="categoria">Categoria 08</a></div>
+                <div class="item"><a href="categoria">Convenios</a></div>
+                <div class="item"><a href="categoria">Politica de Privacidad</a></div>
             </div>
         </div>
     </div>
@@ -92,16 +80,8 @@
             <div class="container nav-container">
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav menu-open">
-                        <li><a href="categoria">Categoria 01</a></li>
-                        <li><a href="categoria">Categoria 02</a></li>
-                        <li><a href="categoria">Categoria 03</a></li>
-                        <li><a href="categoria">Categoria 04</a></li>
-                        <li><a href="categoria">Categoria 05</a></li>
-                        <li><a href="categoria">Categoria 06</a></li>
-                        <li><a href="categoria">Categoria 07</a></li>
-                        <li><a href="categoria">Categoria 08</a></li>
-                        <li><a href="categoria">Categoria 09</a></li>
-                        <li><a href="categoria">Categoria 10</a></li>
+                        <li><a href="categoria">Convenios</a></li>
+                        <li><a href="categoria">Politica de Privacidad</a></li>
                     </ul>
                 </div>
             </div>

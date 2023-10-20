@@ -68,6 +68,15 @@
     <!-- main js  -->
     <script src="{{ asset('themes/capperu/assets/js/main.js') }}"></script>
 
+    <script>
+        var myModal = document.getElementById('myModal')
+        var myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus()
+        })
+    </script>
+
     <!-- all plugins here 
     <script src="assets/js/jquery.3.6.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
