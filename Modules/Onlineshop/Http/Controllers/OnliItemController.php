@@ -8,9 +8,12 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Modules\Academic\Entities\AcaCourse;
 use Modules\Onlineshop\Entities\OnliItem;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\DB;
 
 class OnliItemController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -47,8 +50,8 @@ class OnliItemController extends Controller
      */
     public function create()
     {
-        $courses = AcaCourse::all();
-        return Inertia::render('Onlineshop::Items/create', [
+        $courses = AcaCourse::with('category')->get();
+        return Inertia::render('Onlineshop::Items/Create', [
             'courses' => $courses
         ]);
     }
@@ -60,7 +63,53 @@ class OnliItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $this->validate($request, [
+            'item_id'                   => 'required|unique:onli_items,item_id',
+            'entitie'                   => 'required',
+            'category_description'      => 'required|max:255',
+            'name'                      => 'required|max:255',
+            'description'               => 'required|max:255',
+            'price'                     => 'required|numeric',
+            //'discount'                  => 'required|max:255',
+            'image'                     => 'required|image|mimes:jpeg,png,gif|max:2048'
+        ], [
+            'item_id.required' => 'Elija un Curso',
+            'item_id.unique'   => 'Ya existe como item para la web',
+        ]);
+
+        // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
+        // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
+        $path = null;
+        $destination = 'uploads/onlineshop/items';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+        }
+
+
+        OnliItem::create([
+            'item_id'                   => $request->get('item_id'),
+            'entitie'                   => $request->get('entitie'),
+            'category_description'      => $request->get('category_description'),
+            'name'                      => $request->get('name'),
+            'description'               => $request->get('description'),
+            'scor'                      => 4,
+            'price'                     => $request->get('price'),
+            'discount'                  => $request->get('discount') ?? 0,
+            'image'                     => $path,
+            'status'                    => true
+        ]);
+        return redirect()->route('onlineshop_items')
+            ->with('message', __('Item creado con éxito'));
     }
 
     /**
@@ -80,7 +129,10 @@ class OnliItemController extends Controller
      */
     public function edit($id)
     {
-        return view('onlineshop::edit');
+        $item = OnliItem::find($id);
+        return Inertia::render('Onlineshop::Items/Edit', [
+            'item' => $item
+        ]);
     }
 
     /**
@@ -89,9 +141,47 @@ class OnliItemController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->get('id');
+
+        $this->validate($request, [
+            'category_description'      => 'required|max:255',
+            'name'                      => 'required|max:255',
+            'description'               => 'required|max:255',
+            'price'                     => 'required|numeric'
+        ]);
+
+        $OnliItem = OnliItem::find($id);
+
+        $OnliItem->name = $request->get('name');
+        $OnliItem->description = $request->get('description');
+        $OnliItem->category_description = $request->get('category_description');
+        $OnliItem->price = $request->get('price');
+        $OnliItem->discount = $request->get('discount') ?? 0;
+
+        $OnliItem->status = $request->get('status') ? true : false;
+
+        // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
+        // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
+        $path = null;
+        $destination = 'uploads/onlineshop/items';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+
+            $OnliItem->image = $path;
+        }
+
+        $OnliItem->save();
     }
 
     /**
@@ -101,6 +191,33 @@ class OnliItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = null;
+        $success = false;
+        try {
+            // Usamos una transacción para asegurarnos de que la operación se realice de manera segura.
+            DB::beginTransaction();
+
+            // Verificamos si existe.
+            $item = OnliItem::findOrFail($id);
+
+            // Si no hay detalles asociados, eliminamos.
+            $item->delete();
+
+            // Si todo ha sido exitoso, confirmamos la transacción.
+            DB::commit();
+
+            $message =  'Item eliminado correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción durante la transacción, hacemos rollback para deshacer cualquier cambio.
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 }

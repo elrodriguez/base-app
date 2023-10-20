@@ -1,10 +1,10 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CreateForm from './Partials/CreateForm.vue';
+import EditForm from './Partials/EditForm.vue';
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
-    courses: {
+    item: {
         type: Object,
         default: () => ({}),
     }
@@ -13,7 +13,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <AppLayout title="Crear items web">
+    <AppLayout title="Crear Producto">
         <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
             <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -39,12 +39,12 @@ const props = defineProps({
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Nuevo</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Editar</span>
                         </div>
                     </li>
                 </ol>
             </nav>
-            <CreateForm :courses="courses" /> 
+            <EditForm :item="item" /> 
         </div>
     </AppLayout>
 </template>

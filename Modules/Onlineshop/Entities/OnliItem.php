@@ -26,4 +26,9 @@ class OnliItem extends Model
     {
         return \Modules\Onlineshop\Database\factories\OnliItemFactory::new();
     }
+
+    public function getImageAttribute($value)
+    {
+        return ($value ? asset('storage/' . $value) : asset($value));
+    }
 }
