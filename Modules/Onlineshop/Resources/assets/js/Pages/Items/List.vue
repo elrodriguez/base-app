@@ -134,6 +134,9 @@
                                         Descripción
                                     </th>
                                     <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                        Tipo
+                                    </th>
+                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
                                         Precio
                                     </th>
                                     <th class="py-2 px-4 font-medium text-black dark:text-white">
@@ -166,6 +169,9 @@
                                         </td>
                                         <td class="py-2 px-2 dark:border-strokedark">
                                             {{ item.description }}
+                                        </td>
+                                        <td class="py-2 px-2 dark:border-strokedark">
+                                            {{ item.additional }}
                                         </td>
                                         <td class="py-2 px-2 text-right dark:border-strokedark">
                                             {{ item.price }}

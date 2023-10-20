@@ -26,7 +26,8 @@ const form = useForm({
     price: null,
     discount: null,
     image: null,
-    image_view: null
+    image_view: null,
+    additional: null
 });
 
 const createItem = () => {
@@ -50,6 +51,7 @@ const setItemsData = (data) => {
     form.category_description = data.category.description;
     form.name = data.description;
     form.image_view = data.image;
+    from.additional = data.type_description;
 }
 
 const loadFile = (event) => {
@@ -116,6 +118,17 @@ const loadFile = (event) => {
                             autocomplete="off"
                         />
                         <InputError :message="form.errors.category_description" class="mt-2" />
+                    </div>
+                    <div class="mt-2">
+                        <InputLabel for="type" value="Tipo" />
+                        <TextInput
+                            id="type"
+                            v-model="form.additional"
+                            type="text"
+                            class="block w-full mt-1"
+                            autocomplete="off"
+                        />
+                        <InputError :message="form.errors.additional" class="mt-2" />
                     </div>
                     <div class="mt-2">
                         <InputLabel for="image" value="Imagen *" />

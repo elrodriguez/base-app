@@ -18,7 +18,8 @@ class AcaCourse extends Model
         'course_year',
         'category_id',
         'image',
-        'modality_id'
+        'modality_id',
+        'type_description'
     ];
 
     protected static function newFactory()

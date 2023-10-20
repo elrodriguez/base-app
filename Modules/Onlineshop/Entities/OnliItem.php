@@ -19,7 +19,8 @@ class OnliItem extends Model
         'price',
         'discount',
         'image',
-        'status'
+        'status',
+        'additional'
     ];
 
     protected static function newFactory()

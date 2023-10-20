@@ -26,7 +26,8 @@ const form = useForm({
     discount: props.item.discount,
     image: null,
     image_view: props.item.image,
-    status: props.item.status == 1 ? true : false
+    status: props.item.status == 1 ? true : false,
+    additional: props.item.additional
 });
 
 const updateItem = () => {
@@ -106,6 +107,18 @@ const loadFile = (event) => {
             </div>
 
             <div class="col-span-6 sm:col-span-6">
+                <InputLabel for="additional" value="Tipo" />
+                <TextInput
+                    id="additional"
+                    v-model="form.additional"
+                    type="text"
+                    class="block w-full mt-1"
+                    autocomplete="off"
+                />
+                <InputError :message="form.errors.additional" class="mt-2" />
+            </div>
+
+            <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="image" value="Imagen *" />
                 <div class="flex justify-center space-x-2">
                     <figure class="max-w-lg">
@@ -150,7 +163,7 @@ const loadFile = (event) => {
         </template>
 
         <template #actions>
-            <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+            <progress v-if="form.progress" :value="form.progress.percentage" max="100" class="mr-2">
                 {{ form.progress.percentage }}%
             </progress>
             <Keypad>

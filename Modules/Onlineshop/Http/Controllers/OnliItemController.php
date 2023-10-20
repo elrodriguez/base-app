@@ -106,7 +106,8 @@ class OnliItemController extends Controller
             'price'                     => $request->get('price'),
             'discount'                  => $request->get('discount') ?? 0,
             'image'                     => $path,
-            'status'                    => true
+            'status'                    => true,
+            'additional'                => $request->get('additional')
         ]);
         return redirect()->route('onlineshop_items')
             ->with('message', __('Item creado con éxito'));
@@ -159,8 +160,8 @@ class OnliItemController extends Controller
         $OnliItem->category_description = $request->get('category_description');
         $OnliItem->price = $request->get('price');
         $OnliItem->discount = $request->get('discount') ?? 0;
-
         $OnliItem->status = $request->get('status') ? true : false;
+        $OnliItem->additional = $request->get('additional');
 
         // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
         // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
