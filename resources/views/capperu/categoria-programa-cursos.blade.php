@@ -105,7 +105,7 @@
                                     <div class="single-form-check form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault17">
                                         <label class="form-check-label" for="flexCheckDefault17">
-                                            Curso
+                                            Cursos
                                         </label>
                                     </div>
                                 </li>
@@ -113,7 +113,7 @@
                                     <div class="single-form-check form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault18">
                                         <label class="form-check-label" for="flexCheckDefault18">
-                                            Diplomado
+                                            Diplomados
                                         </label>
                                     </div>
                                 </li>
@@ -145,9 +145,8 @@
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="" class="btn btn-base2" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        DIPLOMADOS ESPECIALIZADOS
-   
+                                    <a href="" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
+                                        CURSOS ESPECIALIZADOS
                                     </a>
                                 </div>
                             </div>

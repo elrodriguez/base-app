@@ -26,6 +26,10 @@ class CapperuController extends Controller
         return view('Capperu/categoria-programa-cursos');
     }
 
+    public function categoriaprogramadiplomados(){
+        return view('Capperu/categoria-programa-diplomados');
+    }
+
     public function modalidadpresencial(){
         return view('Capperu/modalidad-presencial');
     }
