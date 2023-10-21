@@ -27,6 +27,9 @@ Route::get('/contacto', [KenthaController::class, 'contacto'])->name('web_contac
 Route::get('/capperu', [WebController::class, 'index'])->name('cms_principal');
 Route::get('/nosotros', [CapperuController::class, 'nosotros'])->name('web_nosotros');
 Route::get('/categorias', [CapperuController::class, 'categorias'])->name('web_categorias');
+Route::get('/categoria-sector', [CapperuController::class, 'categoriasector'])->name('web_categoria_sector');
+Route::get('/categoria-modalidad', [CapperuController::class, 'categoriamodalidad'])->name('web_categoria_modalidad');
+Route::get('/categoria-programa-cursos', [CapperuController::class, 'categoriaprogramacursos'])->name('web_categoria_programa_cursos');
 Route::get('/modalidad-presencial', [CapperuController::class, 'modalidadpresencial'])->name('web_modalidad_presencial');
 Route::get('/carrito', [CapperuController::class, 'carrito'])->name('web_carrito');
 Route::get('/contacto', [CapperuController::class, 'contacto'])->name('web_contacto');

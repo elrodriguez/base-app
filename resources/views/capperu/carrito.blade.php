@@ -177,13 +177,32 @@
                                 <form class="contact-form">
                                     <div class="row">
                                         <div class="col-md-12 single-input-wrap">
-                                            <input type="text" placeholder="Nombres completos">
+                                            <input type="text" placeholder="Nombres">
+                                        </div>
+                                        <div class="col-md-6 single-input-wrap">
+                                            <input type="text" placeholder="Ap. Paterno">
+                                        </div>
+                                        <div class="col-md-6 single-input-wrap">
+                                            <input type="text" placeholder="Ap. Materno">
                                         </div>
                                         <div class="col-md-12 single-input-wrap">
                                             <input type="text" placeholder="Teléfono">
                                         </div>
                                         <div class="col-md-12 single-input-wrap">
                                             <input type="text" placeholder="E-mail">
+                                        </div>
+                                        <div class="col-md-12 single-input-wrap">
+                                            <select class="form-select" aria-label="Default select example">
+                                                <option> Tipo de Documento</option>
+                                                <option value="1">DNI</option>
+                                                <option value="2">Carnet de extranjeria</option>
+                                                <option value="3">Ruc</option>
+                                            </select>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <div class="col-md-12 single-input-wrap">
+                                            <input type="text" placeholder="Número">
                                         </div>
                                     </div>                                
                                 </form>

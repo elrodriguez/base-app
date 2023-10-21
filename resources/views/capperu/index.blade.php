@@ -120,7 +120,7 @@
                             <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
                         </div>
                         <div class="wrap-details">
-                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
+                            <h6><a href="{{ route('web_modalidad_presencial') }}">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
                             <div class="user-area">
                                 <div class="user-details">
                                     <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
@@ -134,7 +134,7 @@
                             <div class="price-wrap">
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
-                                        <a href="#" class="btn btn-primary">
+                                        <a href="{{ route('web_modalidad_presencial') }}" class="btn btn-primary">
                                             <i class="fa fa-cart-plus" aria-hidden="true"></i> 
                                             &nbsp;&nbsp;Comprar Ahora
                                             <b style="text-end"> &nbsp;&nbsp; S/. 250</b>  

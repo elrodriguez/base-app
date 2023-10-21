@@ -47,6 +47,9 @@
                             <a href="{{ route('web_categorias') }}">Categorias</a>
                         </li>
                         <li>
+                            <a href="">Convenios</a>
+                        </li>
+                        <li>
                             <a href="">Blog</a>
                         </li>
                         <li>
@@ -70,8 +73,18 @@
     <div class="category-responsive d-xl-none d-block">
         <div class="container">
             <div class="category-slider owl-carousel">
-                <div class="item"><a href="categoria">Convenios</a></div>
-                <div class="item"><a href="categoria">Politica de Privacidad</a></div>
+                <div class="item">
+                    <a href="">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                        capperuacademica@gmail.com
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        (01)7397026 – (043) 200324 - 977 66 24 60 - 946 94 38 87
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -79,9 +92,19 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container nav-container">
                 <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav menu-open">
-                        <li><a href="categoria">Convenios</a></li>
-                        <li><a href="categoria">Politica de Privacidad</a></li>
+                    <ul class="navbar-nav menu-open" style="text-align:center;">
+                        <li>
+                            <a href="">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                capperuacademica@gmail.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                (01)7397026 – (043) 200324 - 977 66 24 60 - 946 94 38 87
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

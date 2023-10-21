@@ -40,7 +40,7 @@
                 <div class="col-lg-3">
                     <div class="dmne-sidebar">
                         <div class="widget widget-select-inner">
-                            <h4 class="widget-title">Sector</h4>
+                            <h4 class="widget-title">Programas Especializados</h4>
                             <ul>
                                 <li>
                                     <div class="single-form-check form-check">
@@ -54,7 +54,7 @@
                                     <div class="single-form-check form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
                                         <label class="form-check-label" for="flexCheckDefault2">
-                                            Empresarial
+                                            Sector Empresarial
                                         </label>
                                     </div>
                                 </li>
@@ -62,7 +62,7 @@
                                     <div class="single-form-check form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
                                         <label class="form-check-label" for="flexCheckDefault3">
-                                            Laboral
+                                            Sector Derecho
                                         </label>
                                     </div>
                                 </li>
@@ -70,7 +70,7 @@
                                     <div class="single-form-check form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
                                         <label class="form-check-label" for="flexCheckDefault4">
-                                            Penal
+                                            Sector Público
                                         </label>
                                     </div>
                                 </li>
@@ -83,7 +83,7 @@
                                     <div class="single-form-check form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault14">
                                         <label class="form-check-label" for="flexCheckDefault14">
-                                            Presencial
+                                            En Vivo
                                         </label>
                                     </div>
                                 </li>
@@ -91,7 +91,8 @@
                                     <div class="single-form-check form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault15">
                                         <label class="form-check-label" for="flexCheckDefault15">
-                                            Auto-administrado
+                                            E-Learning 
+                                            <br>(auto-administrado)
                                         </label>
                                     </div>
                                 </li>
