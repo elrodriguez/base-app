@@ -23,7 +23,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-12 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Categoria: Cursos</h1>
+                        <h1>Categoria: Modalidad E-Learning</h1>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                                 </li>
                                 <li>
                                     <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault15">
+                                        <input checked class="form-check-input" type="checkbox" value="" id="flexCheckDefault15">
                                         <label class="form-check-label" for="flexCheckDefault15">
                                             E-Learning 
                                             <br>(auto-administrado)
@@ -103,9 +103,9 @@
                             <ul>
                                 <li>
                                     <div class="single-form-check form-check">
-                                        <input checked class="form-check-input" type="checkbox" value="" id="flexCheckDefault17">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault17">
                                         <label class="form-check-label" for="flexCheckDefault17">
-                                            Cursos
+                                            Curso
                                         </label>
                                     </div>
                                 </li>
@@ -113,7 +113,7 @@
                                     <div class="single-form-check form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault18">
                                         <label class="form-check-label" for="flexCheckDefault18">
-                                            Diplomados
+                                            Diplomado
                                         </label>
                                     </div>
                                 </li>
@@ -132,7 +132,7 @@
                                 </div>
                                 <div>
                                     <a href="" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        CURSOS ESPECIALIZADOS EN SECTOR EMPRESARIAL  
+                                        CURSOS ESPECIALIZADOS    
                                     </a>
                                 </div>
                             </div>
@@ -145,22 +145,9 @@
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        CURSOS ESPECIALIZADOS EN SECTOR DERECHO
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="single-course-wrap">
-                                <div class="thumb">
-                                    <a href="">
-                                        <img src="{{ asset('themes/capperu/assets/img/course/6.png') }}" alt="img">
-                                    </a>
-                                </div>
-                                <div>
-                                    <a href="" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        CURSOS ESPECIALIZADOS EN SECTOR PÚBLICO
+                                    <a href="" class="btn btn-base2" style="width: 100%; text-align:center; border-radius: 0px;">
+                                        DIPLOMADOS ESPECIALIZADOS
+   
                                     </a>
                                 </div>
                             </div>

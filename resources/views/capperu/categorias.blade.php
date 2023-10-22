@@ -44,7 +44,7 @@
                             <ul>
                                 <li>
                                     <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                        <input checked class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
                                         <label class="form-check-label" for="flexCheckDefault1">
                                           Todos
                                         </label>
@@ -77,7 +77,7 @@
                             </ul>
                         </div>
                         <div class="widget widget-select-inner">
-                            <h4 class="widget-title">Modalidad</h4>
+                            <h4 class="widget-title">Modalidad de Estudios</h4>
                             <ul>
                                 <li>
                                     <div class="single-form-check form-check">

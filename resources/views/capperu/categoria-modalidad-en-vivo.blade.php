@@ -81,7 +81,7 @@
                             <ul>
                                 <li>
                                     <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault14">
+                                        <input checked class="form-check-input" type="checkbox" value="" id="flexCheckDefault14">
                                         <label class="form-check-label" for="flexCheckDefault14">
                                             En Vivo
                                         </label>
