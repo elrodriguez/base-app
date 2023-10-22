@@ -44,6 +44,7 @@ Version: 1.0.1
   --line-height30: 1.8;
   /* --main-color: rgb(0, 113, 220);  Plantilla */
   --main-color: rgb(5, 18, 67); /* CAPPERU */
+  --main-color2: rgb(139, 14, 6); /* CAPPERU 2*/
   --main-color-opacity: 255, 255, 255;
   --body-font: "Inter", sans-serif; 
   --paragraph-color: #808191; 
@@ -617,6 +618,11 @@ ul {
   color: #fff;
   border: 0;
   background: var(--main-color);
+}
+.btn-base2 {
+  color: #fff;
+  border: 0;
+  background: var(--main-color2);
 }
 .btn-base:after {
   background: #fff;
@@ -2689,6 +2695,8 @@ ul {
   opacity: 0.8;
   z-index: -1;
 }
+
+
 .banner-area.style-3 .banner-inner h1 {
   font-weight: 600;
   font-size: 64px;
