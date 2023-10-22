@@ -19,9 +19,11 @@ use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Modules\Purchases\Entities\PurcDocumentItems;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class PurcDocumentController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -120,7 +122,7 @@ class PurcDocumentController extends Controller
                 'items.*.quantity' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
                 'items.*.unit_price' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
                 'items.*.total' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-                'client_id' => 'required',
+                'supplier_id' => 'required',
             ],
             [
                 'items.*.quantity.required' => 'Ingrese Cantidad',
@@ -310,7 +312,7 @@ class PurcDocumentController extends Controller
                     if ($produc['is_product']) {
                         $k = Kardex::create([
                             'date_of_issue' => Carbon::now()->format('Y-m-d'),
-                            'motion' => 'sale',
+                            'motion' => 'purchase',
                             'product_id' => $product_id,
                             'local_id' => $local_id,
                             'quantity' => $produc['quantity'],

@@ -121,7 +121,7 @@
 
 <template>
     <div>
-        <ModalLarge :show="display" :onClose="closeModalClient" :icon="'/img/fabrica.png'">
+        <ModalLarge :show="display" :onClose="closeModalSupplier" :icon="'/img/fabrica.png'">
             <template #title>
                 Proveedor
             </template>

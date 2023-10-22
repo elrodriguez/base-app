@@ -37,7 +37,7 @@
             default: () => ({}),
         },
         taxes: {
-            type: Array,
+            type: Object,
             default: () => ({}),
         },
         ubigeo:{
@@ -133,7 +133,7 @@
             }else{
                 Swal2.fire({
                     title: 'Información Importante',
-                    text: "El suppliere no cuenta con ruc para emitir una factura",
+                    text: "El proveedor no cuenta con ruc para emitir una factura",
                     icon: 'info',
                 });
             }
@@ -223,11 +223,11 @@
         
         formDocument.processing = true
 
-        if(formDocument.serie){
+        if(formDocument.serie ){
             if(formDocument.supplier_dti != 6 && formDocument.sale_documenttype_id == 1){
                 Swal2.fire({
                     title: 'Información Importante',
-                    text: "El suppliere debe tener ruc para emitir una factura",
+                    text: "El proveedor debe tener ruc para emitir una factura",
                     icon: 'error',
                 });
                 formDocument.processing = false
@@ -261,31 +261,9 @@
 
                 formDocument.processing =  false;
                 Swal2.fire({
-                    title: 'Comprobante creado con éxito',
-                    text: "¿deseas enviar a sunat y/o Imprimir?",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Enviar Ahora',
-                    cancelButtonText: 'Seguir vendiendo',
-                    showDenyButton: true,
-                    denyButtonText: `Solo Imprimir`,
-                    denyButtonColor: '#5E5A5A'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        if(res.data.invoice_type_doc == '01'){
-                            sendSunatDocumentCreated(res.data)
-                        }else{
-                            Swal2.fire({
-                                title: 'Información Importante',
-                                text: "Las boletas se envian mediante un resumen",
-                                icon: 'info',
-                            });
-                        }
-                    } else if (result.isDenied) {
-                        downloadDocument(res.data.id,res.data.invoice_type_doc,'PDF')
-                    }
+                    title: 'Información Importante',
+                    text: "Documento registrado con éxito",
+                    icon: 'info',
                 });
             }).catch(function (error) {
                 console.log(error)
@@ -293,7 +271,7 @@
         }else{
             Swal2.fire({
                 title: 'Información Importante',
-                text: "Elejir serie de documento",
+                text: "Ingrese serie de documento",
                 icon: 'error',
             });
             formDocument.processing = false
@@ -462,7 +440,6 @@
                                         :display="displayModalSupplierSearch" 
                                         :closeModalSupplier="closeModalSupplierSearch"
                                         @supplierId="getDataSupplier" 
-                                        :supplierDefault="supplier" 
                                         :documentTypes="documentTypes"
                                         :saleDocumentTypes="saleDocumentTypesId"
                                         :ubigeo="ubigeo"
@@ -488,14 +465,14 @@
                                 <div class="flex">
                                     <div style="font-size: 14px;" class="flex-1 uppercase">Serie:</div>
                                     <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <input :value="formDocument.serie" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                        <input v-model="formDocument.serie" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
                                         <InputError :message="formDocument.errors.serie" class="mt-2" />
                                     </div>
                                 </div>
                                 <div class="flex">
                                     <div style="font-size: 14px;" class="flex-1 uppercase">Número:</div>
                                     <div class="flex-1 ltr:text-right rtl:text-left">
-                                        <input :value="formDocument.number" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                        <input v-model="formDocument.number" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
                                         <InputError :message="formDocument.errors.number" class="mt-2" />
                                     </div>
                                 </div>
