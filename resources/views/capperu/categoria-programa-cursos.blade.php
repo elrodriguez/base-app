@@ -103,7 +103,7 @@
                             <ul>
                                 <li>
                                     <div class="single-form-check form-check">
-                                        <input checked class="form-check-input" type="checkbox" value="" id="flexCheckDefault17">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault17">
                                         <label class="form-check-label" for="flexCheckDefault17">
                                             Cursos
                                         </label>
@@ -132,7 +132,7 @@
                                 </div>
                                 <div>
                                     <a href="" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        CURSOS ESPECIALIZADOS EN SECTOR EMPRESARIAL  
+                                        CURSOS ESPECIALIZADOS    
                                     </a>
                                 </div>
                             </div>
@@ -146,21 +146,7 @@
                                 </div>
                                 <div>
                                     <a href="" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        CURSOS ESPECIALIZADOS EN SECTOR DERECHO
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="single-course-wrap">
-                                <div class="thumb">
-                                    <a href="">
-                                        <img src="{{ asset('themes/capperu/assets/img/course/6.png') }}" alt="img">
-                                    </a>
-                                </div>
-                                <div>
-                                    <a href="" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        CURSOS ESPECIALIZADOS EN SECTOR PÚBLICO
+                                        CURSOS ESPECIALIZADOS
                                     </a>
                                 </div>
                             </div>
