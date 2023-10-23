@@ -16,10 +16,10 @@
                             <button class="nav-link" id="pills-2-tab" data-bs-toggle="pill" data-bs-target="#pills-2">Empresarial</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-3-tab" data-bs-toggle="pill" data-bs-target="#pills-3">Derecho</button>
+                            <button class="nav-link" id="pills-3-tab" data-bs-toggle="pill" data-bs-target="#pills-3">Laboral</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-4-tab" data-bs-toggle="pill" data-bs-target="#pills-4">Público</button>
+                            <button class="nav-link" id="pills-4-tab" data-bs-toggle="pill" data-bs-target="#pills-4">Penal</button>
                         </li>
                     </ul>
                     <div class="tab-content">

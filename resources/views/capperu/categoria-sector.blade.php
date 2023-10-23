@@ -23,7 +23,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-12 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Sector Empresarial</h1>
+                        <h1>Categoria: Sector Empresarial</h1>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                                 </li>
                                 <li>
                                     <div class="single-form-check form-check">
-                                        <input checked class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
+                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
                                         <label class="form-check-label" for="flexCheckDefault2">
                                             Sector Empresarial
                                         </label>
@@ -126,13 +126,13 @@
                         <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
-                                    <a href="{{ route ('web_sector_cursos') }}">
+                                    <a href="">
                                         <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="{{ route ('web_sector_cursos') }}" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        CURSOS ESPECIALIZADOS EN SECTOR EMPRESARIAL    
+                                    <a href="" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
+                                        CURSOS ESPECIALIZADOS EN S. EMPRESARIAL    
                                     </a>
                                 </div>
                             </div>
@@ -140,13 +140,14 @@
                         <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
-                                    <a href="{{ route ('web_sector_diplomados') }}">
+                                    <a href="">
                                         <img src="{{ asset('themes/capperu/assets/img/course/5.png') }}" alt="img">
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="{{ route ('web_sector_diplomados') }}" class="btn btn-base2" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        DIPLOMADOS ESPECIALIZADOS EN SECTOR EMPRESARIAL    
+                                    <a href="" class="btn btn-base2" style="width: 100%; text-align:center; border-radius: 0px;">
+                                        DIPLOMADOS ESPECIALIZADOS EN S. EMPRESARIAL      
+   
                                     </a>
                                 </div>
                             </div>
