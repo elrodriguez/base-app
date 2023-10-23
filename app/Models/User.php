@@ -27,7 +27,8 @@ class User extends Authenticatable
         'company_id',
         'avatar',
         'information',
-        'person_id'
+        'person_id',
+        'status'
     ];
 
     /**
