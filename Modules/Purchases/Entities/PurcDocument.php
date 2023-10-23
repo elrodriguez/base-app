@@ -2,10 +2,12 @@
 
 namespace Modules\Purchases\Entities;
 
+use App\Models\Person;
 use App\Models\SaleDocumentType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PurcDocument extends Model
 {
@@ -50,5 +52,10 @@ class PurcDocument extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(SaleDocumentType::class, 'document_type_id', 'id');
+    }
+
+    public function provider(): HasOne
+    {
+        return $this->hasOne(Person::class, 'id', 'provider_id');
     }
 }

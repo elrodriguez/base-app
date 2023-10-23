@@ -26,6 +26,8 @@
         "@tinymce/tinymce-vue": "^5.1.0",
         "@websitebeaver/vue-magnifier": "^1.1.0",
         "cropperjs": "^1.5.13",
+        "flowbite": "^1.8.1",
+        "flowbite-vue": "^0.0.17",
         "jspdf": "^2.5.1",
         "jspdf-autotable": "^3.5.28",
         "sweetalert": "^2.1.2",

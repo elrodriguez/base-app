@@ -59,6 +59,7 @@ class PurcDocumentController extends Controller
             $documents->latest();
         }
         $documents = $documents->with('type');
+        $documents = $documents->with('provider');
         $documents = $documents->paginate(10)->onEachSide(2);
 
         return Inertia::render('Purchases::Documents/List', [
@@ -149,7 +150,7 @@ class PurcDocumentController extends Controller
                     'local_id'              => $local_id,
                     'serie'                 => $request->get('serie'),
                     'number'                => $request->get('number'),
-                    'document_type_id'      => $request->get('supplier_dti'),
+                    'document_type_id'      => $request->get('sale_documenttype_id'),
                     'date_of_issue'         => $request->get('date_issue'),
                     'date_of_due'           => $request->get('date_end'),
                     'currency_type_id'      => 'PEN',

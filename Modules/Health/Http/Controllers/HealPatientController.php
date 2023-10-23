@@ -26,6 +26,7 @@ class HealPatientController extends Controller
         $patients = $patients->join('people', 'heal_patients.person_id', 'people.id')
             ->select(
                 'heal_patients.id',
+                'heal_patients.person_id',
                 'heal_patients.patient_code',
                 'people.document_type_id',
                 'people.full_name',
@@ -34,7 +35,8 @@ class HealPatientController extends Controller
                 'people.email',
                 'people.address',
                 'people.birthdate',
-                'heal_patients.created_at'
+                'heal_patients.created_at',
+                'people.image'
             );
         if (request()->has('search')) {
             $patients->where('people.full_name', 'Like', '%' . request()->input('search') . '%');
@@ -173,7 +175,33 @@ class HealPatientController extends Controller
      */
     public function edit($id)
     {
-        return view('health::edit');
+        $identityDocumentTypes = DB::table('identity_document_type')->get();
+
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
+        $person = Person::leftJoin('districts', 'ubigeo', 'districts.id')
+            ->leftJoin('provinces', 'districts.province_id', 'provinces.id')
+            ->leftJoin('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'people.*',
+                DB::raw('CONCAT(departments.name,"-",provinces.name,"-",districts.name) AS city')
+            )
+            ->where('people.id', $id)
+            ->first();
+
+        return Inertia::render('Health::Patients/Edit', [
+            'identityDocumentTypes' => $identityDocumentTypes,
+            'ubigeo'                => $ubigeo,
+            'patient'               => $person
+        ]);
     }
 
     /**

@@ -34,7 +34,7 @@ class Person extends Model
 
     public function getImageAttribute($value)
     {
-        return ($value != 'img/imagen-no-disponible.jpeg' ? asset('storage/' . $value) : asset($value));
+        return $value ? asset('storage/' . $value) : null;
     }
     public function district(): HasOne
     {

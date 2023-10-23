@@ -21,7 +21,7 @@
 </script>
 
 <template>
-    <AppLayout title="Documentos">
+    <AppLayout title="Compras">
         <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
             <!-- Breadcrumb Start -->
             <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
@@ -50,18 +50,20 @@
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
-                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
+                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ">
+                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
-                                <form @submit.prevent="form.get(route('saledocuments_list'))">
+                                <form @submit.prevent="form.get(route('purc_documents_list'))">
                                 <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                                         </div>
-                                        <input v-model="form.search" type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar">
+                                        <input v-model="form.search" type="date" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar">
+                                        
                                     </div>
+                                    <!-- <button class="border" type="submit">Buscar</button> -->
                                 </form>
                             </div>
                             <div class="col-span-3 sm:col-span-2">
@@ -95,9 +97,9 @@
                                     <th class="py-1 px-4 font-medium text-black dark:text-white">
                                         Total
                                     </th>
-                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
+                                    <!-- <th class="py-1 px-4 font-medium text-black dark:text-white">
                                         Estado
-                                    </th>
+                                    </th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -116,15 +118,15 @@
                                             {{ document.created_at }}
                                         </td>
                                         <td class="py-1 px-4 dark:border-strokedark">
-                                            {{ document.full_name }}
+                                            {{ document.provider.full_name }}
                                         </td>
                                         <td class="text-right py-1 px-4 dark:border-strokedark">
                                             {{ document.total }}
                                         </td>
-                                        <td  class="text-center py-1 px-4 dark:border-strokedark">
+                                        <!-- <td  class="text-center py-1 px-4 dark:border-strokedark">
                                             <span v-if="document.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Activa</span>
                                             <span v-else class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 </template>
                             </tbody>
