@@ -44,7 +44,7 @@
                             <ul>
                                 <li>
                                     <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                        <input checked class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
                                         <label class="form-check-label" for="flexCheckDefault1">
                                           Todos
                                         </label>
@@ -77,7 +77,7 @@
                             </ul>
                         </div>
                         <div class="widget widget-select-inner">
-                            <h4 class="widget-title">Modalidad</h4>
+                            <h4 class="widget-title">Modalidad de Estudios</h4>
                             <ul>
                                 <li>
                                     <div class="single-form-check form-check">
@@ -123,7 +123,7 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="row">
-                        <div class="col-xl-4 col-md-6">
+                        <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
                                     <a href="#" class="cat cat-blue">Curso</a>
@@ -155,7 +155,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6">
+                        <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
                                     <a href="#" class="cat cat-red">Diplomado</a>
@@ -188,7 +188,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6">
+                        <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
                                     <a href="#" class="cat cat-red">Diplomado</a>
@@ -221,7 +221,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6">
+                        <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
                                     <a href="#" class="cat cat-blue">Curso</a>
@@ -254,7 +254,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6">
+                        <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
                                     <a href="#" class="cat cat-red">Diplomado</a>
@@ -287,7 +287,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6">
+                        <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
                                     <a href="#" class="cat cat-blue">Curso</a>
@@ -320,7 +320,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6">
+                        <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
                                     <a href="#" class="cat cat-blue">Curso</a>
@@ -353,7 +353,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6">
+                        <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
                                     <a href="#" class="cat cat-red">Diplomado</a>
@@ -386,7 +386,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6">
+                        <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
                                     <a href="#" class="cat cat-blue">Curso</a>

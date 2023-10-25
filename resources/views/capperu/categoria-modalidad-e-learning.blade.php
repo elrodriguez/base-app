@@ -1,3 +1,4 @@
+@@ -0,0 +1,171 @@
 @extends('layouts.capperu')
 
 @section('content')
@@ -23,7 +24,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-12 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Categoria: Modalidad En Vivo</h1>
+                        <h1>Categoria: Modalidad E-Learning</h1>
                     </div>
                 </div>
             </div>
@@ -89,7 +90,7 @@
                                 </li>
                                 <li>
                                     <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault15">
+                                        <input checked class="form-check-input" type="checkbox" value="" id="flexCheckDefault15">
                                         <label class="form-check-label" for="flexCheckDefault15">
                                             E-Learning 
                                             <br>(auto-administrado)

@@ -114,10 +114,34 @@
                         <h2>Nuevos Programas</h2>
                     </div>
                 </div>
-                <div class="col-md-3">
+
+                
+    <div id="productos">
+        <div class="producto">
+            <span class="nombre">Producto 1</span>
+            <span class="precio">Precio: $10.00</span>
+            <button class="agregar">Agregar al carrito</button>
+        </div>
+        <div class="producto">
+            <span class="nombre">Producto 2</span>
+            <span class="precio">Precio: $15.00</span>
+            <button class="agregar">Agregar al carrito</button>
+        </div>
+    </div>
+
+    <h2>Carrito de Compras</h2>
+    <ul id="carrito">
+        <!-- Los elementos seleccionados se agregarán aquí -->
+    </ul>
+    <p>Total: $<span id="total">0.00</span></p>
+
+                
+                <div class="col-md-4">
                     <div class="single-course-wrap">
                         <div class="thumb">
-                            <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue">Curso</a>
+                            <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue" style="font-size: 18px;">
+                                Curso
+                            </a>
                             <a href="{{ route('web_descripcion_en_vivo') }}">
                                 <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
                             </a>
@@ -126,32 +150,50 @@
                             <h6>
                                 <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
                             </h6>
-                            <div class="user-area">
+                            <div class="user-area" style="padding: 0px;">
+                                <div class="user-details">
+                                    <p style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final...</p>
+                                </div>
+                            </div>
+                            <div class="user-area" style="padding: 3px;">
                                 <div class="user-details">
                                     <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                     <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
                                 </div>
                                 <div class="user-rating">
-                                    <span>
-                                        <i class="fa fa-users"></i>
-                                    </span>(76)
+                                    <a href="">
+                                        <span>
+                                            <i>Módalidad:</i>
+                                        </span><b>En Vivo</b>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="user-area" style="padding: 0px;">
+                            <div class="user-area" style="padding: 3px;">
                                 <div class="user-details">
-                                    <a href="{{ route('web_categoria_sector') }}">&nbsp;S. Empresarial</a>
+                                    <a href="{{ route('web_categoria_sector') }}">
+                                        <span>
+                                            <i class="fa fa-fire" aria-hidden="true"></i> Sector:
+                                        </span><b>Empresarial</b>
+                                    </a>
                                 </div>
                                 <div class="user-rating">
-                                    <a href="{{ route('web_categoria_modalidad_en_vivo') }}">&nbsp;En Vivo</a>
+                                    <a href="">
+                                        <span>
+                                            <i>Precio:</i>
+                                        </span><b>S/. 250</b>
+                                    </a>
                                 </div>
                             </div>
                             <div class="price-wrap">
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
-                                        <a href="" class="btn btn-primary">
-                                            <i class="fa fa-cart-plus" aria-hidden="true"></i> 
-                                            &nbsp;&nbsp;Comprar Ahora
-                                            <b style="text-end"> &nbsp;&nbsp; S/. 250</b>  
+                                        <a href="carrito" class="btn btn-base-light">
+                                            <i class="fa fa-check" aria-hidden="true"></i> 
+                                            &nbsp;&nbsp;Ver Descripción
+                                        </a>
+                                        <a href="" class="btn btn-primary agregar">
+                                            <i class="fa fa-cart-plus"></i>
+                                            &nbsp;&nbsp;Agregar carrito
                                         </a>
                                     </div>
                                 </div>
@@ -159,96 +201,54 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="{{ route('web_categoria_programa_diplomados') }}" class="cat cat-red">Diplomado</a>
-                            <a href="{{ route('web_descripcion_en_vivo') }}">
-                                <img src="{{ asset('themes/capperu/assets/img/course/5.png') }}" alt="img">
-                            </a>
-                        </div>
-                        <div class="wrap-details">
-                            <h6>
-                                <a href="#">Java (Beginner) Programming Tutorials</a>
-                            </h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
+
+                
+                @if (count($programs) > 0)
+                    @foreach ($programs as $key => $program)
+                        <div class="col-md-4">
+                            <div class="single-course-wrap">
+                                <div class="thumb">
+                                    <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue">{{ $program->additional }}</a>
+                                    <a href="{{ route('web_descripcion_en_vivo') }}">
+                                        <img src="{{ $program->image }}" alt="img">
+                                    </a>
                                 </div>
-                                <div class="user-rating">
-                                    <span>
-                                        <i class="fa fa-users"></i>
-                                    </span>(76)
-                                </div>
-                            </div>
-                            <div class="user-area" style="padding: 0px;">
-                                <div class="user-details">
-                                    <a href="{{ route('web_categoria_sector') }}">&nbsp;S. Empresarial</a>
-                                </div>
-                                <div class="user-rating">
-                                    <a href="{{ route('web_categoria_modalidad_en_vivo') }}">&nbsp;En Vivo</a>
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-md-12">
-                                        <a href="#" class="btn btn-primary">
-                                            <i class="fa fa-cart-plus" aria-hidden="true"></i> 
-                                            &nbsp;&nbsp;Comprar Ahora
-                                            <b style="text-end"> &nbsp;&nbsp; S/. 250</b>  
-                                        </a>
+                                <div class="wrap-details">
+                                    <h6><a href="{{ route('web_descripcion_en_vivo') }}">{{ $program->name }}</a></h6>
+                                    <div class="user-area">
+                                        <div class="user-details">
+                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                            <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
+                                        </div>
+                                        <div class="user-rating">
+                                            <span><i class="fa fa-users"></i>
+                                            </span>(76)
+                                        </div>
+                                    </div>
+                                    <div class="user-area" style="padding: 0px;">
+                                        <div class="user-details">
+                                            <a href="{{ route('web_categoria_sector') }}">&nbsp;S. Empresarial</a>
+                                        </div>
+                                        <div class="user-rating">
+                                            <a href="{{ route('web_categoria_modalidad_en_vivo') }}">&nbsp;En Vivo</a>
+                                        </div>
+                                    </div>
+                                    <div class="price-wrap">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-12">
+                                                <a href="#" class="btn btn-primary">
+                                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                                    &nbsp;&nbsp;Comprar Ahora
+                                                    <b style="text-end"> &nbsp;&nbsp; S/. 250</b>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="single-course-wrap">
-                        <div class="thumb">
-                            <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue">Curso</a>
-                            <a href="{{ route('web_descripcion_e_learning') }}">
-                                <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
-                            </a>
-                        </div>
-                        <div class="wrap-details">
-                            <h6>
-                                <a href="{{ route('web_descripcion_e_learning') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                            </h6>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
-                                </div>
-                                <div class="user-rating">
-                                    <span>
-                                        <i class="fa fa-users"></i>
-                                    </span>(76)
-                                </div>
-                            </div>
-                            <div class="user-area" style="padding: 0px;">
-                                <div class="user-details">
-                                    <a href="{{ route('web_categoria_sector') }}">&nbsp;S. Empresarial</a>
-                                </div>
-                                <div class="user-rating">
-                                    <a href="{{ route('web_categoria_modalidad_e_learning') }}">&nbsp;E-Learning</a>
-                                </div>
-                            </div>
-                            <div class="price-wrap">
-                                <div class="row align-items-center">
-                                    <div class="col-md-12">
-                                        <a href="" class="btn btn-primary">
-                                            <i class="fa fa-cart-plus" aria-hidden="true"></i> 
-                                            &nbsp;&nbsp;Comprar Ahora
-                                            <b style="text-end"> &nbsp;&nbsp; S/. 250</b>  
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    @endforeach
+                @endif
             </div>
             <div class="row justify-content-center">
                 <div class="col-xl-7 col-lg-8 align-self-center">

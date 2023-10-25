@@ -49,6 +49,42 @@
     </div>
 
     
+    <script>
+        // Variables para el carrito y el total
+        const carrito = document.getElementById("carrito");
+        const total = document.getElementById("total");
+        let carritoItems = [];
+        let carritoTotal = 0;
+
+        // Función para agregar un producto al carrito
+        function agregarAlCarrito(nombre, precio) {
+            carritoItems.push({ nombre, precio });
+            carritoTotal += precio;
+            actualizarCarrito();
+        }
+
+        // Función para actualizar la vista del carrito
+        function actualizarCarrito() {
+            carrito.innerHTML = "";
+            carritoItems.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.nombre} - $${item.precio}`;
+                carrito.appendChild(li);
+            });
+            total.textContent = carritoTotal.toFixed(2);
+        }
+
+        // Agregar eventos de clic a los botones "Agregar al carrito"
+        const botonesAgregar = document.querySelectorAll(".agregar");
+        botonesAgregar.forEach(boton => {
+            boton.addEventListener("click", () => {
+                const producto = boton.parentElement;
+                const nombre = producto.querySelector(".nombre").textContent;
+                const precio = parseFloat(producto.querySelector(".precio").textContent.split("$")[1]);
+                agregarAlCarrito(nombre, precio);
+            });
+        });
+    </script>
 
     <!-- all plugins here -->
     <script src="{{ asset('themes/capperu/assets/js/jquery.3.6.min.js') }}"></script>
