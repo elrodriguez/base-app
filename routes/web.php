@@ -46,7 +46,17 @@ Route::get('/stories/policies', [BlogController::class, 'storiesPolicies'])->nam
 Route::get('/stories/contact-us', [BlogController::class, 'storiesContactUs'])->name('blog_stories_contact_us');
 
 
+Route::get('/mipais', function () {
+    $ip = $_SERVER['REMOTE_ADDR']; // Esto contendrá la ip de la solicitud.
 
+    // Puedes usar un método más sofisticado para recuperar el contenido de una página web con PHP usando una biblioteca o algo así
+    // Vamos a recuperar los datos rápidamente con file_get_contents
+    $dataArray = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=" . $ip));
+
+    //var_dump($dataArray);
+
+    dd($dataArray);
+});
 
 
 

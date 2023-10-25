@@ -2,6 +2,7 @@
 
 namespace Modules\CMS\Http\Controllers;
 
+use App\Models\Country;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -50,7 +51,11 @@ class CmsPageController extends Controller
      */
     public function create()
     {
-        return Inertia::render('CMS::Pages/Create');
+        $countries = Country::where('status', true)->get();
+
+        return Inertia::render('CMS::Pages/Create', [
+            'countries' => $countries
+        ]);
     }
 
     /**
@@ -100,8 +105,12 @@ class CmsPageController extends Controller
      */
     public function edit($id)
     {
+        $countries = Country::where('status', true)->get();
         $hey =  CmsPage::find($id);
-        return Inertia::render('CMS::Pages/Edit', ['hey' => $hey]);
+        return Inertia::render('CMS::Pages/Edit', [
+            'hey' => $hey,
+            'countries' => $countries
+        ]);
     }
 
     /**

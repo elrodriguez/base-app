@@ -4,7 +4,7 @@
     import { faTrashAlt, faPencilAlt, faPrint, faCashRegister, faFileExcel, faMoneyBill1Wave} from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import Keypad from '@/Components/Keypad.vue';
-    import swal from 'sweetalert2';
+    import Swal2 from "sweetalert2";
     import { Link } from '@inertiajs/vue3';
     import { Dropdown } from 'flowbite-vue'
 
@@ -25,6 +25,38 @@
 
     const getImage = (path) => {
         return assetUrl + 'storage/'+ path;
+    }
+
+    const destroyPatient = (id) => {
+        Swal2.fire({
+            title: '¿Estas seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Sí, Eliminar!',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return axios.delete(route('heal_patients_destroy', id)).then((res) => {
+                    if (!res.data.success) {
+                        Swal2.showValidationMessage(res.data.message)
+                    }
+                    return res
+                });
+            },
+            allowOutsideClick: () => !Swal2.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal2.fire({
+                    title: 'Enhorabuena',
+                    text: 'Se Eliminó correctamente',
+                    icon: 'success',
+                });
+                router.visit(route('cms_items_list'), { replace: true, method: 'get' });
+            }
+        });
     }
 </script>
 

@@ -7,6 +7,14 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import Keypad from '@/Components/Keypad.vue';
 import Swal2 from 'sweetalert2';
+import { Dropdown } from 'flowbite-vue'
+
+const props = defineProps({
+    countries: {
+        type: Object,
+        default: () => ({}),
+    }
+});
 
 const form = useForm({
     description: null,
@@ -14,6 +22,9 @@ const form = useForm({
     route: null,
     main: false,
     status : true,
+    country_icon: null,
+    country_description: 'Seleccionar país',
+    country_id: null
 });
 
 const createPage = () => {
@@ -30,6 +41,16 @@ const createPage = () => {
         },
     });
 }
+
+const getImageCountry = (path) => {
+    return assetUrl + path;
+}
+
+const setCountry = (id, text, icon) => {
+    form.country_id = id;
+    form.country_description = text;
+    form.country_icon = assetUrl + icon;
+}
 </script>
 
 <template>
@@ -43,6 +64,29 @@ const createPage = () => {
         </template>
 
         <template #form>
+            <div class="col-span-6 ">
+                <InputLabel for="pais" value="País *" class="mb-1" />
+                <dropdown>
+                    <template #trigger="{ toggle }">
+                    <Button class="w-full flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button" @click="toggle">
+                        <img v-show="form.country_icon" :src="form.country_icon" class="mr-1" style="width: 15px;"><span>{{ form.country_description }}</span> 
+                    </Button>
+                    </template>
+                    <div class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-full dark:bg-gray-700">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                            <li v-for="(country, ke) in countries">
+                                <button @click="setCountry(country.id,country.description,country.icon)" type="button" class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <div class="inline-flex items-center">
+                                        <img :src="getImageCountry(country.icon)" class="h-3.5 w-3.5 rounded-full mr-2" >
+                                        {{ country.description }}
+                                    </div>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </dropdown>
+                <InputError :message="form.errors.country_id" class="mt-2" />
+            </div>
             <div class="col-span-6 sm:col-span-3 ">
                 <InputLabel for="description" value="Descripción *" />
                 <TextInput

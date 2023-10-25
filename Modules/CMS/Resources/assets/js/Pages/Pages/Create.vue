@@ -3,6 +3,12 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import CreatePageForm from './Partials/CreatePageForm.vue';
 import { Link } from '@inertiajs/vue3';
 
+const props = defineProps({
+    countries: {
+        type: Object,
+        default: () => ({}),
+    }
+});
 </script>
 
 <template>
@@ -38,7 +44,7 @@ import { Link } from '@inertiajs/vue3';
                     </li>
                 </ol>
             </nav>
-            <CreatePageForm /> 
+            <CreatePageForm :countries="countries" /> 
         </div>
     </AppLayout>
 </template>

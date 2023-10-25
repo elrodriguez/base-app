@@ -210,9 +210,67 @@ class HealPatientController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $update_id = $request->get('id');
+
+        $this->validate(
+
+            $request,
+            [
+                'document_type_id'  => 'required',
+                'number'            => 'required|max:12',
+                'number'            => 'unique:people,number,' . $update_id . ',id,document_type_id,' . $request->get('document_type_id'),
+                'telephone'         => 'required|max:12',
+                'email'             => 'required|max:255',
+                'address'           => 'required|max:255',
+                'ubigeo'            => 'required|max:255',
+                'birthdate'         => 'required|',
+                'names'             => 'required|max:255',
+                'father_lastname'   => 'required|max:255',
+                'mother_lastname'   => 'required|max:255',
+            ]
+        );
+
+        // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
+        // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
+
+        $person = Person::find($update_id);
+
+        $person->document_type_id   = $request->get('document_type_id');
+        $person->short_name         = $request->get('names');
+        $person->full_name          = $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names');
+        $person->number             = $request->get('number');
+        $person->telephone          = $request->get('telephone');
+        $person->email              = $request->get('email');
+        $person->address            = $request->get('address');
+        $person->ubigeo             = $request->get('ubigeo');
+        $person->birthdate          = $request->get('birthdate');
+        $person->names              = $request->get('names');
+        $person->father_lastname    = $request->get('father_lastname');
+        $person->mother_lastname    = $request->get('mother_lastname');
+
+        $path = null;
+        $destination = 'uploads/patients';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+            $person->image = $path;
+        }
+
+        $person->save();
+
+        HealPatient::where('person_id', $update_id)->update([
+            'patient_code'  => $request->get('number')
+        ]);
     }
 
     /**
