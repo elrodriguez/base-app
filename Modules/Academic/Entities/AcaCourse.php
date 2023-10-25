@@ -19,7 +19,8 @@ class AcaCourse extends Model
         'category_id',
         'image',
         'modality_id',
-        'type_description'
+        'type_description',
+        'teacher_id'
     ];
 
     protected static function newFactory()
