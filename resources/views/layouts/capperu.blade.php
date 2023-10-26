@@ -50,40 +50,26 @@
 
     
     <script>
-        // Variables para el carrito y el total
-        const carrito = document.getElementById("carrito");
-        const total = document.getElementById("total");
-        let carritoItems = [];
-        let carritoTotal = 0;
+        // Agregar un producto al carrito
+        function agregarAlCarrito(producto) {
+            console.log(producto.id);
+            carritoTemp=obtenerCarrito;
 
-        // Función para agregar un producto al carrito
-        function agregarAlCarrito(nombre, precio) {
-            carritoItems.push({ nombre, precio });
-            carritoTotal += precio;
-            actualizarCarrito();
+        // Obtener el carrito actual del almacenamiento local
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+        // Agregar el producto al carrito
+        carrito.push(producto);
+
+        // Guardar el carrito actualizado en el almacenamiento local
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        console.log(obtenerCarrito());
         }
 
-        // Función para actualizar la vista del carrito
-        function actualizarCarrito() {
-            carrito.innerHTML = "";
-            carritoItems.forEach(item => {
-                const li = document.createElement("li");
-                li.textContent = `${item.nombre} - $${item.precio}`;
-                carrito.appendChild(li);
-            });
-            total.textContent = carritoTotal.toFixed(2);
+        // Obtener el carrito actual
+        function obtenerCarrito() {
+        return JSON.parse(localStorage.getItem('carrito')) || [];
         }
-
-        // Agregar eventos de clic a los botones "Agregar al carrito"
-        const botonesAgregar = document.querySelectorAll(".agregar");
-        botonesAgregar.forEach(boton => {
-            boton.addEventListener("click", () => {
-                const producto = boton.parentElement;
-                const nombre = producto.querySelector(".nombre").textContent;
-                const precio = parseFloat(producto.querySelector(".precio").textContent.split("$")[1]);
-                agregarAlCarrito(nombre, precio);
-            });
-        });
     </script>
 
     <!-- all plugins here -->

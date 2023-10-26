@@ -59,7 +59,9 @@
                 </div>
                 <div class="nav-right-part nav-right-part-desktop">
                     <ul>
-                        <li><a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus"></i></a></li>
+                        <li>
+                            <a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus "></i></a>
+                        </li>
                         <li>
                             <a href="" class="btn btn-primary">
                                 Campus Virtual

@@ -32,24 +32,50 @@
                                             <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
                                         </div>
                                         <div class="wrap-details">
-                                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
-                                            <div class="user-area">
+                                            <h6 class="nombre">
+                                                <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
+                                            </h6>
+                                            <div class="user-area" style="padding: 0px;">
+                                                <div class="user-details">
+                                                    <p style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final...</p>
+                                                </div>
+                                            </div>
+                                            <div class="user-area" style="padding: 3px;">
                                                 <div class="user-details">
                                                     <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="#">Jessica Jessy</a>
+                                                    <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
                                                 </div>
                                                 <div class="user-rating">
-                                                    <span><i class="fa fa-users"></i></span>(76)
+                                                    <span style="color:orange;">
+                                                        <i class="fa fa-users"></i>
+                                                    </span>(76)
+                                                </div>
+                                            </div>
+                                            <div class="user-area" style="padding: 3px;">
+                                                <div class="user-details">
+                                                    <a href="">
+                                                        <span style="color:orange;">
+                                                            <i class="fa fa-fire" aria-hidden="true"></i> Sector:
+                                                        </span>
+                                                        <br>
+                                                        <b>Empresarial</b>
+                                                    </a>
+                                                </div>
+                                                <div class="user-rating">
+                                                    <span style="color:orange;">
+                                                        <i>Modalidad:</i>
+                                                    </span>
+                                                    <br>
+                                                    <b>En Vivo</b>
                                                 </div>
                                             </div>
                                             <div class="price-wrap">
                                                 <div class="row align-items-center">
                                                     <div class="col-md-12">
-                                                        <a href="#" class="btn btn-primary">
-                                                            <i class="fa fa-cart-plus" aria-hidden="true"></i> 
-                                                            &nbsp;&nbsp;Comprar Ahora
-                                                            <b style="text-end"> &nbsp;&nbsp; S/. 250</b>  
-                                                        </a>
+                                                        <button onclick="agregarAlCarrito({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });" class="btn btn-primary">
+                                                            <i class="fa fa-cart-plus"></i>
+                                                            &nbsp;&nbsp;Comprar Ahora S/. 250
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
