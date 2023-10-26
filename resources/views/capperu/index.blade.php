@@ -115,6 +115,8 @@
                     </div>
                 </div>
                 
+
+
                 <div class="col-md-3">
                     <div class="single-course-wrap">
                         <div class="thumb">
@@ -166,7 +168,7 @@
                             <div class="price-wrap">
                                 <div class="row align-items-center">
                                     <div class="col-md-12">
-                                        <button onclick="agregarAlCarrito({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });" class="btn btn-primary">
+                                        <button onclick="agregarAlCarrito({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 })" class="btn btn-primary">
                                             <i class="fa fa-cart-plus"></i>
                                             &nbsp;&nbsp;Comprar Ahora S/. 250
                                         </button>
@@ -176,6 +178,136 @@
                         </div>
                     </div>
                 </div>
+
+
+
+
+                <div class="col-md-3">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue" style="font-size: 18px;">
+                                Curso
+                            </a>
+                            <a href="{{ route('web_descripcion_en_vivo') }}">
+                                <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
+                            </a>
+                        </div>
+                        <div class="wrap-details">
+                            <h6 class="nombre">
+                                <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Seniors - Become a PHP Doctor - ERP Project</a>
+                            </h6>
+                            <div class="user-area" style="padding: 0px;">
+                                <div class="user-details">
+                                    <p style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final...</p>
+                                </div>
+                            </div>
+                            <div class="user-area" style="padding: 3px;">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/2.png') }}" alt="img">
+                                    <a href="{{ route('web_perfil_docente') }}">James Anderson</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span style="color:orange;">
+                                        <i class="fa fa-users"></i>
+                                    </span>(76)
+                                </div>
+                            </div>
+                            <div class="user-area" style="padding: 3px;">
+                                <div class="user-details">
+                                    <a href="">
+                                        <span style="color:orange;">
+                                            <i class="fa fa-fire" aria-hidden="true"></i> Sector:
+                                        </span>
+                                        <br>
+                                        <b>Informática</b>
+                                    </a>
+                                </div>
+                                <div class="user-rating">
+                                    <span style="color:orange;">
+                                        <i>Modalidad:</i>
+                                    </span>
+                                    <br>
+                                    <b>En Vivo</b>
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12">
+                                        <button onclick="agregarAlCarrito({ id: 2, nombre: 'PHP for Seniors - Become a PHP Doctor - ERP Project', precio: 750 })" class="btn btn-primary">
+                                            <i class="fa fa-cart-plus"></i>
+                                            &nbsp;&nbsp;Comprar Ahora S/. 750
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-3">
+                    <div class="single-course-wrap">
+                        <div class="thumb">
+                            <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue" style="font-size: 18px;">
+                                Curso
+                            </a>
+                            <a href="{{ route('web_descripcion_en_vivo') }}">
+                                <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
+                            </a>
+                        </div>
+                        <div class="wrap-details">
+                            <h6 class="nombre">
+                                <a href="{{ route('web_descripcion_en_vivo') }}">Mi primera Chamba</a>
+                            </h6>
+                            <div class="user-area" style="padding: 0px;">
+                                <div class="user-details">
+                                    <p style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final...</p>
+                                </div>
+                            </div>
+                            <div class="user-area" style="padding: 3px;">
+                                <div class="user-details">
+                                    <img src="{{ asset('themes/capperu/assets/img/author/2.png') }}" alt="img">
+                                    <a href="{{ route('web_perfil_docente') }}">Bad Bunny</a>
+                                </div>
+                                <div class="user-rating">
+                                    <span style="color:orange;">
+                                        <i class="fa fa-users"></i>
+                                    </span>(76)
+                                </div>
+                            </div>
+                            <div class="user-area" style="padding: 3px;">
+                                <div class="user-details">
+                                    <a href="">
+                                        <span style="color:orange;">
+                                            <i class="fa fa-fire" aria-hidden="true"></i> Sector:
+                                        </span>
+                                        <br>
+                                        <b>Desafino</b>
+                                    </a>
+                                </div>
+                                <div class="user-rating">
+                                    <span style="color:orange;">
+                                        <i>Modalidad:</i>
+                                    </span>
+                                    <br>
+                                    <b>Tortura</b>
+                                </div>
+                            </div>
+                            <div class="price-wrap">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12">
+                                        <button onclick="agregarAlCarrito({ id: 3, nombre: 'Mi Primera Chamba', precio: 50 })" class="btn btn-primary">
+                                            <i class="fa fa-cart-plus"></i>
+                                            &nbsp;&nbsp;Comprar Ahora S/. 50
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 
                 @if (count($programs) > 0)

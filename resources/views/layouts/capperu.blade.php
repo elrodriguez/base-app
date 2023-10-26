@@ -52,23 +52,38 @@
     <script>
         // Agregar un producto al carrito
         function agregarAlCarrito(producto) {
-            console.log(producto.id);
-            carritoTemp=obtenerCarrito;
+            carritoTemp=obtenerCarrito();
+                
+            var agregar = true;
+                    for (let i = 0; i < carritoTemp.length; i++) {
+                            if(carritoTemp[i].id == producto.id){
+                                alert(producto.nombre+" ya está en el carrito de compras.");
+                                agregar = false;
+                                break;
+                            }                
+                        }
 
-        // Obtener el carrito actual del almacenamiento local
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+                    if(agregar){
+                        // Obtener el carrito actual del almacenamiento local
+                        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-        // Agregar el producto al carrito
-        carrito.push(producto);
+                        // Agregar el producto al carrito
+                        carrito.push(producto);
 
-        // Guardar el carrito actualizado en el almacenamiento local
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-        console.log(obtenerCarrito());
+                        // Guardar el carrito actualizado en el almacenamiento local
+                        localStorage.setItem('carrito', JSON.stringify(carrito));
+                        console.log(producto.nombre+ " fue agregado al carrito.");
+                        getTotal();
+                    }
         }
 
         // Obtener el carrito actual
         function obtenerCarrito() {
         return JSON.parse(localStorage.getItem('carrito')) || [];
+        }
+
+        function eliminarCarrito() { //ELiminar por completo el carrito de Compras
+        localStorage.removeItem('carrito');
         }
     </script>
 

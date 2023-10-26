@@ -60,7 +60,7 @@
                 <div class="nav-right-part nav-right-part-desktop">
                     <ul>
                         <li>
-                            <a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus "></i></a>
+                            <a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus "></i><span id="contadorCarrito" class="contador"></span></a>
                         </li>
                         <li>
                             <a href="" class="btn btn-primary">
@@ -112,4 +112,42 @@
             </div>
         </nav>
     </div>
+    <style>
+        .contador {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: rgba(98, 0, 255, 0.253);
+        color: white;
+        border-radius: 66%;
+        padding: 2px 19px;
+        font-size: 12px;
+        }
+    </style>
+    <script>
+        function cargarContadorCarrito(){
+            // Obtener el carrito actual del almacenamiento local
+        carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        actualizarContador(carrito.length);
+        }
+        // Actualizar el valor del contador
+        function actualizarContador(valor) {
+        // Obtener el elemento del contador
+        var contadorCarrito = document.getElementById("contadorCarrito");
+        if(valor==0){
+            contadorCarrito.setAttribute("hidden", true); // Ocultar el contador
+        }else{
+            contadorCarrito.removeAttribute("hidden"); // Mostrar el contador
+        }
+        contadorCarrito.textContent = valor;
+        }
+        // Función a ejecutar cada 3 segundos
+        function ejecutarCodigo() {
+        // Aquí colocas el código que deseas ejecutar cada 3 segundos
+        cargarContadorCarrito();
+        }
+
+        // Ejecutar la función cada 1 segundos
+        setInterval(ejecutarCodigo, 700);
+    </script>
 </div>
