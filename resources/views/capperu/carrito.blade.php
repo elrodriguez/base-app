@@ -39,7 +39,11 @@
                 <div class="col-md-8">
                     <b>03 cursos en el carrito</b>
                     <div class="row">
-                        <div class="col-md-12" style="padding: 10px;">
+
+
+
+
+                        <div class="col-md-12" style="padding: 10px;" id="1_pc"> <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-3">
                                     <div class="single-course-wrap">
@@ -72,7 +76,7 @@
                                                 <div class="row align-items-center">
                                                     <div class="col-md-12">
                                                         <b>S/. 250.00</b>&nbsp;&nbsp;
-                                                        <a href="#" class="btn btn-danger">
+                                                        <a onclick="eliminarproducto({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"  class="btn btn-danger">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -82,24 +86,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12" style="padding: 10px;">
+
+
+
+
+
+
+                        <div class="col-md-12" style="padding: 10px;" id="2_pc"> <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-3">
                                     <div class="single-course-wrap">
                                         <div class="thumb">
                                             <a href="#" class="cat cat-blue">Curso</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
+                                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="single-course-wrap">
                                         <div class="wrap-details">
-                                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
+                                            <h6><a href="#">PHP for Seniors - Become a PHP Doctor - ERP Project</a></h6>
                                             <div class="user-area">
                                                 <div class="user-details">
-                                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="#">Jessica Jessy</a>
+                                                    <img src="{{ asset('themes/capperu/assets/img/author/2.png') }}" alt="img">
+                                                    <a href="#">James  Anderson</a>
                                                 </div>
                                                 <div class="user-rating">
                                                     <span><i class="fa fa-users"></i>
@@ -114,8 +124,8 @@
                                             <div class="price-wrap">
                                                 <div class="row align-items-center">
                                                     <div class="col-md-12">
-                                                        <b>S/. 250.00</b>&nbsp;&nbsp;
-                                                        <a href="#" class="btn btn-danger">
+                                                        <b>S/. 750.00</b>&nbsp;&nbsp;
+                                                        <a onclick="eliminarproducto({ id: 2, nombre: 'PHP for Seniors - Become a PHP Doctor - ERP Project', precio: 750 })"  class="btn btn-danger">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -125,24 +135,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12" style="padding: 10px;">
+
+
+
+
+
+
+                        <div class="col-md-12" style="padding: 10px;" id="3_pc"> <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-3">
                                     <div class="single-course-wrap">
                                         <div class="thumb">
                                             <a href="#" class="cat cat-blue">Curso</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
+                                            <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="single-course-wrap">
                                         <div class="wrap-details">
-                                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
+                                            <h6><a href="#">Mi primera Chamba</a></h6>
                                             <div class="user-area">
                                                 <div class="user-details">
                                                     <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="#">Jessica Jessy</a>
+                                                    <a href="#">Bad Bunny</a>
                                                 </div>
                                                 <div class="user-rating">
                                                     <span><i class="fa fa-users"></i>
@@ -157,8 +173,8 @@
                                             <div class="price-wrap">
                                                 <div class="row align-items-center">
                                                     <div class="col-md-12">
-                                                        <b>S/. 250.00</b>&nbsp;&nbsp;
-                                                        <a href="#" class="btn btn-danger">
+                                                        <b>S/. 50.00</b>&nbsp;&nbsp;
+                                                        <a onclick="eliminarproducto({ id: 3, nombre: 'Mi Primera Chamba', precio: 50 })" class="btn btn-danger">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -168,6 +184,11 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+
+
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -211,7 +232,7 @@
                                 <i class="fa fa-heart"></i> Total:
                             </div>
                             <div class="col-md-12" style="font-size: 25px;">
-                                <p><b>S/. 750.00</b></p>
+                                <p><b id="totalid"></b></p>
                             </div>
                             <div class="col-md-12">
                                 <a class="btn btn-primary" style="width: 100%">
@@ -224,6 +245,47 @@
             </div>
         </div>
     </section>
+
+    <script>
+        // Obtener el carrito actual del almacenamiento local
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        console.log("items del carrito: ", carrito);
+        //Tiene que hacer una consulta con los datos de la variable carrito para que llene los espacios necesarios de los cursos elegidos
+
+        function eliminarproducto(producto){
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            let indice = carrito.findIndex(item => item.id === producto.id);
+            if (indice >= 0) {
+                // Elimina el producto del carrito utilizando el índice
+                carrito.splice(indice, 1);
+                localStorage.setItem('carrito', JSON.stringify(carrito));
+
+                //codigo que elimine el producto o curso de la vista
+                // Seleccionar el elemento con el ID "1pc" el id + la cadena ya especificada en la BD ejemplo id+"pc"
+                const elemento = document.getElementById(producto.id+"_pc");
+
+                // Verificar si el elemento existe antes de eliminarlo
+                if (elemento) {
+                    // Eliminar el elemento y su contenido
+                    elemento.remove();
+                }
+            }
+            getTotal();
+
+            //Aquí el producto ya fue eliminado del localstorage y de la vista
+            // ahora debería luego de que ya eliminó del localstorage "el producto o curso" verificar si está logueado y si lo está eliminar de la base de datos tambien
+        }
+        getTotal();
+        function getTotal(){
+            carritoTemp = JSON.parse(localStorage.getItem('carrito')) || [];
+            total=0;
+            for (let i = 0; i < carritoTemp.length; i++) {
+                total+=carritoTemp[i].precio;                              
+            }
+            document.getElementById("totalid").textContent = "S/. "+total+".00";
+            console.log("total: "+total);
+        }
+    </script>
     <!-- zoom courses Area End -->
 
     
