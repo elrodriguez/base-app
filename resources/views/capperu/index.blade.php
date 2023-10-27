@@ -118,7 +118,7 @@
                 @if (count($programs) > 0)
                     @foreach ($programs as $key => $program)
                         <div class="col-md-3">
-                            <div class="single-course-wrap">
+                            <div class="single-course-wrap" style="background-color: #F9FAFD;">
                                 <div class="thumb">
                                     <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue"
                                         style="font-size: 18px;">
@@ -129,18 +129,17 @@
                                     </a>
                                 </div>
                                 <div class="wrap-details">
-                                    <h6 class="nombre">
+                                    <h6 title="{{ $program->name }}">
                                         <a href="{{ route('web_descripcion_en_vivo') }}">{{ $program->name }}</a>
                                     </h6>
-                                    <div class="user-area" style="padding: 0px;">
-                                        <div class="user-details">
-                                            <p style="padding: 2px 0px;">{{ $program->description }}</p>
+                                    <div style="height: 80px;">
+                                        <div>
+                                            <p style="line-height: 20px;" >{{ $program->description }}</p>
                                         </div>
                                     </div>
                                     <div class="user-area" style="padding: 3px;">
                                         <div class="user-details">
-                                            <img src="{{ asset('themes/capperu/assets/img/author/2.png') }}"
-                                                alt="img">
+                                            <img style="width: 30px;" src="{{ asset('themes/capperu/assets/img/author/2.png') }}" alt="img">
                                             <a href="{{ route('web_perfil_docente') }}">Bad Bunny</a>
                                         </div>
                                         <div class="user-rating">
@@ -153,18 +152,20 @@
                                         <div class="user-details">
                                             <a href="">
                                                 <span style="color:orange;">
-                                                    <i class="fa fa-fire" aria-hidden="true"></i> Sector:
+                                                    Sector:
                                                 </span>
                                                 <br>
                                                 <b>{{ $program->category_description }}</b>
                                             </a>
                                         </div>
                                         <div class="user-rating">
-                                            <span style="color:orange;">
-                                                <i>Modalidad:</i>
-                                            </span>
-                                            <br>
-                                            <b>{{ $program->additional }}</b>
+                                            <a href="">
+                                                <span style="color:orange;">
+                                                    <i>Modalidad:</i>
+                                                </span>
+                                                <br>
+                                                <b>{{ $program->additional }}</b>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="price-wrap">

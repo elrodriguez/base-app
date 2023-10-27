@@ -39,34 +39,38 @@
                 <div class="col-md-8">
                     <b>03 cursos en el carrito</b>
                     <div class="row">
-
-
-
-
                         <div class="col-md-12" style="padding: 10px;" id="1_pc"> <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="single-course-wrap">
                                         <div class="thumb">
-                                            <a href="#" class="cat cat-blue">Curso</a>
+                                            <!--<a href="#" class="cat cat-blue">Curso</a>-->
                                             <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="single-course-wrap">
-                                        <div class="wrap-details">
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-12">
                                             <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
-                                            <div class="user-area">
-                                                <div class="user-details">
-                                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="#">Jessica Jessy</a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span><i class="fa fa-users"></i>
-                                                        </span>(76)
-                                                </div>
-                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                            <a href="#">Jessica Jessy</a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span style="color:orange;">
+                                                <i class="fa fa-users"></i>
+                                            </span>(76)
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="">
+                                                <span style="color:orange;">
+                                                    <b>En Vivo</b>
+                                                </span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -87,35 +91,38 @@
                             </div>
                         </div>
 
-
-
-
-
-
                         <div class="col-md-12" style="padding: 10px;" id="2_pc"> <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="single-course-wrap">
                                         <div class="thumb">
-                                            <a href="#" class="cat cat-blue">Curso</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
+                                            <!--<a href="#" class="cat cat-blue">Curso</a>-->
+                                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="single-course-wrap">
-                                        <div class="wrap-details">
-                                            <h6><a href="#">PHP for Seniors - Become a PHP Doctor - ERP Project</a></h6>
-                                            <div class="user-area">
-                                                <div class="user-details">
-                                                    <img src="{{ asset('themes/capperu/assets/img/author/2.png') }}" alt="img">
-                                                    <a href="#">James  Anderson</a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span><i class="fa fa-users"></i>
-                                                        </span>(76)
-                                                </div>
-                                            </div>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                            <a href="#">Jessica Jessy</a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span style="color:orange;">
+                                                <i class="fa fa-users"></i>
+                                            </span>(76)
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="">
+                                                <span style="color:orange;">
+                                                    <b>En Vivo</b>
+                                                </span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -124,8 +131,8 @@
                                             <div class="price-wrap">
                                                 <div class="row align-items-center">
                                                     <div class="col-md-12">
-                                                        <b>S/. 750.00</b>&nbsp;&nbsp;
-                                                        <a onclick="eliminarproducto({ id: 2, nombre: 'PHP for Seniors - Become a PHP Doctor - ERP Project', precio: 750 })"  class="btn btn-danger">
+                                                        <b>S/. 250.00</b>&nbsp;&nbsp;
+                                                        <a onclick="eliminarproducto({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"  class="btn btn-danger">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -135,36 +142,39 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
 
                         <div class="col-md-12" style="padding: 10px;" id="3_pc"> <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="single-course-wrap">
                                         <div class="thumb">
-                                            <a href="#" class="cat cat-blue">Curso</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
+                                            <!--<a href="#" class="cat cat-blue">Curso</a>-->
+                                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="single-course-wrap">
-                                        <div class="wrap-details">
-                                            <h6><a href="#">Mi primera Chamba</a></h6>
-                                            <div class="user-area">
-                                                <div class="user-details">
-                                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="#">Bad Bunny</a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span><i class="fa fa-users"></i>
-                                                        </span>(76)
-                                                </div>
-                                            </div>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a></h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                            <a href="#">Jessica Jessy</a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span style="color:orange;">
+                                                <i class="fa fa-users"></i>
+                                            </span>(76)
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="">
+                                                <span style="color:orange;">
+                                                    <b>En Vivo</b>
+                                                </span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -173,8 +183,8 @@
                                             <div class="price-wrap">
                                                 <div class="row align-items-center">
                                                     <div class="col-md-12">
-                                                        <b>S/. 50.00</b>&nbsp;&nbsp;
-                                                        <a onclick="eliminarproducto({ id: 3, nombre: 'Mi Primera Chamba', precio: 50 })" class="btn btn-danger">
+                                                        <b>S/. 250.00</b>&nbsp;&nbsp;
+                                                        <a onclick="eliminarproducto({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"  class="btn btn-danger">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -184,10 +194,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
 
                     </div>
                 </div>
