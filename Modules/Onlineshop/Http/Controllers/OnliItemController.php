@@ -221,4 +221,23 @@ class OnliItemController extends Controller
             'message' => $message
         ]);
     }
+
+
+    public function getItemCarrito(Request $request)
+    {
+        $item=OnliItem::find($request->get('id'));
+        
+        // Verificar si se encontró el ítem
+        if (!$item) {
+            // Manejar el caso en el que el ítem no se encuentre
+            return response()->json(['error' => 'Ítem no encontrado'], 404);
+        }
+
+        // Devolver el ítem como JSON
+        return response()->json($item);
+
+    }
+
+
+
 }

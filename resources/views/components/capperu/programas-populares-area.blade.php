@@ -32,7 +32,7 @@
                                             <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
                                         </div>
                                         <div class="wrap-details">
-                                            <h6 class="nombre texto-oculto1">
+                                            <h6 class="nombre texto-oculto2">
                                                 <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
                                             </h6>
                                             <div class="user-area" style="padding: 0px;">
@@ -42,7 +42,7 @@
                                             </div>
                                             <div class="user-area" style="padding: 3px;">
                                                 <div class="user-details">
-                                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                                    <img  style="width: 30px;" src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
                                                     <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
                                                 </div>
                                                 <div class="user-rating">
@@ -557,7 +557,7 @@
             </div>
         </div>
     </section>
-    
+    <!--
       <style>
         .texto-oculto4 {
           display: -webkit-box;
@@ -590,4 +590,5 @@
           overflow: hidden;
         }
       </style>
+    -->
 </div>

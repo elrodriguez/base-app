@@ -21,3 +21,6 @@ Route::middleware(['auth', 'verified'])->prefix('onlineshop')->group(function ()
     Route::delete('items/destroy/{id}', 'OnliItemController@destroy')->name('onlineshop_items_destroy');
     Route::get('sales', 'OnliSaleController@index')->name('onlineshop_sales');
 });
+
+
+Route::post('get/item', 'OnliItemController@getItemCarrito')->name('onlineshop_get_item_carrito');

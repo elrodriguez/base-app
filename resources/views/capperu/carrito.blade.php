@@ -37,9 +37,9 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <b>03 cursos en el carrito</b>
-                    <div class="row">
-                        <div class="col-md-12" style="padding: 10px;" id="1_pc"> <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
+                    <b id="total_productos">03 programas en el carrito</b>
+                    <div class="row" id="cart">
+                        <div class="col-md-12" style="padding: 10px;" id="11_pc"> 
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-2">
                                     <div class="single-course-wrap">
@@ -132,7 +132,7 @@
                                                 <div class="row align-items-center">
                                                     <div class="col-md-12">
                                                         <b>S/. 250.00</b>&nbsp;&nbsp;
-                                                        <a onclick="eliminarproducto({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"  class="btn btn-danger">
+                                                        <a onclick="eliminarproducto({ id: 2, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"  class="btn btn-danger">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -184,7 +184,7 @@
                                                 <div class="row align-items-center">
                                                     <div class="col-md-12">
                                                         <b>S/. 250.00</b>&nbsp;&nbsp;
-                                                        <a onclick="eliminarproducto({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"  class="btn btn-danger">
+                                                        <a onclick="eliminarproducto({ id: 3, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"  class="btn btn-danger">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -194,7 +194,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -252,10 +251,116 @@
         </div>
     </section>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.getElementById('cart').innerHTML="";// Esto borra todo antes de cargar de la base de datos
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito.forEach(function(item) {
+            // Hacer algo con cada elemento del carrito
+            realizarConsulta(item.id);
+            });
+
+        function realizarConsulta(id) {
+        // Datos de la consulta
+        var datos = {
+            // Agrega aquí los parámetros de tu consulta, si es necesario
+        };
+        // Realizar la petición Ajax
+        var csrfToken = "{{ csrf_token() }}";
+
+            $.ajax({
+                url: '{{ route('onlineshop_get_item_carrito') }}',
+                type: 'POST',
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function (respuesta) {
+                    // La consulta se realizó exitosamente
+                    console.log("respuesta de servidor", respuesta);
+                    renderProducto(respuesta);
+                    // Aquí puedes hacer algo con la respuesta recibida
+                },
+                error: function (xhr) {
+                    // Ocurrió un error al realizar la consulta
+                    console.log(xhr.responseText);
+                    // Aquí puedes manejar el error de alguna manera
+                }
+            });
+            
+        }
+
+        function renderProducto(respuesta)
+        {
+           var id = respuesta.id;
+           var image = respuesta.image;
+           var name = respuesta.name;
+           var price = respuesta.price;
+           var modalidad = respuesta.additional;
+           var cart=document.getElementById('cart');
+           cart.innerHTML += `
+            <div class="col-md-12" style="padding: 10px;" id="`+id+`_pc">
+                            <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
+                                <div class="col-md-2">
+                                    <div class="single-course-wrap">
+                                        <div class="thumb">
+                                            <img src="`+image+`" alt="img">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h6><a href="#">`+name+`</a></h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
+                                            <a href="#">Jessica Jessy</a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span style="color:orange;">
+                                                <i class="fa fa-users"></i>
+                                            </span>(76)
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="">
+                                                <span style="color:orange;">
+                                                    <b>`+modalidad+`</b>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="single-course-wrap">
+                                            <div class="price-wrap">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-12">
+                                                        <b>S/. `+price+`</b>&nbsp;&nbsp;
+                                                        <a onclick="eliminarproducto({ id: `+id+`, nombre: '`+name+`', precio: `+price+` });"  class="btn btn-danger">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+        }
+
+    </script>
+
     <script>
         // Obtener el carrito actual del almacenamiento local
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        console.log("items del carrito: ", carrito);
+        carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        console.log("items del carrito localstorage: ", carrito);
         //Tiene que hacer una consulta con los datos de la variable carrito para que llene los espacios necesarios de los cursos elegidos
 
         function eliminarproducto(producto){
@@ -289,6 +394,8 @@
                 total+=carritoTemp[i].precio;                              
             }
             document.getElementById("totalid").textContent = "S/. "+total+".00";
+            total_productos=carritoTemp.length;
+            document.getElementById('total_productos').innerHTML=total_productos+" programas en el carrito.";
             console.log("total: "+total);
         }
     </script>

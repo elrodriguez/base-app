@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('themes/capperu/assets/css/slick-slide.min.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/capperu/assets/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/capperu/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('themes/capperu/assets/css/aracode.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/capperu/assets/css/responsive.css') }}">
 
     <!-- Stylesheet 

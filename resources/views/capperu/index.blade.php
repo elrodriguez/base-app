@@ -115,6 +115,7 @@
                     </div>
                 </div>
 
+
                 @if (count($programs) > 0)
                     @foreach ($programs as $key => $program)
                         <div class="col-md-3">
@@ -129,12 +130,12 @@
                                     </a>
                                 </div>
                                 <div class="wrap-details">
-                                    <h6 title="{{ $program->name }}">
+                                    <h6 title="{{ $program->name }}" class="texto-oculto2">
                                         <a href="{{ route('web_descripcion_en_vivo') }}">{{ $program->name }}</a>
                                     </h6>
-                                    <div style="height: 80px;">
+                                    <div>
                                         <div>
-                                            <p style="line-height: 20px;" >{{ $program->description }}</p>
+                                            <p class="texto-oculto3" style="line-height: 20px;" >{{ $program->description }}</p>
                                         </div>
                                     </div>
                                     <div class="user-area" style="padding: 3px;">
@@ -172,7 +173,7 @@
                                         <div class="row align-items-center">
                                             <div class="col-md-12">
                                                 <button
-                                                    onclick="agregarAlCarrito({ id: 3, nombre: 'Mi Primera Chamba', precio: 50 })"
+                                                    onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} })"
                                                     class="btn btn-primary">
                                                     <i class="fa fa-cart-plus"></i>
                                                     &nbsp;&nbsp;Comprar Ahora S/. {{ $program->price }}
