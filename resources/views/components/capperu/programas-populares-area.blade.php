@@ -32,12 +32,12 @@
                                             <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
                                         </div>
                                         <div class="wrap-details">
-                                            <h6 class="nombre">
+                                            <h6 class="nombre texto-oculto1">
                                                 <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
                                             </h6>
                                             <div class="user-area" style="padding: 0px;">
                                                 <div class="user-details">
-                                                    <p style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final...</p>
+                                                    <p class="texto-oculto3" style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final esta es una pruba de la clase texto-oculto si supera 3 lineas debería ocultar si no debe mostrar todo</p>
                                                 </div>
                                             </div>
                                             <div class="user-area" style="padding: 3px;">
@@ -497,7 +497,7 @@
                                             <img src="{{ asset('themes/capperu/assets/img/course/3.png') }}" alt="img">
                                         </div>
                                         <div class="wrap-details">
-                                            <h6><a href="#">About latest tips news and course for Illustration 2021</a></h6>
+                                            <h6><a href="#">sAbout latest tips news and course for Illustration 2021</a></h6>
                                             <div class="user-area">
                                                 <div class="user-details">
                                                     <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
@@ -527,7 +527,7 @@
                                             <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
                                         </div>
                                         <div class="wrap-details">
-                                            <h6><a href="#">Email & Affiliate Marketing Mastermind</a></h6>
+                                            <h6><a class="c" href="#">{{ "Email & Affiliate Marketing Mastermind" }}</a></h6>
                                             <div class="user-area">
                                                 <div class="user-details">
                                                     <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
@@ -557,4 +557,37 @@
             </div>
         </div>
     </section>
+    
+      <style>
+        .texto-oculto4 {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .texto-oculto3 {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .texto-oculto2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        } 
+        .texto-oculto1 {
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        } 
+        .texto-oculto4:hover, .texto-oculto3:hover, .texto-oculto2:hover, .texto-oculto1:hover {
+          display: -webkit-box;
+          -webkit-line-clamp: initial;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      </style>
 </div>
