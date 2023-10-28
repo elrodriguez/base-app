@@ -89,7 +89,7 @@
                                             <img src="{{ asset('themes/capperu/assets/img/course/2.png') }}" alt="img">
                                         </div>
                                         <div class="wrap-details">
-                                            <h6><a href="#">Best way learn fundamentals of design.</a></h6>
+                                            <h6 class="texto-oculto1"><a href="#">Best way learn fundamentals of design.</a></h6>
                                             <div class="user-area">
                                                 <div class="user-details">
                                                     <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
@@ -120,7 +120,7 @@
                                             <img src="{{ asset('themes/capperu/assets/img/course/3.png') }}" alt="img">
                                         </div>
                                         <div class="wrap-details">
-                                            <h6><a href="#">About latest tips news and course for Illustration 2021</a></h6>
+                                            <h6 class="texto-oculto1"><a href="#">About latest tips news and course for Illustration 2021</a></h6>
                                             <div class="user-area">
                                                 <div class="user-details">
                                                     <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
