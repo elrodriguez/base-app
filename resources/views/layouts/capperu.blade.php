@@ -59,9 +59,9 @@
                     for (let i = 0; i < carritoTemp.length; i++) { //consulta si ya exist el artículo en el carrito
                             if(carritoTemp[i].id == producto.id){
                                 Swal.fire({
-                                    title: producto.nombre,
-                                    text: " ya se encuentra en su carrito de compras.",
-                                    icon: "success",
+                                    title: "Hola",
+                                    text: producto.nombre + " ya se encuentra en su carrito de compras.",
+                                    icon: "warning",
                                     confirmButtonText: "Aceptar"
                                 });
 
@@ -71,16 +71,32 @@
                         }
 
                     if(agregar){
-                        // Obtener el carrito actual del almacenamiento local
-                        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-                        // Agregar el producto al carrito
-                        carrito.push(producto);
+                        Swal.fire({  //Consulta para agregar item al CARRITO
+                                title: 'Estas a punto de Aprender',
+                                text: '¿Deseas agregar "'+producto.nombre+'" al Carrito?',
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonText: 'Sí',
+                                cancelButtonText: 'No'
+                                }).then((result) => {
+                                if (result.isConfirmed) {
+                                              // Obtener el carrito actual del almacenamiento local
+                                        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-                        // Guardar el carrito actualizado en el almacenamiento local
-                        localStorage.setItem('carrito', JSON.stringify(carrito));
-                        console.log(producto.nombre+ " fue agregado al carrito.");
-                        getTotal();
+                                        // Agregar el producto al carrito
+                                        carrito.push(producto);
+
+                                        // Guardar el carrito actualizado en el almacenamiento local
+                                        localStorage.setItem('carrito', JSON.stringify(carrito));
+                                        console.log(producto.nombre+ " fue agregado al carrito.");
+                                        getTotal();
+                                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                    // Acción a realizar si el usuario hace clic en "No" o cierra el diálogo
+                                    console.log('El usuario ha cancelado.');
+                                }
+                                });
+
                     }
         }
 

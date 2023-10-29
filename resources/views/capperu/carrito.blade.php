@@ -39,7 +39,7 @@
                 <div class="col-md-8">
                     <b id="total_productos">03 programas en el carrito</b>
                     <div class="row" id="cart">
-                        <div class="col-md-12" style="padding: 10px;" id="11_pc">
+                        <div class="col-md-12" style="padding: 10px;" id="1_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-2">
                                     <div class="single-course-wrap">
@@ -262,7 +262,8 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.getElementById('cart').innerHTML = ""; // Esto borra todo antes de cargar de la base de datos
+        //localStorage.setItem('carrito')=null; //ELiminar CARRITO
+        document.getElementById('cart').innerHTML = ""; // Esto borra todo el contenido de la vista elementos estaticos, antes de cargar de la base de datos, no es necesario si se eliminan todos los elementos estaticos de ejemplo
         let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
         carrito.forEach(function(item) {
             // Hacer algo con cada elemento del carrito
@@ -372,24 +373,40 @@
         //Tiene que hacer una consulta con los datos de la variable carrito para que llene los espacios necesarios de los cursos elegidos
 
         function eliminarproducto(producto) {
-            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-            let indice = carrito.findIndex(item => item.id === producto.id);
-            if (indice >= 0) {
-                // Elimina el producto del carrito utilizando el índice
-                carrito.splice(indice, 1);
-                localStorage.setItem('carrito', JSON.stringify(carrito));
+            Swal.fire({
+  title: '¿Estás seguro?',
+  text: '¿Deseas quitar "'+producto.nombre+'" de tu Carrito de compras?',
+  icon: 'question',
+  showCancelButton: true,
+  confirmButtonText: 'Sí',
+  cancelButtonText: 'No'
+}).then((result) => {
+  if (result.isConfirmed) {
+                            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+                                    let indice = carrito.findIndex(item => item.id === producto.id);
+                                    if (indice >= 0) {
+                                        // Elimina el producto del carrito utilizando el índice
+                                        carrito.splice(indice, 1);
+                                        localStorage.setItem('carrito', JSON.stringify(carrito));
 
-                //codigo que elimine el producto o curso de la vista
-                // Seleccionar el elemento con el ID "1pc" el id + la cadena ya especificada en la BD ejemplo id+"pc"
-                const elemento = document.getElementById(producto.id + "_pc");
+                                        //codigo que elimine el producto o curso de la vista
+                                        // Seleccionar el elemento con el ID "1pc" el id + la cadena ya especificada en la BD ejemplo id+"pc"
+                                        const elemento = document.getElementById(producto.id + "_pc");
 
-                // Verificar si el elemento existe antes de eliminarlo
-                if (elemento) {
-                    // Eliminar el elemento y su contenido
-                    elemento.remove();
-                }
-            }
-            getTotal();
+                                        // Verificar si el elemento existe antes de eliminarlo
+                                        if (elemento) {
+                                            // Eliminar el elemento y su contenido
+                                            elemento.remove();
+                                        }
+                                    }
+                                    getTotal();
+  } else if (result.dismiss === Swal.DismissReason.cancel) {
+    // Acción a realizar si el usuario hace clic en "No" o cierra el diálogo
+    console.log('El usuario ha cancelado.');
+  }
+});
+
+
 
             //Aquí el producto ya fue eliminado del localstorage y de la vista
             // ahora debería luego de que ya eliminó del localstorage "el producto o curso" verificar si está logueado y si lo está eliminar de la base de datos tambien
