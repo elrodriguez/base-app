@@ -37,91 +37,8 @@
     <section class="trending-courses-area pd-top-135 pd-bottom-130">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="dmne-sidebar">
-                        <div class="widget widget-select-inner">
-                            <h4 class="widget-title">Programas Especializados</h4>
-                            <ul>
-                                <li>
-                                    <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
-                                        <label class="form-check-label" for="flexCheckDefault1">
-                                          Todos
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="single-form-check form-check">
-                                        <input checked class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
-                                        <label class="form-check-label" for="flexCheckDefault2">
-                                            Sector Empresarial
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
-                                        <label class="form-check-label" for="flexCheckDefault3">
-                                            Sector Derecho
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
-                                        <label class="form-check-label" for="flexCheckDefault4">
-                                            Sector Público
-                                        </label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="widget widget-select-inner">
-                            <h4 class="widget-title">Modalidad</h4>
-                            <ul>
-                                <li>
-                                    <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault14">
-                                        <label class="form-check-label" for="flexCheckDefault14">
-                                            En Vivo
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault15">
-                                        <label class="form-check-label" for="flexCheckDefault15">
-                                            E-Learning 
-                                            <br>(auto-administrado)
-                                        </label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="widget widget-select-inner">
-                            <h4 class="widget-title">Programa</h4>
-                            <ul>
-                                <li>
-                                    <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault17">
-                                        <label class="form-check-label" for="flexCheckDefault17">
-                                            Curso
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="single-form-check form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault18">
-                                        <label class="form-check-label" for="flexCheckDefault18">
-                                            Diplomado
-                                        </label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="single-course-wrap">
@@ -153,6 +70,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-2"></div>
             </div>
         </div>
     </section>

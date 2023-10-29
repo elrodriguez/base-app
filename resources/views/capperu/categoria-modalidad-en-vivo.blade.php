@@ -147,7 +147,6 @@
                                 <div>
                                     <a href="" class="btn btn-base2" style="width: 100%; text-align:center; border-radius: 0px;">
                                         DIPLOMADOS ESPECIALIZADOS
-   
                                     </a>
                                 </div>
                             </div>

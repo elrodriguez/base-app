@@ -38,9 +38,15 @@
                         <li class="menu-item-has-children">
                             <a href="#">Programa de Estudios</a>
                             <ul class="sub-menu">
-                                <li><a href="">Sector: <b>Empresarial</b></a></li>
-                                <li><a href="">Sector: <b>Laboral</b></a></li>
-                                <li><a href="">Sector: <b>Penal</b></a></li>
+                                <li>
+                                    <a href="{{ route('web_categoria_sector') }}">Sector: <b>Empresarial</b></a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('web_categoria_sector') }}">Sector: <b>Laboral</b></a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('web_categoria_sector') }}">Sector: <b>Penal</b></a>
+                                </li>
                             </ul>
                         </li>
                         <li>
