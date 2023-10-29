@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('aca_courses', function (Blueprint $table) {
-            $table->bigInteger('teacher_id')->nullable();
+            $table->unsignedBigInteger('teacher_id')->nullable()->comment('se guarda el id  del teacher principal');
+            $table->foreign('teacher_id', 'aca_courses_teacher_id_fk')->references('id')->on('aca_teachers')->onDelete('cascade');
         });
     }
 
@@ -26,6 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('aca_courses', function (Blueprint $table) {
+            $table->dropForeign('aca_courses_teacher_id_fk');
             $table->dropColumn('teacher_id');
         });
     }

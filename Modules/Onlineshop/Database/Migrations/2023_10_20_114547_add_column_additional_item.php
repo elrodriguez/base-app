@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::table('onli_items', function (Blueprint $table) {
             $table->string('additional')->nullable();
+            $table->string('additional1')->nullable();
+            $table->string('additional2')->nullable();
         });
     }
 
@@ -26,6 +28,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('onli_items', function (Blueprint $table) {
+            $table->dropColumn('additional2');
+            $table->dropColumn('additional1');
             $table->dropColumn('additional');
         });
     }
