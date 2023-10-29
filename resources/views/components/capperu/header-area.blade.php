@@ -77,13 +77,13 @@
             <div class="category-slider owl-carousel">
                 <div class="item">
                     <a href="">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                        <i class="fa fa-envelope" aria-hidden="true" style="color: orange;"></i>
                         capperuacademica@gmail.com
                     </a>
                 </div>
                 <div class="item">
                     <a href="">
-                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <i class="fa fa-phone" aria-hidden="true" style="color: orange;"></i>
                         (01)7397026 – (043) 200324 - 977 66 24 60 - 946 94 38 87
                     </a>
                 </div>
@@ -97,13 +97,13 @@
                     <ul class="navbar-nav menu-open" style="text-align:center;">
                         <li>
                             <a href="">
-                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <i class="fa fa-envelope" aria-hidden="true" style="color: orange;"></i>
                                 capperuacademica@gmail.com
                             </a>
                         </li>
                         <li>
                             <a href="">
-                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                <i class="fa fa-phone" aria-hidden="true" style="color: orange;"></i>
                                 (01)7397026 – (043) 200324 - 977 66 24 60 - 946 94 38 87
                             </a>
                         </li>
