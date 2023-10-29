@@ -49,16 +49,22 @@
         <span class="back-top"><i class="fas fa-angle-double-up"></i></span>
     </div>
 
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Agregar un producto al carrito
         function agregarAlCarrito(producto) {
             carritoTemp=obtenerCarrito();
                 
             var agregar = true;
-                    for (let i = 0; i < carritoTemp.length; i++) {
+                    for (let i = 0; i < carritoTemp.length; i++) { //consulta si ya exist el artículo en el carrito
                             if(carritoTemp[i].id == producto.id){
-                                alert(producto.nombre+" ya está en el carrito de compras.");
+                                Swal.fire({
+                                    title: producto.nombre,
+                                    text: " ya se encuentra en su carrito de compras.",
+                                    icon: "success",
+                                    confirmButtonText: "Aceptar"
+                                });
+
                                 agregar = false;
                                 break;
                             }                
