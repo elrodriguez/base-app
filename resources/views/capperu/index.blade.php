@@ -24,11 +24,11 @@
             <div class="row justify-content-center">
                 <div class="col-xl-7 col-lg-8 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Estudia en línea con mucha facilidad.</h1>
+                        <h1>¿En qué deseas especializarte?</h1>
                         <div class="banner-content">
-                            <p>Puede acceder a más de 150 cursos diferentes formadores profesionales.</p>
+                            <p>Puedes acceder a más de 150 cursos y más de 30 diplomados especializados </p>
                         </div>
-                        <a class="btn btn-base" href="categoria">Más Programas de Estudios</a>
+                        <a class="btn btn-base" href="categoria">Más Programas de Estudios <i class="fa fa-search"></i></a>
                     </div>
                 </div>
             </div>

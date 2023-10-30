@@ -53,7 +53,7 @@
                             <a href="{{ route('web_categorias') }}">Categorias</a>
                         </li>
                         <li>
-                            <a href="">Convenios</a>
+                            <a href="{{ route('web_convenios') }}">Convenios</a>
                         </li>
                         <li>
                             <a href="">Blog</a>
@@ -66,7 +66,12 @@
                 <div class="nav-right-part nav-right-part-desktop">
                     <ul>
                         <li>
-                            <a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus "></i><span id="contadorCarrito" class="contador"></span></a>
+                            <a href="carrito" class="btn btn-base">
+                                <i class="fa fa-cart-plus "></i>&nbsp;&nbsp;
+                                <b>
+                                    <span id="contadorCarrito" class="contador" style="font-size: 18px;"></span>
+                                </b>
+                            </a>
                         </li>
                         <li>
                             <a href="" class="btn btn-primary">
