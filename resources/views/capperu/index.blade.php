@@ -123,7 +123,7 @@
                                 <div class="thumb">
                                     <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue"
                                         style="font-size: 18px;">
-                                        {{ $program->additional }}
+                                        Curso
                                     </a>
                                     <a href="{{ route('web_descripcion_en_vivo') }}">
                                         <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
