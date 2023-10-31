@@ -75,10 +75,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <b id="total_productos">03 programas en el carrito</b>
-                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip" title="Remove item">
-                        <i class="fas fa-trash"></i>
-                        <i class="fas fa-check-square"></i>
-                      </button>
+                    
                     <div class="row" id="cart">
                         <div class="col-md-12" style="padding: 10px;" id="1_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
@@ -362,7 +359,7 @@
                                 <div class="col-md-2">
                                     <div class="single-course-wrap">
                                         <div class="thumb">
-                                            <img src="` + image + `" alt="img"> 
+                                            <img style="height: 90px; object-fit: cover;" src="` + image + `" alt="img"> 
                                         </div>
                                     </div>
                                 </div>
