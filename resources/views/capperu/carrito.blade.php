@@ -263,7 +263,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         //localStorage.setItem('carrito')=null; //ELiminar CARRITO
-        document.getElementById('cart').innerHTML = ""; // Esto borra todo el contenido de la vista elementos estaticos, antes de cargar de la base de datos, no es necesario si se eliminan todos los elementos estaticos de ejemplo
+        document.getElementById('cart').innerHTML =
+            ""; // Esto borra todo el contenido de la vista elementos estaticos, antes de cargar de la base de datos, no es necesario si se eliminan todos los elementos estaticos de ejemplo
         let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
         carrito.forEach(function(item) {
             // Hacer algo con cada elemento del carrito
@@ -366,65 +367,7 @@
         }
     </script>
 
-    <script>
-        // Obtener el carrito actual del almacenamiento local
-        carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        console.log("items del carrito localstorage: ", carrito);
-        //Tiene que hacer una consulta con los datos de la variable carrito para que llene los espacios necesarios de los cursos elegidos
 
-        function eliminarproducto(producto) {
-            Swal.fire({
-  title: '¿Estás seguro?',
-  text: '¿Deseas quitar "'+producto.nombre+'" de tu Carrito de compras?',
-  icon: 'question',
-  showCancelButton: true,
-  confirmButtonText: 'Sí',
-  cancelButtonText: 'No'
-}).then((result) => {
-  if (result.isConfirmed) {
-                            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-                                    let indice = carrito.findIndex(item => item.id === producto.id);
-                                    if (indice >= 0) {
-                                        // Elimina el producto del carrito utilizando el índice
-                                        carrito.splice(indice, 1);
-                                        localStorage.setItem('carrito', JSON.stringify(carrito));
-
-                                        //codigo que elimine el producto o curso de la vista
-                                        // Seleccionar el elemento con el ID "1pc" el id + la cadena ya especificada en la BD ejemplo id+"pc"
-                                        const elemento = document.getElementById(producto.id + "_pc");
-
-                                        // Verificar si el elemento existe antes de eliminarlo
-                                        if (elemento) {
-                                            // Eliminar el elemento y su contenido
-                                            elemento.remove();
-                                        }
-                                    }
-                                    getTotal();
-  } else if (result.dismiss === Swal.DismissReason.cancel) {
-    // Acción a realizar si el usuario hace clic en "No" o cierra el diálogo
-    console.log('El usuario ha cancelado.');
-  }
-});
-
-
-
-            //Aquí el producto ya fue eliminado del localstorage y de la vista
-            // ahora debería luego de que ya eliminó del localstorage "el producto o curso" verificar si está logueado y si lo está eliminar de la base de datos tambien
-        }
-        getTotal();
-
-        function getTotal() {
-            carritoTemp = JSON.parse(localStorage.getItem('carrito')) || [];
-            total = 0;
-            for (let i = 0; i < carritoTemp.length; i++) {
-                total += carritoTemp[i].precio;
-            }
-            document.getElementById("totalid").textContent = "S/. " + total + ".00";
-            total_productos = carritoTemp.length;
-            document.getElementById('total_productos').innerHTML = total_productos + " programas en el carrito.";
-            console.log("total: " + total);
-        }
-    </script>
     <!-- zoom courses Area End -->
 
 

@@ -3,15 +3,16 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container nav-container">
                 <div class="responsive-mobile-menu">
-                    <button class="menu toggle-btn d-block d-lg-none" data-target="#themefie_main_menu" 
-                    aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="menu toggle-btn d-block d-lg-none" data-target="#themefie_main_menu"
+                        aria-expanded="false" aria-label="Toggle navigation">
                         <span class="icon-left"></span>
                         <span class="icon-right"></span>
                     </button>
                 </div>
                 <div class="logo">
                     <a class="main-logo" href="">
-                        <img style="width:196px; height:61px;" src="{{ asset('themes/capperu/assets/img/logo-cap.png') }}" alt="img">
+                        <img style="width:196px; height:61px;"
+                            src="{{ asset('themes/capperu/assets/img/logo-cap.png') }}" alt="img">
                     </a>
                 </div>
                 <div class="nav-right-part nav-right-part-mobile">
@@ -24,7 +25,7 @@
                         <li>
                             <a href="carrito" class="btn btn-base"><i class="fa fa-cart-plus"></i>&nbsp;&nbsp;
                                 <b>
-                                    <span id="contadorCarrito" class="contador" style="font-size: 18px;"></span>
+                                    <span id="contadorCarritoMovil" class="contador" style="font-size: 18px;"></span>
                                 </b>
                             </a>
                         </li>
@@ -37,7 +38,7 @@
                         <button><i class="fa fa-search"></i></button>
                     </div>
                     -->
-                    
+
                     <ul class="navbar-nav menu-open text-end">
                         <li>
                             <a href="{{ route('cms_principal') }}">Home</a>
@@ -79,7 +80,7 @@
                             <a href="carrito" class="btn btn-base">
                                 <i class="fa fa-cart-plus "></i>&nbsp;&nbsp;
                                 <b>
-                                    <span id="contadorCarrito" class="contador" style="font-size: 18px;"></span>
+                                    <span id="contadorCarritoWeb" class="contador" style="font-size: 18px;"></span>
                                 </b>
                             </a>
                         </li>
@@ -135,40 +136,15 @@
     </div>
     <style>
         .contador {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background-color: rgba(98, 0, 255, 0.253);
-        color: white;
-        border-radius: 66%;
-        padding: 2px 19px;
-        font-size: 12px;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: rgba(98, 0, 255, 0.253);
+            color: white;
+            border-radius: 66%;
+            padding: 2px 19px;
+            font-size: 12px;
         }
     </style>
-    <script>
-        function cargarContadorCarrito(){
-            // Obtener el carrito actual del almacenamiento local
-        carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        actualizarContador(carrito.length);
-        }
-        // Actualizar el valor del contador
-        function actualizarContador(valor) {
-        // Obtener el elemento del contador
-        var contadorCarrito = document.getElementById("contadorCarrito");
-        if(valor==0){
-            contadorCarrito.setAttribute("hidden", true); // Ocultar el contador
-        }else{
-            contadorCarrito.removeAttribute("hidden"); // Mostrar el contador
-        }
-        contadorCarrito.textContent = valor;
-        }
-        // Función a ejecutar cada 3 segundos
-        function ejecutarCodigo() {
-        // Aquí colocas el código que deseas ejecutar cada 3 segundos
-        cargarContadorCarrito();
-        }
 
-        // Ejecutar la función cada 1 segundos
-        setInterval(ejecutarCodigo, 700);
-    </script>
 </div>
