@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'mercadopago' => [
+        'key' => env('MERCADOPAGO_KEY'),
+        'token' => env('MERCADOPAGO_TOKEN')
+    ]
 ];

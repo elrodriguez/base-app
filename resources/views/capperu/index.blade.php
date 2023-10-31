@@ -135,12 +135,14 @@
                                     </h6>
                                     <div>
                                         <div>
-                                            <p class="texto-oculto3" style="line-height: 20px;" >{{ $program->description }}</p>
+                                            <p class="texto-oculto3" style="line-height: 20px;">{{ $program->description }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="user-area" style="padding: 3px;">
                                         <div class="user-details">
-                                            <img style="width: 30px;" src="{{ asset('themes/capperu/assets/img/author/2.png') }}" alt="img">
+                                            <img style="width: 30px;"
+                                                src="{{ asset('themes/capperu/assets/img/author/2.png') }}" alt="img">
                                             <a href="{{ route('web_perfil_docente') }}">Bad Bunny</a>
                                         </div>
                                         <div class="user-rating">
@@ -215,5 +217,6 @@
     <!-- Convenios Area - HOME - End -->
 
     <x-capperu.footer-area></x-capperu.footer-area>
+
 
 @endsection

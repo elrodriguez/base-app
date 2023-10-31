@@ -27,7 +27,8 @@ const form = useForm({
     discount: null,
     image: null,
     image_view: null,
-    additional: null
+    additional: null,///tipo curso o diplomado
+    additional1: null///modalidad de curso en vivo o grabado
 });
 
 const createItem = () => {
@@ -127,8 +128,21 @@ const loadFile = (event) => {
                             type="text"
                             class="block w-full mt-1"
                             autocomplete="off"
+                            placeholder="Curso / Diplomado"
                         />
                         <InputError :message="form.errors.additional" class="mt-2" />
+                    </div>
+                    <div class="mt-2">
+                        <InputLabel for="Modality" value="Modalidad" />
+                        <TextInput
+                            id="Modality"
+                            v-model="form.additional1"
+                            type="text"
+                            class="block w-full mt-1"
+                            autocomplete="off"
+                            placeholder="Curso / Diplomado"
+                        />
+                        <InputError :message="form.errors.additional1" class="mt-2" />
                     </div>
                     <div class="mt-2">
                         <InputLabel for="image" value="Imagen *" />
