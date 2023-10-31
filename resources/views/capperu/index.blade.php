@@ -126,7 +126,7 @@
                                         {{ $program->additional }}
                                     </a>
                                     <a href="{{ route('web_descripcion_en_vivo') }}">
-                                        <img src="{{ asset($program->image) }}" alt="img">
+                                        <img style="height: 260px; object-fit: cover;" src="{{ asset($program->image) }}" alt="img">
                                     </a>
                                 </div>
                                 <div class="wrap-details">
@@ -135,7 +135,7 @@
                                     </h6>
                                     <div>
                                         <div>
-                                            <p class="texto-oculto3" style="line-height: 20px;">{{ $program->description }}
+                                            <p class="texto-oculto3">{{ $program->description }}
                                             </p>
                                         </div>
                                     </div>

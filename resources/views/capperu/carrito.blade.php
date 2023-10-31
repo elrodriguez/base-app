@@ -75,6 +75,10 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <b id="total_productos">03 programas en el carrito</b>
+                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip" title="Remove item">
+                        <i class="fas fa-trash"></i>
+                        <i class="fas fa-check-square"></i>
+                      </button>
                     <div class="row" id="cart">
                         <div class="col-md-12" style="padding: 10px;" id="1_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
@@ -300,20 +304,19 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        //localStorage.setItem('carrito')=null; //ELiminar CARRITO
-        document.getElementById('cart').innerHTML =
-            ""; // Esto borra todo el contenido de la vista elementos estaticos, antes de cargar de la base de datos, no es necesario si se eliminan todos los elementos estaticos de ejemplo
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        carrito.forEach(function(item) {
-            // Hacer algo con cada elemento del carrito
-            realizarConsulta(item.id);
-        });
+        
+        
+        cargarItemsCarritoBD();
+        function cargarItemsCarritoBD(){
+                document.getElementById('cart').innerHTML =""; // BORRAR contenido de la vista, antes de cargar de la base de datos
+                    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+                carrito.forEach(function(item) {
+                        // Hacer algo con cada elemento del carrito
+                        realizarConsulta(item.id);
+                });
+        }
 
         function realizarConsulta(id) {
-            // Datos de la consulta
-            var datos = {
-                // Agrega aquí los parámetros de tu consulta, si es necesario
-            };
             // Realizar la petición Ajax
             var csrfToken = "{{ csrf_token() }}";
 
@@ -343,6 +346,8 @@
         }
 
         function renderProducto(respuesta) {
+            var cart = document.getElementById('cart');
+            if(cart != null){
             var id = respuesta.id;
             var teacher = respuesta.teacher;
             var teacher_id = respuesta.teacher_id;
@@ -350,8 +355,7 @@
             var image = respuesta.image;
             var name = respuesta.name;
             var price = respuesta.price;
-            var modalidad = respuesta.additional;
-            var cart = document.getElementById('cart');
+            var modalidad = respuesta.additional;            
             cart.innerHTML += `
             <div class="col-md-12" style="padding: 10px;" id="` + id + `_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
@@ -374,9 +378,7 @@
                                             <a href="#">`+ teacher +`</a>
                                         </div>
                                         <div class="col-md-4">
-                                            <span style="color:orange;">
-                                                <i class="fa fa-users"></i>
-                                            </span>(76)
+                                            
                                         </div>
                                         <div class="col-md-4">
                                             <a href="">
@@ -394,7 +396,7 @@
                                                     <div class="col-md-12">
                                                         <b>S/. ` + price + `</b>&nbsp;&nbsp;
                                                         <a onclick="eliminarproducto({ id: ` + id + `, nombre: '` +
-                name + `', precio: ` + price + ` });"  class="btn btn-danger">
+                                                                                        name + `', precio: ` + price + ` });"  class="btn btn-danger">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -405,6 +407,7 @@
                             </div>
                         </div>
                         `;
+                    }
         }
     </script>
 

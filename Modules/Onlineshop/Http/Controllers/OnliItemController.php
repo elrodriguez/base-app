@@ -231,7 +231,7 @@ class OnliItemController extends Controller
                 ->join('users', 'users.person_id', '=', 'people.id')
                 ->where('onli_items.id', $request->get('id'))
                 ->select('onli_items.id as id', 'onli_items.name as name', 'onli_items.image as image', 'onli_items.price as price', 'onli_items.additional as additional',
-                        'people.names as teacher', 'aca_teachers.id as teacher_id', 'users.avatar as avatar')
+                        'people.names as teacher', 'aca_teachers.id as teacher_id', 'users.avatar as avatar', 'onli_items.description as description')
                 ->first();
 
         
