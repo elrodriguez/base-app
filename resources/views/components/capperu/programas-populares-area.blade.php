@@ -23,7 +23,7 @@
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane fade show active" id="pills-1">
+                        <div class="tab-pane fade show active" id="pills-1"> <!-- Todos los items/programas -->
                             <div class="course-slider owl-carousel">
 
 
@@ -51,7 +51,7 @@
                                                 <div class="user-rating">
                                                     <span style="color:orange;">
                                                         <i class="fa fa-users"></i>
-                                                    </span>(76)
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="user-area" style="padding: 3px;">
@@ -61,15 +61,15 @@
                                                             Sector:
                                                         </span>
                                                         <br>
-                                                        <b>Empresarial</b>
+                                                        <b>{{ $program->additional2 }}</b>
                                                     </a>
                                                 </div>
                                                 <div class="user-rating">
                                                     <span style="color:orange;">
-                                                        <i>{{ $program->additional }}:</i>
+                                                        <i>Modalidad:</i>
                                                     </span>
                                                     <br>
-                                                    <b>{{ $program->additional }}</b>
+                                                    <b>{{ $program->additional1 }}</b>
                                                 </div>
                                             </div>
                                             <div class="price-wrap">
@@ -150,358 +150,212 @@
                                 </div> --}}
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="pills-2">
+                        <div class="tab-pane fade" id="pills-2"> <!-- Empresarial -->
                             <div class="course-slider owl-carousel">
-                                <div class="item">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <a href="#" class="cat cat-blue">Curso</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
-                                        </div>
-                                        <div class="wrap-details">
-                                            <h6 class="nombre texto-oculto2">
-                                                <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                                            </h6>
-                                            <div class="user-area" style="padding: 0px;">
-                                                <div class="user-details">
-                                                    <p class="texto-oculto3" style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final esta es una pruba de la clase texto-oculto si supera 3 lineas debería ocultar si no debe mostrar todo</p>
+                                
+
+                                @foreach ($programs as $program)                                
+                                    @if($program->additional2 == "Empresarial")
+                                        <div class="item">
+                                            <div class="single-course-wrap">
+                                                <div class="thumb">
+                                                    <a href="#" class="cat cat-blue">{{ $program->additional }}</a>
+                                                    <img style="height: 260px; object-fit: cover;" src="{{ $program->image }}" alt="img">
                                                 </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <img  style="width: 30px;" src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i class="fa fa-users"></i>
-                                                    </span>(76)
-                                                </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <a href="">
-                                                        <span style="color:orange;">
-                                                            Sector:
-                                                        </span>
-                                                        <br>
-                                                        <b>Empresarial</b>
-                                                    </a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i>Modalidad:</i>
-                                                    </span>
-                                                    <br>
-                                                    <b>En Vivo</b>
-                                                </div>
-                                            </div>
-                                            <div class="price-wrap">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-12">
-                                                        <button onclick="agregarAlCarrito({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });" class="btn btn-primary">
-                                                            <i class="fa fa-cart-plus"></i>
-                                                            &nbsp;&nbsp;Comprar Ahora S/. 250
-                                                        </button>
+                                                <div class="wrap-details">
+                                                    <h6 class="nombre texto-oculto2">
+                                                        <a href="{{ route('web_descripcion_en_vivo') }}">{{ $program->name }}</a>
+                                                    </h6>
+                                                    <div class="user-area" style="padding: 0px;">
+                                                        <div class="user-details">
+                                                            <p class="texto-oculto3" style="padding: 2px 0px;">{{ $program->description }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="user-area" style="padding: 3px;">
+                                                        <div class="user-details">
+                                                            <img  style="width: 30px;" src="{{ $program->avatar }}" alt="img">
+                                                            <a href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                        </div>
+                                                        <div class="user-rating">
+                                                            <span style="color:orange;">
+                                                                <i class="fa fa-users"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="user-area" style="padding: 3px;">
+                                                        <div class="user-details">
+                                                            <a href="">
+                                                                <span style="color:orange;">
+                                                                    Sector:
+                                                                </span>
+                                                                <br>
+                                                                <b>{{ $program->additional2 }}</b>
+                                                            </a>
+                                                        </div>
+                                                        <div class="user-rating">
+                                                            <span style="color:orange;">
+                                                                <i>Modalidad:</i>
+                                                            </span>
+                                                            <br>
+                                                            <b>{{ $program->additional1 }}</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="price-wrap">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-md-12">
+                                                                <button onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} });" class="btn btn-primary">
+                                                                    <i class="fa fa-cart-plus"></i>
+                                                                    Comprar Ahora S/. {{ $program->price }}
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <a href="#" class="cat cat-red">Diplomado</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
-                                        </div>
-                                        <div class="wrap-details">
-                                            <h6 class="nombre texto-oculto2">
-                                                <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                                            </h6>
-                                            <div class="user-area" style="padding: 0px;">
-                                                <div class="user-details">
-                                                    <p class="texto-oculto3" style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final esta es una pruba de la clase texto-oculto si supera 3 lineas debería ocultar si no debe mostrar todo</p>
-                                                </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <img  style="width: 30px;" src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i class="fa fa-users"></i>
-                                                    </span>(76)
-                                                </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <a href="">
-                                                        <span style="color:orange;">
-                                                            Sector:
-                                                        </span>
-                                                        <br>
-                                                        <b>Empresarial</b>
-                                                    </a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i>Modalidad:</i>
-                                                    </span>
-                                                    <br>
-                                                    <b>En Vivo</b>
-                                                </div>
-                                            </div>
-                                            <div class="price-wrap">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-12">
-                                                        <button onclick="agregarAlCarrito({ id: 2, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });" class="btn btn-primary">
-                                                            <i class="fa fa-cart-plus"></i>
-                                                            &nbsp;&nbsp;Comprar Ahora S/. 250
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    @endif
+                                @endforeach
+
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="pills-3">
+
+
+                        <div class="tab-pane fade" id="pills-3">  <!-- Derecho -->
                             <div class="course-slider owl-carousel">
-                                <div class="item">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <a href="#" class="cat cat-blue">Curso</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
-                                        </div>
-                                        <div class="wrap-details">
-                                            <h6 class="nombre texto-oculto2">
-                                                <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                                            </h6>
-                                            <div class="user-area" style="padding: 0px;">
-                                                <div class="user-details">
-                                                    <p class="texto-oculto3" style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final esta es una pruba de la clase texto-oculto si supera 3 lineas debería ocultar si no debe mostrar todo</p>
-                                                </div>
+                                
+                                
+                                @foreach ($programs as $program)                                
+                                @if($program->additional2 == "Derecho")
+                                    <div class="item">
+                                        <div class="single-course-wrap">
+                                            <div class="thumb">
+                                                <a href="#" class="cat cat-blue">{{ $program->additional }}</a>
+                                                <img style="height: 260px; object-fit: cover;" src="{{ $program->image }}" alt="img">
                                             </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <img  style="width: 30px;" src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
+                                            <div class="wrap-details">
+                                                <h6 class="nombre texto-oculto2">
+                                                    <a href="{{ route('web_descripcion_en_vivo') }}">{{ $program->name }}</a>
+                                                </h6>
+                                                <div class="user-area" style="padding: 0px;">
+                                                    <div class="user-details">
+                                                        <p class="texto-oculto3" style="padding: 2px 0px;">{{ $program->description }}</p>
+                                                    </div>
                                                 </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i class="fa fa-users"></i>
-                                                    </span>(76)
-                                                </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <a href="">
+                                                <div class="user-area" style="padding: 3px;">
+                                                    <div class="user-details">
+                                                        <img  style="width: 30px;" src="{{ $program->avatar }}" alt="img">
+                                                        <a href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                    </div>
+                                                    <div class="user-rating">
                                                         <span style="color:orange;">
-                                                            Sector:
+                                                            <i class="fa fa-users"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="user-area" style="padding: 3px;">
+                                                    <div class="user-details">
+                                                        <a href="">
+                                                            <span style="color:orange;">
+                                                                Sector:
+                                                            </span>
+                                                            <br>
+                                                            <b>{{ $program->additional2 }}</b>
+                                                        </a>
+                                                    </div>
+                                                    <div class="user-rating">
+                                                        <span style="color:orange;">
+                                                            <i>Modalidad:</i>
                                                         </span>
                                                         <br>
-                                                        <b>Empresarial</b>
-                                                    </a>
+                                                        <b>{{ $program->additional1 }}</b>
+                                                    </div>
                                                 </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i>Modalidad:</i>
-                                                    </span>
-                                                    <br>
-                                                    <b>En Vivo</b>
-                                                </div>
-                                            </div>
-                                            <div class="price-wrap">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-12">
-                                                        <button onclick="agregarAlCarrito({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });" class="btn btn-primary">
-                                                            <i class="fa fa-cart-plus"></i>
-                                                            &nbsp;&nbsp;Comprar Ahora S/. 250
-                                                        </button>
+                                                <div class="price-wrap">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-12">
+                                                            <button onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} });" class="btn btn-primary">
+                                                                <i class="fa fa-cart-plus"></i>
+                                                                Comprar Ahora S/. {{ $program->price }}
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <a href="#" class="cat cat-red">Diplomado</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
-                                        </div>
-                                        <div class="wrap-details">
-                                            <h6 class="nombre texto-oculto2">
-                                                <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                                            </h6>
-                                            <div class="user-area" style="padding: 0px;">
-                                                <div class="user-details">
-                                                    <p class="texto-oculto3" style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final esta es una pruba de la clase texto-oculto si supera 3 lineas debería ocultar si no debe mostrar todo</p>
-                                                </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <img  style="width: 30px;" src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i class="fa fa-users"></i>
-                                                    </span>(76)
-                                                </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <a href="">
-                                                        <span style="color:orange;">
-                                                            Sector:
-                                                        </span>
-                                                        <br>
-                                                        <b>Empresarial</b>
-                                                    </a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i>Modalidad:</i>
-                                                    </span>
-                                                    <br>
-                                                    <b>En Vivo</b>
-                                                </div>
-                                            </div>
-                                            <div class="price-wrap">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-12">
-                                                        <button onclick="agregarAlCarrito({ id: 2, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });" class="btn btn-primary">
-                                                            <i class="fa fa-cart-plus"></i>
-                                                            &nbsp;&nbsp;Comprar Ahora S/. 250
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endif
+                            @endforeach                                
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="pills-4">
+
+
+                        <div class="tab-pane fade" id="pills-4"> <!-- Publico -->
                             <div class="course-slider owl-carousel">
-                                <div class="item">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <a href="#" class="cat cat-blue">Curso</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
-                                        </div>
-                                        <div class="wrap-details">
-                                            <h6 class="nombre texto-oculto2">
-                                                <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                                            </h6>
-                                            <div class="user-area" style="padding: 0px;">
-                                                <div class="user-details">
-                                                    <p class="texto-oculto3" style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final esta es una pruba de la clase texto-oculto si supera 3 lineas debería ocultar si no debe mostrar todo</p>
-                                                </div>
+                                
+                                
+
+                                @foreach ($programs as $program)                                
+                                @if($program->additional2 == "Publico")
+                                    <div class="item">
+                                        <div class="single-course-wrap">
+                                            <div class="thumb">
+                                                <a href="#" class="cat cat-blue">{{ $program->additional }}</a>
+                                                <img style="height: 260px; object-fit: cover;" src="{{ $program->image }}" alt="img">
                                             </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <img  style="width: 30px;" src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
+                                            <div class="wrap-details">
+                                                <h6 class="nombre texto-oculto2">
+                                                    <a href="{{ route('web_descripcion_en_vivo') }}">{{ $program->name }}</a>
+                                                </h6>
+                                                <div class="user-area" style="padding: 0px;">
+                                                    <div class="user-details">
+                                                        <p class="texto-oculto3" style="padding: 2px 0px;">{{ $program->description }}</p>
+                                                    </div>
                                                 </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i class="fa fa-users"></i>
-                                                    </span>(76)
-                                                </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <a href="">
+                                                <div class="user-area" style="padding: 3px;">
+                                                    <div class="user-details">
+                                                        <img  style="width: 30px;" src="{{ $program->avatar }}" alt="img">
+                                                        <a href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                    </div>
+                                                    <div class="user-rating">
                                                         <span style="color:orange;">
-                                                            Sector:
+                                                            <i class="fa fa-users"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="user-area" style="padding: 3px;">
+                                                    <div class="user-details">
+                                                        <a href="">
+                                                            <span style="color:orange;">
+                                                                Sector:
+                                                            </span>
+                                                            <br>
+                                                            <b>{{ $program->additional2 }}</b>
+                                                        </a>
+                                                    </div>
+                                                    <div class="user-rating">
+                                                        <span style="color:orange;">
+                                                            <i>Modalidad:</i>
                                                         </span>
                                                         <br>
-                                                        <b>Empresarial</b>
-                                                    </a>
+                                                        <b>{{ $program->additional1 }}</b>
+                                                    </div>
                                                 </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i>Modalidad:</i>
-                                                    </span>
-                                                    <br>
-                                                    <b>En Vivo</b>
-                                                </div>
-                                            </div>
-                                            <div class="price-wrap">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-12">
-                                                        <button onclick="agregarAlCarrito({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });" class="btn btn-primary">
-                                                            <i class="fa fa-cart-plus"></i>
-                                                            &nbsp;&nbsp;Comprar Ahora S/. 250
-                                                        </button>
+                                                <div class="price-wrap">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-12">
+                                                            <button onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} });" class="btn btn-primary">
+                                                                <i class="fa fa-cart-plus"></i>
+                                                                Comprar Ahora S/. {{ $program->price }}
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <a href="#" class="cat cat-red">Diplomado</a>
-                                            <img src="{{ asset('themes/capperu/assets/img/course/1.png') }}" alt="img">
-                                        </div>
-                                        <div class="wrap-details">
-                                            <h6 class="nombre texto-oculto2">
-                                                <a href="{{ route('web_descripcion_en_vivo') }}">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                                            </h6>
-                                            <div class="user-area" style="padding: 0px;">
-                                                <div class="user-details">
-                                                    <p class="texto-oculto3" style="padding: 2px 0px;">Breve descripción del curso, maximo 02 lineas con sus respectivos puntos al final esta es una pruba de la clase texto-oculto si supera 3 lineas debería ocultar si no debe mostrar todo</p>
-                                                </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <img  style="width: 30px;" src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                                    <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i class="fa fa-users"></i>
-                                                    </span>(76)
-                                                </div>
-                                            </div>
-                                            <div class="user-area" style="padding: 3px;">
-                                                <div class="user-details">
-                                                    <a href="">
-                                                        <span style="color:orange;">
-                                                            Sector:
-                                                        </span>
-                                                        <br>
-                                                        <b>Empresarial</b>
-                                                    </a>
-                                                </div>
-                                                <div class="user-rating">
-                                                    <span style="color:orange;">
-                                                        <i>Modalidad:</i>
-                                                    </span>
-                                                    <br>
-                                                    <b>En Vivo</b>
-                                                </div>
-                                            </div>
-                                            <div class="price-wrap">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-12">
-                                                        <button onclick="agregarAlCarrito({ id: 2, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });" class="btn btn-primary">
-                                                            <i class="fa fa-cart-plus"></i>
-                                                            &nbsp;&nbsp;Comprar Ahora S/. 250
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endif
+                            @endforeach
+
                             </div>
                         </div>
                     </div>
