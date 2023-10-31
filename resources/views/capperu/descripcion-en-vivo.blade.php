@@ -107,6 +107,11 @@
                                     Plana Docente
                                 </button>
                             </li>
+                            <li class="nav-item">
+                                <button class="nav-link" id="pill-4" data-bs-toggle="pill" data-bs-target="#pills-04" type="button" role="tab" aria-controls="pills-04" aria-selected="false">
+                                    Preguntas Frecuentes
+                                </button>
+                            </li>
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-01" role="tabpanel" aria-labelledby="pill-1">
@@ -154,24 +159,6 @@
                                                         Ejecutivos policiales, peritos ycriminalísitica.
                                                     </li>
                                                 </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="reviewers-area">
-                                        <div class="meta-area d-flex">
-                                            <div class="user-rating ms-0">
-                                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                                <b>Modalidad de Estudios Mixta</b>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <i class="fa fa-video" aria-hidden="true"></i>
-                                                Google Meet
-                                            </div>
-                                            <div class="ms-md-5 ms-auto mb-0">
-                                                <a href="">
-                                                    <i class="fa fa-laptop" aria-hidden="true"></i>
-                                                    Campus Virtual
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -282,6 +269,60 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="tab-pane fade" id="pills-04" role="tabpanel" aria-labelledby="pill-4">
+                                <div class="overview-area">
+                                    <div class="row">
+                                        <div class="col-md-6" style="padding: 10px;">
+                                            <h6>¿Necesito tener una carrera para cursar este diplomado?</h6>
+                                            <p>
+                                                R. Pueden estudiar estudiantes delos últimos ciclos, de la carrera dederecho, bachilleres, 
+                                                titulados enDerecho, abogados, jueces, fiscales,efectivos policiales y criminalística.
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6" style="padding: 10px;">
+                                            <h6>¿Cúal es la modalidad y horario de estudios?</h6>
+                                            <p>
+                                                R. El alumno contará con flexibilidadpara estudiar el día y la hora que elelija conforme 
+                                                a su disponibilidad detiempo y espacio desde cualquierdispositivo digital (Pc, Laptop, móvil)
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6" style="padding: 10px;">
+                                            <h6>¿Qué certificados piden las empresas en sus convocatorias para contratar colaboradores?</h6>
+                                            <p>
+                                                R. Solicitan que los postulantesacrediten capacitacionesespecializada a nivel de programas 
+                                                dediplomados, cursos especializados omaestrías.
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6" style="padding: 10px;">
+                                            <h6>¿Las diplomas tienen fecha de bencimiento?</h6>
+                                            <p>
+                                                R. No tienen fecha de vencimiento,pero se recomienda que el alumnose actualice 
+                                                constantementeporque existe una altacompetitividad.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="reviewers-area">
+                            <div class="meta-area d-flex">
+                                <div class="user-rating ms-0">
+                                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                    <b>Modalidad de Estudios Mixta</b>
+                                </div>
+                                <div class="ms-auto">
+                                    <i class="fa fa-video" aria-hidden="true"></i>
+                                    Google Meet
+                                </div>
+                                <div class="ms-md-5 ms-auto mb-0">
+                                    <a href="">
+                                        <i class="fa fa-laptop" aria-hidden="true"></i>
+                                        Campus Virtual
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row overview-area">
@@ -291,186 +332,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 sidebar-area">
+                <div class="col-md-4 sidebar-area">
                     <div class="widget widget-accordion-inner">
-                        <h5 class="widget-title border-0">Course Syllabus</h5>
+                        <h5 class="widget-title border-0" style="padding: 10px; background-color: #F9FAFD;">Estructura Curricular</h5>
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item">
-                              <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Introduction
-                                </button>
-                              </h2>
-                              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <ul>
-                                        <li>
-                                            <a class="play-btn" href="#"><i class="fa fa-play"></i></a>
-                                            <span>
-                                                <p>Welcome to strategic thinking</p>
-                                                <span>1m 24s</span>
-                                            </span>
-                                        </li>
-                                    </ul>                                    
-                                </div>
-                              </div>
+                                <p style="padding: 5px 15px;">1. La prescripción de la acción en el Nuevo Proceso Penal</p>
                             </div>
                             <div class="accordion-item">
-                              <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    1. Setting the Stage for Strategic
-                                    Thinking
-                                </button>
-                              </h2>
-                              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <ul>
-                                        <li>
-                                            <i class="fa fa-lock"></i>
-                                            <span>
-                                                <p>Embrace the strategic thinking mindset</p>
-                                                <span>1m 24s</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <i class="fa fa-lock"></i>
-                                            <span>
-                                                <p>Strategy: Not just for corporations
-                                                </p>
-                                                <span>1m 24s</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <i class="fa fa-lock"></i>
-                                            <span>
-                                                <p>The sequence of strategy
-                                                </p>
-                                                <span>1m 24s</span>
-                                            </span>
-                                        </li>
-                                    </ul> 
-                                </div>
-                              </div>
+                                <p style="padding: 5px 15px;">2. La prescripción de la acción en el Nuevo Proceso Penal</p>
                             </div>
                             <div class="accordion-item">
-                              <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    2. Developing Your Strategic Thinking
-                                </button>
-                              </h2>
-                              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <ul>
-                                        <li>
-                                            <i class="fa fa-lock"></i>
-                                            <span>
-                                                <p>Embrace the strategic thinking mindset</p>
-                                                <span>1m 24s</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <i class="fa fa-lock"></i>
-                                            <span>
-                                                <p>Strategy: Not just for corporations
-                                                </p>
-                                                <span>1m 24s</span>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <i class="fa fa-lock"></i>
-                                            <span>
-                                                <p>The sequence of strategy
-                                                </p>
-                                                <span>1m 24s</span>
-                                            </span>
-                                        </li>
-                                    </ul> 
-                                </div>
-                              </div>
+                                <p style="padding: 5px 15px;">3. La prescripción de la acción en el Nuevo Proceso Penal</p>
                             </div>
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingFour">
-                                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                    3. Implementing Strategic Thinking
-                                  </button>
-                                </h2>
-                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                                  <div class="accordion-body">
-                                      <ul>
-                                          <li>
-                                              <i class="fa fa-lock"></i>
-                                              <span>
-                                                  <p>Embrace the strategic thinking mindset</p>
-                                                  <span>1m 24s</span>
-                                              </span>
-                                          </li>
-                                          <li>
-                                              <i class="fa fa-lock"></i>
-                                              <span>
-                                                  <p>Strategy: Not just for corporations
-                                                  </p>
-                                                  <span>1m 24s</span>
-                                              </span>
-                                          </li>
-                                          <li>
-                                              <i class="fa fa-lock"></i>
-                                              <span>
-                                                  <p>The sequence of strategy
-                                                  </p>
-                                                  <span>1m 24s</span>
-                                              </span>
-                                          </li>
-                                      </ul> 
-                                  </div>
-                                </div>
+                                <p style="padding: 5px 15px;">4. La prescripción de la acción en el Nuevo Proceso Penal</p>
                             </div>
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingFive">
-                                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                    4. Collaborating, Sharing, and Exporting
-                                  </button>
-                                </h2>
-                                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
-                                  <div class="accordion-body">
-                                      <ul>
-                                          <li>
-                                              <i class="fa fa-lock"></i>
-                                              <span>
-                                                  <p>Embrace the strategic thinking mindset</p>
-                                                  <span>1m 24s</span>
-                                              </span>
-                                          </li>
-                                          <li>
-                                              <i class="fa fa-lock"></i>
-                                              <span>
-                                                  <p>Strategy: Not just for corporations
-                                                  </p>
-                                                  <span>1m 24s</span>
-                                              </span>
-                                          </li>
-                                          <li>
-                                              <i class="fa fa-lock"></i>
-                                              <span>
-                                                  <p>The sequence of strategy
-                                                  </p>
-                                                  <span>1m 24s</span>
-                                              </span>
-                                          </li>
-                                      </ul> 
-                                  </div>
-                                </div>
+                                <p style="padding: 5px 15px;">5. La prescripción de la acción en el Nuevo Proceso Penal</p>
+                            </div>
+                            <div class="accordion-item">
+                                <p style="padding: 5px 15px;">6. La prescripción de la acción en el Nuevo Proceso Penal</p>
+                            </div>
+                            <div class="accordion-item">
+                                <p style="padding: 5px 15px;">7. La prescripción de la acción en el Nuevo Proceso Penal</p>
                             </div>
                         </div> 
                     </div>
                     
                     <div class="price-wrap">
                         <div class="row align-items-center">
-                            <div class="col-md-12">
-                                <a class="btn btn-base ms-auto" href="#" style="width: 100%;">
-                                    <i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp;&nbsp;Agregar al carrito
-                                </a>
-                            </div>
-                            <br><br>
                             <div class="col-md-12">
                                 <a class="btn btn-primary" href="#" style="width: 100%;">
                                     <i class="fa fa-cart-plus" aria-hidden="true"></i> 
@@ -479,20 +370,6 @@
                                 </a>
                             </div>
                         </div>
-                    </div>
-
-                    <br>
-
-                    <div class="widget widget-course-details mb-0">
-                        <h5 class="widget-title">Course Details</h5>
-                        <ul>
-                            <li>Level: <span>Beginner</span></li>
-                            <li>Categories: <span><a href="#">Business</a><a href="#">Design</a><a href="#">Development</a><a href="#">Marketing</a><a href="#">WordPress</a></span></li>
-                            <li>Total Hour: <span>07h 30m</span></li>
-                            <li>Total Lessons: <span>15</span></li>
-                            <li>Total Enrolled: <span>5000</span></li>
-                            <li>Last Update: <span>August 23, 2021</span></li>
-                        </ul> 
                     </div>
                 </div>
             </div>
