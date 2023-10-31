@@ -66,9 +66,12 @@ class CapperuController extends Controller
         return view('Capperu/carrito');
     }
 
-    
     public function contacto(){
         return view('Capperu/contacto');
+    }
+
+    public function convenios(){
+        return view('Capperu/convenios');
     }
 
 }

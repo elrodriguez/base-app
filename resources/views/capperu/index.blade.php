@@ -22,13 +22,13 @@
         style="background-image: url({{ asset('themes/capperu/assets/img/banner/bg-2.jpg') }});">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-xl-7 col-lg-8 align-self-center">
+                <div class="col-md-10 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Estudia en línea con mucha facilidad.</h1>
+                        <h1>¿En qué deseas especializarte?</h1>
                         <div class="banner-content">
-                            <p>Puede acceder a más de 150 cursos diferentes formadores profesionales.</p>
+                            <p>Puedes acceder a más de 150 cursos y más de 30 diplomados especializados </p>
                         </div>
-                        <a class="btn btn-base" href="categoria">Más Programas de Estudios</a>
+                        <a class="btn btn-base" href="categoria">Más Programas de Estudios <i class="fa fa-search"></i></a>
                     </div>
                 </div>
             </div>
@@ -108,12 +108,14 @@
     <!-- enllor courses Area Start-->
     <section class="enllor-courses-area pd-top-50 pd-bottom-100">
         <div class="container">
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <div class="col-lg-12">
+            <div class="row">
+                <div class="col-md-12">
                     <div class="section-title">
                         <h2>Nuevos Programas</h2>
                     </div>
                 </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
 
 
                 @if (count($programs) > 0)
@@ -123,7 +125,7 @@
                                 <div class="thumb">
                                     <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue"
                                         style="font-size: 18px;">
-                                        {{ $program->additional }}
+                                        Curso
                                     </a>
                                     <a href="{{ route('web_descripcion_en_vivo') }}">
                                         <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">

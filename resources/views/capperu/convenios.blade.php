@@ -23,23 +23,41 @@
             <div class="row justify-content-center">
                 <div class="col-md-12 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Nosotros</h1>
+                        <h1>Convenios</h1>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <!-- Banner Area End -->
-    
-    
-    <!-- Bienvenidos Area Start-->
-    <x-capperu.bienvenidos-area></x-capperu.bienvenidos-area>
-    <!-- Bienvenidos Area End -->
 
-    
-    <!-- Visión, Misión, Valores - Start-->
-    <x-capperu.vision-mision-valores-area></x-capperu.vision-mision-valores-area>
-    <!-- Visión, Misión, Valores - End -->
+    <section style="padding: 80px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"> 
+                    <a href="">
+                        <img style="100%;" src="{{ asset('themes/capperu/assets/img/convenios/logoIng.png') }}" alt="img">
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="">
+                        <img style="100%;" src="{{ asset('themes/capperu/assets/img/convenios/logoCallao.png') }}" alt="img">
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="">
+                        <img style="100%;" src="{{ asset('themes/capperu/assets/img/convenios/logoAdm.png') }}" alt="img">
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="">
+                        <img style="100%;" src="{{ asset('themes/capperu/assets/img/convenios/logoUnhv.png') }}" alt="img">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </section>
 
 
     
