@@ -344,6 +344,9 @@
 
         function renderProducto(respuesta) {
             var id = respuesta.id;
+            var teacher = respuesta.teacher;
+            var teacher_id = respuesta.teacher_id;
+            var avatar = respuesta.avatar;
             var image = respuesta.image;
             var name = respuesta.name;
             var price = respuesta.price;
@@ -355,7 +358,7 @@
                                 <div class="col-md-2">
                                     <div class="single-course-wrap">
                                         <div class="thumb">
-                                            <img src="` + image + `" alt="img">
+                                            <img src="` + image + `" alt="img"> 
                                         </div>
                                     </div>
                                 </div>
@@ -367,8 +370,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                            <a href="#">Jessica Jessy</a>
+                                            <img src="`+ avatar +`" alt="img">
+                                            <a href="#">`+ teacher +`</a>
                                         </div>
                                         <div class="col-md-4">
                                             <span style="color:orange;">

@@ -126,7 +126,7 @@
                                         {{ $program->additional }}
                                     </a>
                                     <a href="{{ route('web_descripcion_en_vivo') }}">
-                                        <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
+                                        <img src="{{ asset($program->image) }}" alt="img">
                                     </a>
                                 </div>
                                 <div class="wrap-details">
