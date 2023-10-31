@@ -259,7 +259,8 @@ class OnliItemController extends Controller
         $preference_id = null;
         // Verificar si se encontró el ítem
         if (count($items) > 0) {
-            // Manejar el caso en el que el ítem no se encuentre
+            //Manejar el caso en el que el ítem no se encuentre
+            /*
             MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_TOKEN'));
             $client = new PreferenceClient();
             $items = [];
@@ -279,7 +280,8 @@ class OnliItemController extends Controller
 
             $preference = $client->create($items);
             $preference_id =  $preference->id;
-            // Devolver el ítem como JSON
+            //Devolver el ítem como JSON
+            */
             return response()->json([
                 'items' => $items,
                 'preference_id' => $preference_id

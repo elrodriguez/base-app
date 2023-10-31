@@ -294,7 +294,8 @@
                 },
                 success: function(respuesta) {
                     // La consulta se realizó exitosamente
-                    console.log("respuesta de servidor", respuesta);
+                    console.log("respuesta de servidor items: ", respuesta.items);
+                    console.log("respuesta de servidor preference_id: ", respuesta.preference_id);
 
                     // const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
 
@@ -305,7 +306,10 @@
                     //     },
                     // });
 
-                    //renderProducto(respuesta);
+                    respuesta.items.forEach(function(item) {
+                    // Accede a las propiedades del objeto
+                    renderProducto(item);
+                    });
                     // Aquí puedes hacer algo con la respuesta recibida
                 },
                 error: function(xhr) {
@@ -318,7 +322,7 @@
         }
 
         function renderProducto(respuesta) {
-            var cart = document.getElementById('cart');
+            var cart = document.getElementById('cart');        
             if (cart != null) {
                 var id = respuesta.id;
                 var teacher = respuesta.teacher;
