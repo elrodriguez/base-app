@@ -219,10 +219,5 @@
 
     <x-capperu.footer-area></x-capperu.footer-area>
 
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
 
-    <script>
-        const mp = new MercadoPago("{{ env('MERCADOPAGO_TOKEN') }}");
-        const bricksBuilder = mp.bricks();
-    </script>
 @endsection
