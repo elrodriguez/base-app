@@ -14,7 +14,21 @@
     <!-- Encabezado inicio -->
     <x-capperu.header-area></x-capperu.header-area>
     <!-- Encabezado fin -->
-
+    @php
+        require base_path('vendor/autoload.php');
+        MercadoPagoConfig::setAccessToken('<ACCESS_TOKEN>');
+        $client = new PaymentClient();
+        $request = [
+            'transaction_amount' => 100,
+            'token' => 'YOUR_CARD_TOKEN',
+            'description' => 'description',
+            'installments' => 1,
+            'payment_method_id' => 'visa',
+            'payer' => [
+                'email' => 'user@test.com',
+            ],
+        ];
+    @endphp
 
     <!-- Banner Area Start-->
     <section class="banner-area style-3"
@@ -252,6 +266,7 @@
                                 <a class="btn btn-primary" style="width: 100%">
                                     <i class="fa fa-credit-card" aria-hidden="true"></i> &nbsp;&nbsp;Realizar Pago
                                 </a>
+                                <div id="wallet_container"></div>
                             </div>
                         </div>
                     </div>
@@ -378,4 +393,11 @@
 
 
     <x-capperu.footer-area></x-capperu.footer-area>
+
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
+    <script>
+        const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
+        const bricksBuilder = mp.bricks();
+    </script>
 @endsection
