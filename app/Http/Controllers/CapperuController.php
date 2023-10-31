@@ -6,72 +6,88 @@ use Illuminate\Http\Request;
 
 class CapperuController extends Controller
 {
-    public function nosotros(){
+    public function nosotros()
+    {
         return view('Capperu/nosotros');
     }
 
-    public function categorias(){
+    public function categorias()
+    {
         return view('Capperu/categorias');
     }
 
-    public function categoriasector(){
+    public function categoriasector()
+    {
         return view('Capperu/categoria-sector');
     }
 
-    public function categoriamodalidad(){
+    public function categoriamodalidad()
+    {
         return view('Capperu/categoria-modalidad');
     }
-    
-    public function categoriamodalidadenvivo(){
+
+    public function categoriamodalidadenvivo()
+    {
         return view('Capperu/categoria-modalidad-en-vivo');
     }
-    
-    public function categoriamodalidadelearning(){
+
+    public function categoriamodalidadelearning()
+    {
         return view('Capperu/categoria-modalidad-e-learning');
     }
 
-    public function categoriaprogramacursos(){
+    public function categoriaprogramacursos()
+    {
         return view('Capperu/categoria-programa-cursos');
     }
 
-    public function categoriaprogramadiplomados(){
+    public function categoriaprogramadiplomados()
+    {
         return view('Capperu/categoria-programa-diplomados');
     }
 
-    public function modalidadpresencial(){
+    public function modalidadpresencial()
+    {
         return view('Capperu/modalidad-presencial');
     }
 
-    public function sectorcursos(){
+    public function sectorcursos()
+    {
         return view('Capperu/sector-cursos');
     }
 
-    public function sectordiplomados(){
+    public function sectordiplomados()
+    {
         return view('Capperu/sector-diplomados');
     }
 
-    public function descripcionenvivo(){
+    public function descripcionenvivo()
+    {
         return view('Capperu/descripcion-en-vivo');
     }
 
-    public function descripcionelearning(){
+    public function descripcionelearning()
+    {
         return view('Capperu/descripcion-e-learning');
     }
 
-    public function perfildocente(){
+    public function perfildocente()
+    {
         return view('Capperu/perfil-docente');
     }
 
-    public function carrito(){
+    public function carrito(Request $request)
+    {
         return view('Capperu/carrito');
     }
 
-    public function contacto(){
+    public function contacto()
+    {
         return view('Capperu/contacto');
     }
 
-    public function convenios(){
+    public function convenios()
+    {
         return view('Capperu/convenios');
     }
-
 }

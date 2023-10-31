@@ -26,7 +26,6 @@
         $client = new PreferenceClient();
 
         $preference = $client->create([
-            'external_reference' => 'teste',
             'items' => [
                 [
                     'id' => '4567',
@@ -38,16 +37,6 @@
                     'currency_id' => 'BRL',
                     'unit_price' => 100,
                 ],
-            ],
-            'payment_methods' => [
-                'default_payment_method_id' => 'master',
-                'excluded_payment_types' => [
-                    [
-                        'id' => 'ticket',
-                    ],
-                ],
-                'installments' => 12,
-                'default_installments' => 1,
             ],
         ]);
 
@@ -246,7 +235,7 @@
                     <div class="contact-inner">
                         <div class="row">
                             <div class="col-md-12">
-                                <form class="contact-form">
+                                <form id="form-register-payment" class="contact-form">
                                     <div class="row">
                                         <div class="col-md-12 single-input-wrap">
                                             <input type="text" placeholder="Nombres">
@@ -286,9 +275,6 @@
                                 <p><b id="totalid"></b></p>
                             </div>
                             <div class="col-md-12">
-                                <a class="btn btn-primary" style="width: 100%">
-                                    <i class="fa fa-credit-card" aria-hidden="true"></i> &nbsp;&nbsp;Realizar Pago
-                                </a>
                                 <div id="wallet_container"></div>
                             </div>
                         </div>
@@ -418,13 +404,18 @@
     <x-capperu.footer-area></x-capperu.footer-area>
 
     <script src="https://sdk.mercadopago.com/js/v2"></script>
-
+    <style>
+        .text-1XN644 {
+            color: #f2f2f2 !important;
+        }
+    </style>
     <script>
         const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
 
         mp.bricks().create("wallet", "wallet_container", {
             initialization: {
                 preferenceId: "{{ $preference->id }}",
+                redirectMode: "modal",
             },
         });
     </script>
