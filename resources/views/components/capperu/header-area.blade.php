@@ -16,8 +16,18 @@
                 </div>
                 <div class="nav-right-part nav-right-part-mobile">
                     <ul>
-                        <li><a class="search header-search" href="#"><i class="fa fa-search"></i></a></li>
-                        <li><a href="carrito" class="btn btn-base-light"><i class="fa fa-cart-plus"></i></a></li>
+                        <li>
+                            <a href="" class="btn btn-primary" title="Campus Virtual">
+                                <i class="fa fa-university"></i> Campus
+                            </a>
+                        </li>
+                        <li>
+                            <a href="carrito" class="btn btn-base"><i class="fa fa-cart-plus"></i>&nbsp;&nbsp;
+                                <b>
+                                    <span id="contadorCarrito" class="contador" style="font-size: 18px;"></span>
+                                </b>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse" id="themefie_main_menu">

@@ -18,12 +18,14 @@
 
     
     <!-- Banner Area Start-->
-    <section class="banner-area style-3" style="padding: 80px; background-image: url({{ asset('themes/capperu/assets/img/banner/bg-2.jpg') }});">
+    <section class="banner-area style-3" style="padding: 40px; background-image: url({{ asset('themes/capperu/assets/img/banner/bg-2.jpg') }});">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Nombre del Programa</h1>
+                        <h4 style="color: #fff;">
+                            DIPLOMADO EN DERECHO PENAL, NUEVO CÓDIGO PROCESAL PENAL YTÉCNICAS DE LITIGACIÓN ORAL
+                        </h4>
                     </div>
                 </div>
             </div>
@@ -32,136 +34,261 @@
     <!-- Banner Area End -->
 
     <!-- courses-details Area Start-->
-    <section class="courses-details-area pd-top-135 pd-bottom-130">
+    <section class="courses-details-area pd-top-100 pd-bottom-100">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="single-course-wrap mb-0">
-                        <div class="thumb">
-                            <a class="play-btn" href="#"><i class="fa fa-play"></i></a>
-                            <img src="{{ asset('themes/capperu/assets/img/course/video.png') }}" alt="img">
-                        </div>
-                        <div class="wrap-details">
-                            <h5><a href="#">Best way learn fundamentals of design thinking.</a></h5>
-                            <p>Learn Python like a Professional Start from the basics and go all the way to creating your own applications and games</p>
-                            <div class="user-area">
-                                <div class="user-details">
-                                    <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                    <a href="#">Jessica Jessy</a>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="single-course-wrap mb-0">
+                                <div class="thumb">
+                                    <a class="play-btn" href="#"><i class="fa fa-play"></i></a>
+                                    <img src="{{ asset('themes/capperu/assets/img/course/video.png') }}" alt="img">
                                 </div>
-                                <div class="date ms-auto">
-                                    <i class="fa fa-calendar-alt me-2" style="color: var(--main-color);"></i>Last updated 9/2020
-                                </div>
-                                <div class="ms-auto">
-                                    <i class="fa fa-user me-2" style="color: var(--main-color);"></i>5k already enrolled
-                                </div>
-                                <div class="user-rating">
-                                    <span>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-alt"></i>
-                                    4.9</span>(76)
+                                <div class="wrap-details">
+                                    <h5><a href="#">DERECHO PENAL, NUEVO
+                                        CÓDIGO PROCESAL PENAL YTÉCNICAS DE LITIGACIÓN ORAL.</a></h5>
+                                    <p>
+                                        El Centro de Actualización Profesional CAP - PERÚ y la Facultad deDerecho y Ciencias Políticas de la Universidad Nacional HermilioValdizán, presentan el Diplomado de Especialización con valoruniversitario en "Derecho Penal, Nuevo Código Procesal Penal yTécnicas de Litigación Oral", bajo la Resolución Decanal Nº 0298 -2023 UNHEVAL /FD y CP - D.
+                                    </p>
+                                    <div class="user-area">
+                                        <div class="user-details">
+                                            <a href="">
+                                                <span style="color:orange;">
+                                                    Sector:
+                                                </span>
+                                                <b>Empresarial</b>
+                                            </a>
+                                        </div>
+                                        <div class="user-rating">
+                                            <span style="color:orange;">
+                                                <i>Modalidad:</i>
+                                            </span>
+                                            <b>En Vivo</b>
+                                        </div>
+                                        <div class="user-rating">
+                                            <span style="color:orange;">
+                                                <i>Programa:</i>
+                                            </span>
+                                            <b>Diplomado</b>
+                                        </div>
+                                        <div class="user-rating">
+                                            <span style="color:orange;">
+                                                <i>Inicio:</i>
+                                            </span>
+                                            <b>12/12/2023</b>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <ul class="course-tab nav nav-pills pd-top-100">
-                        <li class="nav-item">
-                          <button class="nav-link active" id="pill-1" data-bs-toggle="pill" data-bs-target="#pills-01" type="button" role="tab" aria-controls="pills-01" aria-selected="true">Overview</button>
-                        </li>
-                        <li class="nav-item">
-                          <button class="nav-link" id="pill-2" data-bs-toggle="pill" data-bs-target="#pills-02" type="button" role="tab" aria-controls="pills-02" aria-selected="false">Exercise Files</button>
-                        </li>
-                        <li class="nav-item">
-                          <button class="nav-link" id="pill-3" data-bs-toggle="pill" data-bs-target="#pills-03" type="button" role="tab" aria-controls="pills-03" aria-selected="false">Reviews</button>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-01" role="tabpanel" aria-labelledby="pill-1">
-                            <div class="overview-area">
-                                <h5>Course details</h5>
-                                <p>New to web design? Start here first. Instructor James Williamson introduces the fundamental concepts, tools, and learning paths for web design. He explains what it means to be a web designer, the various areas of specialization, and whether web design is the right hobby or career for you. Along the way, he talks to five prominent designers and developers, who have each found success in a different corner of the web.
-                                </p>
-                                <div class="bg-gray">
-                                    <h6>What Will I Learn?
-                                    </h6>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <ul>
-                                                <li><i class="fa fa-check"></i>Know how to configure Wordpress for best results
-                                                </li>
-                                                <li><i class="fa fa-check"></i>Understand plugins & themes and how to find/install them</li>
-                                                <li><i class="fa fa-check"></i>Protect their Wordpress website from hackers and spammers</li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <ul>
-                                                <li><i class="fa fa-check"></i>Create a static homepage useful for most websites, or a blog like homepage useful for bloggers.</li>
-                                                <li><i class="fa fa-check"></i>Create an affiliate site for passive, recurring income
-                                                </li>
-                                                <li><i class="fa fa-check"></i>Create a Responsive Website that looks good on any browser.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h6>Requirements</h6>
-                                <ul>
-                                    <li><i class="fa fa-check"></i>No previous experience or software needed!
-                                    </li>
-                                    <li><i class="fa fa-check"></i>An open mind!</li>
-                                </ul>
-                                <h6 class="mt-5">Skills covered in this course
-                                </h6>
-                                <ul>
-                                    <li><i class="fa fa-check"></i>This course is great for beginners who are still learning the financial markets.
-                                    </li>
-                                    <li><i class="fa fa-check"></i>This course is perfect for you if you are taking over an existing Wordpress website, or want to build one from scratch, but don't know where to start.</li>
-                                    <li><i class="fa fa-check"></i>If you want to learn to master Wordpress without getting bogged down with technical jargon, this course is for you.
-                                    </li>
-                                </ul>
-                                <div class="reviewers-area">
-                                    <div class="row">
-                                        <div class="col-lg-5">
-                                            <div class="media d-flex align-items-center">
-                                                <div class="thumb">
-                                                    <img src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6>Jessica Jessy</h6>
-                                                    <span>Product Designer</span>
-                                                </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="">
+                                <img style="100%;" src="{{ asset('themes/capperu/assets/img/convenios/logoUnhv.png') }}" alt="img">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="course-tab nav nav-pills pd-top-100">
+                            <li class="nav-item">
+                                <button class="nav-link active" id="pill-1" data-bs-toggle="pill" data-bs-target="#pills-01" type="button" role="tab" aria-controls="pills-01" aria-selected="true">
+                                    Presentación
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" id="pill-2" data-bs-toggle="pill" data-bs-target="#pills-02" type="button" role="tab" aria-controls="pills-02" aria-selected="false">
+                                    Beneficios
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" id="pill-3" data-bs-toggle="pill" data-bs-target="#pills-03" type="button" role="tab" aria-controls="pills-03" aria-selected="false">
+                                    Plana Docente
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-01" role="tabpanel" aria-labelledby="pill-1">
+                                <div class="overview-area">
+                                    <p>
+                                        El presente programa está orientado a brindar a los participanteslas herramientas necesarias para comprender el funcionamientodel 
+                                        sistema penal acusatorio y desarrollar habilidades paracomprender y ejercer con éxito las normas en materia Penal ,Procesal Penal y Técnicas de Litigación en el Proceso Penal Peruanoen litigar.
+                                    </p>
+                                    <p>
+                                        El diplomado tendrá como ponentes a los más reconocidos jueces,fiscales, docentes y 
+                                        especialistas en materia de derecho penal.Durante el desarrollo del diplomado, se abordarán temas claves enDerecho Penal, Nuevo Código Procesal Penal y Técnicas deLitigación Oral.
+                                    </p>
+                                    <p>
+                                        El Centro de Actualización Profesional CAP - PERÚ y la Facultad deDerecho y Ciencias 
+                                        Políticas de la Universidad Nacional HermilioValdizán (licenciada por Sunedu) expedirá el diploma con valoruniversitario por 384 horas académicas (24 créditos), válido paratoda convocatoria pública o privada a nivel nacional.
+                                    </p>
+                                    <div class="bg-gray">
+                                        <h6>Dirigido a:
+                                        </h6>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <ul>
+                                                    <li>
+                                                        <i class="fa fa-check"></i>
+                                                        Estudiantes de los últimos ciclos de lacarrera de Derecho.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check"></i>
+                                                        Bachilleres o egresados con tituloprofesinal en Derecho.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check"></i>
+                                                        Jueces u Fiscales de todos los nivelesjerárquicos.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check"></i>
+                                                        Abogados, defensores públicos yasesores.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check"></i>
+                                                        Asistentes de Función Fiscal, Secretarios ytécnicos judiciales.
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-check"></i>
+                                                        Ejecutivos policiales, peritos ycriminalísitica.
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <div class="col-lg-7">
-                                            <p class="review-content">Great for the people that are willing to improve and learn. 
-                                                Please show up to the course with an open mind because the instructor got his own views and philosophy 
-                                                towards design that might challenge your own. This course will teach you...</p>
-                                        </div>
                                     </div>
-                                    <div class="meta-area d-flex">
-                                        <div class="user-rating ms-0">
-                                            <span>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star-half-alt"></i>
-                                            4.9</span>(76)
-                                        </div>
-                                        <div class="ms-auto">
-                                            <i class="fa fa-user me-2" style="color: var(--main-color);"></i>6794 students
-                                        </div>
-                                        <div class="ms-md-5 ms-auto mb-0">
-                                            <i class="far fa-user me-2" style="color: var(--main-color);"></i>6794 students
+                                    <div class="reviewers-area">
+                                        <div class="meta-area d-flex">
+                                            <div class="user-rating ms-0">
+                                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                                <b>Modalidad de Estudios Mixta</b>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <i class="fa fa-video" aria-hidden="true"></i>
+                                                Google Meet
+                                            </div>
+                                            <div class="ms-md-5 ms-auto mb-0">
+                                                <a href="">
+                                                    <i class="fa fa-laptop" aria-hidden="true"></i>
+                                                    Campus Virtual
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="tab-pane fade" id="pills-02" role="tabpanel" aria-labelledby="pill-2">
+                                <div class="overview-area">
+                                    <div class="row">
+                                        <div class="col-md-6" style="padding: 10px;">
+                                            <h6>Docentes Especializados:</h6>
+                                            <p>Clases en vivo dictadas pormagistrados especializados en
+                                                la materia de derecho.
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6" style="padding: 10px;">
+                                            <h6>Acreditación:</h6>
+                                            <p>Diplomado de especializaciónemitido por 384 horas académicas
+                                                (24 créditos por la UniversidadNacional Hermilio Valdizán).
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6" style="padding: 10px;">
+                                            <h6>Certificación:</h6>
+                                            <p>
+                                                Diplomado especializado con valoruniversitario certificado por el Centro de 
+                                                Actualización Profesional y Consultoría SAC, con el aval académico de la Facultad 
+                                                de Derecho y Ciencias Políticas de laUniversidad Nacional Hermilio Valdizán (UNHEVAL); 
+                                                el cual se leremitirá en FORMATO FÍSICO.
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6" style="padding: 10px;">
+                                            <h6>Modalidad de Estudios Mixta:</h6>
+                                            <p>
+                                                - Modalidad en vivo porplataforma virtualGoogle Meet.
+                                                  Se dictará todos los viernes de 6:30 p.m. a9:30 p.m
+                                            </p>
+                                            <p>
+                                                - Modalidad E - Learningacceso al CAMPUSVIRTUAL CAP - PERÚ las24 horas del día.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-03" role="tabpanel" aria-labelledby="pill-3">
+                                <div class="row" style="margin-bottom: 20px;">
+                                    <div class="col-md-2">
+                                        <a href="{{ route('web_perfil_docente') }}">
+                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;" src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <h6>DR. FRANK ALMANZA ALTAMIRANO</h6>
+                                        <ul>
+                                            <li>
+                                                Fiscal Superior Penal de Lima. Docente UPSMP, ESAN y AMAG.
+                                            </li>
+                                            <li>
+                                                Autor diversion libros en su especialidad.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 20px;">
+                                    <div class="col-md-2">
+                                        <a href="{{ route('web_perfil_docente') }}">
+                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;" src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <h6>DR. FRANK ALMANZA ALTAMIRANO</h6>
+                                        <ul>
+                                            <li>
+                                                Juez Titular del Tecer Juzgado de Investigación Preparatoria de la Corte Superior de Justicia de La Libertad.
+                                            </li>
+                                            <li>
+                                                Fiscal Provincial Titular de la Fiscalia Provincial de La Libertad especializada en Delitos de Corrupción de La Libertad.
+                                            </li>
+                                            <li>
+                                                Bachilleres o egresados con tituloprofesinal en Derecho.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 20px;">
+                                    <div class="col-md-2">
+                                        <a href="{{ route('web_perfil_docente') }}">
+                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;" src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <h6>DR. FRANK ALMANZA ALTAMIRANO</h6>
+                                        <ul>
+                                            <li>
+                                                Estudiantes de los últimos ciclos de lacarrera de Derecho.
+                                            </li>
+                                            <li>
+                                                Bachilleres o egresados con tituloprofesinal en Derecho.
+                                            </li>
+                                            <li>
+                                                Bachilleres o egresados con tituloprofesinal en Derecho.
+                                            </li>
+                                            <li>
+                                                Bachilleres o egresados con tituloprofesinal en Derecho.
+                                            </li>
+                                            <li>
+                                                Bachilleres o egresados con tituloprofesinal en Derecho.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="tab-pane fade" id="pills-02" role="tabpanel" aria-labelledby="pill-2">...</div>
-                        <div class="tab-pane fade" id="pills-03" role="tabpanel" aria-labelledby="pill-3">...</div>
+                    </div>
+                    <div class="row overview-area">
+                        <div class="col-md-12 bg-gray">
+                            El alumno obtendrá su diplomado con la siguiente mención:
+                            <h5>"Diplomado especializado en Derecho Penal, Nuevo Código Procesal Penal y Técnicas de Litigación Oral"</h5>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 sidebar-area">
