@@ -16,18 +16,41 @@
     <!-- Encabezado fin -->
     @php
         require base_path('vendor/autoload.php');
-        MercadoPagoConfig::setAccessToken('<ACCESS_TOKEN>');
-        $client = new PaymentClient();
-        $request = [
-            'transaction_amount' => 100,
-            'token' => 'YOUR_CARD_TOKEN',
-            'description' => 'description',
-            'installments' => 1,
-            'payment_method_id' => 'visa',
-            'payer' => [
-                'email' => 'user@test.com',
+
+        use MercadoPago\Client\Preference\PreferenceClient;
+        use MercadoPago\Exceptions\MPApiException;
+        use MercadoPago\MercadoPagoConfig;
+
+        // Step 2: Set production or sandbox access token
+        MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_TOKEN'));
+        $client = new PreferenceClient();
+
+        $preference = $client->create([
+            'external_reference' => 'teste',
+            'items' => [
+                [
+                    'id' => '4567',
+                    'title' => 'Dummy Title',
+                    'description' => 'Dummy description',
+                    'picture_url' => 'http://www.myapp.com/myimage.jpg',
+                    'category_id' => 'eletronico',
+                    'quantity' => 1,
+                    'currency_id' => 'BRL',
+                    'unit_price' => 100,
+                ],
             ],
-        ];
+            'payment_methods' => [
+                'default_payment_method_id' => 'master',
+                'excluded_payment_types' => [
+                    [
+                        'id' => 'ticket',
+                    ],
+                ],
+                'installments' => 12,
+                'default_installments' => 1,
+            ],
+        ]);
+
     @endphp
 
     <!-- Banner Area Start-->
@@ -398,6 +421,11 @@
 
     <script>
         const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
-        const bricksBuilder = mp.bricks();
+
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "{{ $preference->id }}",
+            },
+        });
     </script>
 @endsection

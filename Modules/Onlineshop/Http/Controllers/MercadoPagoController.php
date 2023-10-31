@@ -28,7 +28,7 @@ class MercadoPagoController extends Controller
             // Step 4: Create the request array
             $request = [
                 "transaction_amount" => 100,
-                "token" => "4009 1753 3280 6176",
+                "token" => env('MERCADOPAGO_TOKEN'),
                 "description" => "prueba",
                 "installments" => 1,
                 "payment_method_id" => "visa",
