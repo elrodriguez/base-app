@@ -14,33 +14,9 @@
     <!-- Encabezado inicio -->
     <x-capperu.header-area></x-capperu.header-area>
     <!-- Encabezado fin -->
-    @php
+    {{-- @php
         require base_path('vendor/autoload.php');
-
-        use MercadoPago\Client\Preference\PreferenceClient;
-        use MercadoPago\Exceptions\MPApiException;
-        use MercadoPago\MercadoPagoConfig;
-
-        // Step 2: Set production or sandbox access token
-        MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_TOKEN'));
-        $client = new PreferenceClient();
-
-        $preference = $client->create([
-            'items' => [
-                [
-                    'id' => '4567',
-                    'title' => 'Dummy Title',
-                    'description' => 'Dummy description',
-                    'picture_url' => 'http://www.myapp.com/myimage.jpg',
-                    'category_id' => 'eletronico',
-                    'quantity' => 1,
-                    'currency_id' => 'BRL',
-                    'unit_price' => 100,
-                ],
-            ],
-        ]);
-
-    @endphp
+    @endphp --}}
 
     <!-- Banner Area Start-->
     <section class="banner-area style-3"
@@ -64,6 +40,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <b id="total_productos">03 programas en el carrito</b>
+
                     <div class="row" id="cart">
                         <div class="col-md-12" style="padding: 10px;" id="1_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
@@ -286,20 +263,22 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        //localStorage.setItem('carrito')=null; //ELiminar CARRITO
-        document.getElementById('cart').innerHTML =
-            ""; // Esto borra todo el contenido de la vista elementos estaticos, antes de cargar de la base de datos, no es necesario si se eliminan todos los elementos estaticos de ejemplo
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        carrito.forEach(function(item) {
-            // Hacer algo con cada elemento del carrito
-            realizarConsulta(item.id);
-        });
+        cargarItemsCarritoBD();
 
-        function realizarConsulta(id) {
-            // Datos de la consulta
-            var datos = {
-                // Agrega aquí los parámetros de tu consulta, si es necesario
-            };
+        function cargarItemsCarritoBD() {
+            document.getElementById('cart').innerHTML =
+                ""; // BORRAR contenido de la vista, antes de cargar de la base de datos
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            myIds = [];
+            carrito.forEach(function(item) {
+                // Hacer algo con cada elemento del carrito
+
+                myIds.push(item.id);
+            });
+            realizarConsulta(myIds);
+        }
+
+        function realizarConsulta(ids) {
             // Realizar la petición Ajax
             var csrfToken = "{{ csrf_token() }}";
 
@@ -307,7 +286,7 @@
                 url: '{{ route('onlineshop_get_item_carrito') }}',
                 type: 'POST',
                 data: {
-                    id: id
+                    ids: ids
                 },
                 dataType: 'json',
                 headers: {
@@ -316,7 +295,17 @@
                 success: function(respuesta) {
                     // La consulta se realizó exitosamente
                     console.log("respuesta de servidor", respuesta);
-                    renderProducto(respuesta);
+
+                    // const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
+
+                    // mp.bricks().create("wallet", "wallet_container", {
+                    //     initialization: {
+                    //         preferenceId: "",
+                    //         redirectMode: "modal",
+                    //     },
+                    // });
+
+                    //renderProducto(respuesta);
                     // Aquí puedes hacer algo con la respuesta recibida
                 },
                 error: function(xhr) {
@@ -329,19 +318,23 @@
         }
 
         function renderProducto(respuesta) {
-            var id = respuesta.id;
-            var image = respuesta.image;
-            var name = respuesta.name;
-            var price = respuesta.price;
-            var modalidad = respuesta.additional;
             var cart = document.getElementById('cart');
-            cart.innerHTML += `
+            if (cart != null) {
+                var id = respuesta.id;
+                var teacher = respuesta.teacher;
+                var teacher_id = respuesta.teacher_id;
+                var avatar = respuesta.avatar;
+                var image = respuesta.image;
+                var name = respuesta.name;
+                var price = respuesta.price;
+                var modalidad = respuesta.additional;
+                cart.innerHTML += `
             <div class="col-md-12" style="padding: 10px;" id="` + id + `_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-2">
                                     <div class="single-course-wrap">
                                         <div class="thumb">
-                                            <img src="` + image + `" alt="img">
+                                            <img style="height: 90px; object-fit: cover;" src="` + image + `" alt="img"> 
                                         </div>
                                     </div>
                                 </div>
@@ -353,13 +346,11 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                            <a href="#">Jessica Jessy</a>
+                                            <img src="` + avatar + `" alt="img">
+                                            <a href="#">` + teacher + `</a>
                                         </div>
                                         <div class="col-md-4">
-                                            <span style="color:orange;">
-                                                <i class="fa fa-users"></i>
-                                            </span>(76)
+                                            
                                         </div>
                                         <div class="col-md-4">
                                             <a href="">
@@ -377,7 +368,7 @@
                                                     <div class="col-md-12">
                                                         <b>S/. ` + price + `</b>&nbsp;&nbsp;
                                                         <a onclick="eliminarproducto({ id: ` + id + `, nombre: '` +
-                name + `', precio: ` + price + ` });"  class="btn btn-danger">
+                    name + `', precio: ` + price + ` });"  class="btn btn-danger">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     </div>
@@ -388,6 +379,7 @@
                             </div>
                         </div>
                         `;
+            }
         }
     </script>
 
@@ -409,14 +401,4 @@
             color: #f2f2f2 !important;
         }
     </style>
-    <script>
-        const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
-
-        mp.bricks().create("wallet", "wallet_container", {
-            initialization: {
-                preferenceId: "{{ $preference->id }}",
-                redirectMode: "modal",
-            },
-        });
-    </script>
 @endsection

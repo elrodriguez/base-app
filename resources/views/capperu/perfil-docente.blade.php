@@ -96,7 +96,7 @@
                                     <div class="user-area">
                                         <div class="user-details">
                                             <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                            <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
+                                            <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
                                         </div>
                                         <div class="user-rating">
                                             <span>
@@ -141,7 +141,7 @@
                                     <div class="user-area">
                                         <div class="user-details">
                                             <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                            <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
+                                            <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
                                         </div>
                                         <div class="user-rating">
                                             <span>
@@ -186,7 +186,7 @@
                                     <div class="user-area">
                                         <div class="user-details">
                                             <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                            <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
+                                            <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
                                         </div>
                                         <div class="user-rating">
                                             <span>
@@ -231,7 +231,7 @@
                                     <div class="user-area">
                                         <div class="user-details">
                                             <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                            <a href="{{ route('web_perfil_docente') }}">Jessica Jessy</a>
+                                            <a href="{{ route('web_perfil_docente', 1) }}">Jessica Jessy</a>
                                         </div>
                                         <div class="user-rating">
                                             <span>

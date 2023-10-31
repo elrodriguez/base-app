@@ -126,7 +126,7 @@
                                         {{ $program->additional }}
                                     </a>
                                     <a href="{{ route('web_descripcion_en_vivo') }}">
-                                        <img src="{{ asset('themes/capperu/assets/img/course/4.png') }}" alt="img">
+                                        <img style="height: 260px; object-fit: cover;" src="{{ asset($program->image) }}" alt="img">
                                     </a>
                                 </div>
                                 <div class="wrap-details">
@@ -135,7 +135,7 @@
                                     </h6>
                                     <div>
                                         <div>
-                                            <p class="texto-oculto3" style="line-height: 20px;">{{ $program->description }}
+                                            <p class="texto-oculto3">{{ $program->description }}
                                             </p>
                                         </div>
                                     </div>
@@ -143,7 +143,7 @@
                                         <div class="user-details">
                                             <img style="width: 30px;"
                                                 src="{{ asset('themes/capperu/assets/img/author/2.png') }}" alt="img">
-                                            <a href="{{ route('web_perfil_docente') }}">Bad Bunny</a>
+                                            <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                         </div>
                                         <div class="user-rating">
                                             <span style="color:orange;">

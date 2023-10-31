@@ -87,6 +87,7 @@ function agregarAlCarrito(producto) {
                 localStorage.setItem("carrito", JSON.stringify(carrito));
                 getTotal();
                 cargarContadorCarrito();
+                cargarItemsCarritoBD();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 // Acción a realizar si el usuario hace clic en "No" o cierra el diálogo
                 console.log("El usuario ha cancelado.");

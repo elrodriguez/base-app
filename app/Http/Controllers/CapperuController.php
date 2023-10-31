@@ -71,8 +71,10 @@ class CapperuController extends Controller
         return view('Capperu/descripcion-e-learning');
     }
 
-    public function perfildocente()
+
+    public function perfildocente($teacher_id)
     {
+
         return view('Capperu/perfil-docente');
     }
 

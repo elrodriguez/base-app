@@ -11,6 +11,13 @@ use Modules\Onlineshop\Entities\OnliItem;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 
+require base_path('vendor/autoload.php');
+
+use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\Exceptions\MPApiException;
+use MercadoPago\MercadoPagoConfig;
+
+
 class OnliItemController extends Controller
 {
     use ValidatesRequests;
@@ -225,19 +232,60 @@ class OnliItemController extends Controller
 
     public function getItemCarrito(Request $request)
     {
-        $item=OnliItem::find($request->get('id'));
-        
+        $ids = $request->get('ids');
+
+        //dd($ids);
+        $items = OnliItem::join('aca_courses', 'onli_items.item_id', '=', 'aca_courses.id')
+            ->leftJoin('aca_teachers', 'aca_teachers.id', '=', 'aca_courses.teacher_id')
+            ->join('people', 'people.id', '=', 'aca_teachers.person_id')
+            ->join('users', 'users.person_id', '=', 'people.id')
+            ->whereIn('onli_items.id', $ids)
+            ->select(
+                'onli_items.id as id',
+                'onli_items.name as name',
+                'onli_items.image as image',
+                'onli_items.price as price',
+                'onli_items.category_description', ////sector publico, sector empresarial .....
+                'onli_items.additional as additional', ////tipo curso o diplomado
+                'onli_items.additional as additional1', //////modalidad envivo, elearnig.presencial
+                'people.names as teacher',
+                'aca_teachers.id as teacher_id',
+                'users.avatar as avatar',
+                'onli_items.description as description'
+            )
+            ->get();
+
+
+        $preference_id = null;
         // Verificar si se encontró el ítem
-        if (!$item) {
+        if (count($items) > 0) {
             // Manejar el caso en el que el ítem no se encuentre
+            MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_TOKEN'));
+            $client = new PreferenceClient();
+            $items = [];
+            foreach ($items as $item) {
+                array_push($mp_items, [
+                    'id' => $item->id,
+                    'title' => $item->name,
+                    'description' => $item->category_description . ' ' . $item->additional . '' . $item->additional1,
+                    'picture_url' => asset('storage/' . $item->image),
+                    'category_id' => $item->category_description,
+                    'quantity' => 1,
+                    'currency_id' => 'PEN',
+                    'unit_price' => $item->price,
+                ]);
+            }
+
+
+            $preference = $client->create($items);
+            $preference_id =  $preference->id;
+            // Devolver el ítem como JSON
+            return response()->json([
+                'items' => $items,
+                'preference_id' => $preference_id
+            ]);
+        } else {
             return response()->json(['error' => 'Ítem no encontrado'], 404);
         }
-
-        // Devolver el ítem como JSON
-        return response()->json($item);
-
     }
-
-
-
 }

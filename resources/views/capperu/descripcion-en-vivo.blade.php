@@ -204,7 +204,7 @@
                             <div class="tab-pane fade" id="pills-03" role="tabpanel" aria-labelledby="pill-3">
                                 <div class="row" style="margin-bottom: 20px;">
                                     <div class="col-md-2">
-                                        <a href="{{ route('web_perfil_docente') }}">
+                                        <a href="{{ route('web_perfil_docente', 1) }}"> <!-- poner el id del teacher teacher_id -->
                                             <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;" src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
                                         </a>
                                     </div>
@@ -222,7 +222,7 @@
                                 </div>
                                 <div class="row" style="margin-bottom: 20px;">
                                     <div class="col-md-2">
-                                        <a href="{{ route('web_perfil_docente') }}">
+                                        <a href="{{ route('web_perfil_docente', 1) }}">
                                             <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;" src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
                                         </a>
                                     </div>
@@ -243,7 +243,7 @@
                                 </div>
                                 <div class="row" style="margin-bottom: 20px;">
                                     <div class="col-md-2">
-                                        <a href="{{ route('web_perfil_docente') }}">
+                                        <a href="{{ route('web_perfil_docente', 1) }}">
                                             <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;" src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
                                         </a>
                                     </div>
