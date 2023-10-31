@@ -225,7 +225,13 @@ class OnliItemController extends Controller
 
     public function getItemCarrito(Request $request)
     {
-        $item=OnliItem::find($request->get('id'));
+        $item = OnliItem::OnliItem::join('aca_courses', 'onli_items.item_id', '=', 'aca_courses.id')
+                ->join('aca_teachers', 'aca_teachers.id', '=', 'aca_courses.teacher_id')
+                ->join('people', 'people.id', '=', 'aca_teachers.person_id')
+                ->where('onli_items.id', $request->get('id'))
+                ->select('onli_items.id as id', 'onli_items.name as name', 'onli_items.image as image', 'onli_items.price as price', 'onli_items.additional as additional',
+                        'people.names as teacher', 'aca_teachers.id as teacher_id')
+                ->first();
         
         // Verificar si se encontró el ítem
         if (!$item) {
@@ -237,7 +243,4 @@ class OnliItemController extends Controller
         return response()->json($item);
 
     }
-
-
-
 }

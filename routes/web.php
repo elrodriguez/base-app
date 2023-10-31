@@ -38,7 +38,7 @@ Route::get('/sector-cursos', [CapperuController::class, 'sectorcursos'])->name('
 Route::get('/sector-diplomados', [CapperuController::class, 'sectordiplomados'])->name('web_sector_diplomados');
 Route::get('/descripcion-en-vivo', [CapperuController::class, 'descripcionenvivo'])->name('web_descripcion_en_vivo');
 Route::get('/descripcion-e-learning', [CapperuController::class, 'descripcionelearning'])->name('web_descripcion_e_learning');
-Route::get('/perfil-docente', [CapperuController::class, 'perfildocente'])->name('web_perfil_docente');
+Route::get('/perfil-docente/{teacher_id}', [CapperuController::class, 'perfildocente'])->name('web_perfil_docente');
 Route::get('/carrito', [CapperuController::class, 'carrito'])->name('web_carrito');
 Route::get('/convenios', [CapperuController::class, 'convenios'])->name('web_convenios');
 Route::get('/contacto', [CapperuController::class, 'contacto'])->name('web_contacto');
