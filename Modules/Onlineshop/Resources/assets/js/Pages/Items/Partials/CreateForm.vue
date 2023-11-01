@@ -28,7 +28,8 @@ const form = useForm({
     image: null,
     image_view: null,
     additional: null,///tipo curso o diplomado
-    additional1: null///modalidad de curso en vivo o grabado
+    additional1: null,///modalidad en Vivo, Presencial, E-learning
+    additional2: null /// Empresarial, Derecho, Publico
 });
 
 const createItem = () => {
@@ -120,30 +121,41 @@ const loadFile = (event) => {
                         />
                         <InputError :message="form.errors.category_description" class="mt-2" />
                     </div>
-                    <div class="mt-2">
-                        <InputLabel for="type" value="Tipo" />
-                        <TextInput
-                            id="type"
-                            v-model="form.additional"
-                            type="text"
-                            class="block w-full mt-1"
-                            autocomplete="off"
-                            placeholder="Curso / Diplomado"
-                        />
+  
+                    <div class="col-span-6 sm:col-span-6">
+                        <InputLabel for="additional" value="Tipo*" />
+                        <select id="additional" v-model="form.additional" class="block w-full mt-1">
+                            <option value="">Seleccionar tipo</option>
+                            <option value="Curso">Curso</option>
+                            <option value="Diplomado">Diplomado</option>
+                        </select>
                         <InputError :message="form.errors.additional" class="mt-2" />
                     </div>
-                    <div class="mt-2">
-                        <InputLabel for="Modality" value="Modalidad" />
-                        <TextInput
-                            id="Modality"
-                            v-model="form.additional1"
-                            type="text"
-                            class="block w-full mt-1"
-                            autocomplete="off"
-                            placeholder="Curso / Diplomado"
-                        />
+
+                    <div class="col-span-6 sm:col-span-6">
+                        <InputLabel for="additional1" value="Modalidad*" />
+                        <select id="additional1" v-model="form.additional1" class="block w-full mt-1">
+                            <option value="">Seleccionar modalidad</option>
+                            <option value="En Vivo">En Vivo</option>
+                            <option value="Presencial">Presencial</option>
+                            <option value="E-Learning">E-Learning</option>
+                            <!-- Agrega más opciones según tus necesidades -->
+                        </select>
                         <InputError :message="form.errors.additional1" class="mt-2" />
                     </div>
+
+                    <div class="col-span-6 sm:col-span-6">
+                        <InputLabel for="additional2" value="Sector*" />
+                        <select id="additional2" v-model="form.additional2" class="block w-full mt-1">
+                            <option value="">Seleccionar sector</option>
+                            <option value="Derecho">Derecho</option>
+                            <option value="Empresarial">Empresarial</option>
+                            <option value="Publico">Público</option>
+                            <!-- Agrega más opciones según tus necesidades -->
+                        </select>
+                        <InputError :message="form.errors.additional2" class="mt-2" />
+                    </div>
+
                     <div class="mt-2">
                         <InputLabel for="image" value="Imagen *" />
                         <div class="flex justify-center space-x-2">
