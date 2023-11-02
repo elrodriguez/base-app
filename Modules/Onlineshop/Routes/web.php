@@ -23,5 +23,5 @@ Route::middleware(['auth', 'verified'])->prefix('onlineshop')->group(function ()
 });
 
 //Route::get('payment_request', 'MercadoPagoController@paymentRequest')->name('onlineshop_get_item_carrito');
-Route::get('response_mercadopago', 'MercadoPagoController@responseMercadoPago')->name('onlineshop_response_mercadopago');
+Route::put('mercadopago/response', 'MercadoPagoController@responseMercadoPago')->name('onlineshop_response_mercadopago');
 Route::post('get/item', 'OnliItemController@getItemCarrito')->name('onlineshop_get_item_carrito');

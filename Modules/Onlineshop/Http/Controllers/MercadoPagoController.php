@@ -63,7 +63,7 @@ class MercadoPagoController extends Controller
         }
     }
 
-    public function responseMercadoPago(Request $request)
+    public function responseMercadoPago(Request $request, $res)
     {
         dd($request->all());
     }

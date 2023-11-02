@@ -14,9 +14,6 @@
     <!-- Encabezado inicio -->
     <x-capperu.header-area></x-capperu.header-area>
     <!-- Encabezado fin -->
-    {{-- @php
-        require base_path('vendor/autoload.php');
-    @endphp --}}
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <!-- Banner Area Start-->
     <section class="banner-area style-3"
