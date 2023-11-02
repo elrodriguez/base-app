@@ -120,7 +120,9 @@ class OnliItemController extends Controller
             'discount'                  => $request->get('discount') ?? 0,
             'image'                     => $path,
             'status'                    => true,
-            'additional'                => $request->get('additional')
+            'additional'                => $request->get('additional'),
+            'additional1'                => $request->get('additional1'),
+            'additional2'                => $request->get('additional2')
         ]);
         return redirect()->route('onlineshop_items')
             ->with('message', __('Item creado con éxito'));
@@ -175,6 +177,8 @@ class OnliItemController extends Controller
         $OnliItem->discount = $request->get('discount') ?? 0;
         $OnliItem->status = $request->get('status') ? true : false;
         $OnliItem->additional = $request->get('additional');
+        $OnliItem->additional1 = $request->get('additional1');
+        $OnliItem->additional2 = $request->get('additional2');
 
         // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
         // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
