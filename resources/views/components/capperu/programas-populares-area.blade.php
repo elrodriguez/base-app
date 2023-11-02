@@ -61,7 +61,7 @@
                                                             Sector:
                                                         </span>
                                                         <br>
-                                                        <b>{{ $program->additional2 }}</b>
+                                                        <b><div style="text-align: right;">{{ $program->additional2 }}</div></b>
                                                     </a>
                                                 </div>
                                                 <div class="user-rating">
@@ -189,7 +189,7 @@
                                                                     Sector:
                                                                 </span>
                                                                 <br>
-                                                                <b>{{ $program->additional2 }}</b>
+                                                                <b><div style="text-align: right;">{{ $program->additional2 }}</div></b>
                                                             </a>
                                                         </div>
                                                         <div class="user-rating">
@@ -197,7 +197,7 @@
                                                                 <i>Modalidad:</i>
                                                             </span>
                                                             <br>
-                                                            <b>{{ $program->additional1 }}</b>
+                                                            <b><div style="text-align: right;">{{ $program->additional1 }}</div></b>
                                                         </div>
                                                     </div>
                                                     <div class="price-wrap">
@@ -259,7 +259,7 @@
                                                                 Sector:
                                                             </span>
                                                             <br>
-                                                            <b>{{ $program->additional2 }}</b>
+                                                            <b><div style="text-align: right;">{{ $program->additional2 }}</div></b>
                                                         </a>
                                                     </div>
                                                     <div class="user-rating">
@@ -329,7 +329,7 @@
                                                                 Sector:
                                                             </span>
                                                             <br>
-                                                            <b>{{ $program->additional2 }}</b>
+                                                            <b><div style="text-align: right;">{{ $program->additional2 }}</div></b>
                                                         </a>
                                                     </div>
                                                     <div class="user-rating">
