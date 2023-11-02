@@ -22,7 +22,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-12 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Carrito de Compras</h1>
+                        <h1>Realizar Pago</h1>
                     </div>
                 </div>
             </div>
@@ -209,38 +209,7 @@
                     <div class="contact-inner">
                         <div class="row">
                             <div class="col-md-12">
-                                <form id="form-register-payment" class="contact-form">
-                                    <div class="row">
-                                        <div class="col-md-12 single-input-wrap">
-                                            <input type="text" placeholder="Nombres">
-                                        </div>
-                                        <div class="col-md-6 single-input-wrap">
-                                            <input type="text" placeholder="Ap. Paterno">
-                                        </div>
-                                        <div class="col-md-6 single-input-wrap">
-                                            <input type="text" placeholder="Ap. Materno">
-                                        </div>
-                                        <div class="col-md-12 single-input-wrap">
-                                            <input type="text" placeholder="Teléfono">
-                                        </div>
-                                        <div class="col-md-12 single-input-wrap">
-                                            <input type="text" placeholder="E-mail">
-                                        </div>
-                                        <div class="col-md-12 single-input-wrap">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option> Tipo de Documento</option>
-                                                <option value="1">DNI</option>
-                                                <option value="2">Carnet de extranjeria</option>
-                                                <option value="3">Ruc</option>
-                                            </select>
-                                        </div>
-                                        <br>
-                                        <br>
-                                        <div class="col-md-12 single-input-wrap">
-                                            <input type="text" placeholder="Número">
-                                        </div>
-                                    </div>
-                                </form>
+                                Aqui los datos del usuario
                             </div>
                             <div class="col-md-12" style="font-size: 20px;">
                                 <i class="fa fa-heart"></i> Total:
@@ -249,10 +218,7 @@
                                 <p><b id="totalid"></b></p>
                             </div>
                             <div class="col-md-12">
-                                <a class="btn btn-primary" href="{{ route('web_nosotros') }}" style="width: 100%;">
-                                    <i class="fa fa-user" aria-hidden="true"></i> 
-                                    &nbsp;&nbsp;Crear Cuenta
-                                </a>
+                                <div id="wallet_container"></div>
                             </div>
                         </div>
                     </div>
@@ -386,10 +352,6 @@
 
     <!-- zoom courses Area End -->
 
-
-    <!-- Más Populares Area Start-->
-    <x-capperu.programas-populares-area></x-capperu.programas-populares-area>
-    <!-- Más Populares Area End -->
 
 
 

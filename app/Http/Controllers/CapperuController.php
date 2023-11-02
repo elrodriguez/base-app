@@ -94,6 +94,11 @@ class CapperuController extends Controller
         return view('Capperu/carrito');
     }
 
+    public function pagar()
+    {
+        return view('Capperu/pagar');
+    }
+
     public function contacto()
     {
         return view('Capperu/contacto');
