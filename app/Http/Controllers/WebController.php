@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Modules\Onlineshop\Entities\OnliItem;
 
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Font;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+
 class WebController extends Controller
 {
     public function index()
@@ -26,5 +31,44 @@ class WebController extends Controller
         return view('capperu/index', [
             'programs' => $programs
         ]);
+    }
+
+    public function testimage($content){
+
+        // create Image from file
+$img = Image::make('http://base-app.test/storage/uploads/onlineshop/items/20231031043434.jpg');
+
+// write text
+//$img->text('The quick brown fox jumps over the lazy dog.');
+
+// write text at position
+//$img->text('The quick brown fox jumps over the lazy dog.', 120, 100);
+
+
+
+
+$img->text($content, 300, 500, function($font) {
+    $font->file('fonts/OLDENGL.TTF');
+    $font->size(46);
+    $font->color('#0d06e3');
+    $font->align('center');
+    $font->valign('top');
+    $font->angle(0);
+});
+
+// Obtener el contenido binario de la imagen
+$imageContent = $img->encode('png');
+
+// Generar la respuesta HTTP con la imagen
+$response = Response::make($imageContent);
+
+// Establecer el tipo de contenido de la respuesta como imagen PNG
+$response->header('Content-Type', 'image/png');
+
+// Establecer el encabezado de descarga para la respuesta
+$response->header('Content-Disposition', 'attachment; filename="mi_imagen.png"');
+
+// Retornar la respuesta
+return $response;
     }
 }
