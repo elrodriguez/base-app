@@ -65,9 +65,6 @@ $response = Response::make($imageContent);
 // Establecer el tipo de contenido de la respuesta como imagen PNG
 $response->header('Content-Type', 'image/png');
 
-// Establecer el encabezado de descarga para la respuesta
-$response->header('Content-Disposition', 'attachment; filename="mi_imagen.png"');
-
 // Retornar la respuesta
 return $response;
     }
