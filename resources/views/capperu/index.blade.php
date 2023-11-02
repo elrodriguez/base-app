@@ -167,7 +167,7 @@
                                                     <i>Modalidad:</i>
                                                 </span>
                                                 <br>
-                                                <b><div style="text-align: right;">{{ $program->additional }}</div></b>
+                                                <b><div style="text-align: right;">{{ $program->additional1 }}</div></b>
                                             </a>
                                         </div>
                                     </div>
