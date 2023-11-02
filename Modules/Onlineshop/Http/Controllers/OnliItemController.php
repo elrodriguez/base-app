@@ -11,11 +11,11 @@ use Modules\Onlineshop\Entities\OnliItem;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 
-require base_path('vendor/autoload.php');
 
-use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\Exceptions\MPApiException;
 use MercadoPago\MercadoPagoConfig;
+use MercadoPago\Client\Preference\PreferenceClient;
 
 
 class OnliItemController extends Controller
@@ -25,6 +25,12 @@ class OnliItemController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+    private $client;
+
+    function __construct()
+    {
+        $this->client = new PaymentClient();
+    }
     public function index()
     {
         $items = (new OnliItem())->newQuery();
@@ -233,7 +239,6 @@ class OnliItemController extends Controller
     public function getItemCarrito(Request $request)
     {
         $ids = $request->get('ids');
-
         //dd($ids);
         $items = OnliItem::join('aca_courses', 'onli_items.item_id', '=', 'aca_courses.id')
             ->leftJoin('aca_teachers', 'aca_teachers.id', '=', 'aca_courses.teacher_id')
@@ -255,33 +260,40 @@ class OnliItemController extends Controller
             )
             ->get();
 
-
         $preference_id = null;
         // Verificar si se encontró el ítem
         if (count($items) > 0) {
             //Manejar el caso en el que el ítem no se encuentre
-            /*
             MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_TOKEN'));
             $client = new PreferenceClient();
-            $items = [];
-            foreach ($items as $item) {
-                array_push($mp_items, [
+
+            $mp_items = [];
+            foreach ($items as $k =>  $item) {
+                $mp_items[$k] = [
                     'id' => $item->id,
                     'title' => $item->name,
-                    'description' => $item->category_description . ' ' . $item->additional . '' . $item->additional1,
-                    'picture_url' => asset('storage/' . $item->image),
+                    'description' => $item->category_description . ' ' . $item->additional . ' ' . $item->additional1,
+                    'picture_url' => $item->image,
                     'category_id' => $item->category_description,
                     'quantity' => 1,
                     'currency_id' => 'PEN',
-                    'unit_price' => $item->price,
-                ]);
+                    'unit_price' => floatval($item->price)
+                ];
             }
+            //dd($mp_items);
+            $preference = $client->create([
+                "items" => $mp_items,
+                "back_urls" =>  array(
+                    'success' => route('onlineshop_response_mercadopago'),
+                    'failure' => route('onlineshop_response_mercadopago'),
+                    'pending' => route('onlineshop_response_mercadopago')
+                )
+            ]);
 
 
-            $preference = $client->create($items);
             $preference_id =  $preference->id;
             //Devolver el ítem como JSON
-            */
+
             return response()->json([
                 'items' => $items,
                 'preference_id' => $preference_id

@@ -17,7 +17,7 @@
     {{-- @php
         require base_path('vendor/autoload.php');
     @endphp --}}
-
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
     <!-- Banner Area Start-->
     <section class="banner-area style-3"
         style="padding: 40px; background-image: url({{ asset('themes/capperu/assets/img/banner/bg-2.jpg') }});">
@@ -273,7 +273,7 @@
             carrito.forEach(function(item) {
                 // Hacer algo con cada elemento del carrito
 
-                myIds.push(item.id);
+                myIds.push(parseInt(item.id));
             });
             realizarConsulta(myIds);
         }
@@ -281,9 +281,10 @@
         function realizarConsulta(ids) {
             // Realizar la petición Ajax
             var csrfToken = "{{ csrf_token() }}";
+            const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
 
             $.ajax({
-                url: '{{ route('onlineshop_get_item_carrito') }}',
+                url: "{{ route('onlineshop_get_item_carrito') }}",
                 type: 'POST',
                 data: {
                     ids: ids
@@ -294,21 +295,16 @@
                 },
                 success: function(respuesta) {
                     // La consulta se realizó exitosamente
-                    console.log("respuesta de servidor items: ", respuesta.items);
-                    console.log("respuesta de servidor preference_id: ", respuesta.preference_id);
-
-                    // const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
-
-                    // mp.bricks().create("wallet", "wallet_container", {
-                    //     initialization: {
-                    //         preferenceId: "",
-                    //         redirectMode: "modal",
-                    //     },
-                    // });
+                    mp.bricks().create("wallet", "wallet_container", {
+                        initialization: {
+                            preferenceId: respuesta.preference_id,
+                            redirectMode: "modal",
+                        },
+                    });
 
                     respuesta.items.forEach(function(item) {
-                    // Accede a las propiedades del objeto
-                    renderProducto(item);
+                        // Accede a las propiedades del objeto
+                        renderProducto(item);
                     });
                     // Aquí puedes hacer algo con la respuesta recibida
                 },
@@ -322,7 +318,7 @@
         }
 
         function renderProducto(respuesta) {
-            var cart = document.getElementById('cart');        
+            var cart = document.getElementById('cart');
             if (cart != null) {
                 var id = respuesta.id;
                 var teacher = respuesta.teacher;
@@ -399,7 +395,7 @@
 
     <x-capperu.footer-area></x-capperu.footer-area>
 
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
     <style>
         .text-1XN644 {
             color: #f2f2f2 !important;
