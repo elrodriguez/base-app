@@ -30,6 +30,10 @@ class AcaCourse extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(AcaCategoryCourse::class);
+        return $this->belongsTo(AcaCategoryCourse::class, 'category_id');
+    }
+    public function modality(): BelongsTo
+    {
+        return $this->belongsTo(AcaModality::class, 'modality_id', '');
     }
 }

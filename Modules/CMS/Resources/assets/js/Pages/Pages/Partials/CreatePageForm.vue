@@ -65,12 +65,12 @@ const setCountry = (id, text, icon) => {
 
         <template #form>
             <div class="col-span-6 ">
-                <InputLabel for="pais" value="País *" class="mb-1" />
+                <InputLabel value="País *" class="mb-1" />
                 <dropdown>
                     <template #trigger="{ toggle }">
-                    <Button class="w-full flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button" @click="toggle">
+                    <button class="w-full flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button" @click="toggle">
                         <img v-show="form.country_icon" :src="form.country_icon" class="mr-1" style="width: 15px;"><span>{{ form.country_description }}</span> 
-                    </Button>
+                    </button>
                     </template>
                     <div class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-full dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">

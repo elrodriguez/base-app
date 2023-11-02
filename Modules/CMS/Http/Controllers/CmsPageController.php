@@ -84,7 +84,8 @@ class CmsPageController extends Controller
             'route'         => $request->get('route'),
             'main'          => $request->get('main'),
             'status'        => $request->get('status'),
-            'user_id'       => Auth::id()
+            'user_id'       => Auth::id(),
+            'country_id'    => $request->get('country_id')
         ]);
     }
 
@@ -106,7 +107,8 @@ class CmsPageController extends Controller
     public function edit($id)
     {
         $countries = Country::where('status', true)->get();
-        $hey =  CmsPage::find($id);
+        $hey =  CmsPage::with('country')->where('id', $id)->first();
+
         return Inertia::render('CMS::Pages/Edit', [
             'hey' => $hey,
             'countries' => $countries
@@ -140,7 +142,8 @@ class CmsPageController extends Controller
             'route'         => $request->get('route'),
             'main'          => $request->get('main'),
             'status'        => $request->get('status'),
-            'user_id'       => Auth::id()
+            'user_id'       => Auth::id(),
+            'country_id'    => $request->get('country_id')
         ]);
     }
 

@@ -27,8 +27,9 @@ return new class extends Migration
         });
 
         DB::table('aca_modalities')->insert([
+            ['description' => 'En Vivo', 'status' => true],
             ['description' => 'Presencial', 'status' => true],
-            ['description' => 'Auto Administrativo', 'status' => true]
+            ['description' => 'E-learning', 'status' => true]
         ]);
     }
 

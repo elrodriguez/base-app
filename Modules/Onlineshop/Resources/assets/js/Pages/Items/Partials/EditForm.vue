@@ -110,7 +110,7 @@ const loadFile = (event) => {
 
             <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="additional" value="Tipo*" />
-                <select id="additional" v-model="form.additional" class="block w-full mt-1">
+                <select id="additional" v-model="form.additional" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="">Seleccionar tipo</option>
                     <option value="Curso">Curso</option>
                     <option value="Diplomado">Diplomado</option>
@@ -120,7 +120,7 @@ const loadFile = (event) => {
 
             <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="additional1" value="Modalidad*" />
-                <select id="additional1" v-model="form.additional1" class="block w-full mt-1">
+                <select id="additional1" v-model="form.additional1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="">Seleccionar modalidad</option>
                     <option value="En Vivo">En Vivo</option>
                     <option value="Presencial">Presencial</option>
@@ -132,7 +132,7 @@ const loadFile = (event) => {
 
             <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="additional2" value="Sector*" />
-                <select id="additional2" v-model="form.additional2" class="block w-full mt-1">
+                <select id="additional2" v-model="form.additional2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="">Seleccionar sector</option>
                     <option value="Derecho">Derecho</option>
                     <option value="Empresarial">Empresarial</option>

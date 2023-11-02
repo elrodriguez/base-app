@@ -63,7 +63,9 @@ class OnliItemController extends Controller
      */
     public function create()
     {
-        $courses = AcaCourse::with('category')->get();
+        $courses = AcaCourse::with('category')
+            ->with('modality')
+            ->get();
         return Inertia::render('Onlineshop::Items/Create', [
             'courses' => $courses
         ]);

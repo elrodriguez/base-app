@@ -7,6 +7,10 @@ const props = defineProps({
     hey: {
         type: Object,
         default: () => ({}),
+    },
+    countries: {
+        type: Object,
+        default: () => ({}),
     }
 });
 
@@ -45,7 +49,7 @@ const props = defineProps({
                     </li>
                 </ol>
             </nav>
-            <EditPageForm :hey="hey" /> 
+            <EditPageForm :hey="hey" :countries="countries" /> 
         </div>
     </AppLayout>
 </template>

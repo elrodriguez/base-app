@@ -53,7 +53,9 @@ const setItemsData = (data) => {
     form.category_description = data.category.description;
     form.name = data.description;
     form.image_view = data.image;
-    from.additional = data.type_description;
+    form.additional = data.type_description;
+    form.additional1 = data.modality.description;
+    form.additional2 = data.sector_description;
 }
 
 const loadFile = (event) => {
@@ -91,7 +93,7 @@ const loadFile = (event) => {
         </div>
         <div class="col-span-2 sm:col-span-1">
             
-            <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <div class="w-full p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
                 <form @submit.prevent="createItem" class="space-y-6" action="#">
                     <div>
                         <InputLabel for="name" value="Nombre" />
@@ -122,9 +124,9 @@ const loadFile = (event) => {
                         <InputError :message="form.errors.category_description" class="mt-2" />
                     </div>
   
-                    <div class="col-span-6 sm:col-span-6">
+                    <div class="mt-2">
                         <InputLabel for="additional" value="Tipo*" />
-                        <select id="additional" v-model="form.additional" class="block w-full mt-1">
+                        <select id="additional" v-model="form.additional" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">Seleccionar tipo</option>
                             <option value="Curso">Curso</option>
                             <option value="Diplomado">Diplomado</option>
@@ -132,9 +134,9 @@ const loadFile = (event) => {
                         <InputError :message="form.errors.additional" class="mt-2" />
                     </div>
 
-                    <div class="col-span-6 sm:col-span-6">
+                    <div class="mt-2">
                         <InputLabel for="additional1" value="Modalidad*" />
-                        <select id="additional1" v-model="form.additional1" class="block w-full mt-1">
+                        <select id="additional1" v-model="form.additional1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">Seleccionar modalidad</option>
                             <option value="En Vivo">En Vivo</option>
                             <option value="Presencial">Presencial</option>
@@ -144,9 +146,9 @@ const loadFile = (event) => {
                         <InputError :message="form.errors.additional1" class="mt-2" />
                     </div>
 
-                    <div class="col-span-6 sm:col-span-6">
+                    <div class="mt-2">
                         <InputLabel for="additional2" value="Sector*" />
-                        <select id="additional2" v-model="form.additional2" class="block w-full mt-1">
+                        <select id="additional2" v-model="form.additional2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">Seleccionar sector</option>
                             <option value="Derecho">Derecho</option>
                             <option value="Empresarial">Empresarial</option>
@@ -193,7 +195,7 @@ const loadFile = (event) => {
                             <InputError :message="form.errors.discount" class="mt-2" />
                         </div>
                     </div>
-                    <p class="m-4 text-xl text-gray-900 dark:text-white">Los datos guardados solo serán visibles en la web, no se modificara en el origen</p>
+                    <p class="mt-4 text-xl text-gray-900 dark:text-white">Los datos guardados solo serán visibles en la web, no se modificara en el origen</p>
                     <div class="mt-2">
                         <Keypad>
                             <template #botones>
