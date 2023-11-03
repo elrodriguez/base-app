@@ -47,33 +47,33 @@
                                 </div>
                                 <div class="wrap-details">
                                     <h5>{{ $course->description }}</h5>
-                                    <p>{{ $course->description }}</p>
+                                    <p>{{ $course->brochure->resolution }}</p>
                                     <div class="user-area">
                                         <div class="user-details">
                                             <a href="">
                                                 <span style="color:orange;">
                                                     Sector:
                                                 </span>
-                                                <b>Empresarial</b>
+                                                <b>{{ $course->sector_description }}</b>
                                             </a>
                                         </div>
                                         <div class="user-rating">
                                             <span style="color:orange;">
                                                 <i>Modalidad:</i>
                                             </span>
-                                            <b>En Vivo</b>
+                                            <b>{{ $course->modality->description }}</b>
                                         </div>
                                         <div class="user-rating">
                                             <span style="color:orange;">
                                                 <i>Programa:</i>
                                             </span>
-                                            <b>Diplomado</b>
+                                            <b>{{ $course->category->description }}</b>
                                         </div>
                                         <div class="user-rating">
                                             <span style="color:orange;">
                                                 <i>Inicio:</i>
                                             </span>
-                                            <b>12/12/2023</b>
+                                            <b>{{ $course->course_day . '/' . $course->course_month . '/' . $course->course_year }}</b>
                                         </div>
                                     </div>
                                 </div>
@@ -82,10 +82,14 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <a href="">
-                                <img style="100%;" src="{{ asset('themes/capperu/assets/img/convenios/logoUnhv.png') }}"
-                                    alt="img">
-                            </a>
+                            @php
+                                $agreements = $course->agreements;
+                            @endphp
+                            @foreach ($agreements as $agreement)
+                                <a href="">
+                                    <img style="100%;" src="{{ $agreement->institution->image }}" alt="img">
+                                </a>
+                            @endforeach
                         </div>
                     </div>
                     <div class="row">
@@ -119,59 +123,7 @@
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-01" role="tabpanel" aria-labelledby="pill-1">
                                 <div class="overview-area">
-                                    <p>
-                                        El presente programa está orientado a brindar a los participanteslas herramientas
-                                        necesarias para comprender el funcionamientodel
-                                        sistema penal acusatorio y desarrollar habilidades paracomprender y ejercer con
-                                        éxito las normas en materia Penal ,Procesal Penal y Técnicas de Litigación en el
-                                        Proceso Penal Peruanoen litigar.
-                                    </p>
-                                    <p>
-                                        El diplomado tendrá como ponentes a los más reconocidos jueces,fiscales, docentes y
-                                        especialistas en materia de derecho penal.Durante el desarrollo del diplomado, se
-                                        abordarán temas claves enDerecho Penal, Nuevo Código Procesal Penal y Técnicas
-                                        deLitigación Oral.
-                                    </p>
-                                    <p>
-                                        El Centro de Actualización Profesional CAP - PERÚ y la Facultad deDerecho y Ciencias
-                                        Políticas de la Universidad Nacional HermilioValdizán (licenciada por Sunedu)
-                                        expedirá el diploma con valoruniversitario por 384 horas académicas (24 créditos),
-                                        válido paratoda convocatoria pública o privada a nivel nacional.
-                                    </p>
-                                    <div class="bg-gray">
-                                        <h6>Dirigido a:
-                                        </h6>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <ul>
-                                                    <li>
-                                                        <i class="fa fa-check"></i>
-                                                        Estudiantes de los últimos ciclos de lacarrera de Derecho.
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-check"></i>
-                                                        Bachilleres o egresados con tituloprofesinal en Derecho.
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-check"></i>
-                                                        Jueces u Fiscales de todos los nivelesjerárquicos.
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-check"></i>
-                                                        Abogados, defensores públicos yasesores.
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-check"></i>
-                                                        Asistentes de Función Fiscal, Secretarios ytécnicos judiciales.
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-check"></i>
-                                                        Ejecutivos policiales, peritos ycriminalísitica.
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ $course->brochure->presentation }}
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-02" role="tabpanel" aria-labelledby="pill-2">
@@ -357,8 +309,7 @@
                     <div class="row overview-area">
                         <div class="col-md-12 bg-gray">
                             El alumno obtendrá su diplomado con la siguiente mención:
-                            <h5>"Diplomado especializado en Derecho Penal, Nuevo Código Procesal Penal y Técnicas de
-                                Litigación Oral"</h5>
+                            <h5>"{{ $course->description }}"</h5>
                         </div>
                     </div>
                 </div>
@@ -367,27 +318,18 @@
                         <h5 class="widget-title border-0" style="padding: 10px; background-color: #F9FAFD;">Estructura
                             Curricular</h5>
                         <div class="accordion" id="accordionExample">
-                            <div class="accordion-item">
-                                <p style="padding: 5px 15px;">1. La prescripción de la acción en el Nuevo Proceso Penal</p>
-                            </div>
-                            <div class="accordion-item">
-                                <p style="padding: 5px 15px;">2. La prescripción de la acción en el Nuevo Proceso Penal</p>
-                            </div>
-                            <div class="accordion-item">
-                                <p style="padding: 5px 15px;">3. La prescripción de la acción en el Nuevo Proceso Penal</p>
-                            </div>
-                            <div class="accordion-item">
-                                <p style="padding: 5px 15px;">4. La prescripción de la acción en el Nuevo Proceso Penal</p>
-                            </div>
-                            <div class="accordion-item">
-                                <p style="padding: 5px 15px;">5. La prescripción de la acción en el Nuevo Proceso Penal</p>
-                            </div>
-                            <div class="accordion-item">
-                                <p style="padding: 5px 15px;">6. La prescripción de la acción en el Nuevo Proceso Penal</p>
-                            </div>
-                            <div class="accordion-item">
-                                <p style="padding: 5px 15px;">7. La prescripción de la acción en el Nuevo Proceso Penal</p>
-                            </div>
+                            @php
+                                $modules = $course->modules;
+                                $c = 1;
+                            @endphp
+                            @foreach ($modules as $k => $module)
+                                <div class="accordion-item">
+                                    <p style="padding: 5px 15px;">{{ $c . '. ' . $module->description }}</p>
+                                </div>
+                                @php
+                                    $c++;
+                                @endphp
+                            @endforeach
                         </div>
                     </div>
 

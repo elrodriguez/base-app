@@ -10,9 +10,14 @@ class AcaTheme extends Model
     use HasFactory;
 
     protected $fillable = [];
-    
+
     protected static function newFactory()
     {
         return \Modules\Academic\Database\factories\AcaThemeFactory::new();
+    }
+
+    public function module(): BelongsTo
+    {
+        return $this->belongsTo(AcaModule::class, 'module_id');
     }
 }

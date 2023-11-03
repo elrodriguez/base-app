@@ -23,7 +23,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ env('APP_URL') }}/carrito" class="btn btn-base"><i class="fa fa-cart-plus"></i>&nbsp;&nbsp;
+                            <a href="{{ env('APP_URL') }}/carrito" class="btn btn-base"><i
+                                    class="fa fa-cart-plus"></i>&nbsp;&nbsp;
                                 <b>
                                     <span id="contadorCarritoMovil" class="contador" style="font-size: 18px;"></span>
                                 </b>
@@ -77,7 +78,7 @@
                 <div class="nav-right-part nav-right-part-desktop">
                     <ul>
                         <li>
-                            <a href="{{ env('APP_URL') }}/carrito" class="btn btn-base">
+                            <a href="{{ route('web_carrito') }}" class="btn btn-base">
                                 <i class="fa fa-cart-plus "></i>&nbsp;&nbsp;
                                 <b>
                                     <span id="contadorCarritoWeb" class="contador" style="font-size: 18px;"></span>

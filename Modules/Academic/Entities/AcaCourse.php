@@ -5,6 +5,8 @@ namespace Modules\Academic\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class AcaCourse extends Model
 {
@@ -34,6 +36,26 @@ class AcaCourse extends Model
     }
     public function modality(): BelongsTo
     {
-        return $this->belongsTo(AcaModality::class, 'modality_id', '');
+        return $this->belongsTo(AcaModality::class, 'modality_id', 'id');
+    }
+
+    public function modules(): HasMany
+    {
+        return $this->hasMany(AcaModule::class, 'course_id');
+    }
+
+    public function teacher(): HasMany
+    {
+        return $this->hasMany(AcaTeacher::class, 'id', 'teacher_id');
+    }
+
+    public function brochure(): HasOne
+    {
+        return $this->hasOne(AcaBrochure::class, 'course_id');
+    }
+
+    public function agreements(): HasMany
+    {
+        return $this->hasMany(AcaAgreement::class, 'course_id');
     }
 }
