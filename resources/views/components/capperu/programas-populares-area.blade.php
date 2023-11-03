@@ -31,6 +31,7 @@
                             <div class="course-slider owl-carousel">
 
 
+
                                 @foreach ($programs as $program)
                                     <div class="item">
                                         <div class="single-course-wrap">
@@ -56,50 +57,59 @@
                                                             src="{{ env('URL_AVATAR_CAMPUS') . $program->avatar }}"
                                                             alt="img">
                                                         <a
-                                                            href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                            href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                     </div>
-                                                    <div class="user-rating">
-                                                        <span style="color:orange;">
-                                                            <i class="fa fa-users"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="user-area" style="padding: 3px;">
-                                                    <div class="user-details">
-                                                        <a href="">
+                                                    <div class="user-area" style="padding: 3px;">
+                                                        <div class="user-details">
+                                                            <img style="width: 30px; border-radius: 50%;"
+                                                                src="{{ env('URL_AVATAR_CAMPUS') . $program->avatar }}"
+                                                                alt="img">
+                                                            <a
+                                                                href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                        </div>
+                                                        <div class="user-rating">
                                                             <span style="color:orange;">
-                                                                Sector:
+                                                                <i class="fa fa-users"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="user-area" style="padding: 3px;">
+                                                        <div class="user-details">
+                                                            <a href="">
+                                                                <span style="color:orange;">
+                                                                    Sector:
+                                                                </span>
+                                                                <br>
+                                                                <b>{{ $program->additional2 }}</b>
+                                                            </a>
+                                                        </div>
+                                                        <div class="user-rating">
+                                                            <span style="color:orange;">
+                                                                <i>Modalidad:</i>
                                                             </span>
                                                             <br>
-                                                            <b>{{ $program->additional2 }}</b>
-                                                        </a>
+                                                            <b>
+                                                                <div style="text-align: right;">
+                                                                    {{ $program->additional1 }}
+                                                                </div>
+                                                            </b>
+                                                        </div>
                                                     </div>
-                                                    <div class="user-rating">
-                                                        <span style="color:orange;">
-                                                            <i>Modalidad:</i>
-                                                        </span>
-                                                        <br>
-                                                        <b>
-                                                            <div style="text-align: right;">{{ $program->additional1 }}
+                                                    <div class="price-wrap">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-md-12">
+                                                                <button
+                                                                    onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} });"
+                                                                    class="btn btn-primary">
+                                                                    <i class="fa fa-cart-plus"></i>
+                                                                    Comprar Ahora S/. {{ $program->price }}
+                                                                </button>
                                                             </div>
-                                                        </b>
-                                                    </div>
-                                                </div>
-                                                <div class="price-wrap">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-md-12">
-                                                            <button
-                                                                onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} });"
-                                                                class="btn btn-primary">
-                                                                <i class="fa fa-cart-plus"></i>
-                                                                Comprar Ahora S/. {{ $program->price }}
-                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                 @endforeach
 
 
@@ -122,8 +132,10 @@
                                                 </div>
                                                 <div class="wrap-details">
                                                     <h6 class="nombre texto-oculto2">
+
                                                         <a
                                                             href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a>
+
                                                     </h6>
                                                     <div class="user-area" style="padding: 0px;">
                                                         <div class="user-details">
@@ -137,7 +149,8 @@
                                                                 src="{{ env('URL_AVATAR_CAMPUS') . $program->avatar }}"
                                                                 alt="img">
                                                             <a
-                                                                href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                                href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
+
                                                         </div>
                                                         <div class="user-rating">
                                                             <span style="color:orange;">
@@ -195,6 +208,7 @@
                             <div class="course-slider owl-carousel">
 
 
+
                                 @foreach ($programs as $program)
                                     @if ($program->additional2 == 'Derecho')
                                         <div class="item">
@@ -222,50 +236,59 @@
                                                                 src="{{ env('URL_AVATAR_CAMPUS') . $program->avatar }}"
                                                                 alt="img">
                                                             <a
-                                                                href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                                href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
+
                                                         </div>
-                                                        <div class="user-rating">
-                                                            <span style="color:orange;">
-                                                                <i class="fa fa-users"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="user-area" style="padding: 3px;">
-                                                        <div class="user-details">
-                                                            <a href="">
+                                                        <div class="user-area" style="padding: 3px;">
+                                                            <div class="user-details">
+                                                                <img style="width: 30px; border-radius: 50%;"
+                                                                    src="{{ env('URL_AVATAR_CAMPUS') . $program->avatar }}"
+                                                                    alt="img">
+                                                                <a
+                                                                    href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                            </div>
+                                                            <div class="user-rating">
                                                                 <span style="color:orange;">
-                                                                    Sector:
+                                                                    <i class="fa fa-users"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="user-area" style="padding: 3px;">
+                                                            <div class="user-details">
+                                                                <a href="">
+                                                                    <span style="color:orange;">
+                                                                        Sector:
+                                                                    </span>
+                                                                    <br>
+                                                                    <b>
+                                                                        <div style="text-align: right;">
+                                                                            {{ $program->additional2 }}</div>
+                                                                    </b>
+                                                                </a>
+                                                            </div>
+                                                            <div class="user-rating">
+                                                                <span style="color:orange;">
+                                                                    <i>Modalidad:</i>
                                                                 </span>
                                                                 <br>
-                                                                <b>
-                                                                    <div style="text-align: right;">
-                                                                        {{ $program->additional2 }}</div>
-                                                                </b>
-                                                            </a>
+                                                                <b>{{ $program->additional1 }}</b>
+                                                            </div>
                                                         </div>
-                                                        <div class="user-rating">
-                                                            <span style="color:orange;">
-                                                                <i>Modalidad:</i>
-                                                            </span>
-                                                            <br>
-                                                            <b>{{ $program->additional1 }}</b>
-                                                        </div>
-                                                    </div>
-                                                    <div class="price-wrap">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-md-12">
-                                                                <button
-                                                                    onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} });"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fa fa-cart-plus"></i>
-                                                                    Comprar Ahora S/. {{ $program->price }}
-                                                                </button>
+                                                        <div class="price-wrap">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-md-12">
+                                                                    <button
+                                                                        onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} });"
+                                                                        class="btn btn-primary">
+                                                                        <i class="fa fa-cart-plus"></i>
+                                                                        Comprar Ahora S/. {{ $program->price }}
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                     @endif
                                 @endforeach
                             </div>
@@ -274,7 +297,6 @@
 
                         <div class="tab-pane fade" id="pills-4"> <!-- Publico -->
                             <div class="course-slider owl-carousel">
-
 
 
                                 @foreach ($programs as $program)
@@ -287,6 +309,7 @@
                                                     <img style="height: 260px; object-fit: cover;"
                                                         src="{{ $program->image }}" alt="img">
                                                 </div>
+                                                <div>{{ $program->id . 'MIERDA' }}</div>
                                                 <div class="wrap-details">
                                                     <h6 class="nombre texto-oculto2">
                                                         <a
@@ -304,50 +327,59 @@
                                                                 src="{{ env('URL_AVATAR_CAMPUS') . $program->avatar }}"
                                                                 alt="img">
                                                             <a
-                                                                href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                                href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
+
                                                         </div>
-                                                        <div class="user-rating">
-                                                            <span style="color:orange;">
-                                                                <i class="fa fa-users"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="user-area" style="padding: 3px;">
-                                                        <div class="user-details">
-                                                            <a href="">
+                                                        <div class="user-area" style="padding: 3px;">
+                                                            <div class="user-details">
+                                                                <img style="width: 30px; border-radius: 50%;"
+                                                                    src="{{ env('URL_AVATAR_CAMPUS') . $program->avatar }}"
+                                                                    alt="img">
+                                                                <a
+                                                                    href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                            </div>
+                                                            <div class="user-rating">
                                                                 <span style="color:orange;">
-                                                                    Sector:
+                                                                    <i class="fa fa-users"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="user-area" style="padding: 3px;">
+                                                            <div class="user-details">
+                                                                <a href="">
+                                                                    <span style="color:orange;">
+                                                                        Sector:
+                                                                    </span>
+                                                                    <br>
+                                                                    <b>
+                                                                        <div style="text-align: right;">
+                                                                            {{ $program->additional2 }}</div>
+                                                                    </b>
+                                                                </a>
+                                                            </div>
+                                                            <div class="user-rating">
+                                                                <span style="color:orange;">
+                                                                    <i>Modalidad:</i>
                                                                 </span>
                                                                 <br>
-                                                                <b>
-                                                                    <div style="text-align: right;">
-                                                                        {{ $program->additional2 }}</div>
-                                                                </b>
-                                                            </a>
+                                                                <b>{{ $program->additional1 }}</b>
+                                                            </div>
                                                         </div>
-                                                        <div class="user-rating">
-                                                            <span style="color:orange;">
-                                                                <i>Modalidad:</i>
-                                                            </span>
-                                                            <br>
-                                                            <b>{{ $program->additional1 }}</b>
-                                                        </div>
-                                                    </div>
-                                                    <div class="price-wrap">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-md-12">
-                                                                <button
-                                                                    onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} });"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fa fa-cart-plus"></i>
-                                                                    Comprar Ahora S/. {{ $program->price }}
-                                                                </button>
+                                                        <div class="price-wrap">
+                                                            <div class="row align-items-center">
+                                                                <div class="col-md-12">
+                                                                    <button
+                                                                        onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} });"
+                                                                        class="btn btn-primary">
+                                                                        <i class="fa fa-cart-plus"></i>
+                                                                        Comprar Ahora S/. {{ $program->price }}
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                     @endif
                                 @endforeach
 
