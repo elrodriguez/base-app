@@ -242,7 +242,7 @@
                                             <div class="thumb">
                                                 <a href="#" class="cat cat-blue">{{ $program->additional }}</a>
                                                 <img style="height: 260px; object-fit: cover;" src="{{ $program->image }}" alt="img">
-                                            </div><div>{{ $program->id."MIERDA" }}</div>
+                                            </div>
                                             <div class="wrap-details">
                                                 <h6 class="nombre texto-oculto2">
                                                     <a href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a>
