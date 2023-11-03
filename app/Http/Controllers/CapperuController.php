@@ -256,6 +256,9 @@ class CapperuController extends Controller
 
         $person = Person::where('id', $sale->person_id)->first();
 
+        //////////codigo enviar correo /////
+
+
         return view('capperu/gracias', [
             'person' => $person
         ]);
