@@ -66,6 +66,9 @@
 
     <x-capperu.footer-area></x-capperu.footer-area>
 
+    <script>
+        eliminarCarrito();
+    </script>
 
     <style>
         .text-1XN644 {

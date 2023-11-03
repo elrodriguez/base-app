@@ -104,6 +104,8 @@ function obtenerCarrito() {
 function eliminarCarrito() {
     //ELiminar por completo el carrito de Compras
     localStorage.removeItem("carrito");
+    getTotal();
+    cargarContadorCarrito();
 }
 
 function getTotal() {
