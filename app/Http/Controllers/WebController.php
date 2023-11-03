@@ -35,7 +35,8 @@ class WebController extends Controller
                 'people.names as teacher',
                 'aca_teachers.id as teacher_id',
                 'users.avatar as avatar',
-                'onli_items.description as description'
+                'onli_items.description as description',
+                'aca_courses.id as course_id'
             )
             ->where('onli_items.status', true)->orderBy('onli_items.id', 'DESC')->get();
 
