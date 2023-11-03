@@ -18,47 +18,47 @@ class CapperuController extends Controller
 {
     public function nosotros()
     {
-        return view('Capperu/nosotros');
+        return view('capperu/nosotros');
     }
 
     public function categorias()
     {
-        return view('Capperu/categorias');
+        return view('capperu/categorias');
     }
 
     public function categoriasector()
     {
-        return view('Capperu/categoria-sector');
+        return view('capperu/categoria-sector');
     }
 
     public function categoriamodalidad()
     {
-        return view('Capperu/categoria-modalidad');
+        return view('capperu/categoria-modalidad');
     }
 
     public function categoriamodalidadenvivo()
     {
-        return view('Capperu/categoria-modalidad-en-vivo');
+        return view('capperu/categoria-modalidad-en-vivo');
     }
 
     public function categoriamodalidadelearning()
     {
-        return view('Capperu/categoria-modalidad-e-learning');
+        return view('capperu/categoria-modalidad-e-learning');
     }
 
     public function categoriaprogramacursos()
     {
-        return view('Capperu/categoria-programa-cursos');
+        return view('capperu/categoria-programa-cursos');
     }
 
     public function categoriaprogramadiplomados()
     {
-        return view('Capperu/categoria-programa-diplomados');
+        return view('capperu/categoria-programa-diplomados');
     }
 
     public function modalidadpresencial()
     {
-        return view('Capperu/modalidad-presencial');
+        return view('capperu/modalidad-presencial');
     }
 
     public function sectorcursos()
@@ -82,14 +82,14 @@ class CapperuController extends Controller
             )
             ->where('onli_items.status', true)->orderBy('onli_items.id', 'DESC')->get();
 
-        return view('Capperu/sector-cursos', [
+        return view('capperu/sector-cursos', [
             'programs' => $programs
         ]);
     }
 
     public function sectordiplomados()
     {
-        return view('Capperu/sector-diplomados');
+        return view('capperu/sector-diplomados');
     }
 
     public function descripcionenvivo($id)
@@ -104,7 +104,7 @@ class CapperuController extends Controller
 
     public function descripcionelearning()
     {
-        return view('Capperu/descripcion-e-learning');
+        return view('capperu/descripcion-e-learning');
     }
 
 
@@ -137,7 +137,7 @@ class CapperuController extends Controller
             ->where('aca_teachers.id', $teacher_id)
             ->orderBy('onli_items.id', 'DESC')->get();
 
-        return view('Capperu/perfil-docente', [
+        return view('capperu/perfil-docente', [
             'programs'  => $programs,
             'teacher'   => $teacher
         ]);
@@ -145,12 +145,13 @@ class CapperuController extends Controller
 
     public function carrito(Request $request)
     {
-        return view('Capperu/carrito');
+        return view('capperu/carrito');
     }
 
     public function pagar(Request $request)
     {
-        $sale_id = $request->get('sale');
+        try {
+            $sale_id = $request->get('sale');
         $sale = OnliSale::find($sale_id);
 
         MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_TOKEN'));
@@ -215,20 +216,29 @@ class CapperuController extends Controller
 
         $preference_id =  $preference->id;
 
-        return view('Capperu/pagar', [
+        return view('capperu/pagar', [
             'person_full_name'  => $sale->clie_full_name,
             'preference_id'     => $preference_id,
             'cart_items'        => $cart_items
         ]);
+        } catch (\Throwable $th) {
+             return redirect('carrito');
+        }
+        
+    }
+
+    public function gracias()
+    {
+        return view('capperu/gracias');
     }
 
     public function contacto()
     {
-        return view('Capperu/contacto');
+        return view('capperu/contacto');
     }
 
     public function convenios()
     {
-        return view('Capperu/convenios');
+        return view('capperu/convenios');
     }
 }

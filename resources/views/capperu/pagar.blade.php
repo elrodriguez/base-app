@@ -49,7 +49,7 @@
                                         <div class="single-course-wrap">
                                             <div class="thumb">
                                                 <!--<a href="#" class="cat cat-blue">Curso</a>-->
-                                                <img src="{{ $cart_item['image'] }}" alt="img">
+                                                <img style="height: 90px; object-fit: cover;" src="{{ $cart_item['image'] }}" alt="img">
                                             </div>
                                         </div>
                                     </div>
