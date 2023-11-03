@@ -39,7 +39,13 @@
                     <b id="total_productos">03 programas en el carrito</b>
 
                     <div class="row" id="cart">
-                        <div class="col-md-12" style="padding: 10px;" id="1_pc">
+                        
+                        
+
+
+                        
+    
+                        {{-- <div class="col-md-12" style="padding: 10px;" id="1_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-2">
                                     <div class="single-course-wrap">
@@ -91,9 +97,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-md-12" style="padding: 10px;" id="2_pc">
+                        {{-- <div class="col-md-12" style="padding: 10px;" id="2_pc">
                             <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-2">
@@ -146,9 +152,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-md-12" style="padding: 10px;" id="3_pc">
+                        {{-- <div class="col-md-12" style="padding: 10px;" id="3_pc">
                             <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-2">
@@ -202,7 +208,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -355,6 +361,7 @@
         }
 
         function renderProducto(respuesta) {
+            
             var cart = document.getElementById('cart');
             if (cart != null) {
                 var id = respuesta.id;
@@ -365,6 +372,7 @@
                 var name = respuesta.name;
                 var price = respuesta.price;
                 var modalidad = respuesta.additional;
+                var url_campus = "{{ env('URL_AVATAR_CAMPUS') }}";
                 cart.innerHTML += `
             <div class="col-md-12" style="padding: 10px;" id="` + id + `_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
@@ -382,9 +390,9 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <img src="` + avatar + `" alt="img">
-                                            <a href="#">` + teacher + `</a>
+                                        <div class="col-md-4 user-details"> 
+                                            <img style="width: 30px; border-radius: 50%;" src="`+ url_campus + avatar + `" alt="img">
+                                            <a>` + teacher + `</a>
                                         </div>
                                         <div class="col-md-4">
                                             

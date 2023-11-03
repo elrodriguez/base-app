@@ -23,7 +23,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="carrito" class="btn btn-base"><i class="fa fa-cart-plus"></i>&nbsp;&nbsp;
+                            <a href="{{ env('APP_URL') }}/carrito" class="btn btn-base"><i class="fa fa-cart-plus"></i>&nbsp;&nbsp;
                                 <b>
                                     <span id="contadorCarritoMovil" class="contador" style="font-size: 18px;"></span>
                                 </b>
@@ -77,7 +77,7 @@
                 <div class="nav-right-part nav-right-part-desktop">
                     <ul>
                         <li>
-                            <a href="carrito" class="btn btn-base">
+                            <a href="{{ env('APP_URL') }}/carrito" class="btn btn-base">
                                 <i class="fa fa-cart-plus "></i>&nbsp;&nbsp;
                                 <b>
                                     <span id="contadorCarritoWeb" class="contador" style="font-size: 18px;"></span>
@@ -85,7 +85,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" class="btn btn-primary">
+                            <a href="{{ env('URL_CAMPUS') }}" class="btn btn-primary">
                                 Campus Virtual
                             </a>
                         </li>

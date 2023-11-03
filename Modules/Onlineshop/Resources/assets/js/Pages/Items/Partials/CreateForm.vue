@@ -29,8 +29,13 @@ const form = useForm({
     image_view: null,
     additional: null,///tipo curso o diplomado
     additional1: null,///modalidad en Vivo, Presencial, E-learning
-    additional2: null /// Empresarial, Derecho, Publico
+    additional2: null, /// Empresarial, Derecho, Publico
+    countCharacters: 0
 });
+
+watch(() => form.description, (newValue) => {
+      form.countCharacters = newValue.length;
+    });
 
 const createItem = () => {
     form.post(route('onlineshop_items_store'), {
@@ -110,6 +115,7 @@ const loadFile = (event) => {
                     <div class="mt-2">
                         <InputLabel for="description" value="Descripción" />
                         <textarea v-model="form.description" id="description" rows="2" autofocus class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe descripción aquí..."></textarea>
+                        <span id="charCount">{{ form.countCharacters }}</span> caracteres de máximo 255
                         <InputError :message="form.errors.description" class="mt-2" />
                     </div>
                     <div class="mt-2">

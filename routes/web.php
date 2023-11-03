@@ -23,7 +23,7 @@ Route::get('/servicios', [KenthaController::class, 'servicios'])->name('web_serv
 Route::get('/proyectos', [KenthaController::class, 'proyectos'])->name('web_proyectos');
 Route::get('/contacto', [KenthaController::class, 'contacto'])->name('web_contacto');
 */
-Route::get('/test-image/{content}', [WebController::class, 'testimage'])->name('test-image');
+Route::get('/test-image/{content}/{fecha?}', [WebController::class, 'testimage'])->name('test-image');
 Route::get('/capperu', [WebController::class, 'capperu'])->name('cms_principal');
 Route::get('/nosotros', [CapperuController::class, 'nosotros'])->name('web_nosotros');
 Route::get('/categorias', [CapperuController::class, 'categorias'])->name('web_categorias');
