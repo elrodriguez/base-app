@@ -1,30 +1,30 @@
 @extends('layouts.capperu')
 
 @section('content')
-
     <!-- preloader area start -->
     <x-capperu.preloader-area></x-capperu.preloader-area>
     <!-- preloader area end -->
-    
+
     <x-capperu.body-overlay-area></x-capperu.body-overlay-area>
 
     <!-- search popup area start -->
     <x-capperu.search-popup-area></x-capperu.search-popup-area>
     <!-- //. search Popup -->
-    
+
     <!-- Encabezado inicio -->
     <x-capperu.header-area></x-capperu.header-area>
     <!-- Encabezado fin -->
 
-    
+
     <!-- Banner Area Start-->
-    <section class="banner-area style-3" style="padding: 40px; background-image: url({{ asset('themes/capperu/assets/img/banner/bg-2.jpg') }});">
+    <section class="banner-area style-3"
+        style="padding: 40px; background-image: url({{ asset('themes/capperu/assets/img/banner/bg-2.jpg') }});">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 align-self-center">
                     <div class="banner-inner text-center">
                         <h4 style="color: #fff;">
-                            DIPLOMADO EN DERECHO PENAL, NUEVO CÓDIGO PROCESAL PENAL YTÉCNICAS DE LITIGACIÓN ORAL
+                            {{ $course->description }}
                         </h4>
                     </div>
                 </div>
@@ -42,15 +42,12 @@
                         <div class="col-md-12">
                             <div class="single-course-wrap mb-0">
                                 <div class="thumb">
-                                    <a class="play-btn" href="#"><i class="fa fa-play"></i></a>
-                                    <img src="{{ asset('themes/capperu/assets/img/course/video.png') }}" alt="img">
+                                    <span class="play-btn"><i class="fa fa-play"></i></span>
+                                    <img src="{{ $course->image }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
-                                    <h5><a href="#">DERECHO PENAL, NUEVO
-                                        CÓDIGO PROCESAL PENAL YTÉCNICAS DE LITIGACIÓN ORAL.</a></h5>
-                                    <p>
-                                        El Centro de Actualización Profesional CAP - PERÚ y la Facultad deDerecho y Ciencias Políticas de la Universidad Nacional HermilioValdizán, presentan el Diplomado de Especialización con valoruniversitario en "Derecho Penal, Nuevo Código Procesal Penal yTécnicas de Litigación Oral", bajo la Resolución Decanal Nº 0298 -2023 UNHEVAL /FD y CP - D.
-                                    </p>
+                                    <h5>{{ $course->description }}</h5>
+                                    <p>{{ $course->description }}</p>
                                     <div class="user-area">
                                         <div class="user-details">
                                             <a href="">
@@ -86,29 +83,35 @@
                     <div class="row">
                         <div class="col-md-4">
                             <a href="">
-                                <img style="100%;" src="{{ asset('themes/capperu/assets/img/convenios/logoUnhv.png') }}" alt="img">
+                                <img style="100%;" src="{{ asset('themes/capperu/assets/img/convenios/logoUnhv.png') }}"
+                                    alt="img">
                             </a>
                         </div>
                     </div>
                     <div class="row">
                         <ul class="course-tab nav nav-pills pd-top-100">
                             <li class="nav-item">
-                                <button class="nav-link active" id="pill-1" data-bs-toggle="pill" data-bs-target="#pills-01" type="button" role="tab" aria-controls="pills-01" aria-selected="true">
+                                <button class="nav-link active" id="pill-1" data-bs-toggle="pill"
+                                    data-bs-target="#pills-01" type="button" role="tab" aria-controls="pills-01"
+                                    aria-selected="true">
                                     Presentación
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link" id="pill-2" data-bs-toggle="pill" data-bs-target="#pills-02" type="button" role="tab" aria-controls="pills-02" aria-selected="false">
+                                <button class="nav-link" id="pill-2" data-bs-toggle="pill" data-bs-target="#pills-02"
+                                    type="button" role="tab" aria-controls="pills-02" aria-selected="false">
                                     Beneficios
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link" id="pill-3" data-bs-toggle="pill" data-bs-target="#pills-03" type="button" role="tab" aria-controls="pills-03" aria-selected="false">
+                                <button class="nav-link" id="pill-3" data-bs-toggle="pill" data-bs-target="#pills-03"
+                                    type="button" role="tab" aria-controls="pills-03" aria-selected="false">
                                     Plana Docente
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link" id="pill-4" data-bs-toggle="pill" data-bs-target="#pills-04" type="button" role="tab" aria-controls="pills-04" aria-selected="false">
+                                <button class="nav-link" id="pill-4" data-bs-toggle="pill" data-bs-target="#pills-04"
+                                    type="button" role="tab" aria-controls="pills-04" aria-selected="false">
                                     Preguntas Frecuentes
                                 </button>
                             </li>
@@ -117,16 +120,23 @@
                             <div class="tab-pane fade show active" id="pills-01" role="tabpanel" aria-labelledby="pill-1">
                                 <div class="overview-area">
                                     <p>
-                                        El presente programa está orientado a brindar a los participanteslas herramientas necesarias para comprender el funcionamientodel 
-                                        sistema penal acusatorio y desarrollar habilidades paracomprender y ejercer con éxito las normas en materia Penal ,Procesal Penal y Técnicas de Litigación en el Proceso Penal Peruanoen litigar.
+                                        El presente programa está orientado a brindar a los participanteslas herramientas
+                                        necesarias para comprender el funcionamientodel
+                                        sistema penal acusatorio y desarrollar habilidades paracomprender y ejercer con
+                                        éxito las normas en materia Penal ,Procesal Penal y Técnicas de Litigación en el
+                                        Proceso Penal Peruanoen litigar.
                                     </p>
                                     <p>
-                                        El diplomado tendrá como ponentes a los más reconocidos jueces,fiscales, docentes y 
-                                        especialistas en materia de derecho penal.Durante el desarrollo del diplomado, se abordarán temas claves enDerecho Penal, Nuevo Código Procesal Penal y Técnicas deLitigación Oral.
+                                        El diplomado tendrá como ponentes a los más reconocidos jueces,fiscales, docentes y
+                                        especialistas en materia de derecho penal.Durante el desarrollo del diplomado, se
+                                        abordarán temas claves enDerecho Penal, Nuevo Código Procesal Penal y Técnicas
+                                        deLitigación Oral.
                                     </p>
                                     <p>
-                                        El Centro de Actualización Profesional CAP - PERÚ y la Facultad deDerecho y Ciencias 
-                                        Políticas de la Universidad Nacional HermilioValdizán (licenciada por Sunedu) expedirá el diploma con valoruniversitario por 384 horas académicas (24 créditos), válido paratoda convocatoria pública o privada a nivel nacional.
+                                        El Centro de Actualización Profesional CAP - PERÚ y la Facultad deDerecho y Ciencias
+                                        Políticas de la Universidad Nacional HermilioValdizán (licenciada por Sunedu)
+                                        expedirá el diploma con valoruniversitario por 384 horas académicas (24 créditos),
+                                        válido paratoda convocatoria pública o privada a nivel nacional.
                                     </p>
                                     <div class="bg-gray">
                                         <h6>Dirigido a:
@@ -182,9 +192,11 @@
                                         <div class="col-md-6" style="padding: 10px;">
                                             <h6>Certificación:</h6>
                                             <p>
-                                                Diplomado especializado con valoruniversitario certificado por el Centro de 
-                                                Actualización Profesional y Consultoría SAC, con el aval académico de la Facultad 
-                                                de Derecho y Ciencias Políticas de laUniversidad Nacional Hermilio Valdizán (UNHEVAL); 
+                                                Diplomado especializado con valoruniversitario certificado por el Centro de
+                                                Actualización Profesional y Consultoría SAC, con el aval académico de la
+                                                Facultad
+                                                de Derecho y Ciencias Políticas de laUniversidad Nacional Hermilio Valdizán
+                                                (UNHEVAL);
                                                 el cual se leremitirá en FORMATO FÍSICO.
                                             </p>
                                         </div>
@@ -192,10 +204,11 @@
                                             <h6>Modalidad de Estudios Mixta:</h6>
                                             <p>
                                                 - Modalidad en vivo porplataforma virtualGoogle Meet.
-                                                  Se dictará todos los viernes de 6:30 p.m. a9:30 p.m
+                                                Se dictará todos los viernes de 6:30 p.m. a9:30 p.m
                                             </p>
                                             <p>
-                                                - Modalidad E - Learningacceso al CAMPUSVIRTUAL CAP - PERÚ las24 horas del día.
+                                                - Modalidad E - Learningacceso al CAMPUSVIRTUAL CAP - PERÚ las24 horas del
+                                                día.
                                             </p>
                                         </div>
                                     </div>
@@ -204,8 +217,11 @@
                             <div class="tab-pane fade" id="pills-03" role="tabpanel" aria-labelledby="pill-3">
                                 <div class="row" style="margin-bottom: 20px;">
                                     <div class="col-md-2">
-                                        <a href="{{ route('web_perfil_docente', 1) }}"> <!-- poner el id del teacher teacher_id -->
-                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;" src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
+                                        <a href="{{ route('web_perfil_docente', 1) }}">
+                                            <!-- poner el id del teacher teacher_id -->
+                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;"
+                                                src="{{ asset('themes/capperu/assets/img/author/01.png') }}"
+                                                alt="img">
                                         </a>
                                     </div>
                                     <div class="col-md-10">
@@ -223,17 +239,21 @@
                                 <div class="row" style="margin-bottom: 20px;">
                                     <div class="col-md-2">
                                         <a href="{{ route('web_perfil_docente', 1) }}">
-                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;" src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
+                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;"
+                                                src="{{ asset('themes/capperu/assets/img/author/01.png') }}"
+                                                alt="img">
                                         </a>
                                     </div>
                                     <div class="col-md-10">
                                         <h6>DR. FRANK ALMANZA ALTAMIRANO</h6>
                                         <ul>
                                             <li>
-                                                Juez Titular del Tecer Juzgado de Investigación Preparatoria de la Corte Superior de Justicia de La Libertad.
+                                                Juez Titular del Tecer Juzgado de Investigación Preparatoria de la Corte
+                                                Superior de Justicia de La Libertad.
                                             </li>
                                             <li>
-                                                Fiscal Provincial Titular de la Fiscalia Provincial de La Libertad especializada en Delitos de Corrupción de La Libertad.
+                                                Fiscal Provincial Titular de la Fiscalia Provincial de La Libertad
+                                                especializada en Delitos de Corrupción de La Libertad.
                                             </li>
                                             <li>
                                                 Bachilleres o egresados con tituloprofesinal en Derecho.
@@ -244,7 +264,9 @@
                                 <div class="row" style="margin-bottom: 20px;">
                                     <div class="col-md-2">
                                         <a href="{{ route('web_perfil_docente', 1) }}">
-                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;" src="{{ asset('themes/capperu/assets/img/author/01.png') }}" alt="img">
+                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;"
+                                                src="{{ asset('themes/capperu/assets/img/author/01.png') }}"
+                                                alt="img">
                                         </a>
                                     </div>
                                     <div class="col-md-10">
@@ -275,28 +297,35 @@
                                         <div class="col-md-6" style="padding: 10px;">
                                             <h6>¿Necesito tener una carrera para cursar este diplomado?</h6>
                                             <p>
-                                                R. Pueden estudiar estudiantes delos últimos ciclos, de la carrera dederecho, bachilleres, 
-                                                titulados enDerecho, abogados, jueces, fiscales,efectivos policiales y criminalística.
+                                                R. Pueden estudiar estudiantes delos últimos ciclos, de la carrera
+                                                dederecho, bachilleres,
+                                                titulados enDerecho, abogados, jueces, fiscales,efectivos policiales y
+                                                criminalística.
                                             </p>
                                         </div>
                                         <div class="col-md-6" style="padding: 10px;">
                                             <h6>¿Cúal es la modalidad y horario de estudios?</h6>
                                             <p>
-                                                R. El alumno contará con flexibilidadpara estudiar el día y la hora que elelija conforme 
-                                                a su disponibilidad detiempo y espacio desde cualquierdispositivo digital (Pc, Laptop, móvil)
+                                                R. El alumno contará con flexibilidadpara estudiar el día y la hora que
+                                                elelija conforme
+                                                a su disponibilidad detiempo y espacio desde cualquierdispositivo digital
+                                                (Pc, Laptop, móvil)
                                             </p>
                                         </div>
                                         <div class="col-md-6" style="padding: 10px;">
-                                            <h6>¿Qué certificados piden las empresas en sus convocatorias para contratar colaboradores?</h6>
+                                            <h6>¿Qué certificados piden las empresas en sus convocatorias para contratar
+                                                colaboradores?</h6>
                                             <p>
-                                                R. Solicitan que los postulantesacrediten capacitacionesespecializada a nivel de programas 
+                                                R. Solicitan que los postulantesacrediten capacitacionesespecializada a
+                                                nivel de programas
                                                 dediplomados, cursos especializados omaestrías.
                                             </p>
                                         </div>
                                         <div class="col-md-6" style="padding: 10px;">
                                             <h6>¿Las diplomas tienen fecha de bencimiento?</h6>
                                             <p>
-                                                R. No tienen fecha de vencimiento,pero se recomienda que el alumnose actualice 
+                                                R. No tienen fecha de vencimiento,pero se recomienda que el alumnose
+                                                actualice
                                                 constantementeporque existe una altacompetitividad.
                                             </p>
                                         </div>
@@ -328,13 +357,15 @@
                     <div class="row overview-area">
                         <div class="col-md-12 bg-gray">
                             El alumno obtendrá su diplomado con la siguiente mención:
-                            <h5>"Diplomado especializado en Derecho Penal, Nuevo Código Procesal Penal y Técnicas de Litigación Oral"</h5>
+                            <h5>"Diplomado especializado en Derecho Penal, Nuevo Código Procesal Penal y Técnicas de
+                                Litigación Oral"</h5>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 sidebar-area">
                     <div class="widget widget-accordion-inner">
-                        <h5 class="widget-title border-0" style="padding: 10px; background-color: #F9FAFD;">Estructura Curricular</h5>
+                        <h5 class="widget-title border-0" style="padding: 10px; background-color: #F9FAFD;">Estructura
+                            Curricular</h5>
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item">
                                 <p style="padding: 5px 15px;">1. La prescripción de la acción en el Nuevo Proceso Penal</p>
@@ -357,16 +388,16 @@
                             <div class="accordion-item">
                                 <p style="padding: 5px 15px;">7. La prescripción de la acción en el Nuevo Proceso Penal</p>
                             </div>
-                        </div> 
+                        </div>
                     </div>
-                    
+
                     <div class="price-wrap">
                         <div class="row align-items-center">
                             <div class="col-md-12">
                                 <a class="btn btn-primary" href="#" style="width: 100%;">
-                                    <i class="fa fa-cart-plus" aria-hidden="true"></i> 
+                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                     &nbsp;&nbsp;Comprar Ahora
-                                    <b style="text-end"> &nbsp;&nbsp; S/. 250</b>  
+                                    <b style="text-end"> &nbsp;&nbsp; S/. 250</b>
                                 </a>
                             </div>
                         </div>
@@ -377,7 +408,7 @@
     </section>
     <!-- courses-details Area End -->
 
-    
+
     <!-- Más Populares Area Start-->
     <x-capperu.programas-populares-area></x-capperu.programas-populares-area>
     <!-- Más Populares Area End -->
@@ -385,5 +416,4 @@
 
 
     <x-capperu.footer-area></x-capperu.footer-area>
-
 @endsection
