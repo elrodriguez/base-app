@@ -96,7 +96,11 @@ class CapperuController extends Controller
     public function descripcionenvivo($id)
     {
         $item = OnliItem::find($id);
-        $course = AcaCourse::where('id', $item->item_id)->first();
+        $course = AcaCourse::with('category')
+            ->with('modality')
+            ->with('modules')
+            ->with('teacher')
+            ->where('id', $item->item_id)->first();
 
         return view('capperu/descripcion-en-vivo', [
             'course' => $course
