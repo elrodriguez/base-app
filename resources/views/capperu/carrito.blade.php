@@ -34,9 +34,13 @@
     <!-- zoom courses Area Start-->
     <section class="zoom-courses-area pd-top-100 pd-bottom-50">
         <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <b id="total_productos">03 programas en el carrito</b>
+                </div>
+            </div>
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <b id="total_productos">03 programas en el carrito</b>
 
                     <div class="row" id="cart">
                         
@@ -212,7 +216,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="contact-inner">
+                    <div class="contact-inner" style="margin-top: 9px;">
                         <form class="row" method="POST" action="{{ route('onlineshop_client_account_store') }}">
                             @csrf
                             <div id="divCartHidden" style="display: none">
