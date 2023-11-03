@@ -73,7 +73,8 @@ class OnliSaleController extends Controller
                 'number' => $request->get('number')
             ],
             [
-
+                'description'           => 'Estudiante',
+                'email'                 => $request->get('email'),
                 'short_name'            => $request->get('names'),
                 'full_name'             => $request->get('names') . ' ' . $request->get('app') . ' ' . $request->get('apm'),
                 'telephone'             => $request->get('phone'),
@@ -85,15 +86,15 @@ class OnliSaleController extends Controller
             ]
         );
 
-        $user = User::firstOrCreate(
+        User::firstOrCreate(
             [
-                'email' => $request->get('email'),
-                'person_id' => $person->id
+                'email' => $request->get('email')
             ],
             [
                 'name'          => $request->get('names'),
                 'password'      => Hash::make($request->get('number')),
-                'local_id'      => 1
+                'local_id'      => 1,
+                'person_id'     => $person->id
             ]
         );
 

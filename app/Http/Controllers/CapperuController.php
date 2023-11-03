@@ -12,6 +12,7 @@ use MercadoPago\Client\Preference\PreferenceClient;
 use Modules\Onlineshop\Entities\OnliSale;
 use Modules\Onlineshop\Entities\OnliSaleDetail;
 use App\Models\Person;
+use Carbon\Carbon;
 use Modules\Academic\Entities\AcaCourse;
 
 class CapperuController extends Controller
@@ -216,9 +217,9 @@ class CapperuController extends Controller
         $preference = $client->create([
             "items" => $mp_items,
             "back_urls" =>  array(
-                'success' => route('onlineshop_response_mercadopago'),
-                'failure' => route('onlineshop_response_mercadopago'),
-                'pending' => route('onlineshop_response_mercadopago')
+                'success' => route('web_gracias', $sale_id),
+                // 'failure' => route('onlineshop_response_mercadopago'),
+                // 'pending' => route('onlineshop_response_mercadopago')
             )
         ]);
 
@@ -239,5 +240,24 @@ class CapperuController extends Controller
     public function convenios()
     {
         return view('capperu/convenios');
+    }
+
+    public function gracias(Request $request, $sale_id)
+    {
+        $sale = OnliSale::find($sale_id);
+        //dd($request->all());
+        $sale->response_status = $request->get('collection_status');
+        $sale->response_id = $request->get('collection_id');
+        $sale->response_date_approved = Carbon::now()->format('Y-m-d');
+        $sale->response_payer = json_encode($request->all());
+        $sale->response_payment_method_id = $request->get('payment_type');
+
+        $sale->save();
+
+        $person = Person::where('id', $sale->person_id)->first();
+
+        return view('capperu/gracias', [
+            'person' => $person
+        ]);
     }
 }

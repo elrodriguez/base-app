@@ -44,18 +44,21 @@
                     <div class="section-title mb-0">
                         <h2>Hola!</h2>
                         <p>
-                            <b>Jesus Anaya Aguire</b>
-                            <br>A nombre de toda la familia de CAP PERU te damos la bienvenida a nuestra plataformas de estudio,
-                            al mismo tiempo te hacemos recordar que cualquier duda puedes comunicarte con nuestro equipo de asesores.
+                            <b>{{ $person->full_name }}</b>
+                            <br>A nombre de toda la familia de CAP PERU te damos la bienvenida a nuestra plataformas de
+                            estudio,
+                            al mismo tiempo te hacemos recordar que cualquier duda puedes comunicarte con nuestro equipo de
+                            asesores.
                         </p>
-                        <p>Los accesos al campus virtual han sido enviados a tu correo: <b>connexion.jesus@gmai.com</b></p>
+                        <p>Los accesos al campus virtual han sido enviados a tu correo: <b>{{ $person->email }}</b></p>
                         <br>
                         <h5><i class="fa fa-heart"></i> Gracias por tu compra</h5>
-                        <a class="btn btn-base me-4" href="{{ env('URL_CAMPUS') }}"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp; Ir al Campus Virtual</a>
+                        <a class="btn btn-base me-4" href="{{ env('URL_CAMPUS') }}"><i class="fa fa-university"
+                                aria-hidden="true"></i>&nbsp;&nbsp; Ir al Campus Virtual</a>
                     </div>
-                </div>                
+                </div>
             </div>
-        </div>            
+        </div>
     </section>
     <!-- zoom courses Area End -->
 
