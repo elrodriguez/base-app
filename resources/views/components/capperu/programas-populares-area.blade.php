@@ -245,7 +245,7 @@
                                             </div><div>{{ $program->id."MIERDA" }}</div>
                                             <div class="wrap-details">
                                                 <h6 class="nombre texto-oculto2">
-                                                    <a href="{{ route('web_descripcion_en_vivo', 1) }}">{{ $program->name }}</a>
+                                                    <a href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a>
                                                 </h6>
                                                 <div class="user-area" style="padding: 0px;">
                                                     <div class="user-details">
