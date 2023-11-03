@@ -144,7 +144,8 @@ class CapperuController extends Controller
 
     public function pagar(Request $request)
     {
-        $sale_id = $request->get('sale');
+        try {
+            $sale_id = $request->get('sale');
         $sale = OnliSale::find($sale_id);
 
         MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_TOKEN'));
@@ -214,6 +215,10 @@ class CapperuController extends Controller
             'preference_id'     => $preference_id,
             'cart_items'        => $cart_items
         ]);
+        } catch (\Throwable $th) {
+             return redirect('carrito');
+        }
+        
     }
 
     public function contacto()
