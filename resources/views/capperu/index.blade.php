@@ -125,13 +125,15 @@
                                         style="font-size: 18px;">
                                         {{ $program->additional }}
                                     </a>
-                                    <a href="{{ route('web_descripcion_en_vivo') }}">
-                                        <img style="height: 260px; object-fit: cover;" src="{{ asset($program->image) }}" alt="img">
+                                    <a href="{{ route('web_descripcion_en_vivo', $program->id) }}">
+                                        <img style="height: 260px; object-fit: cover;" src="{{ asset($program->image) }}"
+                                            alt="img">
                                     </a>
                                 </div>
                                 <div class="wrap-details">
                                     <h6 title="{{ $program->name }}" class="texto-oculto2">
-                                        <a href="{{ route('web_descripcion_en_vivo') }}">{{ $program->name }}</a>
+                                        <a
+                                            href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a>
                                     </h6>
                                     <div>
                                         <div>
@@ -142,8 +144,9 @@
                                     <div class="user-area" style="padding: 3px;">
                                         <div class="user-details">
                                             <img style="width: 30px; border-radius: 50%;"
-                                             src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
-                                            <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
+                                                src="{{ env('URL_AVATAR_CAMPUS') . $program->avatar }}" alt="img">
+                                            <a
+                                                href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                         </div>
                                         <div class="user-rating">
                                             <span style="color:orange;">
@@ -167,7 +170,9 @@
                                                     <i>Modalidad:</i>
                                                 </span>
                                                 <br>
-                                                <b><div style="text-align: right;">{{ $program->additional1 }}</div></b>
+                                                <b>
+                                                    <div style="text-align: right;">{{ $program->additional1 }}</div>
+                                                </b>
                                             </a>
                                         </div>
                                     </div>

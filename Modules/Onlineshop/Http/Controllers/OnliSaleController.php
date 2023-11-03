@@ -48,7 +48,7 @@ class OnliSaleController extends Controller
             'app' => 'required',
             'apm' => 'required',
             'phone' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users,email',
             'document_type' => 'required',
             'number' => 'required',
         ], [

@@ -23,6 +23,7 @@ Route::get('/servicios', [KenthaController::class, 'servicios'])->name('web_serv
 Route::get('/proyectos', [KenthaController::class, 'proyectos'])->name('web_proyectos');
 Route::get('/contacto', [KenthaController::class, 'contacto'])->name('web_contacto');
 */
+
 Route::get('/test-image/{content}/{fecha?}', [WebController::class, 'testimage'])->name('test-image');
 Route::get('/capperu', [WebController::class, 'capperu'])->name('cms_principal');
 Route::get('/nosotros', [CapperuController::class, 'nosotros'])->name('web_nosotros');
@@ -36,7 +37,7 @@ Route::get('/categoria-programa-diplomados', [CapperuController::class, 'categor
 Route::get('/modalidad-presencial', [CapperuController::class, 'modalidadpresencial'])->name('web_modalidad_presencial');
 Route::get('/sector-cursos', [CapperuController::class, 'sectorcursos'])->name('web_sector_cursos');
 Route::get('/sector-diplomados', [CapperuController::class, 'sectordiplomados'])->name('web_sector_diplomados');
-Route::get('/descripcion-en-vivo', [CapperuController::class, 'descripcionenvivo'])->name('web_descripcion_en_vivo');
+Route::get('/descripcion-en-vivo/{id}', [CapperuController::class, 'descripcionenvivo'])->name('web_descripcion_en_vivo');
 Route::get('/descripcion-e-learning', [CapperuController::class, 'descripcionelearning'])->name('web_descripcion_e_learning');
 Route::get('/perfil-docente/{teacher_id}', [CapperuController::class, 'perfildocente'])->name('web_perfil_docente');
 Route::get('/carrito', [CapperuController::class, 'carrito'])->name('web_carrito');

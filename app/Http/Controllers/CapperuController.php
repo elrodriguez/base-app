@@ -12,6 +12,7 @@ use MercadoPago\Client\Preference\PreferenceClient;
 use Modules\Onlineshop\Entities\OnliSale;
 use Modules\Onlineshop\Entities\OnliSaleDetail;
 use App\Models\Person;
+use Modules\Academic\Entities\AcaCourse;
 
 class CapperuController extends Controller
 {
@@ -91,9 +92,14 @@ class CapperuController extends Controller
         return view('Capperu/sector-diplomados');
     }
 
-    public function descripcionenvivo()
+    public function descripcionenvivo($id)
     {
-        return view('Capperu/descripcion-en-vivo');
+        $item = OnliItem::find($id);
+        $course = AcaCourse::where('id', $item->item_id)->first();
+
+        return view('Capperu/descripcion-en-vivo', [
+            'course' => $course
+        ]);
     }
 
     public function descripcionelearning()
