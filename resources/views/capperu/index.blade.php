@@ -142,7 +142,7 @@
                                     <div class="user-area" style="padding: 3px;">
                                         <div class="user-details">
                                             <img style="width: 30px;"
-                                                src="{{ asset('themes/capperu/assets/img/author/2.png') }}" alt="img">
+                                             src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
                                             <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                         </div>
                                         <div class="user-rating">

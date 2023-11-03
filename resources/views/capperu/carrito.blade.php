@@ -328,6 +328,7 @@
                 var name = respuesta.name;
                 var price = respuesta.price;
                 var modalidad = respuesta.additional;
+                var url_campus = "{{ env('URL_AVATAR_CAMPUS') }}";
                 cart.innerHTML += `
             <div class="col-md-12" style="padding: 10px;" id="` + id + `_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
@@ -345,8 +346,8 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <img src="` + avatar + `" alt="img">
+                                        <div class="col-md-4 user-details"> 
+                                            <img style="width: 30px;" src="`+ url_campus + avatar + `" alt="img">
                                             <a href="#">` + teacher + `</a>
                                         </div>
                                         <div class="col-md-4">
