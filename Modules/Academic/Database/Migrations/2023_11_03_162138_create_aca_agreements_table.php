@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('institution_id');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
             $table->foreign('course_id')->references('id')->on('aca_courses')->onDelete('cascade');
             $table->foreign('institution_id')->references('id')->on('aca_institutions')->onDelete('cascade');
