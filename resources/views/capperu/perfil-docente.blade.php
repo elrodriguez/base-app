@@ -62,7 +62,7 @@
 
                         <div class="text-start px-30">
                             <h5>Acerca de mí</h5>
-                            <p>{{ $teacher->presentation }}</p>
+                            <p>{{ $teacher->presentacion }}</p>
                         </div>
                         <!-- <div class="education-qualification">
                             <h5>Education</h5>
@@ -119,7 +119,8 @@
                                         <div class="price-wrap">
                                             <div class="row align-items-center">
                                                 <div class="col-md-12">
-                                                    <a href="" class="btn btn-primary">
+                                                    <a onclick="agregarAlCarrito({ id: {{ $program->id }}, nombre: '{{ $program->name }}', precio: {{ $program->price }} })" 
+                                                     class="btn btn-primary">
                                                         <i class="fa fa-cart-plus" aria-hidden="true"></i>Comprar Ahora
                                                         <b style="text-end">S/. {{ $program->price }}</b>  
                                                     </a>

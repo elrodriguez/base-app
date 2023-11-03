@@ -141,7 +141,7 @@
                                     </div>
                                     <div class="user-area" style="padding: 3px;">
                                         <div class="user-details">
-                                            <img style="width: 30px;"
+                                            <img style="width: 30px; border-radius: 50%;"
                                              src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
                                             <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                         </div>

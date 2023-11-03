@@ -89,8 +89,7 @@ class CapperuController extends Controller
         $teacher = Person::join('users', 'people.id','users.person_id')
                             ->join('aca_teachers', 'aca_teachers.person_id', 'people.id')
                             ->where('aca_teachers.id', $teacher_id)
-                            ->select('people.names as names', 'people.father_lastname as ApellidoP', 'people.presentacion as presentation')
-                            ->select('users.avatar as avatar')
+                            ->select('people.names as names', 'people.father_lastname as ApellidoP', 'people.presentacion as presentacion', 'users.avatar as avatar')
                             ->first();
 
         $programs = OnliItem::join('aca_courses', 'onli_items.item_id', '=', 'aca_courses.id')

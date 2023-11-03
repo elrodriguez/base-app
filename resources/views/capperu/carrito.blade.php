@@ -324,6 +324,7 @@
         }
 
         function renderProducto(respuesta) {
+            
             var cart = document.getElementById('cart');
             if (cart != null) {
                 var id = respuesta.id;
@@ -353,8 +354,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 user-details"> 
-                                            <img style="width: 30px;" src="`+ url_campus + avatar + `" alt="img">
-                                            <a href="#">` + teacher + `</a>
+                                            <img style="width: 30px; border-radius: 50%;" src="`+ url_campus + avatar + `" alt="img">
+                                            <a>` + teacher + `</a>
                                         </div>
                                         <div class="col-md-4">
                                             
