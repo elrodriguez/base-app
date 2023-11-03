@@ -36,7 +36,7 @@
                                         </div>
                                         <div class="wrap-details">
                                             <h6 class="nombre texto-oculto2">
-                                                <a href="{{ route('web_descripcion_en_vivo', $program->course_id) }}">{{ $program->name }}</a>
+                                                <a href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a>
                                             </h6>
                                             <div class="user-area" style="padding: 0px;">
                                                 <div class="user-details">
@@ -46,7 +46,7 @@
                                             <div class="user-area" style="padding: 3px;">
                                                 <div class="user-details">
                                                     <img  style="width: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
-                                                    <a href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                    <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                 </div>
                                                 <div class="user-rating">
                                                     <span style="color:orange;">
@@ -105,7 +105,7 @@
                                                 </div>
                                                 <div class="wrap-details">
                                                     <h6 class="nombre texto-oculto2">
-                                                        <a href="{{ route('web_descripcion_en_vivo', $program->course_id) }}">{{ $program->name }}</a>
+                                                        <a href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a>
                                                     </h6>
                                                     <div class="user-area" style="padding: 0px;">
                                                         <div class="user-details">
@@ -115,7 +115,7 @@
                                                     <div class="user-area" style="padding: 3px;">
                                                         <div class="user-details">
                                                             <img  style="width: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
-                                                            <a href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                            <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                         </div>
                                                         <div class="user-rating">
                                                             <span style="color:orange;">
@@ -175,7 +175,7 @@
                                             </div>
                                             <div class="wrap-details">
                                                 <h6 class="nombre texto-oculto2">
-                                                    <a href="{{ route('web_descripcion_en_vivo', $program->course_id) }}">{{ $program->name }}</a>
+                                                    <a href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a>
                                                 </h6>
                                                 <div class="user-area" style="padding: 0px;">
                                                     <div class="user-details">
@@ -185,7 +185,7 @@
                                                 <div class="user-area" style="padding: 3px;">
                                                     <div class="user-details">
                                                         <img  style="width: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
-                                                        <a href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                        <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                     </div>
                                                     <div class="user-rating">
                                                         <span style="color:orange;">
@@ -242,10 +242,10 @@
                                             <div class="thumb">
                                                 <a href="#" class="cat cat-blue">{{ $program->additional }}</a>
                                                 <img style="height: 260px; object-fit: cover;" src="{{ $program->image }}" alt="img">
-                                            </div>
+                                            </div><div>{{ $program->id."MIERDA" }}</div>
                                             <div class="wrap-details">
                                                 <h6 class="nombre texto-oculto2">
-                                                    <a href="{{ route('web_descripcion_en_vivo', $program->course_id) }}">{{ $program->name }}</a>
+                                                    <a href="{{ route('web_descripcion_en_vivo', 1) }}">{{ $program->name }}</a>
                                                 </h6>
                                                 <div class="user-area" style="padding: 0px;">
                                                     <div class="user-details">
@@ -255,7 +255,7 @@
                                                 <div class="user-area" style="padding: 3px;">
                                                     <div class="user-details">
                                                         <img  style="width: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
-                                                        <a href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
+                                                        <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                     </div>
                                                     <div class="user-rating">
                                                         <span style="color:orange;">

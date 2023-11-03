@@ -125,7 +125,7 @@
                                         style="font-size: 18px;">
                                         {{ $program->additional }}
                                     </a>
-                                    <a href="{{ route('web_descripcion_en_vivo', $program->course_id) }}">
+                                    <a href="{{ route('web_descripcion_en_vivo', $program->id) }}">
                                         <img style="height: 260px; object-fit: cover;" src="{{ asset($program->image) }}"
                                             alt="img">
                                     </a>
@@ -133,7 +133,7 @@
                                 <div class="wrap-details">
                                     <h6 title="{{ $program->name }}" class="texto-oculto2">
                                         <a
-                                            href="{{ route('web_descripcion_en_vivo', $program->course_id) }}">{{ $program->name }}</a>
+                                            href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a>
                                     </h6>
                                     <div>
                                         <div>
