@@ -39,7 +39,13 @@
                     <b id="total_productos">03 programas en el carrito</b>
 
                     <div class="row" id="cart">
-                        <div class="col-md-12" style="padding: 10px;" id="1_pc">
+                        
+                        
+
+
+                        
+    
+                        {{-- <div class="col-md-12" style="padding: 10px;" id="1_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-2">
                                     <div class="single-course-wrap">
@@ -91,9 +97,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-md-12" style="padding: 10px;" id="2_pc">
+                        {{-- <div class="col-md-12" style="padding: 10px;" id="2_pc">
                             <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-2">
@@ -146,9 +152,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-md-12" style="padding: 10px;" id="3_pc">
+                        {{-- <div class="col-md-12" style="padding: 10px;" id="3_pc">
                             <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
                                 <div class="col-md-2">
@@ -202,7 +208,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-md-4">
