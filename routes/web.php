@@ -37,7 +37,7 @@ Route::get('/categoria-programa-diplomados', [CapperuController::class, 'categor
 Route::get('/modalidad-presencial', [CapperuController::class, 'modalidadpresencial'])->name('web_modalidad_presencial');
 Route::get('/sector-cursos', [CapperuController::class, 'sectorcursos'])->name('web_sector_cursos');
 Route::get('/sector-diplomados', [CapperuController::class, 'sectordiplomados'])->name('web_sector_diplomados');
-Route::get('/descripcion-en-vivo/{id}', [CapperuController::class, 'descripcionenvivo'])->name('web_descripcion_en_vivo');
+Route::get('/descripcion-en-vivo/{id}', [CapperuController::class, 'descripcionenvivo'])->name('web_descripcion_en_vivo', $program->id);
 Route::get('/descripcion-e-learning', [CapperuController::class, 'descripcionelearning'])->name('web_descripcion_e_learning');
 Route::get('/perfil-docente/{teacher_id}', [CapperuController::class, 'perfildocente'])->name('web_perfil_docente');
 Route::get('/carrito', [CapperuController::class, 'carrito'])->name('web_carrito');
