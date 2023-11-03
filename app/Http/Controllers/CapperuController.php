@@ -256,6 +256,9 @@ class CapperuController extends Controller
 
         $person = Person::where('id', $sale->person_id)->first();
 
+        // guardar rol de usuario
+        // guardar matricula
+
         //////////codigo enviar correo /////
 
 

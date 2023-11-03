@@ -47,7 +47,9 @@
                                 </div>
                                 <div class="wrap-details">
                                     <h5>{{ $course->description }}</h5>
-                                    <p>{{ $course->brochure->resolution }}</p>
+                                    @if ($course->brochure)
+                                        <p>{{ $course->brochure->resolution }}</p>
+                                    @endif
                                     <div class="user-area">
                                         <div class="user-details">
                                             <a href="">
@@ -122,9 +124,11 @@
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-01" role="tabpanel" aria-labelledby="pill-1">
-                                <div class="overview-area">
-                                    {{ $course->brochure->presentation }}
-                                </div>
+                                @if ($course->brochure)
+                                    <div class="overview-area">
+                                        {{ $course->brochure->presentation }}
+                                    </div>
+                                @endif
                             </div>
                             <div class="tab-pane fade" id="pills-02" role="tabpanel" aria-labelledby="pill-2">
                                 <div class="overview-area">
