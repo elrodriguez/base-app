@@ -62,7 +62,7 @@
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star-half-alt"></i>
-                                    4.9</span>(76)
+                                    4.9</span>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +148,7 @@
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star-half-alt"></i>
-                                            4.9</span>(76)
+                                            4.9</span>
                                         </div>
                                         <div class="ms-auto">
                                             <i class="fa fa-user me-2" style="color: var(--main-color);"></i>6794 students

@@ -138,7 +138,7 @@
                                         </div>
                                         <div class="user-rating">
                                             <span><i class="fa fa-users"></i>
-                                                </span>(76)
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="price-wrap">
@@ -171,7 +171,7 @@
                                         </div>
                                         <div class="user-rating">
                                             <span><i class="fa fa-users"></i>
-                                                </span>(76)
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="price-wrap">
@@ -204,7 +204,7 @@
                                         </div>
                                         <div class="user-rating">
                                             <span><i class="fa fa-users"></i>
-                                                </span>(76)
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="price-wrap">
@@ -237,7 +237,7 @@
                                         </div>
                                         <div class="user-rating">
                                             <span><i class="fa fa-users"></i>
-                                                </span>(76)
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="price-wrap">
@@ -270,7 +270,7 @@
                                         </div>
                                         <div class="user-rating">
                                             <span><i class="fa fa-users"></i>
-                                                </span>(76)
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="price-wrap">
@@ -303,7 +303,7 @@
                                         </div>
                                         <div class="user-rating">
                                             <span><i class="fa fa-users"></i>
-                                                </span>(76)
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="price-wrap">
@@ -336,7 +336,7 @@
                                         </div>
                                         <div class="user-rating">
                                             <span><i class="fa fa-users"></i>
-                                                </span>(76)
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="price-wrap">
@@ -369,7 +369,7 @@
                                         </div>
                                         <div class="user-rating">
                                             <span><i class="fa fa-users"></i>
-                                                </span>(76)
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="price-wrap">
@@ -401,7 +401,7 @@
                                         </div>
                                         <div class="user-rating">
                                             <span><i class="fa fa-users"></i>
-                                                </span>(76)
+                                                </span>
                                         </div>
                                     </div>
                                     <div class="price-wrap">

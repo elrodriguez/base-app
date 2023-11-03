@@ -151,7 +151,7 @@
                                         <div class="user-rating">
                                             <span style="color:orange;">
                                                 <i class="fa fa-users"></i>
-                                            </span>(76)
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="user-area" style="padding: 3px;">
