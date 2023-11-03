@@ -17,6 +17,7 @@ const props = defineProps({
 });
 
 
+
 const form = useForm({
     id: props.item.id,
     category_description: props.item.category_description,
@@ -29,8 +30,13 @@ const form = useForm({
     status: props.item.status == 1 ? true : false,
     additional: props.item.additional,
     additional1: props.item.additional1,
-    additional2: props.item.additional2
+    additional2: props.item.additional2,
+    countCharacters: props.item.description.length
 });
+
+watch(() => form.description, (newValue) => {
+      form.countCharacters = newValue.length;
+    });
 
 const updateItem = () => {
     form.post(route('onlineshop_items_update'), {
@@ -65,6 +71,7 @@ const loadFile = (event) => {
         URL.revokeObjectURL(imageFile); // libera memoria
     }
 };
+
 </script>
 
 <template>
@@ -93,6 +100,7 @@ const loadFile = (event) => {
             <div class="col-span-6 sm:col-span-6 ">
                 <InputLabel for="description" value="Descripción *" />
                 <textarea v-model="form.description" id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                <span id="charCount">{{ form.countCharacters }}</span> caracteres de máximo 255
                 <InputError :message="form.errors.description" class="mt-2" />
             </div>
 
