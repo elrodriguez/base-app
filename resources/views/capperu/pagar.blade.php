@@ -29,193 +29,86 @@
         </div>
     </section>
     <!-- Banner Area End -->
-
+    @php
+        $total = 0;
+    @endphp
 
     <!-- zoom courses Area Start-->
     <section class="zoom-courses-area pd-top-100 pd-bottom-50">
         <div class="container">
             <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <b id="total_productos">{{ count($cart_items) }} programas en el carrito</b>
+                </div>
                 <div class="col-md-8">
-                    <b id="total_productos">03 programas en el carrito</b>
+                    <div class="row">
+                        @foreach ($cart_items as $ky => $cart_item)
+                            <div class="col-md-12" style="padding: 10px;" id="1_pc">
+                                <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
+                                    <div class="col-md-2">
+                                        <div class="single-course-wrap">
+                                            <div class="thumb">
+                                                <!--<a href="#" class="cat cat-blue">Curso</a>-->
+                                                <img src="{{ $cart_item['image'] }}" alt="img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h6>{{ $cart_item['name'] }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img src="{{ $cart_item['avatar'] }}" alt="img">
+                                                <a href="#">{{ $cart_item['teacher'] }}</a>
+                                            </div>
+                                            <div class="col-md-4">
 
-                    <div class="row" id="cart">
-                        <div class="col-md-12" style="padding: 10px;" id="1_pc">
-                            <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
-                                <div class="col-md-2">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <!--<a href="#" class="cat cat-blue">Curso</a>-->
-                                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <a href="">
+                                                    <span style="color:orange;">
+                                                        <b>{{ $cart_item['additional1'] }}</b>
+                                                    </span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                            <a href="#">Jessica Jessy</a>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <span style="color:orange;">
-                                                <i class="fa fa-users"></i>
-                                            </span>(76)
-                                        </div>
-                                        <div class="col-md-4">
-                                            <a href="">
-                                                <span style="color:orange;">
-                                                    <b>En Vivo</b>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="single-course-wrap">
-                                        <div class="price-wrap">
-                                            <div class="row align-items-center">
-                                                <div class="col-md-12">
-                                                    <b>S/. 250.00</b>&nbsp;&nbsp;
-                                                    <a onclick="eliminarproducto({ id: 1, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"
-                                                        class="btn btn-danger">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </a>
+                                    <div class="col-md-3">
+                                        <div class="single-course-wrap">
+                                            <div class="price-wrap">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-12">
+                                                        <b>S/. {{ $cart_item['price'] }}</b>&nbsp;&nbsp;
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-md-12" style="padding: 10px;" id="2_pc">
-                            <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
-                            <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
-                                <div class="col-md-2">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <!--<a href="#" class="cat cat-blue">Curso</a>-->
-                                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}" alt="img">
-                                            <a href="#">Jessica Jessy</a>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <span style="color:orange;">
-                                                <i class="fa fa-users"></i>
-                                            </span>(76)
-                                        </div>
-                                        <div class="col-md-4">
-                                            <a href="">
-                                                <span style="color:orange;">
-                                                    <b>En Vivo</b>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="single-course-wrap">
-                                        <div class="price-wrap">
-                                            <div class="row align-items-center">
-                                                <div class="col-md-12">
-                                                    <b>S/. 250.00</b>&nbsp;&nbsp;
-                                                    <a onclick="eliminarproducto({ id: 2, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"
-                                                        class="btn btn-danger">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12" style="padding: 10px;" id="3_pc">
-                            <!-- el id debe generarse de la base de datos el id concatenado a un string  id+"algo" ejemplo id."pc";-->
-                            <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
-                                <div class="col-md-2">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <!--<a href="#" class="cat cat-blue">Curso</a>-->
-                                            <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h6><a href="#">PHP for Beginners - Become a PHP Master - CMS Project</a>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img src="{{ asset('themes/capperu/assets/img/author/1.png') }}"
-                                                alt="img">
-                                            <a href="#">Jessica Jessy</a>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <span style="color:orange;">
-                                                <i class="fa fa-users"></i>
-                                            </span>(76)
-                                        </div>
-                                        <div class="col-md-4">
-                                            <a href="">
-                                                <span style="color:orange;">
-                                                    <b>En Vivo</b>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="single-course-wrap">
-                                        <div class="price-wrap">
-                                            <div class="row align-items-center">
-                                                <div class="col-md-12">
-                                                    <b>S/. 250.00</b>&nbsp;&nbsp;
-                                                    <a onclick="eliminarproducto({ id: 3, nombre: 'PHP for Beginners - Become a PHP Master - CMS Project', precio: 250 });"
-                                                        class="btn btn-danger">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            @php
+                                $total = $total + $cart_item['price'];
+                            @endphp
+                        @endforeach
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="contact-inner">
                         <div class="row">
                             <div class="col-md-12">
-                                Aqui los datos del usuario
+                                <p class="text-uppercase">{{ $person_full_name }}</p>
+                                <p class="fst-italic">Le agradecemos por registrarse. Ahora, solo necesita hacer un clic
+                                    para acceder a nuestros cursos y/o diplomados. ¡Bienvenido/a!</p>
+
                             </div>
                             <div class="col-md-12" style="font-size: 20px;">
                                 <i class="fa fa-heart"></i> Total:
                             </div>
                             <div class="col-md-12" style="font-size: 25px;">
-                                <p><b id="totalid"></b></p>
+                                <p><b>S/. {{ number_format($total, 2, '.', ',') }}</b></p>
                             </div>
                             <div class="col-md-12">
                                 <div id="wallet_container"></div>
@@ -227,136 +120,20 @@
         </div>
     </section>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        cargarItemsCarritoBD();
-
-        function cargarItemsCarritoBD() {
-            document.getElementById('cart').innerHTML =
-                ""; // BORRAR contenido de la vista, antes de cargar de la base de datos
-            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-            myIds = [];
-            carrito.forEach(function(item) {
-                // Hacer algo con cada elemento del carrito
-
-                myIds.push(parseInt(item.id));
-            });
-            realizarConsulta(myIds);
-        }
-
-        function realizarConsulta(ids) {
-            // Realizar la petición Ajax
-            var csrfToken = "{{ csrf_token() }}";
-            const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
-
-            $.ajax({
-                url: "{{ route('onlineshop_get_item_carrito') }}",
-                type: 'POST',
-                data: {
-                    ids: ids
-                },
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                success: function(respuesta) {
-                    // La consulta se realizó exitosamente
-                    mp.bricks().create("wallet", "wallet_container", {
-                        initialization: {
-                            preferenceId: respuesta.preference_id,
-                            redirectMode: "modal",
-                        },
-                    });
-
-                    respuesta.items.forEach(function(item) {
-                        // Accede a las propiedades del objeto
-                        renderProducto(item);
-                    });
-                    // Aquí puedes hacer algo con la respuesta recibida
-                },
-                error: function(xhr) {
-                    // Ocurrió un error al realizar la consulta
-                    console.log(xhr.responseText);
-                    // Aquí puedes manejar el error de alguna manera
-                }
-            });
-
-        }
-
-        function renderProducto(respuesta) {
-            var cart = document.getElementById('cart');
-            if (cart != null) {
-                var id = respuesta.id;
-                var teacher = respuesta.teacher;
-                var teacher_id = respuesta.teacher_id;
-                var avatar = respuesta.avatar;
-                var image = respuesta.image;
-                var name = respuesta.name;
-                var price = respuesta.price;
-                var modalidad = respuesta.additional;
-                cart.innerHTML += `
-            <div class="col-md-12" style="padding: 10px;" id="` + id + `_pc">
-                            <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
-                                <div class="col-md-2">
-                                    <div class="single-course-wrap">
-                                        <div class="thumb">
-                                            <img style="height: 90px; object-fit: cover;" src="` + image + `" alt="img"> 
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h6><a href="#">` + name + `</a></h6>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img src="` + avatar + `" alt="img">
-                                            <a href="#">` + teacher + `</a>
-                                        </div>
-                                        <div class="col-md-4">
-                                            
-                                        </div>
-                                        <div class="col-md-4">
-                                            <a href="">
-                                                <span style="color:orange;">
-                                                    <b>` + modalidad + `</b>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="single-course-wrap">
-                                            <div class="price-wrap">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-12">
-                                                        <b>S/. ` + price + `</b>&nbsp;&nbsp;
-                                                        <a onclick="eliminarproducto({ id: ` + id + `, nombre: '` +
-                    name + `', precio: ` + price + ` });"  class="btn btn-danger">
-                                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        `;
-            }
-        }
+        const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "{{ $preference_id }}",
+                redirectMode: "modal",
+            },
+        });
     </script>
 
 
     <!-- zoom courses Area End -->
-
-
-
-
     <x-capperu.footer-area></x-capperu.footer-area>
-
 
     <style>
         .text-1XN644 {

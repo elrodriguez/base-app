@@ -14,7 +14,7 @@
     <!-- Encabezado inicio -->
     <x-capperu.header-area></x-capperu.header-area>
     <!-- Encabezado fin -->
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
     <!-- Banner Area Start-->
     <section class="banner-area style-3"
         style="padding: 40px; background-image: url({{ asset('themes/capperu/assets/img/banner/bg-2.jpg') }});">
@@ -207,40 +207,74 @@
                 </div>
                 <div class="col-md-4">
                     <div class="contact-inner">
-                        <div class="row">
+                        <form class="row" method="POST" action="{{ route('onlineshop_client_account_store') }}">
+                            @csrf
+                            <div id="divCartHidden" style="display: none">
+                            </div>
                             <div class="col-md-12">
-                                <form id="form-register-payment" class="contact-form">
+                                <div id="form-register-payment" class="contact-form">
                                     <div class="row">
                                         <div class="col-md-12 single-input-wrap">
-                                            <input type="text" placeholder="Nombres">
+                                            <input type="text" name="names" value="{{ old('names') }}"
+                                                placeholder="Nombres">
+                                            @error('names')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-md-6 single-input-wrap">
-                                            <input type="text" placeholder="Ap. Paterno">
+                                            <input type="text" name="app" value="{{ old('app') }}"
+                                                placeholder="Ap. Paterno">
+                                            @error('app')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-md-6 single-input-wrap">
-                                            <input type="text" placeholder="Ap. Materno">
+                                            <input type="text" name="apm" value="{{ old('apm') }}"
+                                                placeholder="Ap. Materno">
+                                            @error('apm')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-md-12 single-input-wrap">
-                                            <input type="text" placeholder="Teléfono">
+                                            <input type="text" name="phone" value="{{ old('phone') }}"
+                                                placeholder="Teléfono">
+                                            @error('phone')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-md-12 single-input-wrap">
-                                            <input type="text" placeholder="E-mail">
+                                            <input type="text" name="email" value="{{ old('email') }}"
+                                                placeholder="E-mail">
+                                            @error('email')
+                                                <span>{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-md-12 single-input-wrap">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option> Tipo de Documento</option>
-                                                <option value="1">DNI</option>
-                                                <option value="2">Carnet de extranjeria</option>
-                                                <option value="3">Ruc</option>
+                                            <select class="form-select" name="document_type"
+                                                aria-label="Default select example">
+                                                <option value=""> Tipo de Documento</option>
+                                                <option {{ old('document_type') == '1' ? 'selected' : '' }}
+                                                    value="1">DNI</option>
+                                                <option {{ old('document_type') == '0' ? 'selected' : '' }}
+                                                    value="0">Carnet de extranjeria</option>
+                                                <option {{ old('document_type') == '6' ? 'selected' : '' }}
+                                                    value="6">Ruc</option>
                                             </select>
+                                            @error('document_type')
+                                                <span>{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <br>
                                         <br>
                                         <div class="col-md-12 single-input-wrap">
-                                            <input type="text" placeholder="Número">
+                                            <input type="text" name="number" value="{{ old('number') }}"
+                                                placeholder="Número">
+                                            @error('number')
+                                                <span>{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                             <div class="col-md-12" style="font-size: 20px;">
                                 <i class="fa fa-heart"></i> Total:
@@ -249,12 +283,12 @@
                                 <p><b id="totalid"></b></p>
                             </div>
                             <div class="col-md-12">
-                                <a class="btn btn-primary" href="{{ route('web_nosotros') }}" style="width: 100%;">
-                                    <i class="fa fa-user" aria-hidden="true"></i> 
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
                                     &nbsp;&nbsp;Crear Cuenta
-                                </a>
+                                </button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -281,7 +315,7 @@
         function realizarConsulta(ids) {
             // Realizar la petición Ajax
             var csrfToken = "{{ csrf_token() }}";
-            const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
+
 
             $.ajax({
                 url: "{{ route('onlineshop_get_item_carrito') }}",
@@ -294,19 +328,22 @@
                     'X-CSRF-TOKEN': csrfToken
                 },
                 success: function(respuesta) {
-                    // La consulta se realizó exitosamente
-                    mp.bricks().create("wallet", "wallet_container", {
-                        initialization: {
-                            preferenceId: respuesta.preference_id,
-                            redirectMode: "modal",
-                        },
-                    });
+                    // Obtén una referencia al elemento div por su ID
+                    var divCartHidden = document.getElementById("divCartHidden");
 
                     respuesta.items.forEach(function(item) {
                         // Accede a las propiedades del objeto
                         renderProducto(item);
+                        // Crea un elemento input oculto
+                        let inputHidden = document.createElement("input");
+                        // Establece los atributos del input
+                        inputHidden.type = "hidden";
+                        inputHidden.name = "item_id[]"; // Asigna el nombre que desees
+                        inputHidden.value = item.id; // Asigna el valor que desees
+                        // Agrega el input al div
+                        divCartHidden.appendChild(inputHidden);
                     });
-                    // Aquí puedes hacer algo con la respuesta recibida
+
                 },
                 error: function(xhr) {
                     // Ocurrió un error al realizar la consulta
