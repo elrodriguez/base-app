@@ -19,7 +19,7 @@
                             <button class="nav-link" id="pills-3-tab" data-bs-toggle="pill" data-bs-target="#pills-3">Derecho</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-4-tab" data-bs-toggle="pill" data-bs-target="#pills-4">Público</button>
+                            <button class="nav-link" id="pills-4-tab" data-bs-toggle="pill" data-bs-target="#pills-4">Penal</button>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -61,7 +61,7 @@
                                                             Sector:
                                                         </span>
                                                         <br>
-                                                        <b>{{ $program->additional2 }}</b>
+                                                        <b>{{ $program->category_description }}</b>
                                                     </a>
                                                 </div>
                                                 <div class="user-rating">
@@ -96,7 +96,7 @@
                                 
 
                                 @foreach ($programs as $program)                                
-                                    @if($program->additional2 == "Empresarial")
+                                    @if($program->category_description == "Empresarial")
                                         <div class="item">
                                             <div class="single-course-wrap">
                                                 <div class="thumb">
@@ -130,7 +130,7 @@
                                                                     Sector:
                                                                 </span>
                                                                 <br>
-                                                                <b><div style="text-align: right;">{{ $program->additional2 }}</div></b>
+                                                                <b><div style="text-align: right;">{{ $program->category_description }}</div></b>
                                                             </a>
                                                         </div>
                                                         <div class="user-rating">
@@ -166,7 +166,7 @@
                                 
                                 
                                 @foreach ($programs as $program)                                
-                                @if($program->additional2 == "Derecho")
+                                @if($program->category_description == "Derecho")
                                     <div class="item">
                                         <div class="single-course-wrap">
                                             <div class="thumb">
@@ -200,7 +200,7 @@
                                                                 Sector:
                                                             </span>
                                                             <br>
-                                                            <b><div style="text-align: right;">{{ $program->additional2 }}</div></b>
+                                                            <b><div style="text-align: right;">{{ $program->category_description }}</div></b>
                                                         </a>
                                                     </div>
                                                     <div class="user-rating">
@@ -230,13 +230,13 @@
                         </div>
 
 
-                        <div class="tab-pane fade" id="pills-4"> <!-- Publico -->
+                        <div class="tab-pane fade" id="pills-4"> <!-- Penal -->
                             <div class="course-slider owl-carousel">
                                 
                                 
 
                                 @foreach ($programs as $program)                                
-                                @if($program->additional2 == "Publico")
+                                @if($program->category_description == "Penal")
                                     <div class="item">
                                         <div class="single-course-wrap">
                                             <div class="thumb">
@@ -270,7 +270,7 @@
                                                                 Sector:
                                                             </span>
                                                             <br>
-                                                            <b><div style="text-align: right;">{{ $program->additional2 }}</div></b>
+                                                            <b><div style="text-align: right;">{{ $program->category_description }}</div></b>
                                                         </a>
                                                     </div>
                                                     <div class="user-rating">

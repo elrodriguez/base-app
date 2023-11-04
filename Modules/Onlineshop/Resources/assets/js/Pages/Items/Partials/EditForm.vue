@@ -30,7 +30,6 @@ const form = useForm({
     status: props.item.status == 1 ? true : false,
     additional: props.item.additional,
     additional1: props.item.additional1,
-    additional2: props.item.additional2,
     countCharacters: props.item.description.length
 });
 
@@ -105,7 +104,7 @@ const loadFile = (event) => {
             </div>
 
             <div class="col-span-6 sm:col-span-6">
-                <InputLabel for="category_description" value="Categoría" />
+                <InputLabel for="category_description" value="Sector" />
                 <TextInput
                     id="category_description"
                     v-model="form.category_description"
@@ -114,16 +113,6 @@ const loadFile = (event) => {
                     autocomplete="off"
                 />
                 <InputError :message="form.errors.category_description" class="mt-2" />
-            </div>
-
-            <div class="col-span-6 sm:col-span-6">
-                <InputLabel for="additional" value="Tipo*" />
-                <select id="additional" v-model="form.additional" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="">Seleccionar tipo</option>
-                    <option value="Curso">Curso</option>
-                    <option value="Diplomado">Diplomado</option>
-                </select>
-                <InputError :message="form.errors.additional" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-6">
@@ -139,17 +128,15 @@ const loadFile = (event) => {
             </div>
 
             <div class="col-span-6 sm:col-span-6">
-                <InputLabel for="additional2" value="Sector*" />
-                <select id="additional2" v-model="form.additional2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="">Seleccionar sector</option>
-                    <option value="Derecho">Derecho</option>
-                    <option value="Empresarial">Empresarial</option>
-                    <option value="Publico">Público</option>
-                    <!-- Agrega más opciones según tus necesidades -->
+                <InputLabel for="additional" value="Tipo*" />
+                <select id="additional" v-model="form.additional" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="">Seleccionar tipo</option>
+                    <option value="Curso">Curso</option>
+                    <option value="Diplomado">Diplomado</option>
                 </select>
-                <InputError :message="form.errors.additional2" class="mt-2" />
+                <InputError :message="form.errors.additional" class="mt-2" />
             </div>
-
+           
             <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="image" value="Imagen *" />
                 <div class="flex justify-center space-x-2">

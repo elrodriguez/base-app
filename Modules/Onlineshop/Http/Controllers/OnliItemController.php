@@ -118,8 +118,7 @@ class OnliItemController extends Controller
             'image'                     => $path,
             'status'                    => true,
             'additional'                => $request->get('additional'),
-            'additional1'                => $request->get('additional1'),
-            'additional2'                => $request->get('additional2')
+            'additional1'                => $request->get('additional1')
         ]);
         return redirect()->route('onlineshop_items')
             ->with('message', __('Item creado con éxito'));
