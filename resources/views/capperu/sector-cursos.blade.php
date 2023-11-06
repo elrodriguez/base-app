@@ -110,7 +110,7 @@
 
                                 
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-lg-12 text-center">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
@@ -122,7 +122,7 @@
                                         </ul>
                                     </nav>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="tab-pane fade" id="pills-02" role="tabpanel" aria-labelledby="pill-2">
@@ -182,7 +182,7 @@
 
 
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-lg-12 text-center">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
@@ -194,7 +194,7 @@
                                         </ul>
                                     </nav>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="tab-pane fade" id="pills-03" role="tabpanel" aria-labelledby="pill-3">
@@ -253,7 +253,7 @@
                                 
                                 
                             </div>
-                            <div class="row">
+                            {{-- PAGINACION  NO HABILITADA POR AHORA     <div class="row">
                                 <div class="col-lg-12 text-center">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
@@ -265,7 +265,7 @@
                                         </ul>
                                     </nav>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>
