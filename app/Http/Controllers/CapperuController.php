@@ -85,7 +85,7 @@ class CapperuController extends Controller
                 'users.avatar as avatar',
                 'onli_items.description as description',
                 'aca_courses.id as course_id',
-                'aca_category_courses.description as category_description'  
+                'aca_category_courses.description as category_description'
             )
             ->where('onli_items.status', true)->orderBy('onli_items.id', 'DESC')->get();
 
@@ -148,7 +148,7 @@ class CapperuController extends Controller
                 'aca_teachers.id as teacher_id',
                 'users.avatar as avatar',
                 'onli_items.description as description',
-                'aca_category_courses.description as category_description'                
+                'aca_category_courses.description as category_description'
             )
             ->where('onli_items.status', true)
             ->where('aca_teachers.id', $teacher_id)
@@ -275,14 +275,14 @@ class CapperuController extends Controller
 
         // al hacer el pago se realiza activa la patricula
         $courses = [];
-        foreach ($saleDetails as $detail) {
+        foreach ($saleDetails as $k => $detail) {
             AcaCapRegistration::where('student_id', $student->id)
                 ->where('course_id', $detail->item_id)
                 ->update([
                     'status' => true
                 ]);
             $item = OnliItem::find($detail->onli_item_id);
-            $courses = [
+            $courses[$k] = [
                 'image'       => $item->image,
                 'name'        => $item->name,
                 'description' => $item->description,
