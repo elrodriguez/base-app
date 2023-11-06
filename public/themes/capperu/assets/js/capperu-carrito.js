@@ -1,5 +1,9 @@
 // Obtener el carrito actual del almacenamiento local
 carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+document.addEventListener("DOMContentLoaded", function() {
+    getTotal();
+cargarContadorCarrito();
+  });
 
 //Tiene que hacer una consulta con los datos de la variable carrito para que llene los espacios necesarios de los cursos elegidos
 
@@ -147,5 +151,3 @@ function actualizarContador(valor) {
     contadorCarritoMovil.innerHTML = valor;
     contadorCarritoWeb.innerHTML = valor;
 }
-getTotal();
-cargarContadorCarrito();
