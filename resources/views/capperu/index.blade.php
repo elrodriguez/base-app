@@ -161,7 +161,7 @@
                                                     Sector:
                                                 </span>
                                                 <br>
-                                                <b>{{ $program->additional2 }}</b>
+                                                <b>{{ $program->category_description }}</b>
                                             </a>
                                         </div>
                                         <div class="user-rating">
