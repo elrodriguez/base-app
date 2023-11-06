@@ -14,6 +14,7 @@
 Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
     Route::get('dashboard', 'AcademicController@index')->name('dashboard');
     Route::get('institutions', 'AcaInstitutionController@index')->name('aca_institutions_list');
+    Route::get('institutions/create', 'AcaInstitutionController@create')->name('aca_institutions_create');
     Route::get('students', 'AcaStudentController@index')->name('aca_students_list');
     Route::get('students/create', 'AcaStudentController@create')->name('aca_students_create');
     Route::post('students/store', 'AcaStudentController@store')->name('aca_students_store');

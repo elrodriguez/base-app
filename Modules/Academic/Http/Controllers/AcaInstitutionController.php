@@ -44,7 +44,7 @@ class AcaInstitutionController extends Controller
      */
     public function create()
     {
-        return view('academic::create');
+        return Inertia::render('Academic::Institution/Create');
     }
 
     /**

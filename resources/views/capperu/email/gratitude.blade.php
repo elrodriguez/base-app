@@ -138,26 +138,26 @@
         <section style="padding-bottom: 15px;">
             <div class="contenedor">
                 <div class="columna">
-                    <img width="100%;" src="{{ $course->image }}" alt="">
+                    <img width="100%;" src="{{ $course['image'] }}" alt="">
                 </div>
                 <div class="columna" style="text-align: left; padding: 15px;">
                     <h1 style="margin-bottom: 5px;">
-                        {{ $course->name }}
+                        {{ $course['name'] }}
                     </h1>
                     <hr class="lineaCurso">
                     <br>
                     <p>
-                        {{ $course->description }}
+                        {{ $course['description'] }}
                     </p>
                     <br>
                     <p style="padding: 1px 0px;">
-                        <b style="color: #8b0e06;">Sector: </b>{{ $course->sector }}
+                        <b style="color: #8b0e06;">Sector: </b>{{ $course['sector'] }}
                     </p>
                     <p style="padding: 1px 0px;">
-                        <b style="color: #8b0e06;">Modalidad: </b>{{ $course->modality }}
+                        <b style="color: #8b0e06;">Modalidad: </b>{{ $course['modality'] }}
                     </p>
                     <p style="padding: 1px 0px;">
-                        <b style="color: #8b0e06;">Programa: </b>{{ $course->type }}
+                        <b style="color: #8b0e06;">Programa: </b>{{ $course['type'] }}
                     </p>
                 </div>
             </div>
