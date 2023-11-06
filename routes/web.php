@@ -37,8 +37,7 @@ Route::get('/categoria-modalidad-e-learning', [CapperuController::class, 'catego
 Route::get('/categoria-programa-cursos', [CapperuController::class, 'categoriaprogramacursos'])->name('web_categoria_programa_cursos');
 Route::get('/categoria-programa-diplomados', [CapperuController::class, 'categoriaprogramadiplomados'])->name('web_categoria_programa_diplomados');
 Route::get('/modalidad-presencial', [CapperuController::class, 'modalidadpresencial'])->name('web_modalidad_presencial');
-Route::get('/sector-cursos', [CapperuController::class, 'sectorcursos'])->name('web_sector_cursos');
-Route::get('/sector-diplomados', [CapperuController::class, 'sectordiplomados'])->name('web_sector_diplomados');
+Route::get('/sectors/{sector}/{tipo}', [CapperuController::class, 'sector_programs'])->name('web_sectors');
 Route::get('/descripcion-en-vivo/{id}', [CapperuController::class, 'descripcionenvivo'])->name('web_descripcion_en_vivo');
 Route::get('/descripcion-e-learning', [CapperuController::class, 'descripcionelearning'])->name('web_descripcion_e_learning');
 Route::get('/perfil-docente/{teacher_id}', [CapperuController::class, 'perfildocente'])->name('web_perfil_docente');

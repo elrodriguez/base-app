@@ -226,7 +226,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 user-details"> 
-                                            <img style="width: 30px; border-radius: 50%;" src="`+ url_campus + avatar + `" alt="img">
+                                            <img style="width: 30px; height: 30px; border-radius: 50%;" src="`+ url_campus + avatar + `" alt="img">
                                             <a>` + teacher + `</a>
                                         </div>
                                         <div class="col-md-4">

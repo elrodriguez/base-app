@@ -43,12 +43,12 @@
                         <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
-                                    <a href="{{ route ('web_sector_cursos') }}">
+                                    <a href="{{ route ('web_sectors', ['El Sector', 'El tipo']) }}">
                                         <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="{{ route ('web_sector_cursos') }}" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
+                                    <a href="{{ route ('web_sectors', ['El Sector', 'El tipo']) }}" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
                                         CURSOS ESPECIALIZADOS EN SECTOR EMPRESARIAL    
                                     </a>
                                 </div>
@@ -57,12 +57,12 @@
                         <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
-                                    <a href="{{ route ('web_sector_diplomados') }}">
+                                    <a href="{{ route ('web_sectors', ['El Sector', 'El tipo']) }}">
                                         <img src="{{ asset('themes/capperu/assets/img/course/5.png') }}" alt="img">
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="{{ route ('web_sector_diplomados') }}" class="btn btn-base2" style="width: 100%; text-align:center; border-radius: 0px;">
+                                    <a href="{{ route ('web_sectors', ['El Sector', 'El tipo']) }}" class="btn btn-base2" style="width: 100%; text-align:center; border-radius: 0px;">
                                         DIPLOMADOS ESPECIALIZADOS EN SECTOR EMPRESARIAL      
                                     </a>
                                 </div>

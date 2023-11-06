@@ -65,7 +65,7 @@ class CapperuController extends Controller
         return view('capperu/modalidad-presencial');
     }
 
-    public function sectorcursos()
+    public function sector_programs($sector, $tipo) //cursos o diplomados
     {
         $programs = OnliItem::join('aca_courses', 'onli_items.item_id', '=', 'aca_courses.id')
             ->join('aca_teachers', 'aca_teachers.id', '=', 'aca_courses.teacher_id')
@@ -92,11 +92,6 @@ class CapperuController extends Controller
         return view('capperu/sector-cursos', [
             'programs' => $programs
         ]);
-    }
-
-    public function sectordiplomados()
-    {
-        return view('capperu/sector-diplomados');
     }
 
     public function descripcionenvivo($id)
