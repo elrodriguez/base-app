@@ -14,6 +14,8 @@ use Inertia\Inertia;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebController;
+use App\Mail\StudentRegistrationMailable;
+use Illuminate\Support\Facades\Mail;
 use Modules\Blog\Http\Controllers\BlogController;
 
 /* Sitio Webs KENTHA
@@ -74,7 +76,11 @@ Route::get('/mipais', function () {
     dd($dataArray);
 });
 
-
+Route::get('/email', function () {
+    Mail::to('elrodriguez2423@gmail.com')
+        ->send(new StudentRegistrationMailable('data'));
+    return 'mensaje enviado';
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

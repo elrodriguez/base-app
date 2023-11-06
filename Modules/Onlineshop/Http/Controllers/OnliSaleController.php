@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Modules\Academic\Entities\AcaCapRegistration;
+use Modules\Academic\Entities\AcaStudent;
 use Modules\Onlineshop\Entities\OnliItem;
 use Modules\Onlineshop\Entities\OnliSale;
 use Modules\Onlineshop\Entities\OnliSaleDetail;
@@ -86,7 +88,12 @@ class OnliSaleController extends Controller
             ]
         );
 
-        User::firstOrCreate(
+        $student = AcaStudent::create([
+            'student_code'  => $request->get('number'),
+            'person_id'     => $person->id
+        ]);
+
+        $user = User::firstOrCreate(
             [
                 'email' => $request->get('email')
             ],
@@ -97,6 +104,8 @@ class OnliSaleController extends Controller
                 'person_id'     => $person->id
             ]
         );
+
+        $user->assignRole('Alumno');
 
         $sale = OnliSale::create([
             'module_name'                   => 'Academic',
@@ -118,6 +127,12 @@ class OnliSaleController extends Controller
                 'price'         => $item->price,
                 'quantity'      => 1,
                 'onli_item_id'  => $id
+            ]);
+
+            AcaCapRegistration::create([
+                'student_id'        => $student->id,
+                'course_id'         => $item->item_id,
+                'status'            => false
             ]);
         }
 

@@ -288,6 +288,12 @@ const menu = ref([
         permissions: 'aca_dashboard',
         items: [
             {
+                route: route('aca_institutions_list'),
+                status: false,
+                text: 'Instituciones',
+                permissions: 'aca_institucion_listado',
+            },
+            {
                 route: route('aca_students_list'),
                 status: false,
                 text: 'Estudiantes',

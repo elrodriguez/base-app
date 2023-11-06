@@ -42,57 +42,60 @@
                 </div>
                 <div class="col-md-8">
                     <div class="row">
-                        @foreach ($cart_items as $ky => $cart_item)
-                            <div class="col-md-12" style="padding: 10px;" id="1_pc">
-                                <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
-                                    <div class="col-md-2">
-                                        <div class="single-course-wrap">
-                                            <div class="thumb">
-                                                <!--<a href="#" class="cat cat-blue">Curso</a>-->
-                                                <img style="height: 90px; object-fit: cover;" src="{{ $cart_item['image'] }}" alt="img">
+                        @if (count($cart_items) > 0)
+                            @foreach ($cart_items as $ky => $cart_item)
+                                <div class="col-md-12" style="padding: 10px;" id="1_pc">
+                                    <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
+                                        <div class="col-md-2">
+                                            <div class="single-course-wrap">
+                                                <div class="thumb">
+                                                    <!--<a href="#" class="cat cat-blue">Curso</a>-->
+                                                    <img style="height: 90px; object-fit: cover;"
+                                                        src="{{ $cart_item['image'] }}" alt="img">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h6>{{ $cart_item['name'] }}</h6>
+                                        <div class="col-md-7">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h6>{{ $cart_item['name'] }}</h6>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <img src="{{ $cart_item['avatar'] }}" alt="img">
-                                                <a href="#">{{ $cart_item['teacher'] }}</a>
-                                            </div>
-                                            <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <img src="{{ $cart_item['avatar'] }}" alt="img">
+                                                    <a href="#">{{ $cart_item['teacher'] }}</a>
+                                                </div>
+                                                <div class="col-md-4">
 
-                                            </div>
-                                            <div class="col-md-4">
-                                                <a href="">
-                                                    <span style="color:orange;">
-                                                        <b>{{ $cart_item['additional1'] }}</b>
-                                                    </span>
-                                                </a>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <a href="">
+                                                        <span style="color:orange;">
+                                                            <b>{{ $cart_item['additional1'] }}</b>
+                                                        </span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="single-course-wrap">
-                                            <div class="price-wrap">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-12">
-                                                        <b>S/. {{ $cart_item['price'] }}</b>&nbsp;&nbsp;
+                                        <div class="col-md-3">
+                                            <div class="single-course-wrap">
+                                                <div class="price-wrap">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-12">
+                                                            <b>S/. {{ $cart_item['price'] }}</b>&nbsp;&nbsp;
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            @php
-                                $total = $total + $cart_item['price'];
-                            @endphp
-                        @endforeach
+                                @php
+                                    $total = $total + $cart_item['price'];
+                                @endphp
+                            @endforeach
+                        @endif
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -100,9 +103,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <p class="text-uppercase">{{ $person_full_name }}</p>
-                                <p class="fst-italic">Le agradecemos por registrarse. Ahora, solo necesita hacer un clic
-                                    para acceder a nuestros cursos y/o diplomados. ¡Bienvenido/a!</p>
-
+                                @if ($preference_id)
+                                    <p class="fst-italic">Le agradecemos por registrarse. Ahora, solo necesita hacer un clic
+                                        para acceder a nuestros cursos y/o diplomados. ¡Bienvenido/a!</p>
+                                @else
+                                    <p class="fst-italic">El pago para la compra especificada ya fue realizado</p>
+                                @endif
                             </div>
                             <div class="col-md-12" style="font-size: 20px;">
                                 <i class="fa fa-heart"></i> Total:
@@ -120,17 +126,17 @@
         </div>
     </section>
 
-
-    <script>
-        const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
-        mp.bricks().create("wallet", "wallet_container", {
-            initialization: {
-                preferenceId: "{{ $preference_id }}",
-                redirectMode: "modal",
-            },
-        });
-    </script>
-
+    @if ($preference_id)
+        <script>
+            const mp = new MercadoPago("{{ env('MERCADOPAGO_KEY') }}");
+            mp.bricks().create("wallet", "wallet_container", {
+                initialization: {
+                    preferenceId: "{{ $preference_id }}",
+                    redirectMode: "modal",
+                },
+            });
+        </script>
+    @endif
 
     <!-- zoom courses Area End -->
     <x-capperu.footer-area></x-capperu.footer-area>

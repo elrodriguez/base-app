@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
+use Modules\Academic\Entities\AcaInstitution;
 
 class AcaInstitutionController extends Controller
 {
@@ -14,7 +16,27 @@ class AcaInstitutionController extends Controller
      */
     public function index()
     {
-        return view('academic::index');
+        $institutions = (new AcaInstitution())->newQuery();
+        if (request()->has('search')) {
+            $institutions->where('name', 'like', '%' . request()->input('search') . '%');
+        }
+        if (request()->query('sort')) {
+            $attribute = request()->query('sort');
+            $sort_order = 'ASC';
+            if (strncmp($attribute, '-', 1) === 0) {
+                $sort_order = 'DESC';
+                $attribute = substr($attribute, 1);
+            }
+            $institutions->orderBy($attribute, $sort_order);
+        } else {
+            $institutions->latest();
+        }
+
+        $institutions = $institutions->paginate(20)->onEachSide(2);
+
+        return Inertia::render('Academic::Institution/List', [
+            'institutions' => $institutions
+        ]);
     }
 
     /**

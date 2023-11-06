@@ -9,8 +9,13 @@ class AcaCapRegistration extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'student_id',
+        'course_id',
+        'status',
+        'modality_id'
+    ];
+
     protected static function newFactory()
     {
         return \Modules\Academic\Database\factories\AcaCapRegistrationFactory::new();
