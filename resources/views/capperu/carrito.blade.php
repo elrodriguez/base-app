@@ -29,7 +29,30 @@
         </div>
     </section>
     <!-- Banner Area End -->
+    {{-- codigo de recapcha --}}
+    <script type="text/javascript">
+        function callbackThen(response) {
 
+            // read HTTP status
+
+            console.log(response.status);
+
+            // read Promise object
+
+            response.json().then(function(data) {
+
+                console.log(data);
+
+            });
+
+        }
+
+        function callbackCatch(error) {
+
+            console.error('Error:', error)
+
+        }
+    </script>
 
     <!-- zoom courses Area Start-->
     <section class="zoom-courses-area pd-top-100 pd-bottom-50">
@@ -94,12 +117,12 @@
                                             <select class="form-select" name="document_type"
                                                 aria-label="Default select example">
                                                 <option value=""> Tipo de Documento</option>
-                                                <option {{ old('document_type') == '1' ? 'selected' : '' }}
-                                                    value="1">DNI</option>
-                                                <option {{ old('document_type') == '0' ? 'selected' : '' }}
-                                                    value="0">Carnet de extranjeria</option>
-                                                <option {{ old('document_type') == '6' ? 'selected' : '' }}
-                                                    value="6">Ruc</option>
+                                                <option {{ old('document_type') == '1' ? 'selected' : '' }} value="1">
+                                                    DNI</option>
+                                                <option {{ old('document_type') == '0' ? 'selected' : '' }} value="0">
+                                                    Carnet de extranjeria</option>
+                                                <option {{ old('document_type') == '6' ? 'selected' : '' }} value="6">
+                                                    Ruc</option>
                                             </select>
                                             @error('document_type')
                                                 <span>{{ $message }}</span>
@@ -196,7 +219,7 @@
         }
 
         function renderProducto(respuesta) {
-            
+
             var cart = document.getElementById('cart');
             if (cart != null) {
                 var id = respuesta.id;
@@ -226,7 +249,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 user-details"> 
-                                            <img style="width: 30px; height: 30px; border-radius: 50%;" src="`+ url_campus + avatar + `" alt="img">
+                                            <img style="width: 30px; height: 30px; border-radius: 50%;" src="` +
+                    url_campus + avatar + `" alt="img">
                                             <a>` + teacher + `</a>
                                         </div>
                                         <div class="col-md-4">
@@ -281,4 +305,9 @@
             color: #f2f2f2 !important;
         }
     </style>
+    {!! htmlScriptTagJsApi([
+        'callback_then' => 'callbackThen',
+    
+        'callback_catch' => 'callbackCatch',
+    ]) !!}
 @endsection
