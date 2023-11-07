@@ -25,7 +25,7 @@
 
     const deleteForm = useForm({});
 
-    const destroyItem = (id) => {
+    const destroyInstitution = (id) => {
         Swal2.fire({
             title: '¿Estas seguro?',
             text: "¡No podrás revertir esto!",
@@ -37,7 +37,7 @@
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                return axios.delete(route('cms_items_destroy', id)).then((res) => {
+                return axios.delete(route('aca_institutions_destroy', id)).then((res) => {
                     if (!res.data.success) {
                         Swal2.showValidationMessage(res.data.message)
                     }
@@ -52,7 +52,7 @@
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
                 });
-                router.visit(route('cms_items_list'), { replace: true, method: 'get' });
+                router.visit(route('aca_institutions_list'), { replace: true, method: 'get' });
             }
         });
     }
@@ -89,8 +89,8 @@
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
-                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
+                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
                                 <form id="form-search-items" @submit.prevent="form.get(route('cms_items_list'))">
@@ -133,10 +133,10 @@
                                 <template v-for="(institution, index) in institutions.data" :key="institution.id">
                                     <tr class="border-b border-stroke">
                                         <td class="text-center py-2 dark:border-strokedark">
-                                            <Link v-can="'cms_pagina_editar'" :href="route('cms_items_edit',institution.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            <Link v-can="'cms_pagina_editar'" :href="route('aca_institutions_edit',institution.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <font-awesome-icon :icon="faPencilAlt" />
                                             </Link>
-                                            <button v-can="'cms_pagina_eliminar'" @click="destroyItem(institution.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            <button v-can="'cms_pagina_eliminar'" @click="destroyInstitution(institution.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 <font-awesome-icon :icon="faTrashAlt" />
                                             </button>
                                         </td>

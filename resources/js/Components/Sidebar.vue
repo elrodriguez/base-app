@@ -300,7 +300,7 @@ const menu = ref([
                 permissions: 'aca_estudiante_listado',
             },
             {
-                route: route('dental_dashboard'),
+                route: route('aca_courses_list'),
                 status: false,
                 text: 'Cursos',
                 permissions: 'aca_cursos_listado',

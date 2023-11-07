@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Modules\Academic\Entities\AcaStudent;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Modules\Academic\Entities\AcaEstudent;
 use Illuminate\Support\Facades\Hash;
 
 class AcaStudentController extends Controller

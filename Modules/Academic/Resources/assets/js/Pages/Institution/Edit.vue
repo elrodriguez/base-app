@@ -1,7 +1,14 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CreateForm from './Partials/CreateForm.vue';
+import EditForm from './Partials/EditForm.vue';
 import { Link } from '@inertiajs/vue3';
+
+const props = defineProps({
+    institution: {
+        type: Object,
+        default: () => ({}),
+    }
+});
 
 </script>
 
@@ -38,7 +45,7 @@ import { Link } from '@inertiajs/vue3';
                     </li>
                 </ol>
             </nav>
-            <CreateForm /> 
+            <EditForm :institution="institution" /> 
         </div>
     </AppLayout>
 </template>

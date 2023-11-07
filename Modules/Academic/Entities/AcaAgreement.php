@@ -13,7 +13,9 @@ class AcaAgreement extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'course_id', 'institution_id', 'start_date', 'end_date', 'status'
+    ];
 
     protected static function newFactory()
     {

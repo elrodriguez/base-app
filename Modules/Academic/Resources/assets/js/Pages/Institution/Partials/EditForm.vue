@@ -9,20 +9,27 @@ import Keypad from '@/Components/Keypad.vue';
 import Swal2 from 'sweetalert2';
 import { ref, watch } from 'vue';
 
-
-const form = useForm({
-    name: null,
-    image: null,
-    image_preview: null,
-    phone: null,
-    address: null,
-    status : true
+const props = defineProps({
+    institution: {
+        type: Object,
+        default: () => ({}),
+    }
 });
 
-const createInstitution = () => {
-    form.post(route('aca_institutions_store'), {
+const form = useForm({
+    id: props.institution.id,
+    name: props.institution.name,
+    image: null,
+    image_preview: props.institution.image,
+    phone: props.institution.phone,
+    address: props.institution.address,
+    status : props.institution.status ? true : false
+});
+
+const updateInstitution = () => {
+    form.post(route('aca_institutions_update'), {
         forceFormData: true,
-        errorBag: 'createInstitution',
+        errorBag: 'updateInstitution',
         preserveScroll: true,
         onSuccess: () => {
             Swal2.fire({
@@ -30,7 +37,6 @@ const createInstitution = () => {
                 text: 'Se registró correctamente',
                 icon: 'success',
             });
-            form.reset()
         },
     });
 }
@@ -49,7 +55,7 @@ watch(() => form.image, (newValue) => {
 </script>
 
 <template>
-    <FormSection @submitted="createInstitution" class="">
+    <FormSection @submitted="updateInstitution" class="">
         <template #title>
             Instituciones Detalles
         </template>

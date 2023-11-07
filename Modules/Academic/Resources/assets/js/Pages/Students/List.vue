@@ -125,10 +125,10 @@
                                             <img :src="student.people_image" style="width: 96px; height: 96px;" class="mb-3 rounded-full shadow-lg" :alt="student.full_name"/>
                                         </template>
                                         <template v-else>
-                                            <img :src="'https://ui-avatars.com/api/?name='+student.full_name+'&size=48&rounded=true'" class="w-24 h-24 mb-3 rounded-full shadow-lg" :alt="student.full_name"/>
+                                            <img :src="'https://ui-avatars.com/api/?name='+student.full_name+'&size=96&rounded=true'" class="w-24 h-24 mb-3 rounded-full shadow-lg" :alt="student.full_name"/>
                                         </template>
                                         <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ student.number }}</h5>
-                                        <span class="text-sm text-gray-500 dark:text-gray-400">{{ student.full_name }}</span>
+                                        <span class="text-sm text-gray-500 dark:text-gray-400 p-2">{{ student.full_name }}</span>
                                         <div class="flex mt-4 space-x-3 mb-2 md:mt-6">
                                             <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Matricular</a>
                                             <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">Ver detalles</a>
