@@ -69,7 +69,7 @@
                                                     <h6><a class="texto-oculto2" href="#">{{ $program->name }}</a></h6>
                                                     <div class="user-area">
                                                         <div class="user-details">
-                                                            <img style="width: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
+                                                            <img style="width: 30px; height: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
                                                             <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                         </div>
                                                         <div class="user-rating">
@@ -110,7 +110,7 @@
 
                                 
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-lg-12 text-center">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
@@ -122,7 +122,7 @@
                                         </ul>
                                     </nav>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="tab-pane fade" id="pills-02" role="tabpanel" aria-labelledby="pill-2">
@@ -142,7 +142,7 @@
                                                     <h6><a class="texto-oculto2" href="#">{{ $program->name }}</a></h6>
                                                     <div class="user-area">
                                                         <div class="user-details">
-                                                            <img style="width: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
+                                                            <img style="width: 30px; height: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
                                                             <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                         </div>
                                                         <div class="user-rating">
@@ -182,7 +182,7 @@
 
 
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-lg-12 text-center">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
@@ -194,7 +194,7 @@
                                         </ul>
                                     </nav>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="tab-pane fade" id="pills-03" role="tabpanel" aria-labelledby="pill-3">
@@ -213,7 +213,7 @@
                                                     <h6><a class="texto-oculto2" href="#">{{ $program->name }}</a></h6>
                                                     <div class="user-area">
                                                         <div class="user-details">
-                                                            <img style="width: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
+                                                            <img style="width: 30px; height: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
                                                             <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                         </div>
                                                         <div class="user-rating">                                                            
@@ -253,7 +253,7 @@
                                 
                                 
                             </div>
-                            <div class="row">
+                            {{-- PAGINACION  NO HABILITADA POR AHORA     <div class="row">
                                 <div class="col-lg-12 text-center">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
@@ -265,7 +265,7 @@
                                         </ul>
                                     </nav>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                     </div>

@@ -99,7 +99,7 @@
                                         </h6>
                                         <div class="user-area">
                                             <div class="user-details">
-                                                <img style="width: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
+                                                <img style="width: 30px; height: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
                                                 <a href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
                                             </div>
                                             <div class="user-rating">
@@ -110,7 +110,7 @@
                                         </div>
                                         <div class="user-area" style="padding: 0px;">
                                             <div class="user-details">
-                                                <a href="{{ route('web_categoria_sector') }}">{{ $program->additional2 }}</a>
+                                                <a href="{{ route('web_categoria_sector') }}">{{ $program->category_description }}</a>
                                             </div>
                                             <div class="user-rating">
                                                 <a href="{{ route('web_categoria_modalidad_en_vivo') }}">{{ $program->additional1 }}</a>
