@@ -23,6 +23,6 @@ Route::middleware(['auth', 'verified'])->prefix('onlineshop')->group(function ()
 });
 
 //Route::get('payment_request', 'MercadoPagoController@paymentRequest')->name('onlineshop_get_item_carrito');
-Route::get('mercadopago/response', 'MercadoPagoController@responseMercadoPago')->name('onlineshop_response_mercadopago');
+//Route::get('mercadopago/response', 'MercadoPagoController@responseMercadoPago')->name('onlineshop_response_mercadopago');
 Route::post('client/account/store', 'OnliSaleController@store')->name('onlineshop_client_account_store');
 Route::post('get/item', 'OnliItemController@getItemCarrito')->name('onlineshop_get_item_carrito');

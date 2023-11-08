@@ -25,7 +25,11 @@ Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
     Route::get('students/edit/{id}', 'AcaStudentController@edit')->name('aca_students_edit');
     Route::post('students/update', 'AcaStudentController@update')->name('aca_students_update');
     Route::get('courses', 'AcaCourseController@index')->name('aca_courses_list');
+    Route::get('courses/edit/{id}', 'AcaCourseController@edit')->name('aca_courses_edit');
+    Route::get('courses/information/{id}', 'AcaCourseController@information')->name('aca_courses_information');
     Route::get('agreement/list/{id}', 'AcaAgreementController@index')->name('aca_agreements_list');
     Route::delete('agreement/destroy/{id}', 'AcaAgreementController@destroy')->name('aca_agreements_destroy');
     Route::post('agreement/store', 'AcaAgreementController@store')->name('aca_agreements_store');
+
+    Route::post('aca-upload-image', 'AcaBrochureController@uploadImage')->name('aca_upload_image_tiny');
 });

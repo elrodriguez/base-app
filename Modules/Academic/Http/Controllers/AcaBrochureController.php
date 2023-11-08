@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
 class AcaBrochureController extends Controller
 {
@@ -63,5 +64,24 @@ class AcaBrochureController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function uploadImage(Request $request)
+    {
+        //dd($request->all());
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+        $file_name = 'course_' . date('YmdHis') . '.' . $extension;
+
+        //indicamos que queremos guardar un nuevo archivo en el disco local
+        $path = $request->file('file')->storeAs(
+            'brochures',
+            $file_name,
+            'public'
+        );
+
+        $url = asset('storage/' . $path);
+
+        return response()->json(['location' =>  $url]);
     }
 }

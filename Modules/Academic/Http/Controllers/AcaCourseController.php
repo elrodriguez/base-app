@@ -6,8 +6,10 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
+use Modules\Academic\Entities\AcaCategoryCourse;
 use Modules\Academic\Entities\AcaCourse;
 use Modules\Academic\Entities\AcaInstitution;
+use Modules\Academic\Entities\AcaModality;
 
 class AcaCourseController extends Controller
 {
@@ -74,9 +76,12 @@ class AcaCourseController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show($id)
+    public function information($id)
     {
-        return view('academic::show');
+        return Inertia::render('Academic::Courses/Information', [
+            'course' => AcaCourse::find($id),
+            'tiny_api_key' => env('TINY_API_KEY')
+        ]);
     }
 
     /**
@@ -86,7 +91,14 @@ class AcaCourseController extends Controller
      */
     public function edit($id)
     {
-        return view('academic::edit');
+        $categories = AcaCategoryCourse::all();
+        $modalities = AcaModality::all();
+
+        return Inertia::render('Academic::Courses/Edit', [
+            'course'        => AcaCourse::find($id),
+            'modalities'    => $modalities,
+            'categories'    => $categories
+        ]);
     }
 
     /**
