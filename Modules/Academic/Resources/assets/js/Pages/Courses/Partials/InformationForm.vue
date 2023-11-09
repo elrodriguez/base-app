@@ -34,7 +34,19 @@ const form = useForm({
 });
 
 const saveInformation = () => {
-    alert(form.resolution);
+    form.post(route('aca_brochure_store'), {
+        forceFormData: true,
+        errorBag: 'saveInformation',
+        preserveScroll: true,
+        onSuccess: () => {
+            Swal2.fire({
+                title: 'Enhorabuena',
+                text: 'Se registró correctamente',
+                icon: 'success',
+            });
+            form.reset()
+        },
+    });
 }
 
 const uploadImage = (blobInfo, progress) => {

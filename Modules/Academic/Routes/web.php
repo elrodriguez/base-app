@@ -30,6 +30,6 @@ Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
     Route::get('agreement/list/{id}', 'AcaAgreementController@index')->name('aca_agreements_list');
     Route::delete('agreement/destroy/{id}', 'AcaAgreementController@destroy')->name('aca_agreements_destroy');
     Route::post('agreement/store', 'AcaAgreementController@store')->name('aca_agreements_store');
-
+    Route::post('brochure/store', 'AcaBrochureController@store')->name('aca_brochure_store');
     Route::post('aca-upload-image', 'AcaBrochureController@uploadImage')->name('aca_upload_image_tiny');
 });

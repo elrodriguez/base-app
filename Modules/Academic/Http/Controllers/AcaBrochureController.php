@@ -7,9 +7,12 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Modules\Academic\Entities\AcaBrochure;
 
 class AcaBrochureController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -29,9 +32,61 @@ class AcaBrochureController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'course_id' => 'required',
+                'resolution' => 'required',
+                'presentation' => 'required',
+                'benefits' => 'required',
+                'frequent_questions' => 'required'
+            ]
+        );
+
+        $destination = 'uploads/articles';
+
+        $path = null;
+
+        $destination = 'uploads/institutions';
+        $file = $request->file('path_file');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $img = $request->file('path_file')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+
+            $path = asset('storage/' . $img);
+        }
+
+        $baseUrl = env('APP_URL'); // Ruta base de tu aplicación
+        $resolution = $request->get('resolution');
+        $presentation = $request->get('presentation');
+        $benefits = $request->get('benefits');
+        $frequent_questions = $request->get('frequent_questions');
+        // Reemplazar las rutas de imágenes en el contenido
+        $resolution = preg_replace('/src="\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $resolution);
+        $presentation = preg_replace('/src="\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $presentation);
+        $benefits = preg_replace('/src="\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $benefits);
+        $frequent_questions = preg_replace('/src="\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $frequent_questions);
+
+
+        AcaBrochure::updateOrCreate(
+            ['course_id' => $request->get('course_id')],
+            [
+                'resolution' => $resolution,
+                'presentation' => $presentation,
+                'benefits' => $benefits,
+                'frequent_questions' => $frequent_questions,
+                'path_file' => $path
+            ]
+        );
     }
 
     /**
