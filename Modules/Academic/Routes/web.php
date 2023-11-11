@@ -20,6 +20,12 @@ Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
     Route::delete('institutions/destroy/{id}', 'AcaInstitutionController@destroy')->name('aca_institutions_destroy');
     Route::post('institutions/update', 'AcaInstitutionController@update')->name('aca_institutions_update');
     Route::get('teachers', 'AcaTeacherController@index')->name('aca_teachers_list');
+    Route::get('teachers/create', 'AcaTeacherController@create')->name('aca_teachers_create');
+    Route::get('teachers/edit/{id}', 'AcaTeacherController@edit')->name('aca_teachers_edit');
+    Route::post('teachers/store', 'AcaTeacherController@store')->name('aca_teachers_store');
+    Route::post('teachers/update', 'AcaTeacherController@update')->name('aca_teachers_update');
+    Route::delete('teachers/destroy/{id}', 'AcaTeacherController@destroy')->name('aca_teachers_destroy');
+    Route::get('teachers/resume/{id}', 'AcaTeacherController@resume')->name('aca_teachers_resume');
     Route::get('students', 'AcaStudentController@index')->name('aca_students_list');
     Route::get('students/create', 'AcaStudentController@create')->name('aca_students_create');
     Route::post('students/store', 'AcaStudentController@store')->name('aca_students_store');

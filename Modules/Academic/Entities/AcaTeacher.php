@@ -9,8 +9,10 @@ class AcaTeacher extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'teacher_code', 'person_id'
+    ];
+
     protected static function newFactory()
     {
         return \Modules\Academic\Database\factories\AcaTeacherFactory::new();
