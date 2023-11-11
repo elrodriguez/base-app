@@ -12,6 +12,10 @@ import { ref, watch } from 'vue';
 import Editor from '@tinymce/tinymce-vue'
 
 const props = defineProps({
+    brochure:{
+        type: Object,
+        default: () => ({}),
+    },
     course: {
         type: Object,
         default: () => ({}),
@@ -22,7 +26,6 @@ const props = defineProps({
     },
 });
 
-
 const form = useForm({
     course_id: props.course.id,
     resolution: null,
@@ -32,6 +35,17 @@ const form = useForm({
     path_file: null,
     path_file_preview: null
 });
+
+if(props.brochure){
+    form.course_id= props.course.id;
+    form.resolution= props.brochure?.resolution || null;
+    form.presentation= props.brochure?.presentation || null;
+    form.benefits = props.brochure?.benefits || null;
+    form.frequent_questions = props.brochure?.frequent_questions || null;
+    form.path_file_preview = props.brochure?.path_file;
+
+}
+
 
 const saveInformation = () => {
     form.post(route('aca_brochure_store'), {
@@ -44,7 +58,7 @@ const saveInformation = () => {
                 text: 'Se registró correctamente',
                 icon: 'success',
             });
-            form.reset()
+            //form.reset()
         },
     });
 }

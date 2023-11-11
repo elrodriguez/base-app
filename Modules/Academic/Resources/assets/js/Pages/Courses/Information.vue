@@ -4,6 +4,10 @@ import InformationForm from './Partials/InformationForm.vue';
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
+    brochure:{
+        type: Object,
+        default: () => ({}),
+    },
     course: {
         type: Object,
         default: () => ({}),
@@ -54,7 +58,7 @@ const props = defineProps({
                     </li>
                 </ol>
             </nav>
-            <InformationForm :course="course" :tiny_api_key="tiny_api_key" /> 
+            <InformationForm :course="course" :tiny_api_key="tiny_api_key" :brochure="brochure" /> 
         </div>
     </AppLayout>
 </template>

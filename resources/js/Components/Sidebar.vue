@@ -294,6 +294,12 @@ const menu = ref([
                 permissions: 'aca_institucion_listado',
             },
             {
+                route: route('aca_teachers_list'),
+                status: false,
+                text: 'Docentes',
+                permissions: 'aca_docente_listado',
+            },
+            {
                 route: route('aca_students_list'),
                 status: false,
                 text: 'Estudiantes',

@@ -48,7 +48,7 @@
                                 <div class="wrap-details">
                                     <h5>{{ $course->description }}</h5>
                                     @if ($course->brochure)
-                                        <p>{{ $course->brochure->resolution }}</p>
+                                        <p>{!! $course->brochure->resolution !!}</p>
                                     @endif
                                     <div class="user-area">
                                         <div class="user-details">
@@ -126,49 +126,14 @@
                             <div class="tab-pane fade show active" id="pills-01" role="tabpanel" aria-labelledby="pill-1">
                                 @if ($course->brochure)
                                     <div class="overview-area">
-                                        {{ $course->brochure->presentation }}
+                                        {!! $course->brochure->presentation !!}
                                     </div>
                                 @endif
                             </div>
                             <div class="tab-pane fade" id="pills-02" role="tabpanel" aria-labelledby="pill-2">
-                                <div class="overview-area">
-                                    <div class="row">
-                                        <div class="col-md-6" style="padding: 10px;">
-                                            <h6>Docentes Especializados:</h6>
-                                            <p>Clases en vivo dictadas pormagistrados especializados en
-                                                la materia de derecho.
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6" style="padding: 10px;">
-                                            <h6>Acreditación:</h6>
-                                            <p>Diplomado de especializaciónemitido por 384 horas académicas
-                                                (24 créditos por la UniversidadNacional Hermilio Valdizán).
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6" style="padding: 10px;">
-                                            <h6>Certificación:</h6>
-                                            <p>
-                                                Diplomado especializado con valoruniversitario certificado por el Centro de
-                                                Actualización Profesional y Consultoría SAC, con el aval académico de la
-                                                Facultad
-                                                de Derecho y Ciencias Políticas de laUniversidad Nacional Hermilio Valdizán
-                                                (UNHEVAL);
-                                                el cual se leremitirá en FORMATO FÍSICO.
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6" style="padding: 10px;">
-                                            <h6>Modalidad de Estudios Mixta:</h6>
-                                            <p>
-                                                - Modalidad en vivo porplataforma virtualGoogle Meet.
-                                                Se dictará todos los viernes de 6:30 p.m. a9:30 p.m
-                                            </p>
-                                            <p>
-                                                - Modalidad E - Learningacceso al CAMPUSVIRTUAL CAP - PERÚ las24 horas del
-                                                día.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                @if ($course->brochure)
+                                    {!! $course->brochure->benefits !!}
+                                @endif
                             </div>
                             <div class="tab-pane fade" id="pills-03" role="tabpanel" aria-labelledby="pill-3">
                                 <div class="row" style="margin-bottom: 20px;">
@@ -248,45 +213,9 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-04" role="tabpanel" aria-labelledby="pill-4">
-                                <div class="overview-area">
-                                    <div class="row">
-                                        <div class="col-md-6" style="padding: 10px;">
-                                            <h6>¿Necesito tener una carrera para cursar este diplomado?</h6>
-                                            <p>
-                                                R. Pueden estudiar estudiantes delos últimos ciclos, de la carrera
-                                                dederecho, bachilleres,
-                                                titulados enDerecho, abogados, jueces, fiscales,efectivos policiales y
-                                                criminalística.
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6" style="padding: 10px;">
-                                            <h6>¿Cúal es la modalidad y horario de estudios?</h6>
-                                            <p>
-                                                R. El alumno contará con flexibilidadpara estudiar el día y la hora que
-                                                elelija conforme
-                                                a su disponibilidad detiempo y espacio desde cualquierdispositivo digital
-                                                (Pc, Laptop, móvil)
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6" style="padding: 10px;">
-                                            <h6>¿Qué certificados piden las empresas en sus convocatorias para contratar
-                                                colaboradores?</h6>
-                                            <p>
-                                                R. Solicitan que los postulantesacrediten capacitacionesespecializada a
-                                                nivel de programas
-                                                dediplomados, cursos especializados omaestrías.
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6" style="padding: 10px;">
-                                            <h6>¿Las diplomas tienen fecha de bencimiento?</h6>
-                                            <p>
-                                                R. No tienen fecha de vencimiento,pero se recomienda que el alumnose
-                                                actualice
-                                                constantementeporque existe una altacompetitividad.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                @if ($course->brochure)
+                                    {!! $course->brochure->frequent_questions !!}
+                                @endif
                             </div>
                         </div>
                     </div>
