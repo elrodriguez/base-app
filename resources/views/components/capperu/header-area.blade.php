@@ -23,7 +23,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ env('APP_URL') }}/carrito" class="btn btn-base"><i
+                            <a href="{{ route('web_carrito') }}" class="btn btn-base"><i
                                     class="fa fa-cart-plus"></i>&nbsp;&nbsp;
                                 <b>
                                     <span id="contadorCarritoMovil" class="contador" style="font-size: 18px;"></span>
@@ -61,9 +61,9 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('web_categorias') }}">Categorias</a>
-                        </li>
+                        </li> --}}
                         <li>
                             <a href="{{ route('web_convenios') }}">Convenios</a>
                         </li>
