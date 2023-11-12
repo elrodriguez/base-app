@@ -172,6 +172,9 @@
                                 </div>
                         </div> 
                     </div>
+                    <div>
+                        <Pagination :data="courses" />
+                    </div>
                 </template>
                 <template v-else>
                     <div class="flex items-center p-4 mb-4 text-gray-800 border-t-2 border-gray-300 bg-white dark:text-blue-400 dark:bg-gray-800 dark:border-blue-800" role="alert">

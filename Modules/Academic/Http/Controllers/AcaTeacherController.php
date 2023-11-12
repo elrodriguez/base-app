@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Modules\Academic\Entities\AcaTeacher;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Modules\Academic\Entities\AcaTeachingResume;
 
 class AcaTeacherController extends Controller
 {
@@ -335,9 +336,87 @@ class AcaTeacherController extends Controller
 
         $per = Person::findOrFail($person_id);
 
+        $resumes = AcaTeachingResume::select(
+            DB::raw('true AS destroy'),
+            DB::raw('false AS loading'),
+            'id',
+            'teacher_id',
+            'description'
+        )
+            ->where('teacher_id', $id)
+            ->get();
+
+        if (count($resumes) > 0) {
+            $resumes = $resumes->toArray();
+        }
+
         return Inertia::render('Academic::Teachers/Resume', [
             'person'                => $per,
-            'teacher'               => $tea
+            'teacher'               => $tea,
+            'resumes'               => $resumes
+        ]);
+    }
+
+    public function workExperienceStore(Request $request)
+    {
+        $description = $request->get('description');
+        $id = $request->get('id');
+        $teacher_id = $request->get('teacher_id');
+
+        $this->validate(
+            $request,
+            [
+                'teacher_id'    => 'required',
+                'description'   => 'required|max:500'
+            ]
+        );
+
+        if ($id) {
+            AcaTeachingResume::find($id)->update([
+                'description'   => $description
+            ]);
+        } else {
+            $resume = AcaTeachingResume::create([
+                'type'          => 'work experience',
+                'teacher_id'    => $teacher_id,
+                'description'   => $description
+            ]);
+
+            $id = $resume->id;
+        }
+
+        return response()->json([
+            'id' => $id
+        ]);
+    }
+
+    public function workExperienceDestroy($id)
+    {
+        $message = null;
+        $success = false;
+
+        try {
+
+            DB::beginTransaction();
+
+            $resume = AcaTeachingResume::findOrFail($id);
+
+            $resume->delete();
+
+            DB::commit();
+
+            $message =  'Experiencia eliminada correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
         ]);
     }
 }

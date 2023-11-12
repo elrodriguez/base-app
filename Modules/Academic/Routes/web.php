@@ -26,6 +26,8 @@ Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
     Route::post('teachers/update', 'AcaTeacherController@update')->name('aca_teachers_update');
     Route::delete('teachers/destroy/{id}', 'AcaTeacherController@destroy')->name('aca_teachers_destroy');
     Route::get('teachers/resume/{id}', 'AcaTeacherController@resume')->name('aca_teachers_resume');
+    Route::post('teachers/resume/work_experience/store', 'AcaTeacherController@workExperienceStore')->name('aca_teachers_work_experience_store');
+    Route::delete('teachers/resume/work_experience/destroy/{id}', 'AcaTeacherController@workExperienceDestroy')->name('aca_teachers_work_experience_destroy');
     Route::get('students', 'AcaStudentController@index')->name('aca_students_list');
     Route::get('students/create', 'AcaStudentController@create')->name('aca_students_create');
     Route::post('students/store', 'AcaStudentController@store')->name('aca_students_store');

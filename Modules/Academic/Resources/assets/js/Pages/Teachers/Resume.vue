@@ -1,7 +1,9 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CreateForm from './Partials/CreateForm.vue';
+import ResumeForm from './Partials/ResumeForm.vue';
 import { Link } from '@inertiajs/vue3';
+import { faCheck, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+
 
 const props = defineProps({
     person: {
@@ -9,6 +11,10 @@ const props = defineProps({
         default: () => ({}),
     },
     teacher: {
+        type: Object,
+        default: () => ({}),
+    },
+    resumes: {
         type: Object,
         default: () => ({}),
     }
@@ -54,7 +60,7 @@ const props = defineProps({
                     </li>
                 </ol>
             </nav>
-            
+           <ResumeForm :resumes="resumes" :teacher="teacher" :faCheck="faCheck" :faTrashAlt="faTrashAlt" /> 
         </div>
     </AppLayout>
 </template>
