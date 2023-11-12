@@ -1,8 +1,9 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Link } from '@inertiajs/vue3';
 import { Spinner } from 'flowbite-vue'
 import { onMounted } from 'vue'
 import swal from 'sweetalert2';
+import Keypad from '@/Components/Keypad.vue';
 
 const props = defineProps({
     teacher:{
@@ -36,6 +37,7 @@ const createResumeExperience = (data, index, id) => {
     axios.post(route('aca_teachers_work_experience_store'),data).then((res) => {
 
         formResume.experiences[index].id = res.data.id;
+        formResume.experiences[index].destroy = true;
 
         if(!id){
             let ar = {
@@ -123,6 +125,16 @@ const destroyExperience = (id, index) => {
                     </template>
                 </div>
             </div>
+        </div>
+        
+    </div>
+    <div class="grid grid-cols-6 gap-6 mt-4">
+        <div class="col-span-6">
+            <Keypad>
+                <template #botones>
+                    <Link :href="route('aca_teachers_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
+                </template>
+            </Keypad>
         </div>
     </div>
 </template>
