@@ -2,8 +2,11 @@
 
 namespace Modules\Onlineshop\Entities;
 
+use App\Models\Person;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OnliSale extends Model
 {
@@ -33,5 +36,14 @@ class OnliSale extends Model
     protected static function newFactory()
     {
         return \Modules\Onlineshop\Database\factories\OnliSaleFactory::new();
+    }
+
+    public function person(): BelongsTo
+    {
+        return $this->belongsTo(Person::class, 'person_id');
+    }
+    public function details(): HasMany
+    {
+        return $this->hasMany(OnliSaleDetail::class, 'sale_id');
     }
 }

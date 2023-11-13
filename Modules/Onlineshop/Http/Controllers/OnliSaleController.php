@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 use Modules\Academic\Entities\AcaCapRegistration;
 use Modules\Academic\Entities\AcaStudent;
 use Modules\Onlineshop\Entities\OnliItem;
@@ -24,7 +25,29 @@ class OnliSaleController extends Controller
      */
     public function index()
     {
-        return view('onlineshop::index');
+        $sales = (new OnliSale())->newQuery();
+        if (request()->has('search')) {
+            $sales->whereDate('created_at', '=', request()->input('search'));
+        }
+        if (request()->query('sort')) {
+            $attribute = request()->query('sort');
+            $sort_order = 'ASC';
+            if (strncmp($attribute, '-', 1) === 0) {
+                $sort_order = 'DESC';
+                $attribute = substr($attribute, 1);
+            }
+            $sales->orderBy($attribute, $sort_order);
+        } else {
+            $sales->latest();
+        }
+        $sales = $sales->with('person');
+        $sales = $sales->with('details.item');
+        $sales = $sales->paginate(20)->onEachSide(2);
+
+        return Inertia::render('Onlineshop::Sales/List', [
+            'sales' => $sales,
+            'filters' => request()->all('search')
+        ]);
     }
 
     /**

@@ -175,6 +175,7 @@ class CapperuController extends Controller
             $cart_items = [];
 
             $sale_details = OnliSaleDetail::where('sale_id', $sale_id)->get();
+            $total = 0;
 
             foreach ($sale_details as $k => $sale_detail) {
                 $item = OnliItem::join('aca_courses', 'onli_items.item_id', '=', 'aca_courses.id')
@@ -215,6 +216,8 @@ class CapperuController extends Controller
                     'avatar'                    => $item->avatar,
                     'description'               => $item->description
                 ];
+
+                $total = $total + floatval($item->price);
             }
 
             $preference = $client->create([
@@ -227,6 +230,9 @@ class CapperuController extends Controller
             ]);
 
             $preference_id =  $preference->id;
+            $sale->total = $total;
+
+            $sale->save();
 
             return view('capperu/pagar', [
                 'person_full_name'  => $sale->clie_full_name,
