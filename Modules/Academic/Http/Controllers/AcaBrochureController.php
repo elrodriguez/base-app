@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Modules\Academic\Entities\AcaBrochure;
+use Modules\Academic\Entities\AcaCourse;
 use Modules\Academic\Entities\AcaTeacher;
 use Modules\Academic\Entities\AcaTeacherCourse;
 
@@ -48,7 +49,6 @@ class AcaBrochureController extends Controller
         );
 
         $teachers = $request->get('teaching_plan');
-        $destination = 'uploads/articles';
         $path = null;
         $destination = 'uploads/institutions';
         $file = $request->file('path_file');
@@ -86,18 +86,25 @@ class AcaBrochureController extends Controller
                 'presentation' => $presentation,
                 'benefits' => $benefits,
                 'frequent_questions' => $frequent_questions,
-                'path_file' => $path
+                'path_file' => $path !== null ? $path : AcaBrochure::where('course_id', $request->get('course_id'))->value('path_file')
             ]
         );
 
         AcaTeacherCourse::where('course_id', $request->get('course_id'))->delete();
-
+        AcaCourse::find($request->get('course_id'))->update([
+            'teacher_id' => null
+        ]);
         if (count($teachers) > 0) {
             foreach ($teachers as $teacher) {
                 AcaTeacherCourse::create([
                     'teacher_id'    => $teacher['teacher']['id'],
                     'course_id'     => $request->get('course_id')
                 ]);
+                if ($teacher['is_main']) {
+                    AcaCourse::find($request->get('course_id'))->update([
+                        'teacher_id' => $teacher['teacher']['id']
+                    ]);
+                }
             }
         }
 

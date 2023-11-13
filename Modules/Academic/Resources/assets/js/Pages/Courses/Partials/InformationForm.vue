@@ -2,11 +2,10 @@
 import { useForm, Link } from '@inertiajs/vue3';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Keypad from '@/Components/Keypad.vue';
 import Swal2 from 'sweetalert2';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { Select } from 'flowbite-vue'
 
 import Editor from '@tinymce/tinymce-vue'
@@ -112,19 +111,19 @@ const uploadImage = (blobInfo, progress) => {
             });
         });
     };
-
-    watch(() => form.path_file, (newValue) => {
-        if (newValue instanceof File) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                form.path_file_preview = e.target.result;
-            };
-            reader.readAsDataURL(newValue);
-        } else {
-            // Puedes manejar el caso en el que newValue no sea un objeto File válido
-            console.error("El objeto no es un archivo válido.");
-        }
-    });
+    // codigo para pre visualizacvion de imagenes
+    // watch(() => form.path_file, (newValue) => {
+    //     if (newValue instanceof File) {
+    //         const reader = new FileReader();
+    //         reader.onload = (e) => {
+    //             form.path_file_preview = e.target.result;
+    //         };
+    //         reader.readAsDataURL(newValue);
+    //     } else {
+    //         // Puedes manejar el caso en el que newValue no sea un objeto File válido
+    //         console.error("El objeto no es un archivo válido.");
+    //     }
+    // });
 
     const teacherSelected = ref(null);
 
@@ -135,8 +134,8 @@ const uploadImage = (blobInfo, progress) => {
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
+            toast.onmouseenter = Swal2.stopTimer;
+            toast.onmouseleave = Swal2.resumeTimer;
         },
         iconColor: 'white',
         customClass: {
@@ -156,7 +155,8 @@ const uploadImage = (blobInfo, progress) => {
                 id: null,
                 teacher: tmpTeacher,
                 teacher_id: tmpTeacher.id,
-                updated_at: null
+                updated_at: null,
+                is_main: false
             }
             form.teaching_plan.push(newTeacher);
         }else{
@@ -170,6 +170,22 @@ const uploadImage = (blobInfo, progress) => {
 
     const removeTeacher = (index) => {
         form.teaching_plan.splice(index,1);
+    }
+
+    const isMain = () => {
+        form.teaching_plan = form.teaching_plan.map(obj => ({ ...obj, is_main: (props.course.teacher_id == obj.teacher_id ? true : false) }));
+    }
+
+    onMounted(() => {
+        isMain();
+    });
+
+    const checkChanged = (selectedIndex) => {
+        form.teaching_plan.forEach((checkbox, index) => {
+        if (index !== selectedIndex) {
+          checkbox.is_main = false;
+        }
+      });
     }
 </script>
 
@@ -252,6 +268,9 @@ const uploadImage = (blobInfo, progress) => {
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
+                                    Principal
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Foto
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -270,6 +289,12 @@ const uploadImage = (blobInfo, progress) => {
                         </thead>
                         <tbody>
                             <tr v-for="(tea, ke) in form.teaching_plan ">
+                                <td class="px-6 py-4 text-center">
+                                    <div class="flex items-center">
+                                        <input v-model="tea.is_main" @change="checkChanged(ke)" :id="'checkbox-'+ke" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label :for="'checkbox-'+ke" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ tea.is_main ? 'SI' : 'NO' }}</label>
+                                    </div>
+                                </td>
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <img class="w-10 h-10 rounded" :src="tea.teacher.person.image" alt="Medium avatar">
                                 </th>
@@ -309,14 +334,19 @@ const uploadImage = (blobInfo, progress) => {
                 <InputError :message="form.errors.frequent_questions" class="mt-2" />
             </div>
             <div class="col-span-6 ">
-                <label for="path_file" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Imagen del folleto</label>
-                <div class="flex justify-center space-x-2">
+                <label for="path_file" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PDF</label>
+                
+                <!-- <div class="flex justify-center space-x-2">
                     <figure class="max-w-lg">
                         <img class="h-auto max-w-full rounded-lg" :src="form.path_file_preview">
                         <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                     </figure>
-                </div>
-                <input @input="form.path_file = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="path_file" type="file">
+                </div> -->
+                <!-- <input @input="form.path_file = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="path_file" type="file"> -->
+                
+                <a :href="form.path_file_preview" v-if="form.path_file_preview" target="_blank" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Ver PDF Actual</a>
+
+                <input @input="form.path_file = $event.target.files[0]" accept=".pdf" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="path_file" type="file">
                 <InputError :message="form.errors.path_file" class="mt-2" />
             </div>
         </template>
