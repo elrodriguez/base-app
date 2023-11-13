@@ -136,81 +136,30 @@
                                 @endif
                             </div>
                             <div class="tab-pane fade" id="pills-03" role="tabpanel" aria-labelledby="pill-3">
-                                <div class="row" style="margin-bottom: 20px;">
-                                    <div class="col-md-2">
-                                        <a href="{{ route('web_perfil_docente', 1) }}">
-                                            <!-- poner el id del teacher teacher_id -->
-                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;"
-                                                src="{{ asset('themes/capperu/assets/img/author/01.png') }}"
-                                                alt="img">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <h6>DR. FRANK ALMANZA ALTAMIRANO</h6>
-                                        <ul>
-                                            <li>
-                                                Fiscal Superior Penal de Lima. Docente UPSMP, ESAN y AMAG.
-                                            </li>
-                                            <li>
-                                                Autor diversion libros en su especialidad.
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-bottom: 20px;">
-                                    <div class="col-md-2">
-                                        <a href="{{ route('web_perfil_docente', 1) }}">
-                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;"
-                                                src="{{ asset('themes/capperu/assets/img/author/01.png') }}"
-                                                alt="img">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <h6>DR. FRANK ALMANZA ALTAMIRANO</h6>
-                                        <ul>
-                                            <li>
-                                                Juez Titular del Tecer Juzgado de Investigación Preparatoria de la Corte
-                                                Superior de Justicia de La Libertad.
-                                            </li>
-                                            <li>
-                                                Fiscal Provincial Titular de la Fiscalia Provincial de La Libertad
-                                                especializada en Delitos de Corrupción de La Libertad.
-                                            </li>
-                                            <li>
-                                                Bachilleres o egresados con tituloprofesinal en Derecho.
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-bottom: 20px;">
-                                    <div class="col-md-2">
-                                        <a href="{{ route('web_perfil_docente', 1) }}">
-                                            <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;"
-                                                src="{{ asset('themes/capperu/assets/img/author/01.png') }}"
-                                                alt="img">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <h6>DR. FRANK ALMANZA ALTAMIRANO</h6>
-                                        <ul>
-                                            <li>
-                                                Estudiantes de los últimos ciclos de lacarrera de Derecho.
-                                            </li>
-                                            <li>
-                                                Bachilleres o egresados con tituloprofesinal en Derecho.
-                                            </li>
-                                            <li>
-                                                Bachilleres o egresados con tituloprofesinal en Derecho.
-                                            </li>
-                                            <li>
-                                                Bachilleres o egresados con tituloprofesinal en Derecho.
-                                            </li>
-                                            <li>
-                                                Bachilleres o egresados con tituloprofesinal en Derecho.
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                @if (count($course->teachers) > 0)
+                                    @foreach ($course->teachers as $item)
+                                        <div class="row" style="margin-bottom: 20px;">
+                                            <div class="col-md-2">
+                                                <a href="{{ route('web_perfil_docente', 1) }}">
+                                                    <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;"
+                                                        src="{{ $item->teacher->person->image }}" alt="img">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <h6>{{ $item->teacher->person->full_name }}</h6>
+                                                @if (count($item->teacher->person->resumes))
+                                                    <ul>
+                                                        @foreach ($item->teacher->person->resumes as $resume)
+                                                            <li>
+                                                                {{ $resume->description }}
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                             <div class="tab-pane fade" id="pills-04" role="tabpanel" aria-labelledby="pill-4">
                                 @if ($course->brochure)

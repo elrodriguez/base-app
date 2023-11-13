@@ -379,7 +379,8 @@ class AcaTeacherController extends Controller
             $resume = AcaTeachingResume::create([
                 'type'          => 'work experience',
                 'teacher_id'    => $teacher_id,
-                'description'   => $description
+                'description'   => $description,
+                'person_id'     => AcaTeacher::find($teacher_id)->person_id
             ]);
 
             $id = $resume->id;

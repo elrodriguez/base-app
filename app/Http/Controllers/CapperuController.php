@@ -101,12 +101,12 @@ class CapperuController extends Controller
         $course = AcaCourse::with('category')
             ->with('modality')
             ->with('modules')
-            ->with('teacher')
+            ->with('teachers.teacher.person.resumes')
             ->with('brochure')
             ->with('agreements')
             ->where('id', $item->item_id)
             ->first();
-        //dd($course);
+
         return view('capperu/descripcion-en-vivo', [
             'course' => $course
         ]);
