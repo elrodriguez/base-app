@@ -58,4 +58,9 @@ class AcaCourse extends Model
     {
         return $this->hasMany(AcaAgreement::class, 'course_id');
     }
+
+    public function teachers(): HasMany
+    {
+        return $this->hasMany(AcaTeacherCourse::class, 'course_id');
+    }
 }

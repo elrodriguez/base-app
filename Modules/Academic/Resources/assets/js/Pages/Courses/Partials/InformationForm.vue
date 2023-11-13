@@ -4,10 +4,10 @@ import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import Keypad from '@/Components/Keypad.vue';
 import Swal2 from 'sweetalert2';
 import { ref, watch } from 'vue';
+import { Select } from 'flowbite-vue'
 
 import Editor from '@tinymce/tinymce-vue'
 
@@ -24,6 +24,22 @@ const props = defineProps({
         type: String,
         default: () => ({}),
     },
+    teachers: {
+        type: Array,
+        default: () => ({}),
+    },
+    faCheck: {
+        type: Object,
+        default: () => ({}),
+    },
+    course_teachers: {
+        type: Object,
+        default: () => ({}),
+    },
+    faTrashAlt: {
+        type: Object,
+        default: () => ({}),
+    }
 });
 
 const form = useForm({
@@ -31,6 +47,7 @@ const form = useForm({
     resolution: null,
     presentation: null,
     benefits: null,
+    teaching_plan: props.course_teachers,
     frequent_questions: null,
     path_file: null,
     path_file_preview: null
@@ -43,7 +60,6 @@ if(props.brochure){
     form.benefits = props.brochure?.benefits || null;
     form.frequent_questions = props.brochure?.frequent_questions || null;
     form.path_file_preview = props.brochure?.path_file;
-
 }
 
 
@@ -109,6 +125,52 @@ const uploadImage = (blobInfo, progress) => {
             console.error("El objeto no es un archivo válido.");
         }
     });
+
+    const teacherSelected = ref(null);
+
+    const Toast = Swal2.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        },
+        iconColor: 'white',
+        customClass: {
+            popup: 'colored-toast',
+        }
+    });
+
+    const addTeacher = () => {
+        let index = teacherSelected.value;
+        let tmpTeacher = props.teachers[index];
+        const foundObject = form.teaching_plan.find(item => item.teacher.id === tmpTeacher.id);
+
+        if (!foundObject) {
+            let newTeacher = {
+                course_id:props.course.id,
+                created_at:null,
+                id: null,
+                teacher: tmpTeacher,
+                teacher_id: tmpTeacher.id,
+                updated_at: null
+            }
+            form.teaching_plan.push(newTeacher);
+        }else{
+            Toast.fire({
+                icon: 'error',
+                title: 'El docente ya fue agregado',
+            });
+        }
+        teacherSelected.value = null;
+    }
+
+    const removeTeacher = (index) => {
+        form.teaching_plan.splice(index,1);
+    }
 </script>
 
 <template>
@@ -169,6 +231,66 @@ const uploadImage = (blobInfo, progress) => {
                     :images_upload_url="route('aca_upload_image_tiny')"
                 />
                 <InputError :message="form.errors.benefits" class="mt-2" />
+            </div>
+            <div class="col-span-6 ">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Docente</label>
+                <div class="flex items-center">   
+                    <label for="teacher_id" class="sr-only">Teachers</label>
+                    <div class="relative w-full">
+                        <select v-model="teacherSelected" id="teacher_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected>Seleccionar</option>
+                            <option v-for="(te,k) in teachers" :value="k">{{ te.person.full_name }}</option>
+                        </select>
+                    </div>
+                    <button @click="addTeacher" type="button" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <font-awesome-icon :icon="faCheck" />
+                    </button>
+                </div>
+                <InputError :message="form.errors.teaching_plan" class="mt-2" />
+                <div class="mt-4 relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Foto
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Nombre Completo
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Teléfono
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Correo
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(tea, ke) in form.teaching_plan ">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <img class="w-10 h-10 rounded" :src="tea.teacher.person.image" alt="Medium avatar">
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ tea.teacher.person.full_name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ tea.teacher.person.telephone }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ tea.teacher.person.email }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button @click="removeTeacher(ke)" type="button" class="p-2.5 ml-2 text-sm font-medium text-white bg-red-700 rounded-lg border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                        <font-awesome-icon :icon="faTrashAlt" />
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-span-6 ">
                 <label for="frequent_questions" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Preguntas Frecuentes</label>

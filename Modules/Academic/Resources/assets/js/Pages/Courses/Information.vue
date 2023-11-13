@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import InformationForm from './Partials/InformationForm.vue';
 import { Link } from '@inertiajs/vue3';
+import { faCheck, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 const props = defineProps({
     brochure:{
@@ -14,6 +15,14 @@ const props = defineProps({
     },
     tiny_api_key: {
         type: String,
+        default: () => ({}),
+    },
+    teachers: {
+        type: Object,
+        default: () => ({}),
+    },
+    course_teachers: {
+        type: Object,
         default: () => ({}),
     }
 });
@@ -58,7 +67,15 @@ const props = defineProps({
                     </li>
                 </ol>
             </nav>
-            <InformationForm :course="course" :tiny_api_key="tiny_api_key" :brochure="brochure" /> 
+            <InformationForm 
+                :course_teachers="course_teachers" 
+                :teachers="teachers" 
+                :course="course" 
+                :tiny_api_key="tiny_api_key" 
+                :brochure="brochure" 
+                :faCheck="faCheck"
+                :faTrashAlt="faTrashAlt" 
+            /> 
         </div>
     </AppLayout>
 </template>

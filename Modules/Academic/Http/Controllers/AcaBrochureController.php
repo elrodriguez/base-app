@@ -9,6 +9,8 @@ use Illuminate\Http\Response;
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Modules\Academic\Entities\AcaBrochure;
+use Modules\Academic\Entities\AcaTeacher;
+use Modules\Academic\Entities\AcaTeacherCourse;
 
 class AcaBrochureController extends Controller
 {
@@ -45,12 +47,12 @@ class AcaBrochureController extends Controller
             ]
         );
 
+        $teachers = $request->get('teaching_plan');
         $destination = 'uploads/articles';
-
         $path = null;
-
         $destination = 'uploads/institutions';
         $file = $request->file('path_file');
+
         if ($file) {
             $original_name = strtolower(trim($file->getClientOriginalName()));
             $original_name = str_replace(" ", "_", $original_name);
@@ -87,6 +89,20 @@ class AcaBrochureController extends Controller
                 'path_file' => $path
             ]
         );
+
+        AcaTeacherCourse::where('course_id', $request->get('course_id'))->delete();
+
+        if (count($teachers) > 0) {
+            foreach ($teachers as $teacher) {
+                AcaTeacherCourse::create([
+                    'teacher_id'    => $teacher['teacher']['id'],
+                    'course_id'     => $request->get('course_id')
+                ]);
+            }
+        }
+
+
+        return redirect()->route('aca_courses_information', $request->get('course_id'));
     }
 
     /**

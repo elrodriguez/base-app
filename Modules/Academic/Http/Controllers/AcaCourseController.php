@@ -5,12 +5,15 @@ namespace Modules\Academic\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Modules\Academic\Entities\AcaBrochure;
 use Modules\Academic\Entities\AcaCategoryCourse;
 use Modules\Academic\Entities\AcaCourse;
 use Modules\Academic\Entities\AcaInstitution;
 use Modules\Academic\Entities\AcaModality;
+use Modules\Academic\Entities\AcaTeacher;
+use Modules\Academic\Entities\AcaTeacherCourse;
 
 class AcaCourseController extends Controller
 {
@@ -79,10 +82,22 @@ class AcaCourseController extends Controller
      */
     public function information($id)
     {
+        $course_teachers = AcaTeacherCourse::with('teacher.person')->where('course_id', $id)->get();
+
+        $teachers = AcaTeacher::with('person')->get();
+
+        if (count($teachers) > 0) {
+            $teachers = $teachers->toArray();
+        }
+        if (count($course_teachers) > 0) {
+            $course_teachers = $course_teachers->toArray();
+        }
         return Inertia::render('Academic::Courses/Information', [
             'brochure' => AcaBrochure::where('course_id', $id)->first(),
             'course' => AcaCourse::find($id),
-            'tiny_api_key' => env('TINY_API_KEY')
+            'tiny_api_key' => env('TINY_API_KEY'),
+            'teachers' => $teachers,
+            'course_teachers' => $course_teachers
         ]);
     }
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Modules\Academic\Entities\AcaTeacher;
 
 class Person extends Model
 {
@@ -39,5 +40,9 @@ class Person extends Model
     public function district(): HasOne
     {
         return $this->hasOne(District::class, 'id', 'ubigeo');
+    }
+    public function teacher(): HasOne
+    {
+        return $this->hasOne(AcaTeacher::class, 'id', 'person_id');
     }
 }
