@@ -43,7 +43,7 @@
                             <div class="single-course-wrap mb-0">
                                 <div class="thumb">
                                     <span class="play-btn"><i class="fa fa-play"></i></span>
-                                    <img src="{{ $course->image }}" alt="img">
+                                    <img src="{{env('URL_IMAGE_COURSES') . $course->image }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
                                     <h5>{{ $course->description }}</h5>
@@ -222,10 +222,10 @@
                     <div class="price-wrap">
                         <div class="row align-items-center">
                             <div class="col-md-12">
-                                <a class="btn btn-primary" href="#" style="width: 100%;">
+                                <a class="btn btn-primary" href="#" style="width: 100%;" onclick="agregarAlCarrito({ id: {{ $item->id }}, nombre: '{{ $item->name }}', precio: {{ $item->price }} })">
                                     <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                     &nbsp;&nbsp;Comprar Ahora
-                                    <b style="text-end"> &nbsp;&nbsp; S/. 250</b>
+                                    <b style="text-end"> &nbsp;&nbsp; S/. {{ $item->price }}</b>
                                 </a>
                             </div>
                         </div>

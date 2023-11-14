@@ -108,7 +108,8 @@ class CapperuController extends Controller
             ->first();
 
         return view('capperu/descripcion-en-vivo', [
-            'course' => $course
+            'course' => $course,
+            'item' => $item
         ]);
     }
 
