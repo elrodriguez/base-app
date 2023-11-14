@@ -128,7 +128,6 @@ class AcaInstitutionController extends Controller
                 'address'   => 'required|max:255'
             ]
         );
-        $destination = 'uploads/articles';
 
         $path = null;
 

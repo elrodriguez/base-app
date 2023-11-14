@@ -23,9 +23,9 @@ return new class extends Migration
         });
 
         DB::table('aca_category_courses')->insert([
-            ['description' => 'IMPUESTOS', 'capacitation' => true, 'image' => null],
-            ['description' => 'NIIF', 'capacitation' => true, 'image' => null],
-            ['description' => 'Otros', 'capacitation' => true, 'image' => null]
+            ['description' => 'Derecho', 'capacitation' => true, 'image' => null],
+            ['description' => 'Empresarial', 'capacitation' => true, 'image' => null],
+            ['description' => 'Publico', 'capacitation' => true, 'image' => null]
         ]);
     }
 

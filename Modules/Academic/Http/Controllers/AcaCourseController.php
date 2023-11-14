@@ -14,9 +14,11 @@ use Modules\Academic\Entities\AcaInstitution;
 use Modules\Academic\Entities\AcaModality;
 use Modules\Academic\Entities\AcaTeacher;
 use Modules\Academic\Entities\AcaTeacherCourse;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class AcaCourseController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -62,7 +64,12 @@ class AcaCourseController extends Controller
      */
     public function create()
     {
-        return view('academic::create');
+        $categories = AcaCategoryCourse::all();
+        $modalities = AcaModality::all();
+        return Inertia::render('Academic::Courses/Create', [
+            'modalities'    => $modalities,
+            'categories'    => $categories
+        ]);
     }
 
     /**
@@ -72,7 +79,52 @@ class AcaCourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'description' => 'required',
+                'course_date' => 'required',
+                'category_id' => 'required',
+                'image' => 'required',
+                'modality_id' => 'required',
+                'type_description' => 'required',
+            ]
+        );
+
+
+        $path = null;
+
+        $destination = 'uploads/courses';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $img = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+
+            $path = asset('storage/' . $img);
+        }
+        $timestamp = strtotime($request->get('course_date'));
+        AcaCourse::create([
+            'status'            => $request->get('status') ? true : false,
+            'description'       => $request->get('description'),
+            'course_day'        => date("d", $timestamp),
+            'course_month'      => date("m", $timestamp),
+            'course_year'       => date("Y", $timestamp),
+            'category_id'       => $request->get('category_id'),
+            'image'             => $path,
+            'modality_id'       => $request->get('modality_id'),
+            'type_description'  => $request->get('type_description'),
+            'sector_description' => AcaCategoryCourse::find($request->get('category_id'))->description
+        ]);
+
+        return redirect()->route('aca_courses_list')
+            ->with('message', __('Curso creado con éxito'));
     }
 
     /**
@@ -124,9 +176,51 @@ class AcaCourseController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->get('id');
+
+        $this->validate(
+            $request,
+            [
+                'description' => 'required',
+                'course_date' => 'required',
+                'category_id' => 'required',
+                'modality_id' => 'required',
+                'type_description' => 'required',
+            ]
+        );
+
+        $course = AcaCourse::find($id);
+        $timestamp = strtotime($request->get('course_date'));
+
+        $course->status           = $request->get('status') ? true : false;
+        $course->description      = $request->get('description');
+        $course->course_day       = date("d", $timestamp);
+        $course->course_month     = date("m", $timestamp);
+        $course->course_year       = date("Y", $timestamp);
+        $course->category_id      = $request->get('category_id');
+        $course->modality_id       = $request->get('modality_id');
+        $course->type_description  = $request->get('type_description');
+        $course->sector_description = AcaCategoryCourse::find($request->get('category_id'))->description;
+
+        $destination = 'uploads/courses';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $img = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+
+            $course->image  = asset('storage/' . $img);
+        }
+
+        $course->save();
     }
 
     /**
@@ -136,6 +230,33 @@ class AcaCourseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = null;
+        $success = false;
+        try {
+            // Usamos una transacción para asegurarnos de que la operación se realice de manera segura.
+            DB::beginTransaction();
+
+            // Verificamos si existe.
+            $item = AcaCourse::findOrFail($id);
+
+            // Si no hay detalles asociados, eliminamos.
+            $item->delete();
+
+            // Si todo ha sido exitoso, confirmamos la transacción.
+            DB::commit();
+
+            $message =  'Curso eliminado correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción durante la transacción, hacemos rollback para deshacer cualquier cambio.
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 }

@@ -10,6 +10,7 @@
     import { ref } from 'vue';
     import DangerButton from '@/Components/DangerButton.vue';
     import InputError from '@/Components/InputError.vue';
+    import ModalLargeXX from '@/Components/ModalLargeXX.vue';
 
     const props = defineProps({
         courses: {
@@ -30,7 +31,39 @@
         search: props.filters.search,
     });
 
-    const destroyInstitution = (id) => {
+    const destroyCourse = (id) => {
+        Swal2.fire({
+            title: '¿Estas seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Sí, Eliminar!',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return axios.delete(route('aca_courses_destroy', id)).then((res) => {
+                    if (!res.data.success) {
+                        Swal2.showValidationMessage(res.data.message)
+                    }
+                    return res
+                });
+            },
+            allowOutsideClick: () => !Swal2.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal2.fire({
+                    title: 'Enhorabuena',
+                    text: 'Se Eliminó correctamente',
+                    icon: 'success',
+                });
+                router.visit(route('aca_courses_list'), { replace: true, method: 'get' });
+            }
+        });
+    }
+
+    const destroyAgreement = (id) => {
         Swal2.fire({
             title: '¿Estas seguro?',
             text: "¡No podrás revertir esto!",
@@ -122,6 +155,19 @@
         });
     }
 
+const displayModalModules = ref(false);
+const formModule = useForm({
+    course_id: null,
+    name_course: null,
+});
+
+const openModalModules = (course) =>{
+    formModule.name_course = course.name;
+    displayModalModules.value = true;
+}
+const closeModalModules = () =>{
+    displayModalModules.value = false;
+}
 </script>
 
 <template>
@@ -171,7 +217,7 @@
                             <div class="col-span-3 sm:col-span-2">
                                 <Keypad>
                                     <template #botones>
-                                        <Link v-can="'cms_items'" :href="route('aca_institutions_create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                        <Link v-can="'aca_cursos_nuevo'" :href="route('aca_courses_create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                             Nuevo
                                         </Link>
                                     </template>
@@ -214,18 +260,23 @@
                                                     </button>
                                                 </template>
                                                 <div class="dropdown-div z-10 absolute text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                                    <ul class="py-2">
+                                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
                                                         <li>
-                                                            <Link :href="route('aca_courses_edit',course.id)" class="text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Editar</Link>
+                                                            <Link :href="route('aca_courses_edit',course.id)" class="text-left block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Editar</Link>
                                                         </li>
                                                         <li>
-                                                            <Link :href="route('aca_courses_information',course.id)" class="text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Información</Link>
+                                                            <Link :href="route('aca_courses_information',course.id)" class="text-left block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Información</Link>
                                                         </li>
                                                         <li>
-                                                            <a @click="openModalAgreements(course)" href="#" class="text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Convenios</a>
+                                                            <a @click="openModalAgreements(course)" href="#" class="text-left block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Convenios</a>
                                                         </li>
-                                                        
+                                                        <li>
+                                                            <a @click="openModalModules(course)" href="#" class="text-left block px-4 py-2 text-sm text-blue-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Módulos</a>
+                                                        </li>
                                                     </ul>
+                                                    <div class="py-2">
+                                                        <a @click="destroyCourse(course.id)" href="#" class="text-left block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Eliminar</a>
+                                                    </div>
                                                 </div>
                                             </dropdown>
                                         </td>
@@ -288,7 +339,7 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div class="border p-4" v-for="(xagreement) in arrayAgreements">
                             <div class="flex justify-end">
-                                <button @click="destroyInstitution(xagreement.id)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button @click="destroyAgreement(xagreement.id)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <font-awesome-icon :icon="faTrashAlt" />
                                 </button>
                             </div>
@@ -310,5 +361,17 @@
             </DangerButton>
             </template>
         </ModalLarge>
+        <ModalLargeXX
+            :onClose = "closeModalModules"
+            :show="displayModalModules"
+            :icon="'/img/carpeta.png'"
+        >
+            <template #title>
+            {{ formModule.name_course }}
+            </template>
+            <template #message>
+                
+            </template>
+        </ModalLargeXX>
     </AppLayout>
 </template>

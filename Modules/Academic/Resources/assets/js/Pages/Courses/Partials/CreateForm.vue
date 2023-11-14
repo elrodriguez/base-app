@@ -10,10 +10,6 @@ import Swal2 from 'sweetalert2';
 import { ref, watch } from 'vue';
 
 const props = defineProps({
-    course: {
-        type: Object,
-        default: () => ({}),
-    },
     modalities: {
         type: Object,
         default: () => ({}),
@@ -25,27 +21,26 @@ const props = defineProps({
 });
 
 const form = useForm({
-    id: props.course.id,
-    status: props.course.status == 1 ? true : false,
-    description: props.course.description,
-    course_date: props.course.course_year+'-'+props.course.course_month+'-'+props.course.course_day,
-    category_id: props.course.category_id,
+    status: true,
+    description: null,
+    course_date: null,
+    category_id: null,
     image: null,
-    image_preview: props.course.image,
-    modality_id: props.course.modality_id,
-    type_description: props.course.type_description,
-    sector_description: props.course.sector_description
+    image_preview: null,
+    modality_id: null,
+    type_description: null,
+    sector_description: null
 });
 
-const updateCourse = () => {
-    form.post(route('aca_courses_update'), {
+const createCourse = () => {
+    form.post(route('aca_courses_store'), {
         forceFormData: true,
-        errorBag: 'updateCourse',
+        errorBag: 'createCourse',
         preserveScroll: true,
         onSuccess: () => {
             Swal2.fire({
                 title: 'Enhorabuena',
-                text: 'Se Actualizó correctamente',
+                text: 'Se registró correctamente',
                 icon: 'success',
             });
             form.reset()
@@ -68,13 +63,13 @@ watch(() => form.image, (newValue) => {
 </script>
 
 <template>
-    <FormSection @submitted="updateCourse" class="">
+    <FormSection @submitted="createCourse" class="">
         <template #title>
             Curso Detalles
         </template>
 
         <template #description>
-            Crear Editar Curso, Los campos con * son obligatorios
+            Crear nuevo Curso, Los campos con * son obligatorios
         </template>
 
         <template #form>

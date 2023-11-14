@@ -134,7 +134,7 @@
                                             <Link v-can="'cms_pagina_editar'" :href="route('aca_institutions_edit',institution.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <font-awesome-icon :icon="faPencilAlt" />
                                             </Link>
-                                            <button v-can="'cms_pagina_eliminar'" @click="destroyInstitution(institution.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            <button v-can="'aca_institucion_eliminar'" @click="destroyInstitution(institution.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 <font-awesome-icon :icon="faTrashAlt" />
                                             </button>
                                         </td>
