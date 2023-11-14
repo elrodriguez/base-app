@@ -59,18 +59,22 @@
                                                 <b>{{ $course->sector_description }}</b>
                                             </a>
                                         </div>
-                                        <div class="user-rating">
-                                            <span style="color:orange;">
-                                                <i>Modalidad:</i>
-                                            </span>
-                                            <b>{{ $course->modality->description }}</b>
-                                        </div>
-                                        <div class="user-rating">
-                                            <span style="color:orange;">
-                                                <i>Programa:</i>
-                                            </span>
-                                            <b>{{ $course->category->description }}</b>
-                                        </div>
+                                        @if ($course->modality)
+                                            <div class="user-rating">
+                                                <span style="color:orange;">
+                                                    <i>Modalidad:</i>
+                                                </span>
+                                                <b>{{ $course->modality->description }}</b>
+                                            </div>
+                                        @endif
+                                        @if ($course->category)
+                                            <div class="user-rating">
+                                                <span style="color:orange;">
+                                                    <i>Programa:</i>
+                                                </span>
+                                                <b>{{ $course->category->description }}</b>
+                                            </div>
+                                        @endif
                                         <div class="user-rating">
                                             <span style="color:orange;">
                                                 <i>Inicio:</i>
