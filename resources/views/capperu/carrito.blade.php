@@ -71,7 +71,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="contact-inner" style="margin-top: 9px;">
-                        <form class="row" method="POST" action="{{ route('onlineshop_client_account_store') }}">
+                        <form class="row" method="POST" action="{{ route('onlineshop_client_account_store') }}" onsubmit="return false;">
                             @csrf
                             <div id="divCartHidden" style="display: none">
                             </div>
@@ -147,7 +147,7 @@
                                 <p><b id="totalid"></b></p>
                             </div>
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <button class="btn btn-primary" style="width: 100%;" id="btn-crear-cuenta" disabled>
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     &nbsp;&nbsp;Crear Cuenta
                                 </button>
@@ -173,6 +173,9 @@
 
                 myIds.push(parseInt(item.id));
             });
+            
+            btnCrear = document.getElementById("btn-crear-cuenta");
+                        btnCrear.setAttribute("disabled", "disabled");
             realizarConsulta(myIds);
         }
 
@@ -207,6 +210,9 @@
                         // Agrega el input al div
                         divCartHidden.appendChild(inputHidden);
                     });
+                    
+                    btnCrear = document.getElementById("btn-crear-cuenta");
+                        btnCrear.removeAttribute("disabled");
 
                 },
                 error: function(xhr) {
@@ -287,6 +293,19 @@
         }
     </script>
 
+<script>
+    function confirmSubmit(event) {
+  event.preventDefault(); // Evita que el formulario se envíe automáticamente
+  carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  console.log(carrito);
+ if(carrito.length>0){
+    console.log(event);
+    event.target.form.submit();
+ }else
+ alert("No has elegido ningún curso");   
+  
+}
+</script>
 
     <!-- zoom courses Area End -->
 

@@ -37,6 +37,10 @@ function eliminarproducto(producto) {
                     elemento.remove();
                 }
             }
+            carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+            if(carrito.length<1){
+                document.getElementById("btn-crear-cuenta").setAttribute("disabled", "disabled");
+            }
             getTotal();
             cargarContadorCarrito();
         } else if (result.dismiss === Swal.DismissReason.cancel) {
