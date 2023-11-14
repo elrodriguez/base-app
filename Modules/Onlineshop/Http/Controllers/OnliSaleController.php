@@ -16,6 +16,9 @@ use Modules\Academic\Entities\AcaStudent;
 use Modules\Onlineshop\Entities\OnliItem;
 use Modules\Onlineshop\Entities\OnliSale;
 use Modules\Onlineshop\Entities\OnliSaleDetail;
+use MercadoPago\MercadoPagoConfig;
+use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\Exceptions\MPApiException;
 
 class OnliSaleController extends Controller
 {
@@ -169,39 +172,28 @@ class OnliSaleController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show($id)
+    public function getPreference($id)
     {
-        return view('onlineshop::show');
-    }
+        //dd(env('MERCADOPAGO_TOKEN'));
+        MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_TOKEN'));
+        try {
+            $client = new PreferenceClient();
+            $preference = $client->get($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('onlineshop::edit');
-    }
+            dd($preference);
+        } catch (MPApiException $e) {
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+            $response = $e->getApiResponse();
+            $content  = $response->getContent();
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+            $message = $content['message'];
+            $status = $content['status'];
+            $error = $content['error'];
+
+            // Mostrar o manejar los valores obtenidos
+            echo "Mensaje: " . $message . PHP_EOL;
+            echo "Estado: " . $status . PHP_EOL;
+            echo "Error: " . $error . PHP_EOL;
+        }
     }
 }
