@@ -54,7 +54,7 @@
                                     <a href="{{ route('web_categoria_sector') }}">Sector: <b>Empresarial</b></a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('web_categoria_sector') }}">Sector: <b>Laboral</b></a>
+                                    <a href="{{ route('web_categoria_sector') }}">Sector: <b>Derecho</b></a>
                                 </li>
                                 <li>
                                     <a href="{{ route('web_categoria_sector') }}">Sector: <b>Penal</b></a>
