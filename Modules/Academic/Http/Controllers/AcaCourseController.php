@@ -24,6 +24,7 @@ class AcaCourseController extends Controller
      * @return Renderable
      */
     protected $RPTABLE;
+
     public function __construct()
     {
         $this->RPTABLE = env('RECORDS_PAGE_TABLE') ?? 10;
@@ -48,6 +49,7 @@ class AcaCourseController extends Controller
         }
         $courses->with('category');
         $courses->with('modality');
+        $courses->with('modules');
         $courses = $courses->paginate($this->RPTABLE)->onEachSide(2);
 
         $institutions = AcaInstitution::where('status', true)->get();

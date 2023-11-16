@@ -182,10 +182,10 @@ const uploadImage = (blobInfo, progress) => {
 
     const checkChanged = (selectedIndex) => {
         form.teaching_plan.forEach((checkbox, index) => {
-        if (index !== selectedIndex) {
-          checkbox.is_main = false;
-        }
-      });
+            if (index !== selectedIndex) {
+                checkbox.is_main = false;
+            }
+        });
     }
 </script>
 

@@ -103,6 +103,10 @@ Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
         ->delete('agreement/destroy/{id}', 'AcaAgreementController@destroy')
         ->name('aca_agreements_destroy');
 
+    Route::post('courses/modules/store', 'AcaModuleController@store')->name('aca_courses_module_store');
+    Route::put('courses/modules/update/{id}', 'AcaModuleController@update')->name('aca_courses_module_update');
+    Route::delete('courses/modules/destroy/{id}', 'AcaModuleController@destroy')->name('aca_courses_module_destroy');
+
     Route::post('agreement/store', 'AcaAgreementController@store')->name('aca_agreements_store');
     Route::post('brochure/store', 'AcaBrochureController@store')->name('aca_brochure_store');
     Route::post('aca-upload-image', 'AcaBrochureController@uploadImage')->name('aca_upload_image_tiny');

@@ -5,12 +5,13 @@
     import { Dropdown } from 'flowbite-vue'
     import Swal2 from "sweetalert2";
     import { Link, router, useForm } from '@inertiajs/vue3';
-    import { faGears, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+    import { faGears, faTrashAlt, faCheck, faSpellCheck } from "@fortawesome/free-solid-svg-icons";
     import ModalLarge from '@/Components/ModalLarge.vue';
     import { ref } from 'vue';
     import DangerButton from '@/Components/DangerButton.vue';
     import InputError from '@/Components/InputError.vue';
     import ModalLargeXX from '@/Components/ModalLargeXX.vue';
+    import ModuleForm from './Partials/ModuleForm.vue';
 
     const props = defineProps({
         courses: {
@@ -156,13 +157,14 @@
     }
 
 const displayModalModules = ref(false);
-const formModule = useForm({
-    course_id: null,
-    name_course: null,
-});
+const dataModule = ref({});
 
 const openModalModules = (course) =>{
-    formModule.name_course = course.description;
+    dataModule.value = {
+        course_id: course.id,
+        name_course: course.description,
+        modules: course.modules
+    };
     displayModalModules.value = true;
 }
 const closeModalModules = () =>{
@@ -293,7 +295,6 @@ const closeModalModules = () =>{
                                             <template v-if="course.modality">
                                                 {{ course.modality.description }}
                                             </template>
-                                            
                                         </td>
                                         <td class="text-center py-2 px-2 dark:border-strokedark">
                                             <span v-if="course.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
@@ -373,7 +374,10 @@ const closeModalModules = () =>{
                 Modulos
             </template>
             <template #message>
-                {{ formModule.name_course }}
+                {{ dataModule.name_course }}
+            </template>
+            <template #content>
+                <ModuleForm :faSpellCheck="faSpellCheck" :faCheck="faCheck" :faTrashAlt="faTrashAlt" :course="dataModule" />
             </template>
         </ModalLargeXX>
     </AppLayout>

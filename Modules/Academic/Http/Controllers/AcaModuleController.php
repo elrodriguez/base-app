@@ -5,75 +5,86 @@ namespace Modules\Academic\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\DB;
+use Modules\Academic\Entities\AcaModule;
 
 class AcaModuleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
-    {
-        return view('academic::index');
-    }
+    use ValidatesRequests;
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('academic::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
     public function store(Request $request)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'position' => 'required|numeric',
+                'description' => 'required|max:255'
+            ]
+        );
+
+        $module = AcaModule::create([
+            'course_id'     => $request->get('course_id'),
+            'position'      => $request->get('position'),
+            'description'   => $request->get('description')
+        ]);
+
+        return response()->json([
+            'module' => $module
+        ]);
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('academic::show');
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('academic::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'position' => 'required|numeric',
+                'description' => 'required|max:255'
+            ]
+        );
+
+        $module = AcaModule::find($id);
+
+        $module->update([
+            'position'      => $request->get('position'),
+            'description'   => $request->get('description')
+        ]);
+
+        return response()->json([
+            'module' => $module
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
+
     public function destroy($id)
     {
-        //
+        $message = null;
+        $success = false;
+
+        try {
+
+            DB::beginTransaction();
+
+            $item = AcaModule::findOrFail($id);
+
+            $item->delete();
+
+            DB::commit();
+
+            $message =  'Modulo eliminada correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 }
