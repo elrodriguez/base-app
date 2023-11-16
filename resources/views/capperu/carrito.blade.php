@@ -71,7 +71,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="contact-inner" style="margin-top: 9px;">
-                        <form class="row" method="POST" action="{{ route('onlineshop_client_account_store') }}" onsubmit="return false;">
+                        <form class="row" method="POST" action="{{ route('onlineshop_client_account_store') }}" >
                             @csrf
                             <div id="divCartHidden" style="display: none">
                             </div>
@@ -80,35 +80,35 @@
                                     <div class="row">
                                         <div class="col-md-12 single-input-wrap">
                                             <input type="text" name="names" value="{{ old('names') }}"
-                                                placeholder="Nombres">
+                                                placeholder="Nombres" required>
                                             @error('names')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-6 single-input-wrap">
                                             <input type="text" name="app" value="{{ old('app') }}"
-                                                placeholder="Ap. Paterno">
+                                                placeholder="Ap. Paterno" required>
                                             @error('app')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-6 single-input-wrap">
                                             <input type="text" name="apm" value="{{ old('apm') }}"
-                                                placeholder="Ap. Materno">
+                                                placeholder="Ap. Materno" required>
                                             @error('apm')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-12 single-input-wrap">
                                             <input type="text" name="phone" value="{{ old('phone') }}"
-                                                placeholder="Teléfono">
+                                                placeholder="Teléfono" required>
                                             @error('phone')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col-md-12 single-input-wrap">
                                             <input type="text" name="email" value="{{ old('email') }}"
-                                                placeholder="E-mail">
+                                                placeholder="E-mail" required>
                                             @error('email')
                                                 <span>{{ $message }}</span>
                                             @enderror
@@ -132,7 +132,7 @@
                                         <br>
                                         <div class="col-md-12 single-input-wrap">
                                             <input type="text" name="number" value="{{ old('number') }}"
-                                                placeholder="Número">
+                                                placeholder="Número" required>
                                             @error('number')
                                                 <span>{{ $message }}</span>
                                             @enderror

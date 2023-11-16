@@ -43,7 +43,7 @@
                             <div class="single-course-wrap mb-0">
                                 <div class="thumb">
                                     <span class="play-btn"><i class="fa fa-play"></i></span>
-                                    <img src="{{env('URL_IMAGE_COURSES') . $course->image }}" alt="img">
+                                    <img style="width: 100%; heigth: 210px;" src="{{ $course->image }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
                                     <h5>{{ $course->description }}</h5>

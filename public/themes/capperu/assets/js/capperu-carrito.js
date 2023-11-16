@@ -61,7 +61,7 @@ function agregarAlCarrito(producto) {
         //consulta si ya exist el artículo en el carrito
         if (carritoTemp[i].id == producto.id) {
             Swal.fire({
-                title: "Hola",
+                title: "Estimado Usuario",
                 text:
                     producto.nombre +
                     " ya se encuentra en su carrito de compras.",
