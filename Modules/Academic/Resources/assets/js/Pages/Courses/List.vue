@@ -5,7 +5,7 @@
     import { Dropdown } from 'flowbite-vue'
     import Swal2 from "sweetalert2";
     import { Link, router, useForm } from '@inertiajs/vue3';
-    import { faGears, faTrashAlt, faCheck, faSpellCheck } from "@fortawesome/free-solid-svg-icons";
+    import { faGears, faTrashAlt, faCheck, faSpellCheck, faDownload, faPlay } from "@fortawesome/free-solid-svg-icons";
     import ModalLarge from '@/Components/ModalLarge.vue';
     import { ref } from 'vue';
     import DangerButton from '@/Components/DangerButton.vue';
@@ -377,7 +377,14 @@ const closeModalModules = () =>{
                 {{ dataModule.name_course }}
             </template>
             <template #content>
-                <ModuleForm :faSpellCheck="faSpellCheck" :faCheck="faCheck" :faTrashAlt="faTrashAlt" :course="dataModule" />
+                <ModuleForm 
+                    :faPlay="faPlay"
+                    :faDownload="faDownload"
+                    :faSpellCheck="faSpellCheck" 
+                    :faCheck="faCheck" 
+                    :faTrashAlt="faTrashAlt" 
+                    :course="dataModule" 
+                />
             </template>
         </ModalLargeXX>
     </AppLayout>

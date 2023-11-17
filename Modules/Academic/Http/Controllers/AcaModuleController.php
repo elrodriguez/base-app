@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 use Modules\Academic\Entities\AcaModule;
+use Modules\Academic\Entities\AcaTheme;
 
 class AcaModuleController extends Controller
 {
@@ -18,7 +19,7 @@ class AcaModuleController extends Controller
         $this->validate(
             $request,
             [
-                'position' => 'required|numeric',
+                'position' => 'required',
                 'description' => 'required|max:255'
             ]
         );
@@ -40,7 +41,7 @@ class AcaModuleController extends Controller
         $this->validate(
             $request,
             [
-                'position' => 'required|numeric',
+                'position' => 'required',
                 'description' => 'required|max:255'
             ]
         );
@@ -86,5 +87,11 @@ class AcaModuleController extends Controller
             'success' => $success,
             'message' => $message
         ]);
+    }
+
+    public function getThemeByModelId($id)
+    {
+        $themes = AcaTheme::with('contents')->where('module_id', $id)->get();
+        return response()->json(['themes' => $themes]);
     }
 }
