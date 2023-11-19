@@ -70,7 +70,7 @@
                                     <div class="single-form-check form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
                                         <label class="form-check-label" for="flexCheckDefault4">
-                                            Sector Penal
+                                            Sector Público
                                         </label>
                                     </div>
                                 </li>

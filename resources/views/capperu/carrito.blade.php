@@ -236,7 +236,7 @@
                 var name = respuesta.name;
                 var price = respuesta.price;
                 var modalidad = respuesta.additional;
-                var url_campus = "{{ env('URL_AVATAR_CAMPUS') }}";
+                var url_campus = "";
                 cart.innerHTML += `
             <div class="col-md-12" style="padding: 10px;" id="` + id + `_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
