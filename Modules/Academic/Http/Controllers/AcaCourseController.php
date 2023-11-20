@@ -68,6 +68,7 @@ class AcaCourseController extends Controller
     {
         $categories = AcaCategoryCourse::all();
         $modalities = AcaModality::all();
+        
         return Inertia::render('Academic::Courses/Create', [
             'modalities'    => $modalities,
             'categories'    => $categories
@@ -139,13 +140,14 @@ class AcaCourseController extends Controller
         $course_teachers = AcaTeacherCourse::with('teacher.person')->where('course_id', $id)->get();
 
         $teachers = AcaTeacher::with('person')->get();
-
+        
         if (count($teachers) > 0) {
             $teachers = $teachers->toArray();
         }
         if (count($course_teachers) > 0) {
             $course_teachers = $course_teachers->toArray();
         }
+        
         return Inertia::render('Academic::Courses/Information', [
             'brochure' => AcaBrochure::where('course_id', $id)->first(),
             'course' => AcaCourse::find($id),

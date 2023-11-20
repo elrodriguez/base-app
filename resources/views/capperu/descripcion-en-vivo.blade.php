@@ -150,7 +150,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-md-10">
-                                                <h6>{{ $item->teacher->person->full_name }}</h6>
+                                                <h6>{{ $item->teacher->person->father_lastname." ". $item->teacher->person->mother_lastname." ". $item->teacher->person->names }}</h6>
                                                 @if (count($item->teacher->person->resumes))
                                                     <ul>
                                                         @foreach ($item->teacher->person->resumes as $resume)
