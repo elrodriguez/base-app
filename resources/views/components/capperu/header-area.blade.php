@@ -99,7 +99,7 @@
         <div class="container">
             <div class="category-slider owl-carousel">
                 <div class="item">
-                    <a href="">
+                    <a href="" style="text-transform: none;">
                         <i class="fa fa-envelope" aria-hidden="true" style="color: orange;"></i>
                         capperuacademica@gmail.com
                     </a>
@@ -119,7 +119,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav menu-open" style="text-align:center;">
                         <li>
-                            <a href="">
+                            <a href="" style="text-transform: none;">
                                 <i class="fa fa-envelope" aria-hidden="true" style="color: orange;"></i>
                                 capperuacademica@gmail.com
                             </a>
