@@ -129,7 +129,7 @@ class AcaTeacherController extends Controller
                 'public'
             );
         }
-        $path = env('APP_URL') . "/storage/" . $path; //guardar la ruta COMPLETA
+        $path = asset("storage/" . $path); //guardar la ruta COMPLETA
         $per = Person::create([
             'document_type_id'      => $request->get('document_type_id'),
             'short_name'            => $request->get('names'),
@@ -254,7 +254,7 @@ class AcaTeacherController extends Controller
                 'public'
             );
         }
-        $path = env('APP_URL') . "/storage/" . $path; //RUTA COMPLETA
+        $path = asset("storage/" . $path); //RUTA COMPLETA
         Person::find($person_id)->update([
             'document_type_id'      => $request->get('document_type_id'),
             'short_name'            => $request->get('names'),

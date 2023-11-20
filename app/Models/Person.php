@@ -34,11 +34,12 @@ class Person extends Model
         'father_lastname',
         'mother_lastname'
     ];
+    // se esta guardando la ruta completa por eso se comento
+    // public function getImageAttribute($value)
+    // {
+    //     return $value ? asset('storage/' . $value) : null;
+    // }
 
-    public function getImageAttribute($value)
-    {
-        return $value ? asset('storage/' . $value) : null;
-    }
     public function district(): HasOne
     {
         return $this->hasOne(District::class, 'id', 'ubigeo');
