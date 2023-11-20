@@ -19,7 +19,7 @@
                             <button class="nav-link" id="pills-3-tab" data-bs-toggle="pill" data-bs-target="#pills-3">Derecho</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-4-tab" data-bs-toggle="pill" data-bs-target="#pills-4">Penal</button>
+                            <button class="nav-link" id="pills-4-tab" data-bs-toggle="pill" data-bs-target="#pills-4">Público</button>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -45,7 +45,7 @@
                                             </div>
                                             <div class="user-area" style="padding: 3px;">
                                                 <div class="user-details">
-                                                    <img  style="width: 30px; height: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
+                                                    <img  style="width: 30px; height: 30px; border-radius: 50%;" src="{{ $program->avatar }}" alt="img">
                                                     <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                 </div>
                                                 <div class="user-rating">
@@ -61,7 +61,7 @@
                                                             Sector:
                                                         </span>
                                                         <br>
-                                                        <b>{{ $program->category_description }}</b>
+                                                        <b>{{ $program->category_description=="Publico"?"Público":$program->category_description }}</b>
                                                     </a>
                                                 </div>
                                                 <div class="user-rating">
@@ -114,7 +114,7 @@
                                                     </div>
                                                     <div class="user-area" style="padding: 3px;">
                                                         <div class="user-details">
-                                                            <img  style="width: 30px; height: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
+                                                            <img  style="width: 30px; height: 30px; border-radius: 50%;" src="{{ $program->avatar }}" alt="img">
                                                             <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                         </div>
                                                         <div class="user-rating">
@@ -130,7 +130,7 @@
                                                                     Sector:
                                                                 </span>
                                                                 <br>
-                                                                <b><div style="text-align: right;">{{ $program->category_description }}</div></b>
+                                                                <b><div style="text-align: right;">{{ $program->category_description=="Publico"?"Público":$program->category_description }}</div></b>
                                                             </a>
                                                         </div>
                                                         <div class="user-rating">
@@ -184,7 +184,7 @@
                                                 </div>
                                                 <div class="user-area" style="padding: 3px;">
                                                     <div class="user-details">
-                                                        <img  style="width: 30px; height: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
+                                                        <img  style="width: 30px; height: 30px; border-radius: 50%;" src="{{ $program->avatar }}" alt="img">
                                                         <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                     </div>
                                                     <div class="user-rating">
@@ -200,7 +200,7 @@
                                                                 Sector:
                                                             </span>
                                                             <br>
-                                                            <b><div style="text-align: right;">{{ $program->category_description }}</div></b>
+                                                            <b><div style="text-align: right;">{{ $program->category_description=="Publico"?"Público":$program->category_description }}</div></b>
                                                         </a>
                                                     </div>
                                                     <div class="user-rating">
@@ -230,13 +230,13 @@
                         </div>
 
 
-                        <div class="tab-pane fade" id="pills-4"> <!-- Penal -->
+                        <div class="tab-pane fade" id="pills-4"> <!-- Publico -->
                             <div class="course-slider owl-carousel">
                                 
                                 
 
                                 @foreach ($programs as $program)                                
-                                @if($program->category_description == "Penal")
+                                @if($program->category_description == "Publico")
                                     <div class="item">
                                         <div class="single-course-wrap">
                                             <div class="thumb">
@@ -254,7 +254,7 @@
                                                 </div>
                                                 <div class="user-area" style="padding: 3px;">
                                                     <div class="user-details">
-                                                        <img  style="width: 30px; height: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
+                                                        <img  style="width: 30px; height: 30px; border-radius: 50%;" src="{{ $program->avatar }}" alt="img">
                                                         <a href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                                     </div>
                                                     <div class="user-rating">
@@ -270,7 +270,7 @@
                                                                 Sector:
                                                             </span>
                                                             <br>
-                                                            <b><div style="text-align: right;">{{ $program->category_description }}</div></b>
+                                                            <b><div style="text-align: right;">{{ $program->category_description=="Publico"?"Público":$program->category_description }}</div></b>
                                                         </a>
                                                     </div>
                                                     <div class="user-rating">

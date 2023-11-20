@@ -254,8 +254,8 @@ const uploadImage = (blobInfo, progress) => {
                     <label for="teacher_id" class="sr-only">Teachers</label>
                     <div class="relative w-full">
                         <select v-model="teacherSelected" id="teacher_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected>Seleccionar</option>
-                            <option v-for="(te,k) in teachers" :value="k">{{ te.person.full_name }}</option>
+                            <option selected>Seleccionar</option> 
+                            <option v-for="(te,k) in teachers" :value="k">{{ te.person.father_lastname+" "+te.person.mother_lastname+" "+te.person.names }}</option>
                         </select>
                     </div>
                     <button @click="addTeacher" type="button" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -296,10 +296,10 @@ const uploadImage = (blobInfo, progress) => {
                                     </div>
                                 </td>
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <img class="w-10 h-10 rounded" :src="tea.teacher.person.image" alt="Medium avatar">
+                                    <img class="w-10 h-10 rounded" :src="tea.teacher.person.image" alt="Medium avatar" >
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{ tea.teacher.person.full_name }}
+                                    {{ tea.teacher.person.father_lastname+" "+ tea.teacher.person.mother_lastname+" "+ tea.teacher.person.names }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ tea.teacher.person.telephone }}

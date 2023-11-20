@@ -59,7 +59,7 @@
                                     <img src="{{ asset('themes/capperu/assets/img/intro/002.png') }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
-                                    <h6><a href="#">Penal</a></h6>
+                                    <h6><a href="#">Público</a></h6>
                                     <p>236 Programas</p>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                                     <div class="user-area" style="padding: 3px;">
                                         <div class="user-details">
                                             <img style="width: 30px; height: 30px; border-radius: 50%;"
-                                                src="{{ env('URL_AVATAR_CAMPUS') . $program->avatar }}" alt="img">
+                                                src="{{ $program->avatar }}" alt="img">
                                             <a
                                                 href="{{ route('web_perfil_docente', $program->teacher_id) }}">{{ $program->teacher }}</a>
                                         </div>

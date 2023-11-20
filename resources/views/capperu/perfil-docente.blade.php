@@ -30,7 +30,7 @@
                 <div class="col-lg-4">
                     <div class="instructor-details-area text-center">
                         <div class="thumb">
-                            <img src="{{ env('URL_AVATAR_CAMPUS').$teacher->avatar }}" alt="img">
+                            <img src="{{ $teacher->avatar }}" alt="img">
                         </div>
                         <h3>{{ $teacher->names ." ". $teacher->ApellidoP }}
                         </h3>
@@ -99,7 +99,7 @@
                                         </h6>
                                         <div class="user-area">
                                             <div class="user-details">
-                                                <img style="width: 30px; height: 30px; border-radius: 50%;" src="{{ env('URL_AVATAR_CAMPUS').$program->avatar }}" alt="img">
+                                                <img style="width: 30px; height: 30px; border-radius: 50%;" src="{{ $program->avatar }}" alt="img">
                                                 <a href="{{ route('web_perfil_docente', 1) }}">{{ $program->teacher }}</a>
                                             </div>
                                             <div class="user-rating">
@@ -138,7 +138,7 @@
                         
                         
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-lg-12 text-center">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
@@ -150,7 +150,7 @@
                                 </ul>
                             </nav>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             

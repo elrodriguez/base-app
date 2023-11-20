@@ -35,7 +35,7 @@ class AcaStudentController extends Controller
                 'people.email',
                 'people.address',
                 'people.birthdate',
-                DB::raw('CONCAT("' . asset('storage') . '/",people.image) AS people_image'),
+                'people.image AS people_image',
                 'aca_students.created_at'
             );
         if (request()->has('search')) {
@@ -128,7 +128,7 @@ class AcaStudentController extends Controller
                 'public'
             );
         }
-
+        $path = env('APP_URL') . "/storage/" . $path;
         $per = Person::create([
             'document_type_id'      => $request->get('document_type_id'),
             'short_name'            => $request->get('names'),
@@ -207,7 +207,7 @@ class AcaStudentController extends Controller
             ->where('aca_students.id', $id)
             ->first();
 
-        $student->image_preview = asset('storage/' . $student->image);
+        $student->image_preview = $student->image;
 
         return Inertia::render('Academic::Students/Edit', [
             'identityDocumentTypes' => $identityDocumentTypes,
@@ -261,7 +261,7 @@ class AcaStudentController extends Controller
                 'public'
             );
         }
-
+        $path = env('APP_URL') . "/storage/" . $path;
         Person::find($person_id)->update([
             'document_type_id'      => $request->get('document_type_id'),
             'short_name'            => $request->get('names'),
