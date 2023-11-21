@@ -23,7 +23,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-12 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Sector Empresarial</h1>
+                        <h1>Sector  {{ ucfirst($sector) }}</h1>
                     </div>
                 </div>
             </div>
@@ -43,13 +43,13 @@
                         <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
-                                    <a href="{{ route ('web_sectors', ['El Sector', 'El tipo']) }}">
+                                    <a href="{{ route ('web_sectors', [$sector, 'Curso']) }}">
                                         <img src="{{ asset('themes/capperu/assets/img/course/7.png') }}" alt="img">
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="{{ route ('web_sectors', ['El Sector', 'El tipo']) }}" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        CURSOS ESPECIALIZADOS EN SECTOR EMPRESARIAL    
+                                    <a href="{{ route ('web_sectors', [$sector, 'Curso']) }}" class="btn btn-base" style="width: 100%; text-align:center; border-radius: 0px;">
+                                        CURSOS DEL SECTOR {{ strtoupper($sector) }}    
                                     </a>
                                 </div>
                             </div>
@@ -57,13 +57,13 @@
                         <div class="col-md-6">
                             <div class="single-course-wrap">
                                 <div class="thumb">
-                                    <a href="{{ route ('web_sectors', ['El Sector', 'El tipo']) }}">
+                                    <a href="{{ route ('web_sectors', [$sector, 'Diplomado']) }}">
                                         <img src="{{ asset('themes/capperu/assets/img/course/5.png') }}" alt="img">
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="{{ route ('web_sectors', ['El Sector', 'El tipo']) }}" class="btn btn-base2" style="width: 100%; text-align:center; border-radius: 0px;">
-                                        DIPLOMADOS ESPECIALIZADOS EN SECTOR EMPRESARIAL      
+                                    <a href="{{ route ('web_sectors', [$sector, 'Diplomado']) }}" class="btn btn-base2" style="width: 100%; text-align:center; border-radius: 0px;">
+                                        DIPLOMADOS DEL SECTOR {{ strtoupper($sector) }}      
                                     </a>
                                 </div>
                             </div>
