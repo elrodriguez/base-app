@@ -241,6 +241,12 @@ const menu = ref([
                 permissions: 'cms_pagina',
             },
             {
+                route: route('establishments.index'),
+                status: false,
+                text: 'Centros de distribución',
+                permissions: 'sale_tienda',
+            },
+            {
                 route: route('blog-category.index'),
                 status: false,
                 text: 'Blog Categorías',

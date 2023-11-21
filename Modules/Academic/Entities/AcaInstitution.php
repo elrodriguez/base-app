@@ -18,7 +18,8 @@ class AcaInstitution extends Model
         'name',
         'image',
         'phone',
-        'address'
+        'address',
+        'status'
     ];
 
     protected static function newFactory(): AcaInstitutionFactory

@@ -30,9 +30,9 @@ const form = useForm({
     route: props.hey.route,
     main: props.hey.main == 1 ? true : false,
     status : props.hey.status == 1 ? true : false,
-    country_id: props.hey.country_id,
-    country_icon: getImageCountry(props.hey.country.icon),
-    country_description: props.hey.country.description,
+    country_id: props.hey.country_id ?? null,
+    country_icon: props.hey.country_id ? getImageCountry(props.hey.country.icon) : null,
+    country_description: props.hey.country_id ? props.hey.country.description : 'Seleccionar',
 });
 
 const updatePage = () => {

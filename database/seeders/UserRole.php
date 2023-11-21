@@ -57,6 +57,11 @@ class UserRole extends Seeder
         array_push($permissions, Permission::create(['name' => 'punto_ventas']));
         array_push($permissions, Permission::create(['name' => 'sale_reportes']));
         array_push($permissions, Permission::create(['name' => 'sale_tienda']));
+        array_push($permissions, Permission::create(['name' => 'sale_tienda_nuevo']));
+        array_push($permissions, Permission::create(['name' => 'sale_tienda_editar']));
+        array_push($permissions, Permission::create(['name' => 'sale_tienda_eliminar']));
+        array_push($permissions, Permission::create(['name' => 'sale_tienda_series']));
+        array_push($permissions, Permission::create(['name' => 'sale_tienda_agregar_vendedor']));
         array_push($permissions, Permission::create(['name' => 'invo_dashboard']));
         array_push($permissions, Permission::create(['name' => 'invo_documento']));
         array_push($permissions, Permission::create(['name' => 'invo_documento_lista']));

@@ -104,6 +104,8 @@
         items: []
     });
 
+    const itemsImages = ref([]);
+
     const descriptionSection = ref(null);
     const activeButonGroup = ref(false);
     const idSection = ref(null);
@@ -135,7 +137,12 @@
                     activeButonGroup.value = false;
                 }
             });
+
             itemsForm.items = res.data.items;
+
+            itemsForm.items = itemsForm.items.map(obj => ({ ...obj, image_preview: (obj.item.type_id == 1 ? obj.item.content : null ) }));
+
+            console.log(itemsForm.items )
         });
 
     }
@@ -269,6 +276,20 @@ const saveChangesGroupItems = (key) => {
         });
     });
 }
+
+const updateImagePreview = (index,image) => {
+        const photo = image;
+
+        if (! photo) return;
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            itemsForm.items[index].image_preview = e.target.result;
+        };
+        
+        reader.readAsDataURL(photo);
+    };
 </script>
 
 <template>
@@ -345,12 +366,12 @@ const saveChangesGroupItems = (key) => {
                                             </p>
                                             <div class="flex justify-center space-x-2">
                                                 <figure class="max-w-lg">
-                                                    <img class="h-auto max-w-full rounded-lg" :src="it.item.content">
+                                                    <img class="h-auto max-w-full rounded-lg" :src="it.image_preview">
                                                     <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                                                 </figure>
                                             </div>
                                             
-                                            <input @input="it.item.content = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                                            <input @input="updateImagePreview(ky,$event.target.files[0])" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
                                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                                         </template>
                                         <template v-if="it.item.type_id == 2">

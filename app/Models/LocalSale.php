@@ -16,7 +16,8 @@ class LocalSale extends Model
         'address',
         'phone',
         'ubigeo',
-        'sunat_code'
+        'sunat_code',
+        'map'
     ];
 
     public function getCreatedAtAttribute($value)

@@ -8,16 +8,30 @@ import TextInput from '@/Components/TextInput.vue';
 import Keypad from '@/Components/Keypad.vue';
 import Swal2 from 'sweetalert2';
 import { ref, watch } from 'vue';
+import Editor from '@tinymce/tinymce-vue'
 
 const props = defineProps({
     courses: {
         type: Object,
         default: () => ({}),
-    }
+    },
+    products: {
+        type: Object,
+        default: () => ({}),
+    },
+    tiny_api_key: {
+        type: String,
+        default: () => ({}),
+    },
 });
 
+const titles = ref({
+    additional: 'Tipo',
+    additional1: 'Modalidad'
+});
 
 const form = useForm({
+    type: 2,
     item_id: null,
     entitie: 'Modules-Academic-Entities-AcaCourse',
     category_description: null,
@@ -33,8 +47,8 @@ const form = useForm({
 });
 
 watch(() => form.description, (newValue) => {
-      form.countCharacters = newValue.length;
-    });
+    form.countCharacters = newValue.length;
+});
 
 const createItem = () => {
     form.post(route('onlineshop_items_store'), {
@@ -52,13 +66,27 @@ const createItem = () => {
     });
 }
 
-const setItemsData = (data) => {
+const setItemsData = (data,type) => {
+    form.type = type;
     form.item_id = data.id;
-    form.category_description = data.category.description;
+    if(type == 1){
+        titles.value.additional = 'Tipo'
+        titles.value.additional1 = 'Modalidad'
+
+        form.additional = data.type_description;
+        form.additional1 = data.modality.description;
+        form.category_description = data.category.description;
+        form.entitie = 'Modules-Academic-Entities-AcaCourse'
+    }else{
+        titles.value.additional = 'Recomendación'
+        titles.value.additional1 = 'Video'
+        form.entitie = 'App-Models-Product'
+    }
+    
+   
     form.name = data.description;
     form.image_view = data.image;
-    form.additional = data.type_description;
-    form.additional1 = data.modality.description;
+    
 }
 
 const loadFile = (event) => {
@@ -83,13 +111,21 @@ const loadFile = (event) => {
 </script>
 
 <template>
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
         <div class="col-span-2 sm:col-span-1">
-            <div class="w-full rounded-lg font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            <div v-if="courses.length > 0" class="w-full rounded-lg font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <div class="block w-full px-4 py-2 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-600">Cursos</div>
                 <div style="height: 250px; overflow-y: auto;">
-                    <button @click="setItemsData(course)" v-for="(course, key) in courses" type="button" class="w-full text-sm px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                    <button @click="setItemsData(course,1)" v-for="(course, key) in courses" type="button" class="w-full text-sm px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
                         {{ course.description }}
+                    </button>
+                </div>
+            </div>
+            <div v-if="products.length > 0" class="w-full rounded-lg font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <div class="block w-full px-4 py-2 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-600">Productos</div>
+                <div style="height: 250px; overflow-y: auto;">
+                    <button @click="setItemsData(product,2)" v-for="(product, key) in products" type="button" class="w-full text-sm px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                        {{ product.description }}
                     </button>
                 </div>
             </div>
@@ -110,13 +146,27 @@ const loadFile = (event) => {
                         <InputError :message="form.errors.name" class="mt-2" />
                         <InputError :message="form.errors.item_id" class="mt-2" />
                     </div>
-                    <div class="mt-2">
+                    <div v-if="form.type == 1" class="mt-2">
                         <InputLabel for="description" value="Descripción" />
                         <textarea v-model="form.description" id="description" rows="2" autofocus class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escribe descripción aquí..."></textarea>
                         <span id="charCount">{{ form.countCharacters }}</span> caracteres de máximo 255
                         <InputError :message="form.errors.description" class="mt-2" />
                     </div>
-                    <div class="mt-2">
+                    <div v-if="form.type == 2" class="mt-2">
+                        <InputLabel for="description" value="Descripción" />
+                        <Editor
+                            id="description"
+                            :api-key="tiny_api_key"
+                            v-model="form.description"
+                            :init="{
+                                plugins: 'anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount',
+                                language: 'es',
+                            }"
+                        />
+                        <InputError :message="form.errors.description" class="mt-2" />
+                    </div>
+                    <!-- para cursos -->
+                    <div v-if="form.type == 1" class="mt-2">
                         <InputLabel for="category_description" value="Sector" />
                         <TextInput
                             id="category_description"
@@ -128,8 +178,8 @@ const loadFile = (event) => {
                         <InputError :message="form.errors.category_description" class="mt-2" />
                     </div>
   
-                    <div class="mt-2">
-                        <InputLabel for="additional1" value="Modalidad*" />
+                    <div v-if="form.type == 1" class="mt-2">
+                        <InputLabel for="additional1" :value="titles.additional1+'*'" />
                         <select id="additional1" v-model="form.additional1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">Seleccionar modalidad</option>
                             <option value="En Vivo">En Vivo</option>
@@ -139,9 +189,14 @@ const loadFile = (event) => {
                         </select>
                         <InputError :message="form.errors.additional1" class="mt-2" />
                     </div>
-
-                    <div class="mt-2">
-                        <InputLabel for="additional" value="Tipo*" />
+                    <!-- para zoe -->
+                    <div v-if="form.type == 2" class="mt-2">
+                        <InputLabel for="additional1" :value="titles.additional1+'*'" />
+                        <textarea v-model="form.additional1" id="additional1" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                        <InputError :message="form.errors.additional1" class="mt-2" />
+                    </div>
+                    <div v-if="form.type == 1" class="mt-2">
+                        <InputLabel for="additional" :value="titles.additional+'*'" />
                         <select id="additional" v-model="form.additional" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">Seleccionar tipo</option>
                             <option value="Curso">Curso</option>
@@ -149,7 +204,19 @@ const loadFile = (event) => {
                         </select>
                         <InputError :message="form.errors.additional" class="mt-2" />
                     </div>
-
+                    <div v-if="form.type == 2" class="mt-2">
+                        <InputLabel for="additional" :value="titles.additional1+'*'" />
+                        <Editor
+                            id="additional"
+                            :api-key="tiny_api_key"
+                            v-model="form.additional"
+                            :init="{
+                                plugins: 'anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount',
+                                language: 'es',
+                            }"
+                        />
+                        <InputError :message="form.errors.additional" class="mt-2" />
+                    </div>
                     <div class="mt-2">
                         <InputLabel for="image" value="Imagen *" />
                         <div class="flex justify-center space-x-2">
@@ -163,7 +230,7 @@ const loadFile = (event) => {
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG or GIF (RECOMENDADO. 800x400px).</p>
                         <InputError :message="form.errors.image" class="mt-2" />
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div v-if="form.type == 1" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="mt-2">
                             <InputLabel for="price" value="Precio" />
                             <TextInput

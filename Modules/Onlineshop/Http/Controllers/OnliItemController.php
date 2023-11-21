@@ -2,6 +2,7 @@
 
 namespace Modules\Onlineshop\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -54,15 +55,25 @@ class OnliItemController extends Controller
      */
     public function create()
     {
-        $courses = AcaCourse::with('category')
-        ->with('modality')
-        ->whereNotIn('id', function ($query) {
-            $query->select('item_id') //la columna entitie dice que modelo es y el item_id el id de ese modelo en este caso aca_course
-                ->from('onli_items'); 
-        })
-        ->get();
+        $courses = [];
+        // $courses = AcaCourse::with('category')
+        //     ->with('modality')
+        //     ->whereNotIn('id', function ($query) {
+        //         $query->select('item_id')
+        //             ->from('onli_items');
+        //     })
+        //     ->get();
+
+        $products = Product::whereNotIn('id', function ($query) {
+            $query->select('item_id')
+                ->from('onli_items')
+                ->where('onli_items.entitie', 'App-Models-Product');
+        })->get();
+
         return Inertia::render('Onlineshop::Items/Create', [
-            'courses' => $courses
+            'courses'   => $courses,
+            'products'  => $products,
+            'tiny_api_key' => env('TINY_API_KEY'),
         ]);
     }
 

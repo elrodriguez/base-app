@@ -97,7 +97,8 @@ class LocalSaleController extends Controller
             'description'   => $request->get('description'),
             'address'       => $request->get('address'),
             'phone'         => $request->get('phone'),
-            'ubigeo'        => $request->get('ubigeo')
+            'ubigeo'        => $request->get('ubigeo'),
+            'map'           => $request->get('map')
         ]);
 
         if ($request->get('user_id')) {
@@ -153,16 +154,19 @@ class LocalSaleController extends Controller
             'description'   => 'required',
             'address'       => 'required',
         ]);
+
         if ($request->get('user_id')) {
             $this->validate($request, [
                 'user_id'   => 'unique:users,local_id,' . $request->get('user_id')
             ]);
         }
+
         LocalSale::find($id)->update([
             'description'   => $request->get('description'),
             'address'       => $request->get('address'),
             'phone'         => $request->get('phone'),
-            'ubigeo'        => $request->get('ubigeo')
+            'ubigeo'        => $request->get('ubigeo'),
+            'map'           => $request->get('map')
         ]);
 
         if ($request->get('user_id')) {
@@ -172,7 +176,7 @@ class LocalSaleController extends Controller
                 ]);
         }
 
-        return redirect()->route('establishments.create')
+        return redirect()->route('establishments.edit', $id)
             ->with('message', __('Tienda Actualizada con éxito'));
     }
 

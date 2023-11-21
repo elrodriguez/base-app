@@ -19,11 +19,11 @@ class CmsSectionItem extends Model
 
     public function item(): BelongsTo
     {
-        return $this->belongsTo(CmsItem::class, 'item_id');
+        return $this->belongsTo(CmsItem::class, 'item_id', 'id');
     }
 
     public function group(): BelongsTo
     {
-        return $this->belongsTo(CmsItem::class, 'item_id');
+        return $this->belongsTo(CmsItem::class, 'item_id', 'id');
     }
 }
