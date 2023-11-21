@@ -17,6 +17,10 @@
             type: Object,
             default: () => ({}),
         },
+        type: {
+            type: String,
+            default: () => ({}),
+        }
     });
 
     const form = useForm({
@@ -124,23 +128,20 @@
                                     <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
                                         Imagen
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th v-if="type == 1" class="py-2 px-4 font-medium text-black dark:text-white">
                                         Categoría
                                     </th>
                                     <th class="py-2 px-4 font-medium text-black dark:text-white">
                                         Nombre
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th v-if="type == 1" class="py-2 px-4 font-medium text-black dark:text-white">
                                         Descripción
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th v-if="type == 1" class="py-2 px-4 font-medium text-black dark:text-white">
                                         Tipo
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th v-if="type == 1" class="py-2 px-4 font-medium text-black dark:text-white">
                                         Precio
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Descuento
                                     </th>
                                     <th class="py-2 px-4 font-medium text-black dark:text-white">
                                         Estado
@@ -158,26 +159,23 @@
                                                 <font-awesome-icon :icon="faTrashAlt" />
                                             </button>
                                         </td>
-                                        <td class="w-32 p-4">
-                                            <img :src="item.image" :alt="item.name">
+                                        <td class="p-4">
+                                            <img :src="item.image" :alt="item.name" style="width: 70px;">
                                         </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
+                                        <td v-if="type == 1" class="py-2 px-2 dark:border-strokedark">
                                             {{ item.category_description }}
                                         </td>
                                         <td class="py-2 px-2 dark:border-strokedark">
                                             {{ item.name }}
                                         </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
+                                        <td v-if="type == 1" class="py-2 px-2 dark:border-strokedark">
                                             {{ item.description }}
                                         </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
+                                        <td v-if="type == 1" class="py-2 px-2 dark:border-strokedark">
                                             {{ item.additional }}
                                         </td>
-                                        <td class="py-2 px-2 text-right dark:border-strokedark">
+                                        <td v-if="type == 1" class="py-2 px-2 text-right dark:border-strokedark">
                                             {{ item.price }}
-                                        </td>
-                                        <td class="py-2 px-2 text-right dark:border-strokedark">
-                                            {{ item.discount }}
                                         </td>
                                         <td class="text-center py-2 px-2 dark:border-strokedark">
                                             <span v-if="item.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>

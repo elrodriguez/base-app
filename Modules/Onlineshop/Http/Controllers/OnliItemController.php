@@ -2,6 +2,7 @@
 
 namespace Modules\Onlineshop\Http\Controllers;
 
+use App\Models\Parameter;
 use App\Models\Product;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -18,10 +19,14 @@ use Illuminate\Support\Facades\DB;
 class OnliItemController extends Controller
 {
     use ValidatesRequests;
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
+
+    protected $P000009;
+
+    public function __construct()
+    {
+        $vallue = Parameter::where('parameter_code', 'P000009')->value('value_default');
+        $this->P000009 = $vallue ?? 1;
+    }
 
     public function index()
     {
@@ -45,7 +50,8 @@ class OnliItemController extends Controller
 
         return Inertia::render('Onlineshop::Items/List', [
             'items' => $items,
-            'filters' => request()->all('search')
+            'filters' => request()->all('search'),
+            'type'  => $this->P000009
         ]);
     }
 
@@ -74,6 +80,7 @@ class OnliItemController extends Controller
             'courses'   => $courses,
             'products'  => $products,
             'tiny_api_key' => env('TINY_API_KEY'),
+            'type'  => $this->P000009
         ]);
     }
 
@@ -88,16 +95,23 @@ class OnliItemController extends Controller
         $this->validate($request, [
             'item_id'                   => 'required|unique:onli_items,item_id',
             'entitie'                   => 'required',
-            'category_description'      => 'required|max:255',
             'name'                      => 'required|max:255',
-            'description'               => 'required|max:255',
-            'price'                     => 'required|numeric',
-            //'discount'                  => 'required|max:255',
+            ///'description'               => 'required|max:255',
+            'description'               => 'required',
+
             'image'                     => 'required|image|mimes:jpeg,png,gif|max:2048'
         ], [
             'item_id.required' => 'Elija un Curso',
             'item_id.unique'   => 'Ya existe como item para la web',
         ]);
+
+        if ($this->P000009 == 1) {
+            $this->validate($request, [
+                'category_description'      => 'required|max:255',
+                'price'                     => 'required|numeric',
+                //'discount'                  => 'required|max:255',
+            ]);
+        }
 
         // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
         // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
@@ -152,9 +166,11 @@ class OnliItemController extends Controller
      */
     public function edit($id)
     {
+
         $item = OnliItem::find($id);
         return Inertia::render('Onlineshop::Items/Edit', [
-            'item' => $item
+            'item' => $item,
+            'type'  => $this->P000009
         ]);
     }
 

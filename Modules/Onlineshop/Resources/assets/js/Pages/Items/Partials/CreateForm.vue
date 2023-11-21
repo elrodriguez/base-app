@@ -23,6 +23,10 @@ const props = defineProps({
         type: String,
         default: () => ({}),
     },
+    type: {
+        type: String,
+        default: () => ({}),
+    }
 });
 
 const titles = ref({
@@ -31,7 +35,7 @@ const titles = ref({
 });
 
 const form = useForm({
-    type: 2,
+    type: props.type,
     item_id: null,
     entitie: 'Modules-Academic-Entities-AcaCourse',
     category_description: null,
