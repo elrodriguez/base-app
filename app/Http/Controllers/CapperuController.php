@@ -88,12 +88,12 @@ class CapperuController extends Controller
                 'users.avatar as avatar',
                 'onli_items.description as description',
                 'aca_courses.id as course_id',
-                'aca_category_courses.description as category_description'
+                'onli_items.category_description as category_description'
             )
             ->where('onli_items.status', true)->orderBy('onli_items.id', 'DESC')
             ->where('onli_items.additional', $tipo)
             ->where('onli_items.additional2', $sector)->get();
-
+            
         return view('capperu/sector-cursos', [
             'programs' => $programs
         ]);

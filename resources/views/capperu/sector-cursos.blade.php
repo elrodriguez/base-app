@@ -66,7 +66,7 @@
                                                     <img style="height: 140px; object-fit: cover;" src="{{ $program->image }}" alt="img">
                                                 </div>
                                                 <div class="wrap-details">
-                                                    <h6><a class="texto-oculto2" href="#">{{ $program->name }}</a></h6>
+                                                    <h6><a class="texto-oculto2" href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a></h6>
                                                     <div class="user-area">
                                                         <div class="user-details">
                                                             <img style="width: 30px; height: 30px; border-radius: 50%;" src="{{ $program->avatar }}" alt="img">
@@ -139,7 +139,7 @@
                                                     <img style="height: 140px; object-fit: cover;" src="{{ $program->image }}" alt="img">
                                                 </div>
                                                 <div class="wrap-details">
-                                                    <h6><a class="texto-oculto2" href="#">{{ $program->name }}</a></h6>
+                                                    <h6><a class="texto-oculto2" href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a></h6>
                                                     <div class="user-area">
                                                         <div class="user-details">
                                                             <img style="width: 30px; height: 30px; border-radius: 50%;" src="{{ $program->avatar }}" alt="img">
@@ -210,7 +210,7 @@
                                                     <img style="height: 140px; object-fit: cover;" src="{{ $program->image }}" alt="img">
                                                 </div>
                                                 <div class="wrap-details">
-                                                    <h6><a class="texto-oculto2" href="#">{{ $program->name }}</a></h6>
+                                                    <h6><a class="texto-oculto2" href="{{ route('web_descripcion_en_vivo', $program->id) }}">{{ $program->name }}</a></h6>
                                                     <div class="user-area">
                                                         <div class="user-details">
                                                             <img style="width: 30px; height: 30px; border-radius: 50%;" src="{{ $program->avatar }}" alt="img">
