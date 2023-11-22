@@ -42,7 +42,7 @@
                         <div class="col-md-12">
                             <div class="single-course-wrap mb-0">
                                 <div class="thumb">
-                                    <span class="play-btn"><i class="fa fa-play"></i></span>
+                                    {{-- <span class="play-btn"><i class="fa fa-play"></i></span> --}}
                                     <img style="width: 100%; heigth: 210px;" src="{{ $course->image }}" alt="img">
                                 </div>
                                 <div class="wrap-details">
