@@ -30,9 +30,12 @@ class CapperuController extends Controller
         return view('capperu/categorias');
     }
 
-    public function categoriasector()
+    public function categoriasector($sector)
     {
-        return view('capperu/categoria-sector');
+        
+        return view('capperu/categoria-sector', [
+            'sector' => $sector
+        ]);
     }
 
     public function categoriamodalidad()
@@ -87,7 +90,9 @@ class CapperuController extends Controller
                 'aca_courses.id as course_id',
                 'aca_category_courses.description as category_description'
             )
-            ->where('onli_items.status', true)->orderBy('onli_items.id', 'DESC')->get();
+            ->where('onli_items.status', true)->orderBy('onli_items.id', 'DESC')
+            ->where('onli_items.additional', $tipo)
+            ->where('onli_items.additional2', $sector)->get();
 
         return view('capperu/sector-cursos', [
             'programs' => $programs

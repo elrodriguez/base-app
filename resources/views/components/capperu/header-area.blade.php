@@ -51,13 +51,13 @@
                             <a href="#">Programa de Estudios</a>
                             <ul class="sub-menu">
                                 <li>
-                                    <a href="{{ route('web_categoria_sector') }}">Sector: <b>Empresarial</b></a>
+                                    <a href="{{ route('web_categoria_sector', "Empresarial") }}">Sector: <b>Empresarial</b></a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('web_categoria_sector') }}">Sector: <b>Derecho</b></a>
+                                    <a href="{{ route('web_categoria_sector', "Derecho") }}">Sector: <b>Derecho</b></a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('web_categoria_sector') }}">Sector: <b>Público</b></a>
+                                    <a href="{{ route('web_categoria_sector', "Publico") }}">Sector: <b>Público</b></a>
                                 </li>
                             </ul>
                         </li>
