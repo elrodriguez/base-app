@@ -1,15 +1,15 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import EditForm from './Partials/EditForm.vue';
+import CreateForm from './Partials/CreateForm.vue';
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
-    item: {
-        type: Object,
+    venture: {
+        type: String,
         default: () => ({}),
     },
-    type: {
-        type: String,
+    items: {
+        type: Object,
         default: () => ({}),
     },
     tiny_api_key: {
@@ -34,25 +34,24 @@ const props = defineProps({
                     <li>
                         <div class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Ventas en línea</span>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">CMS</span>
                         </div>
                     </li>
                     <li>
                         <div class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <Link :href="route('onlineshop_items')" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos & servicios</Link>
+                        <Link :href="route('cms_testimonies_list')" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Testimonios</Link>
                         </div>
                     </li>
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Editar</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Nuevo</span>
                         </div>
                     </li>
                 </ol>
             </nav>
-            <EditForm :item="item" :type="type" :tiny_api_key="tiny_api_key" /> 
+            <CreateForm :venture="venture" :items="items" :tiny_api_key="tiny_api_key" /> 
         </div>
     </AppLayout>
 </template>

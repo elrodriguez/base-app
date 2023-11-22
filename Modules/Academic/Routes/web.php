@@ -14,7 +14,7 @@
 Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
     Route::middleware(['middleware' => 'permission:aca_dashboard'])
         ->get('dashboard', 'AcademicController@index')
-        ->name('dashboard');
+        ->name('aca_dashboard');
 
     Route::middleware(['middleware' => 'permission:aca_institucion_listado'])
         ->get('institutions', 'AcaInstitutionController@index')

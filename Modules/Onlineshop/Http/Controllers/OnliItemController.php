@@ -145,6 +145,7 @@ class OnliItemController extends Controller
             'additional'                => $request->get('additional'),
             'additional1'                => $request->get('additional1')
         ]);
+
         return redirect()->route('onlineshop_items')
             ->with('message', __('Item creado con éxito'));
     }
@@ -170,7 +171,8 @@ class OnliItemController extends Controller
         $item = OnliItem::find($id);
         return Inertia::render('Onlineshop::Items/Edit', [
             'item' => $item,
-            'type'  => $this->P000009
+            'type'  => $this->P000009,
+            'tiny_api_key' => env('TINY_API_KEY'),
         ]);
     }
 
@@ -185,12 +187,21 @@ class OnliItemController extends Controller
         $id = $request->get('id');
 
         $this->validate($request, [
-            'category_description'      => 'required|max:255',
             'name'                      => 'required|max:255',
-            'description'               => 'required|max:255',
-            'price'                     => 'required|numeric'
+            ///'description'               => 'required|max:255',
+            'description'               => 'required',
+            'image'                     => 'required|image|mimes:jpeg,png,gif|max:2048'
+        ], [
+            'item_id.required' => 'Elija un Curso',
+            'item_id.unique'   => 'Ya existe como item para la web',
         ]);
 
+        if ($this->P000009 == 1) {
+            $this->validate($request, [
+                'category_description'      => 'required|max:255',
+                'price'                     => 'required|numeric'
+            ]);
+        }
         $OnliItem = OnliItem::find($id);
 
         $OnliItem->name = $request->get('name');

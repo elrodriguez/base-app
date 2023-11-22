@@ -76,7 +76,8 @@ class CmsItemController extends Controller
                 'description.required' => 'el campo Descripción es obligatorio',
             ]
         );
-        $destination = 'uploads/articles';
+
+        $destination = 'uploads/cms/items';
         $type_id = $request->get('type_id');
         $content = null;
         if ($type_id == 1 || $type_id == 3) {

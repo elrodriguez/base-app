@@ -17,6 +17,7 @@ use Modules\CMS\Http\Controllers\CmsPageSectionController;
 use Modules\CMS\Http\Controllers\CmsSectionController;
 use Modules\CMS\Http\Controllers\CmsSectionItemController;
 use Modules\CMS\Http\Controllers\CmsSubscriberController;
+use Modules\CMS\Http\Controllers\CmsTestimonyController;
 
 Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::get('pages', [CmsPageController::class, 'index'])->name('cms_pages_list');
@@ -56,4 +57,11 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::delete('items/destroy/{id}', [CmsItemController::class, 'destroy'])->name('cms_items_destroy');
 
     Route::get('blog-subscriber', 'CmsSubscriberController@list_subscribers')->name('blog_subscriber');
+
+    Route::middleware(['permission:cms_testimonios'])->get('testimonies', [CmsTestimonyController::class, 'index'])->name('cms_testimonies_list');
+    Route::middleware(['permission:cms_testimonios_nuevo'])->get('testimonies/create', [CmsTestimonyController::class, 'create'])->name('cms_testimonies_create');
+    Route::middleware(['permission:cms_testimonios_nuevo'])->post('testimonies/store', [CmsTestimonyController::class, 'store'])->name('cms_testimonies_store');
+    Route::middleware(['permission:cms_testimonios_editar'])->post('testimonies/update', [CmsTestimonyController::class, 'update'])->name('cms_testimonies_update');
+    Route::middleware(['permission:cms_testimonios_editar'])->get('testimonies/edit/{id}', [CmsTestimonyController::class, 'edit'])->name('cms_testimonies_edit');
+    Route::middleware(['permission:cms_testimonios_eliminar'])->delete('testimonies/destroy', [CmsTestimonyController::class, 'destroy'])->name('cms_testimonies_destroy');
 });

@@ -257,12 +257,19 @@ const menu = ref([
                 status: false,
                 text: 'Blog Artículos',
                 permissions: 'blog_articulos',
-            },            {
+            },
+            {
                 route: route('blog_subscriber'),
                 status: false,
                 text: 'Suscriptores',
                 permissions: 'cms_seccion',
             },
+            {
+                route: route('cms_testimonies_list'),
+                status: false,
+                text: 'Testimonios',
+                permissions: 'cms_testimonios',
+            }
         ]
     },
     {

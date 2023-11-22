@@ -13,7 +13,7 @@
             type: Object,
             default: () => ({}),
         },
-        items: {
+        testimonies: {
             type: Object,
             default: () => ({}),
         },
@@ -85,7 +85,7 @@
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Items</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Testimonios</span>
                         </div>
                     </li>
                 </ol>
@@ -110,7 +110,7 @@
                             <div class="col-span-3 sm:col-span-2">
                                 <Keypad>
                                     <template #botones>
-                                        <Link v-can="'cms_items'" :href="route('cms_items_create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                        <Link v-can="'cms_testimonios_nuevo'" :href="route('cms_testimonies_create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                             Nuevo
                                         </Link>
                                     </template>
@@ -134,21 +134,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <template v-for="(item, index) in items.data" :key="item.id">
-                                    <tr class="border-b border-stroke">
+                                <template v-if="testimonies.data.length > 0">
+                                    <tr v-for="(testimony, index) in testimonies.data" :key="testimony.id" class="border-b border-stroke">
                                         <td class="text-center py-2 dark:border-strokedark">
-                                            <Link v-can="'cms_pagina_editar'" :href="route('cms_items_edit',item.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            <Link v-can="'cms_testimonios_editar'" :href="route('cms_testimonies_edit',testimony.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <font-awesome-icon :icon="faPencilAlt" />
                                             </Link>
-                                            <button v-can="'cms_pagina_eliminar'" @click="destroyItem(item.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            <button v-can="'cms_testimonios_eliminar'" @click="destroyItem(testimony.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 <font-awesome-icon :icon="faTrashAlt" />
                                             </button>
                                         </td>
                                         <td class="py-2 px-2 dark:border-strokedark">
-                                            {{ item.description }}
+                                            {{ testimony.title }}
                                         </td>
                                         <td class="py-2 px-2 dark:border-strokedark">
-                                            {{ item.content }}
+                                            {{ testimony.content }}
                                         </td>
                                         <!-- <td class="text-center py-2 px-2 dark:border-strokedark">
                                             <span v-if="item.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
@@ -156,10 +156,17 @@
                                         </td> -->
                                     </tr>
                                 </template>
+                                <template v-else>
+                                    <td colspan="3" class="p-2 text-center">
+                                        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                                            No existen registros para mostrar.
+                                        </div>
+                                    </td>
+                                </template>
                             </tbody>
                         </table>
                     </div>
-                    <Pagination :data="items" />
+                    <Pagination :data="testimonies" />
                 </div>
             </div>
         </div>

@@ -30,8 +30,8 @@ const props = defineProps({
 });
 
 const titles = ref({
-    additional: 'Tipo',
-    additional1: 'Modalidad'
+    additional: props.type == 1 ? 'Tipo' : 'Recomendación',
+    additional1: props.type == 1 ? 'Modalidad' : 'Video'
 });
 
 const form = useForm({
@@ -86,11 +86,11 @@ const setItemsData = (data,type) => {
         titles.value.additional1 = 'Video'
         form.entitie = 'App-Models-Product'
     }
-    
-   
+
+
     form.name = data.description;
     form.image_view = data.image;
-    
+
 }
 
 const loadFile = (event) => {
@@ -100,7 +100,7 @@ const loadFile = (event) => {
 
     // Obtén una referencia al elemento de imagen a través de Vue.js
     const imagePreview = document.getElementById('preview_img');
-    
+
     // Crea un objeto de archivo de imagen y asigna la URL al formulario
     const imageFile = URL.createObjectURL(event.target.files[0]);
     form.image_view = imageFile;
@@ -135,7 +135,7 @@ const loadFile = (event) => {
             </div>
         </div>
         <div class="col-span-2 sm:col-span-1">
-            
+
             <div class="w-full p-4 bg-white border border-gray-200 rounded-lg sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
                 <form @submit.prevent="createItem" class="space-y-6" action="#">
                     <div>
@@ -181,7 +181,7 @@ const loadFile = (event) => {
                         />
                         <InputError :message="form.errors.category_description" class="mt-2" />
                     </div>
-  
+
                     <div v-if="form.type == 1" class="mt-2">
                         <InputLabel for="additional1" :value="titles.additional1+'*'" />
                         <select id="additional1" v-model="form.additional1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -209,7 +209,7 @@ const loadFile = (event) => {
                         <InputError :message="form.errors.additional" class="mt-2" />
                     </div>
                     <div v-if="form.type == 2" class="mt-2">
-                        <InputLabel for="additional" :value="titles.additional1+'*'" />
+                        <InputLabel for="additional" :value="titles.additional+'*'" />
                         <Editor
                             id="additional"
                             :api-key="tiny_api_key"
@@ -229,7 +229,7 @@ const loadFile = (event) => {
                                 <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                             </figure>
                         </div>
-                        
+
                         <input @change="loadFile" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG or GIF (RECOMENDADO. 800x400px).</p>
                         <InputError :message="form.errors.image" class="mt-2" />
