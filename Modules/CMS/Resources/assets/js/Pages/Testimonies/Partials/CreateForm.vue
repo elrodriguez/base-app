@@ -117,6 +117,7 @@ watch(() => form.image, (newValue) => {
                     </figure>
                 </div>
                 <input @input="form.image = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                <InputError :message="form.errors.image" class="mt-2" />
             </div>
             <div class="col-span-6">
                 <Textarea
@@ -126,11 +127,12 @@ watch(() => form.image, (newValue) => {
                     placeholder="Código del vídeo..."
                 />
                 <InputError :message="form.errors.video" class="mt-2" />
+                <div class="mt-4 w-full" v-html="form.video"></div>
             </div>
         </template>
 
         <template #actions>
-            <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+            <progress v-if="form.progress" :value="form.progress.percentage" max="100" class="mr-1">
                 {{ form.progress.percentage }}%
             </progress>
             <Keypad>

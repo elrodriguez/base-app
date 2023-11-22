@@ -7,6 +7,7 @@ use App\Models\Parameter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Modules\CMS\Entities\CmsTestimony;
 use Modules\Onlineshop\Entities\OnliItem;
@@ -66,6 +67,7 @@ class CmsTestimonyController extends Controller
                 ->where('entitie', 'App-Models-Product')
                 ->get();
         }
+
         return Inertia::render('CMS::Testimonies/Create', [
             'venture'  => $this->P000009,
             'items' => $items,
@@ -126,28 +128,75 @@ class CmsTestimonyController extends Controller
         ]);
     }
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('cms::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
-        return view('cms::edit');
+        $items = [];
+
+        if ($this->P000009 == 2) {
+            $items = OnliItem::select(
+                'id AS value',
+                'name'
+            )
+                ->where('entitie', 'App-Models-Product')
+                ->get();
+        }
+
+        return Inertia::render('CMS::Testimonies/Edit', [
+            'venture'  => $this->P000009,
+            'testimony' => CmsTestimony::find($id),
+            'items' => $items,
+            'tiny_api_key' => env('TINY_API_KEY')
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'item_id' => 'required',
+                'title' => 'required|max:255',
+                'description' => 'required',
+                'video' => 'required'
+            ],
+            [
+                'item_id.required' => 'el campo producto o servicio es obligatorio',
+                'title.required' => 'el campo titulo es obligatorio',
+                'title.max' => 'el campo titulo solo acepta 255 caracteres',
+                'description.required' => 'el campo Descripción es obligatorio',
+                'video.required' => 'el campo vídeo es obligatorio',
+            ]
+        );
+
+        $testimony = CmsTestimony::find($request->get('id'));
+        $testimony->item_id = $request->get('item_id');
+        //$testimony->entitie = OnliItem::class;
+        $testimony->title = $request->get('title');
+        $testimony->description = $request->get('description');
+        $testimony->video = $request->get('video');
+        $testimony->status = $request->get('status') ? true : false;
+
+        $destination = 'uploads/cms/testimonies';
+        $file = $request->file('image');
+
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $img = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+
+            $testimony->image = asset('storage/' . $img);
+        }
+
+        $testimony->save();
     }
 
     /**
@@ -155,6 +204,33 @@ class CmsTestimonyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = null;
+        $success = false;
+        try {
+            // Usamos una transacción para asegurarnos de que la operación se realice de manera segura.
+            DB::beginTransaction();
+
+            // Verificamos si existe.
+            $testimony = CmsTestimony::findOrFail($id);
+
+            // Si no hay detalles asociados, eliminamos.
+            $testimony->delete();
+
+            // Si todo ha sido exitoso, confirmamos la transacción.
+            DB::commit();
+
+            $message =  'Testimonio eliminado correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción durante la transacción, hacemos rollback para deshacer cualquier cambio.
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 }

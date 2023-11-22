@@ -27,9 +27,7 @@
         search: props.filters.search,
     });
 
-    const deleteForm = useForm({});
-
-    const destroyItem = (id) => {
+    const destroyTestimony = (id) => {
         Swal2.fire({
             title: '¿Estas seguro?',
             text: "¡No podrás revertir esto!",
@@ -41,7 +39,7 @@
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                return axios.delete(route('cms_items_destroy', id)).then((res) => {
+                return axios.delete(route('cms_testimonies_destroy', id)).then((res) => {
                     if (!res.data.success) {
                         Swal2.showValidationMessage(res.data.message)
                     }
@@ -56,7 +54,7 @@
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
                 });
-                router.visit(route('cms_items_list'), { replace: true, method: 'get' });
+                router.visit(route('cms_testimonies_list'), { replace: true, method: 'get' });
             }
         });
     }
@@ -126,10 +124,10 @@
                                         Acciones
                                     </th>
                                     <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Descripción
+                                        Título
                                     </th>
                                     <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Contenido
+                                        Estado
                                     </th>
                                 </tr>
                             </thead>
@@ -140,20 +138,17 @@
                                             <Link v-can="'cms_testimonios_editar'" :href="route('cms_testimonies_edit',testimony.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <font-awesome-icon :icon="faPencilAlt" />
                                             </Link>
-                                            <button v-can="'cms_testimonios_eliminar'" @click="destroyItem(testimony.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            <button v-can="'cms_testimonios_eliminar'" @click="destroyTestimony(testimony.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 <font-awesome-icon :icon="faTrashAlt" />
                                             </button>
                                         </td>
                                         <td class="py-2 px-2 dark:border-strokedark">
                                             {{ testimony.title }}
                                         </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
-                                            {{ testimony.content }}
-                                        </td>
-                                        <!-- <td class="text-center py-2 px-2 dark:border-strokedark">
-                                            <span v-if="item.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
+                                        <td class="text-center py-2 px-2 dark:border-strokedark">
+                                            <span v-if="testimony.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
                                             <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Inactivo</span>
-                                        </td> -->
+                                        </td>
                                     </tr>
                                 </template>
                                 <template v-else>
