@@ -155,11 +155,11 @@ class LocalSaleController extends Controller
             'address'       => 'required',
         ]);
 
-        if ($request->get('user_id')) {
-            $this->validate($request, [
-                'user_id'   => 'unique:users,local_id,' . $request->get('user_id')
-            ]);
-        }
+        // if ($request->get('user_id')) {
+        //     $this->validate($request, [
+        //         'user_id'   => 'unique:users,local_id,' . $request->get('user_id')
+        //     ]);
+        // }
 
         LocalSale::find($id)->update([
             'description'   => $request->get('description'),

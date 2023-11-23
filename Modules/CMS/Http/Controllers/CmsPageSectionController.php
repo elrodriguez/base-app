@@ -71,9 +71,9 @@ class CmsPageSectionController extends Controller
 
     public function updateItems(Request $request)
     {
-        $destination = 'uploads/articles';
+        $destination = 'uploads/cms/items';
         $items = $request->all();
-
+        //dd($request->all());
         foreach ($items['items'] as $key => $item) {
 
             $type_id = $item['type_id'];

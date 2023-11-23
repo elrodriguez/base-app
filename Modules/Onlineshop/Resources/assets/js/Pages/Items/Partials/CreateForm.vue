@@ -225,7 +225,7 @@ const loadFile = (event) => {
                         <InputLabel for="image" value="Imagen *" />
                         <div class="flex justify-center space-x-2">
                             <figure class="max-w-lg">
-                                <img style="width: 200px;" class="h-auto rounded-lg" :src="form.image_view">
+                                <img style="width: 200px;" id="preview_img" class="h-auto rounded-lg" :src="form.image_view">
                                 <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                             </figure>
                         </div>

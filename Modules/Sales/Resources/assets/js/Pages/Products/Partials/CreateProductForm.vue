@@ -9,7 +9,7 @@
     import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
     import Keypad from '@/Components/Keypad.vue';
     import swal from 'sweetalert';
-    import { watch } from 'vue';
+    import { watchEffect } from 'vue';
 
     const props = defineProps({
         establishments: {
@@ -73,12 +73,12 @@
 
     library.add(faTrashAlt);
 
-    watch(
-    () => {
+    watchEffect(() => {
         if (form.presentations) {
             form.stock = null;
-        } 
-    }
+        }
+    });
+
 );
 
 </script>

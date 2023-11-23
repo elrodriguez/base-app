@@ -142,7 +142,6 @@
 
             itemsForm.items = itemsForm.items.map(obj => ({ ...obj, image_preview: (obj.item.type_id == 1 ? obj.item.content : null ) }));
 
-            console.log(itemsForm.items )
         });
 
     }
@@ -283,6 +282,9 @@ const updateImagePreview = (index,image) => {
         if (! photo) return;
 
         const reader = new FileReader();
+
+        //console.log(itemsForm.items[index]);
+        itemsForm.items[index].item.content = image;
 
         reader.onload = (e) => {
             itemsForm.items[index].image_preview = e.target.result;
