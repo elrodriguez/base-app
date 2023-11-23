@@ -72,7 +72,7 @@
                                                 <span style="color:orange;">
                                                     <i>Tipo:</i>
                                                 </span>
-                                                <b>{{ $course->category->type_description }}</b>
+                                                <b>{{ $course->type_description }}</b>
                                             </div>
                                         @endif
                                         <div class="user-rating">
