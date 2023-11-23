@@ -99,7 +99,7 @@ class CapperuController extends Controller
         ]);
     }
 
-    public function descripcionenvivo($id)
+    public function descripcionPrograma($id)
     {
         $item = OnliItem::find($id);
 
@@ -112,7 +112,7 @@ class CapperuController extends Controller
             ->where('id', $item->item_id)
             ->first();
 
-        return view('capperu/descripcion-en-vivo', [
+        return view('capperu/descripcion-programa', [
             'course' => $course,
             'item' => $item
         ]);

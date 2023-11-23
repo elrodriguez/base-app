@@ -237,6 +237,7 @@
                 var price = respuesta.price;
                 var modalidad = respuesta.additional;
                 var url_campus = "";
+                var url_descripcion_programa = "/descripcion-programa/"+id; // esta ruta deberá corregirse si se cambia el el get de la RUTA :S
                 cart.innerHTML += `
             <div class="col-md-12" style="padding: 10px;" id="` + id + `_pc">
                             <div class="row contact-inner" style="padding: 10px; border: 1px solid #f2f2f2;">
@@ -250,7 +251,7 @@
                                 <div class="col-md-7">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <h6><a href="#">` + name + `</a></h6>
+                                            <h6><a href="`+url_descripcion_programa+`" target="_blank">` + name + `</a></h6>
                                         </div>
                                     </div>
                                     <div class="row">
