@@ -35,7 +35,9 @@
         user_id: props.seller ? props.seller.id : null,
         ubigeo: props.local.ubigeo,
         ubigeo_description: null,
-        map: props.local.map
+        map: props.local.map,
+        agent: props.local.agent,
+        email: props.local.email
     });
 
     const updateEstablishment = () => {
@@ -114,6 +116,26 @@
                     class="block w-full mt-1"
                 />
                 <InputError :message="form.errors.phone" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-3">
+                <InputLabel for="agent" value="Representante " />
+                <TextInput
+                    id="agent"
+                    v-model="form.agent"
+                    type="text"
+                    class="block w-full mt-1"
+                />
+                <InputError :message="form.errors.agent" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-3">
+                <InputLabel for="email" value="Correo de contacto" />
+                <TextInput
+                    id="email"
+                    v-model="form.email"
+                    type="text"
+                    class="block w-full mt-1"
+                />
+                <InputError :message="form.errors.email" class="mt-2" />
             </div>
             <div v-can="'sale_tienda_agregar_vendedor'" class="col-span-6 sm:col-span-3">
                 <InputLabel for="user" value="Vendedor" />

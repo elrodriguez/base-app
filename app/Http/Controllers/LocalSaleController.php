@@ -98,7 +98,9 @@ class LocalSaleController extends Controller
             'address'       => $request->get('address'),
             'phone'         => $request->get('phone'),
             'ubigeo'        => $request->get('ubigeo'),
-            'map'           => $request->get('map')
+            'map'           => $request->get('map'),
+            'agent'         => $request->get('agent'),
+            'email'         => $request->get('email')
         ]);
 
         if ($request->get('user_id')) {
@@ -166,7 +168,9 @@ class LocalSaleController extends Controller
             'address'       => $request->get('address'),
             'phone'         => $request->get('phone'),
             'ubigeo'        => $request->get('ubigeo'),
-            'map'           => $request->get('map')
+            'map'           => $request->get('map'),
+            'agent'         => $request->get('agent'),
+            'email'         => $request->get('email')
         ]);
 
         if ($request->get('user_id')) {

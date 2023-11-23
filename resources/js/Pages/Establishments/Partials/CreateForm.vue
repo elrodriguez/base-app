@@ -21,13 +21,15 @@
     });
 
     const form = useForm({
-        description:'',
-        address:'',
-        phone:'',
-        user_id: '',
-        ubigeo: '',
-        ubigeo_description: '',
-        map: ''
+        description: null,
+        address: null,
+        phone: null,
+        user_id: null,
+        ubigeo: null,
+        ubigeo_description: null,
+        map: null,
+        agent: null,
+        email: null
     });
 
     const createEstablishment = () => {
@@ -100,6 +102,26 @@
                     class="block w-full mt-1"
                 />
                 <InputError :message="form.errors.phone" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-3">
+                <InputLabel for="agent" value="Representante " />
+                <TextInput
+                    id="agent"
+                    v-model="form.agent"
+                    type="text"
+                    class="block w-full mt-1"
+                />
+                <InputError :message="form.errors.agent" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-3">
+                <InputLabel for="email" value="Correo de contacto" />
+                <TextInput
+                    id="email"
+                    v-model="form.email"
+                    type="text"
+                    class="block w-full mt-1"
+                />
+                <InputError :message="form.errors.email" class="mt-2" />
             </div>
             <div v-can="'sale_tienda_agregar_vendedor'" class="col-span-6 sm:col-span-3">
                 <InputLabel for="user" value="Vendedor" />
