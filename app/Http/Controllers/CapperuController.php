@@ -102,7 +102,7 @@ class CapperuController extends Controller
     public function descripcionPrograma($id)
     {
         $item = OnliItem::find($id);
-
+        
         $course = AcaCourse::with('category')
             ->with('modality')
             ->with('modules')

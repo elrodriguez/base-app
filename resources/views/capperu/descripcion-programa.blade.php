@@ -141,19 +141,19 @@
                             </div>
                             <div class="tab-pane fade" id="pills-03" role="tabpanel" aria-labelledby="pill-3">
                                 @if (count($course->teachers) > 0)
-                                    @foreach ($course->teachers as $item)
+                                    @foreach ($course->teachers as $teach)
                                         <div class="row" style="margin-bottom: 20px;">
                                             <div class="col-md-2">
                                                 <a href="{{ route('web_perfil_docente', 1) }}">
                                                     <img style="width: 90px; margin-bottom: 10px; margin-left: 10px;"
-                                                        src="{{ $item->teacher->person->image }}" alt="img">
+                                                        src="{{ $teach->teacher->person->image }}" alt="img">
                                                 </a>
                                             </div>
                                             <div class="col-md-10">
-                                                <h6>{{ $item->teacher->person->father_lastname." ". $item->teacher->person->mother_lastname." ". $item->teacher->person->names }}</h6>
-                                                @if (count($item->teacher->person->resumes))
+                                                <h6>{{ $teach->teacher->person->father_lastname." ". $teach->teacher->person->mother_lastname." ". $teach->teacher->person->names }}</h6>
+                                                @if (count($teach->teacher->person->resumes))
                                                     <ul>
-                                                        @foreach ($item->teacher->person->resumes as $resume)
+                                                        @foreach ($teach->teacher->person->resumes as $resume)
                                                             <li>
                                                                 {{ $resume->description }}
                                                             </li>
