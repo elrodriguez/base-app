@@ -70,9 +70,9 @@
                                         @if ($course->category)
                                             <div class="user-rating">
                                                 <span style="color:orange;">
-                                                    <i>Programa:</i>
+                                                    <i>Tipo:</i>
                                                 </span>
-                                                <b>{{ $course->category->description }}</b>
+                                                <b>{{ $course->category->type_description }}</b>
                                             </div>
                                         @endif
                                         <div class="user-rating">
