@@ -253,6 +253,7 @@
                 formDocument.total_igv = 0;
                 formDocument.total = 0;
                 formDocument.total_taxed = 0;
+                formDocument.number = null,
                 formDocument.payments = [{
                     type:1,
                     reference: null,
@@ -553,17 +554,11 @@
                                             <td style="width: 70px;" class="text-center">
                                                 <input v-model="row.quantity" 
                                                 @input="calculateTotals(key)" 
-                                                :disabled="row.id ? true : false" 
-                                                :class="row.id ? 'bg-gray-100' : ''" 
-                                                :style="row.id ? 'cursor: not-allowed': ''"
                                                 class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" type="text" />
                                             </td>
                                             <td style="width: 120px;" class="text-right">
                                                 <input v-model="row.unit_price" 
                                                 @input="calculateTotals(key)" 
-                                                :disabled="row.id ? true : false" 
-                                                :style="row.id ? 'cursor: not-allowed': ''"
-                                                :class="row.id ? 'bg-gray-100' : ''" 
                                                 class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" type="text" />
                                             </td>
                                             <td style="width: 90px;" class="text-right">
@@ -668,6 +663,7 @@
                             </svg>
                             Generar
                         </DangerButton> 
+                        <Link :href="route('purc_documents_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
                     </div>
                 </div>
             </div>

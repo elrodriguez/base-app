@@ -43,9 +43,10 @@ class PurcDocumentController extends Controller
 
     public function index()
     {
+
         $documents = (new PurcDocument())->newQuery();
-        if (request()->has('search')) {
-            $documents->whereDate('date_of_issue', '=', '%' . request()->input('search') . '%');
+        if (request()->has('search') && request()->input('search')) {
+            $documents->whereDate('date_of_issue', '=', request()->input('search'));
         }
         if (request()->query('sort')) {
             $attribute = request()->query('sort');

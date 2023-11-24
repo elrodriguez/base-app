@@ -1,6 +1,6 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import { useForm, Link } from '@inertiajs/vue3';
+    import { useForm, Link, router } from '@inertiajs/vue3';
     import { faTrashAlt, faPencilAlt, faTicketAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import { ref } from 'vue';
@@ -11,6 +11,7 @@
     import DangerButton from '@/Components/DangerButton.vue';
     import TextInput from '@/Components/TextInput.vue';
     import swal from 'sweetalert';
+    import Swal2 from 'sweetalert2';
     import Keypad from '@/Components/Keypad.vue';
 
     const props = defineProps({
@@ -32,12 +33,36 @@
         search: props.filters.search,
     });
 
-    const formDelete = useForm({});
-
-    function destroy(id) {
-        if (confirm("¿Estás seguro de que quieres eliminar?")) {
-            formDelete.delete(route('establishment_destroies', id));
-        }
+    const destroyEstablishment = (id) => {
+        Swal2.fire({
+            title: '¿Estas seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Sí, Eliminar!',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return axios.delete(route('establishment_destroies', id)).then((res) => {
+                    if (!res.data.success) {
+                        Swal2.showValidationMessage(res.data.message)
+                    }
+                    return res
+                });
+            },
+            allowOutsideClick: () => !Swal2.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal2.fire({
+                    title: 'Enhorabuena',
+                    text: 'Se Eliminó correctamente',
+                    icon: 'success',
+                });
+                router.visit(route('establishments.index'), { replace: true, method: 'get' });
+            }
+        });
     }
 
     const showModalSeries = ref(false);
@@ -183,7 +208,7 @@
                                             <font-awesome-icon :icon="faTicketAlt" />
                                         </button>
                                         <button v-can="'sale_tienda_eliminar'" data-bs-toggle="tooltip" title="Eliminar" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                                            @click="destroy(local.id)"
+                                            @click="destroyEstablishment(local.id)"
                                             >
                                             <font-awesome-icon :icon="faTrashAlt" />
                                         </button>

@@ -8,6 +8,7 @@ use App\Models\SaleDocumentType;
 use App\Models\Serie;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class LocalSaleController extends Controller
@@ -228,7 +229,34 @@ class LocalSaleController extends Controller
      */
     public function destroy($id)
     {
-        LocalSale::find($id)->delete();
+        $message = null;
+        $success = false;
+        try {
+            // Usamos una transacción para asegurarnos de que la operación se realice de manera segura.
+            DB::beginTransaction();
+
+            // Verificamos si existe.
+            $item = LocalSale::findOrFail($id);
+
+            // Si no hay detalles asociados, eliminamos.
+            $item->delete();
+
+            // Si todo ha sido exitoso, confirmamos la transacción.
+            DB::commit();
+
+            $message =  'Item eliminado correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción durante la transacción, hacemos rollback para deshacer cualquier cambio.
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 
     public function series(Request $request)

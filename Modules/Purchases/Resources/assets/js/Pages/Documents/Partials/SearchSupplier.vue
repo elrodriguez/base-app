@@ -80,6 +80,44 @@
             disabledBtnSelect.value = false;
             Swal2.fire('Enhorabuena','Se registró correctamente','success');
             person.value = res.data;
+        }).catch(error => {
+            let validationErrors = error.response.data.errors;
+            if (validationErrors && validationErrors.number) {
+                const numberErrors = validationErrors.number;
+
+                for (let i = 0; i < numberErrors.length; i++) {
+                    form.setError('number', numberErrors[i]);
+                }
+            }
+            if (validationErrors && validationErrors.full_name) {
+                const fullNameErrors = validationErrors.full_name;
+
+                for (let i = 0; i < fullNameErrors.length; i++) {
+                    form.setError('full_name', fullNameErrors[i]);
+                }
+            }
+            if (validationErrors && validationErrors.document_type) {
+                const document_typeErrors = validationErrors.document_type;
+
+                for (let i = 0; i < document_typeErrors.length; i++) {
+                    form.setError('document_type', document_typeErrors[i]);
+                }
+            }
+            if (validationErrors && validationErrors.ubigeo) {
+                const ubigeoErrors = validationErrors.ubigeo;
+
+                for (let i = 0; i < ubigeoErrors.length; i++) {
+                    form.setError('ubigeo', ubigeoErrors[i]);
+                }
+            }
+            if (validationErrors && validationErrors.email) {
+                const emailErrors = validationErrors.email;
+
+                for (let i = 0; i < emailErrors.length; i++) {
+                    form.setError('email', emailErrors[i]);
+                }
+            }
+            form.processing = false;
         });
     }
 
