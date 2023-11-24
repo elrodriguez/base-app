@@ -36,7 +36,7 @@
 
     function destroy(id) {
         if (confirm("¿Estás seguro de que quieres eliminar?")) {
-            formDelete.delete(route('users.destroy', id));
+            formDelete.delete(route('establishment_destroies', id));
         }
     }
 

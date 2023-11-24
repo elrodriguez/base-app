@@ -98,6 +98,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('clients', ClientController::class);
     Route::resource('users', UserController::class);
     Route::resource('establishments', LocalSaleController::class);
+	
+	Route::delete('establishments/destroies/{id}', [LocalSaleController::class, 'destroy'])->name('establishment_destroies');
+    Route::post('establishments/updated', [LocalSaleController::class, 'update'])->name('establishment_updated');
+	
     Route::get(
         'inventory/product/establishment',
         [KardexController::class, 'index']

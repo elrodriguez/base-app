@@ -93,6 +93,22 @@ class LocalSaleController extends Controller
                 'user_id'   => 'unique:users,local_id'
             ]);
         }
+
+        $path = null;
+        $destination = 'uploads/stablishments';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+        }
+
         $l = LocalSale::create([
             'description'   => $request->get('description'),
             'address'       => $request->get('address'),
@@ -100,7 +116,8 @@ class LocalSaleController extends Controller
             'ubigeo'        => $request->get('ubigeo'),
             'map'           => $request->get('map'),
             'agent'         => $request->get('agent'),
-            'email'         => $request->get('email')
+            'email'         => $request->get('email'),
+            'image'         => $path
         ]);
 
         if ($request->get('user_id')) {
@@ -149,8 +166,9 @@ class LocalSaleController extends Controller
      * @param  \App\Models\LocalSale  $localSale
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $id = $request->get('id');
 
         $this->validate($request, [
             'description'   => 'required',
@@ -163,15 +181,33 @@ class LocalSaleController extends Controller
         //     ]);
         // }
 
-        LocalSale::find($id)->update([
-            'description'   => $request->get('description'),
-            'address'       => $request->get('address'),
-            'phone'         => $request->get('phone'),
-            'ubigeo'        => $request->get('ubigeo'),
-            'map'           => $request->get('map'),
-            'agent'         => $request->get('agent'),
-            'email'         => $request->get('email')
-        ]);
+        $localsale = LocalSale::find($id);
+
+        $localsale->description   = $request->get('description');
+        $localsale->address = $request->get('address');
+        $localsale->phone = $request->get('phone');
+        $localsale->ubigeo = $request->get('ubigeo');
+        $localsale->map = $request->get('map');
+        $localsale->agent = $request->get('agent');
+        $localsale->email = $request->get('email');
+
+        $destination = 'uploads/stablishments';
+        $file = $request->file('image');
+        if ($file) {
+            $original_name = strtolower(trim($file->getClientOriginalName()));
+            $original_name = str_replace(" ", "_", $original_name);
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
+            $path = $request->file('image')->storeAs(
+                $destination,
+                $file_name,
+                'public'
+            );
+
+            $localsale->image = $path;
+        }
+
+        $localsale->save();
 
         if ($request->get('user_id')) {
             User::find($request->get('user_id'))
@@ -190,9 +226,9 @@ class LocalSaleController extends Controller
      * @param  \App\Models\LocalSale  $localSale
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LocalSale $localSale)
+    public function destroy($id)
     {
-        //
+        LocalSale::find($id)->delete();
     }
 
     public function series(Request $request)

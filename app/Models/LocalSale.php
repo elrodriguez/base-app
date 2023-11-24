@@ -19,7 +19,8 @@ class LocalSale extends Model
         'sunat_code',
         'map',
         'agent',
-        'email'
+        'email',
+        'image'
     ];
 
     public function getCreatedAtAttribute($value)

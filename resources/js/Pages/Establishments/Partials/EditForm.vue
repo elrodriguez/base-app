@@ -29,6 +29,7 @@
     });
 
     const form = useForm({
+        id: props.local.id,
         description: props.local.description,
         address: props.local.address,
         phone: props.local.phone,
@@ -37,11 +38,14 @@
         ubigeo_description: null,
         map: props.local.map,
         agent: props.local.agent,
-        email: props.local.email
+        email: props.local.email,
+        image: null,
+        image_view: assetUrl +'storage/'+ props.local.image
     });
 
     const updateEstablishment = () => {
-        form.put(route('establishments.update', props.local.id), {
+        form.post(route('establishment_updated'), {
+            forceFormData: true,
             errorBag: 'updateEstablishment',
             preserveScroll: true,
             onSuccess: () => {
@@ -72,7 +76,24 @@
         form.ubigeo = item.district_id;
         searchUbigeos.value = []; // Limpiar la lista de búsqueda después de seleccionar una ciudad
     }
+    const loadFile = (event) => {
+        const input = event.target;
+        const file = input.files[0];
+        const type = file.type;
 
+        // Obtén una referencia al elemento de imagen a través de Vue.js
+        const imagePreview = document.getElementById('preview_img');
+
+        // Crea un objeto de archivo de imagen y asigna la URL al formulario
+        const imageFile = URL.createObjectURL(event.target.files[0]);
+        form.image_view = imageFile;
+        // Asigna el archivo a form.image
+        form.image = file;
+        // Libera la URL del objeto una vez que la imagen se haya cargado
+        imagePreview.onload = function() {
+            URL.revokeObjectURL(imageFile); // libera memoria
+        }
+    };
  </script>
 
 <template>
@@ -165,6 +186,19 @@
                 <div>
                     <InputError :message="form.errors.ubigeo" class="mt-2" />
                 </div>
+            </div>
+            <div class="col-span-6 ">
+                <InputLabel for="image" value="Imagen *" />
+                <div class="flex justify-center space-x-2">
+                    <figure class="max-w-lg">
+                        <img style="width: 200px;" id="preview_img" class="h-auto rounded-lg" :src="form.image_view">
+                        <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
+                    </figure>
+                </div>
+
+                <input @change="loadFile" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG or GIF (RECOMENDADO. 800x400px).</p>
+                <InputError :message="form.errors.image" class="mt-2" />
             </div>
             <div class="col-span-6 ">
                 <InputLabel for="map" value="Codigo Mapa" />
