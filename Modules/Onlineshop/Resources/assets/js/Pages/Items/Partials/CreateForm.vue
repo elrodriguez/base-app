@@ -246,7 +246,7 @@ const loadFile = (event) => {
                             />
                             <InputError :message="form.errors.price" class="mt-2" />
                         </div>
-                        <div class="mt-2">
+                        <!-- <div class="mt-2">
                             <InputLabel for="discount" value="Descuento" />
                             <TextInput
                                 id="discount"
@@ -256,7 +256,7 @@ const loadFile = (event) => {
                                 autocomplete="off"
                             />
                             <InputError :message="form.errors.discount" class="mt-2" />
-                        </div>
+                        </div> -->
                     </div>
                     <p class="mt-4 text-xl text-gray-900 dark:text-white">Los datos guardados solo serán visibles en la web, no se modificara en el origen</p>
                     <div class="mt-2">

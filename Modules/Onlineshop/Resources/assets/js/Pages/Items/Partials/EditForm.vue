@@ -207,7 +207,7 @@ const loadFile = (event) => {
                 />
                 <InputError :message="form.errors.price" class="mt-2" />
             </div>
-            <div v-if="form.type == 1" class="col-span-6 sm:col-span-3">
+            <!-- <div v-if="form.type == 1" class="col-span-6 sm:col-span-3">
                 <InputLabel for="discount" value="Descuento" />
                 <TextInput
                     id="discount"
@@ -217,7 +217,7 @@ const loadFile = (event) => {
                     autocomplete="off"
                 />
                 <InputError :message="form.errors.discount" class="mt-2" />
-            </div>
+            </div> -->
             <div class="col-span-6 sm:col-span-3">
                 <div class="flex items-center mb-4">
                     <input v-model="form.status" id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
