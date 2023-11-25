@@ -36,17 +36,7 @@ class AcaCourseController extends Controller
         if (request()->has('search')) {
             $courses->where('description', 'like', '%' . request()->input('search') . '%');
         }
-        if (request()->query('sort')) {
-            $attribute = request()->query('sort');
-            $sort_order = 'ASC';
-            if (strncmp($attribute, '-', 1) === 0) {
-                $sort_order = 'DESC';
-                $attribute = substr($attribute, 1);
-            }
-            $courses->orderBy($attribute, $sort_order);
-        } else {
-            $courses->latest();
-        }
+        $courses->orderBy('id', 'DESC');
         $courses->with('category');
         $courses->with('modality');
         $courses->with('modules');
@@ -68,7 +58,7 @@ class AcaCourseController extends Controller
     {
         $categories = AcaCategoryCourse::all();
         $modalities = AcaModality::all();
-        
+
         return Inertia::render('Academic::Courses/Create', [
             'modalities'    => $modalities,
             'categories'    => $categories
@@ -140,14 +130,14 @@ class AcaCourseController extends Controller
         $course_teachers = AcaTeacherCourse::with('teacher.person')->where('course_id', $id)->get();
 
         $teachers = AcaTeacher::with('person')->get();
-        
+
         if (count($teachers) > 0) {
             $teachers = $teachers->toArray();
         }
         if (count($course_teachers) > 0) {
             $course_teachers = $course_teachers->toArray();
         }
-        
+
         return Inertia::render('Academic::Courses/Information', [
             'brochure' => AcaBrochure::where('course_id', $id)->first(),
             'course' => AcaCourse::find($id),
