@@ -62,13 +62,13 @@ class OnliItemController extends Controller
     public function create()
     {
         $courses = [];
-        // $courses = AcaCourse::with('category')
-        //     ->with('modality')
-        //     ->whereNotIn('id', function ($query) {
-        //         $query->select('item_id')
-        //             ->from('onli_items');
-        //     })
-        //     ->get();
+        $courses = AcaCourse::with('category')
+            ->with('modality')
+            ->whereNotIn('id', function ($query) {
+                $query->select('item_id')
+                    ->from('onli_items');
+            })
+            ->get();
 
         $products = Product::whereNotIn('id', function ($query) {
             $query->select('item_id')
