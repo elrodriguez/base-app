@@ -145,7 +145,8 @@ class OnliItemController extends Controller
             'image'                     => $path,
             'status'                    => true,
             'additional'                => $request->get('additional'),
-            'additional1'                => $request->get('additional1')
+            'additional1'                => $request->get('additional1'),
+            'additional2'                => $request->get('category_description')
         ]);
 
         return redirect()->route('onlineshop_items')
@@ -214,7 +215,7 @@ class OnliItemController extends Controller
         $OnliItem->status = $request->get('status') ? true : false;
         $OnliItem->additional = $request->get('additional');
         $OnliItem->additional1 = $request->get('additional1');
-        $OnliItem->additional2 = $request->get('additional2');
+        $OnliItem->additional2 = $request->get('category_description');
 
         // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
         // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';

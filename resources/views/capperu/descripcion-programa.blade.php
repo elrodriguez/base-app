@@ -73,14 +73,16 @@
                                                     <i>Tipo:</i>
                                                 </span>
                                                 <b>{{ $course->type_description }}</b>
-                                            </div>
+                                            </div> 
                                         @endif
+                                        @if ($course->modality->description != "E-Learning")
                                         <div class="user-rating">
                                             <span style="color:orange;">
                                                 <i>Inicio:</i>
                                             </span>
                                             <b>{{ $course->course_day . '/' . $course->course_month . '/' . $course->course_year }}</b>
                                         </div>
+                                        @endif                                        
                                     </div>
                                 </div>
                             </div>
