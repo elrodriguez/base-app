@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Modules\Academic\Entities\AcaCourse;
 use Modules\Onlineshop\Entities\OnliItem;
+use Modules\Onlineshop\Entities\AcaModality;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 
@@ -75,6 +76,7 @@ class OnliItemController extends Controller
                 ->from('onli_items')
                 ->where('onli_items.entitie', 'App-Models-Product');
         })->get();
+
 
         return Inertia::render('Onlineshop::Items/Create', [
             'courses'   => $courses,
