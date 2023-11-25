@@ -67,9 +67,11 @@
                         <li>
                             <a href="{{ route('web_convenios') }}">Convenios</a>
                         </li>
+                        <!--
                         <li>
                             <a href="">Blog</a>
                         </li>
+                        --->
                         <li>
                             <a href="{{ route('web_contacto') }}">Contacto</a>
                         </li>
