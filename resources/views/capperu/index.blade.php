@@ -20,15 +20,21 @@
     <!-- Banner Area Start-->
     <section class="banner-area style-3"
         style="background-image: url({{ asset('themes/capperu/assets/img/banner/bg-2.jpg') }});">
+        <br>
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-xl-7 col-lg-8 align-self-center">
+                <div class="col-md-10 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Estudia en línea con mucha facilidad.</h1>
+                        <h1>¿En que deseas especializarte?</h1>
                         <div class="banner-content">
-                            <p>Puede acceder a más de 150 cursos diferentes formadores profesionales.</p>
+                            <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                                    <p class="text-center">Puedes acceder a más de 150 cursos y más de 30 diplomados especializados.</p>
+                                </div>
+                                <div class="col-md-2"></div>
+                            </div>
                         </div>
-                        <a class="btn btn-base" href="categoria">Más Programas de Estudios</a>
                     </div>
                 </div>
             </div>
