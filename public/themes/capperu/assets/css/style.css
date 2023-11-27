@@ -1858,7 +1858,7 @@ ul {
 }
 .navbar-area .nav-container .navbar-collapse .navbar-nav li a {
   color: var(--heading-color);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 500;
 }
 .navbar-area .nav-container .navbar-collapse .navbar-nav li:hover a {
@@ -2336,7 +2336,7 @@ ul {
   color: var(--heading-color);
   font-size: 16px;
   font-weight: 500;
-  margin-left: 30px;
+  margin-left: 10px;
 }
 .nav-right-part ul li:hover .search {
   color: #fff;
@@ -2348,7 +2348,7 @@ ul {
 
 .navbar-nav {
   opacity: 0;
-  margin-right: -30px;
+  margin-right: -10px;
   visibility: hidden;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;

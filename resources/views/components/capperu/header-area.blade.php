@@ -75,6 +75,7 @@
                         <li>
                             <a href="{{ route('web_contacto') }}">Contacto</a>
                         </li>
+                        <li></li>
                     </ul>
                 </div>
                 <div class="nav-right-part nav-right-part-desktop">
@@ -97,26 +98,6 @@
             </div>
         </nav>
     </header>
-    <!--
-    <div class="category-responsive d-xl-none d-block ara-header-bottom-cap">
-        <div class="container">
-            <div class="category-slider owl-carousel">
-                <div class="item">
-                    <a href="" style="text-transform: none; color: #fff;">
-                        <i class="fa fa-envelope" aria-hidden="true" style="color: orange;"></i>
-                        capperuacademica@gmail.com
-                    </a>
-                </div>
-                <div class="item">
-                    <a href="" style="text-transform: none; color: #fff;">
-                        <i class="fa fa-phone" aria-hidden="true" style="color: orange;"></i>
-                        (01)7397026 – (043) 200324 - 977 66 24 60 - 946 94 38 87
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    -->
     <div class="category-navbar navbar-area d-xl-block d-none ara-header-bottom-cap" 
                 style="border-bottom: 4px solid orange;">
         <nav class="navbar navbar-expand-lg">

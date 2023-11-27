@@ -49,59 +49,43 @@
                 <div class="col-lg-12">
                     <div class="intro-slider owl-carousel">
                         <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/001.png') }}" alt="img">
+                            <a href="{{ route('web_categoria_sector', "Empresarial") }}">
+                                <div class="single-intro-wrap">
+                                    <div class="thumb">
+                                        <img src="{{ asset('themes/capperu/assets/img/intro/001.png') }}" alt="img">
+                                    </div>
+                                    <div class="wrap-details">
+                                        <h6><a href="{{ route('web_categoria_sector', "Empresarial") }}">Empresarial</a></h6>
+                                        <!--<p>236 Programas</p>-->
+                                    </div>
                                 </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Laboral</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/002.png') }}" alt="img">
+                            <a href="{{ route('web_categoria_sector', "Derecho") }}">
+                                <div class="single-intro-wrap">
+                                    <div class="thumb">
+                                        <img src="{{ asset('themes/capperu/assets/img/intro/004.png') }}" alt="img">
+                                    </div>
+                                    <div class="wrap-details">
+                                        <h6><a href="{{ route('web_categoria_sector', "Derecho") }}">Derecho</a></h6>
+                                        <!--<p>236 Programas</p>-->
+                                    </div>
                                 </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Público</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/003.png') }}" alt="img">
+                            <a href="{{ route('web_categoria_sector', "Publico") }}">
+                                <div class="single-intro-wrap">
+                                    <div class="thumb">
+                                        <img src="{{ asset('themes/capperu/assets/img/intro/005.png') }}" alt="img">
+                                    </div>
+                                    <div class="wrap-details">
+                                        <h6><a href="#">Público</a></h6>
+                                        <!--<p>236 Programas</p>-->
+                                    </div>
                                 </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Laboral</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/004.png') }}" alt="img">
-                                </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Ofinatica</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/005.png') }}" alt="img">
-                                </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Marketing</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -117,7 +101,8 @@
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>Nuevos Programas</h2>
+                        <h3>Nuevos Programas</h3>
+                        <div class="ara-linea-cap"></div>
                     </div>
                 </div>
 
@@ -200,13 +185,6 @@
                         </div>
                     @endforeach
                 @endif
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-xl-7 col-lg-8 align-self-center">
-                    <div class="banner-inner text-center">
-                        <a class="btn btn-base" href="categoria">Más Programas de Estudios</a>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
