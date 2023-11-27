@@ -10,12 +10,12 @@
   --heading-color: #11142D;
 }
 
-.ara-header-bottom-cap{
+.ara-header-bottom-cap {
   background: var(--main-color2);
   padding: 10px 0px 5px 0px; 
 }
 
-.ara-linea-cap{
+.ara-linea-cap {
   max-width: 5%;
   border-bottom: 3px solid var(--main-color4); 
 }
@@ -25,6 +25,16 @@
   color: var(--main-color4);
 }
 
+.ara-portada-programas-exterior {
+  height: 180px;
+  overflow: hidden;
+}
+
+.ara-portada-programas-exterior .img{
+  max-width: 100%; /* La imagen no superará el ancho del contenedor */
+  height: auto; /* Mantiene la proporción de aspecto de la imagen */
+  display: block; /* Elimina espacio adicional debajo de la imagen */
+}
 
 /* Ocultar Lineas de Textos - START */ 
 

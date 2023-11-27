@@ -105,26 +105,21 @@
                         <div class="ara-linea-cap"></div>
                     </div>
                 </div>
-
-
                 @if (count($programs) > 0)
                     @foreach ($programs as $key => $program)
                         <div class="col-md-3">
                             <div class="single-course-wrap" style="background-color: #F9FAFD;">
-                                <div class="thumb">
-                                    <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue"
-                                        style="font-size: 18px;">
+                                <div class="thumb ara-portada-programas-exterior">
+                                    <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue" style="font-size: 18px;">
                                         {{ $program->additional }}
                                     </a>
-                                    <a href="{{ route('web_descripcion_programa', $program->id) }}">
-                                        <img style="height: 260px; object-fit: cover;" src="{{ asset($program->image) }}"
-                                            alt="img">
+                                    <a  href="{{ route('web_descripcion_programa', $program->id) }}">
+                                        <img class="img" src="{{ asset($program->image) }}" alt="img">
                                     </a>
                                 </div>
                                 <div class="wrap-details">
                                     <h6 title="{{ $program->name }}" class="texto-oculto2">
-                                        <a
-                                            href="{{ route('web_descripcion_programa', $program->id) }}">{{ $program->name }}</a>
+                                        <a href="{{ route('web_descripcion_programa', $program->id) }}">{{ $program->name }}</a>
                                     </h6>
                                     <div>
                                         <div>

@@ -23,9 +23,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-12 align-self-center">
                     <div class="banner-inner text-center">
-                        <h4 style="color: #fff;">
+                        <h3 style="color: #fff;">
                             {{ $course->description }}
-                        </h4>
+                        </h3>
                     </div>
                 </div>
             </div>
