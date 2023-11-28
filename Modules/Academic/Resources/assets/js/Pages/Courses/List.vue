@@ -5,12 +5,12 @@
     import { Dropdown } from 'flowbite-vue'
     import Swal2 from "sweetalert2";
     import { Link, router, useForm } from '@inertiajs/vue3';
-    import { faGears, faTrashAlt, faCheck, faSpellCheck, faDownload, faPlay } from "@fortawesome/free-solid-svg-icons";
+    import { faXmark, faGears, faTrashAlt, faCheck, faSpellCheck, faDownload, faPlay, faFile, faFilm } from "@fortawesome/free-solid-svg-icons";
     import ModalLarge from '@/Components/ModalLarge.vue';
     import { ref } from 'vue';
     import DangerButton from '@/Components/DangerButton.vue';
     import InputError from '@/Components/InputError.vue';
-    import ModalLargeXX from '@/Components/ModalLargeXX.vue';
+    
     import ModuleForm from './Partials/ModuleForm.vue';
 
     const props = defineProps({
@@ -156,7 +156,6 @@
         });
     }
 
-const displayModalModules = ref(false);
 const dataModule = ref({});
 
 const openModalModules = (course) =>{
@@ -165,11 +164,8 @@ const openModalModules = (course) =>{
         name_course: course.description,
         modules: course.modules
     };
-    displayModalModules.value = true;
 }
-const closeModalModules = () =>{
-    displayModalModules.value = false;
-}
+
 </script>
 
 <template>
@@ -365,27 +361,16 @@ const closeModalModules = () =>{
             </DangerButton>
             </template>
         </ModalLarge>
-        <ModalLargeXX
-            :onClose="closeModalModules"
-            :show="displayModalModules"
-            :icon="'/img/carpeta.png'"
-        >
-            <template #title>
-                Modulos
-            </template>
-            <template #message>
-                {{ dataModule.name_course }}
-            </template>
-            <template #content>
-                <ModuleForm 
-                    :faPlay="faPlay"
-                    :faDownload="faDownload"
-                    :faSpellCheck="faSpellCheck" 
-                    :faCheck="faCheck" 
-                    :faTrashAlt="faTrashAlt" 
-                    :course="dataModule" 
-                />
-            </template>
-        </ModalLargeXX>
+        <ModuleForm 
+            :faXmark="faXmark"
+            :faFilm="faFilm"
+            :faFile="faFile"
+            :faPlay="faPlay"
+            :faDownload="faDownload"
+            :faSpellCheck="faSpellCheck" 
+            :faCheck="faCheck" 
+            :faTrashAlt="faTrashAlt" 
+            :course="dataModule" 
+        />
     </AppLayout>
 </template>
