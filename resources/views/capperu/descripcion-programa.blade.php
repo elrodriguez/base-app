@@ -64,7 +64,7 @@
                                                 <span style="color:orange;">
                                                     <i>Modalidad:</i>
                                                 </span>
-                                                <b>{{ $course->modality->description }}</b>
+                                                <b>{{ $item->additional1 }}</b>
                                             </div>
                                         @endif
                                         @if ($course->category)
