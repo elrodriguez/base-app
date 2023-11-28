@@ -1858,7 +1858,7 @@ ul {
 }
 .navbar-area .nav-container .navbar-collapse .navbar-nav li a {
   color: var(--heading-color);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 500;
 }
 .navbar-area .nav-container .navbar-collapse .navbar-nav li:hover a {
@@ -2336,7 +2336,7 @@ ul {
   color: var(--heading-color);
   font-size: 16px;
   font-weight: 500;
-  margin-left: 30px;
+  margin-left: 10px;
 }
 .nav-right-part ul li:hover .search {
   color: #fff;
@@ -2348,7 +2348,7 @@ ul {
 
 .navbar-nav {
   opacity: 0;
-  margin-right: -30px;
+  margin-right: -10px;
   visibility: hidden;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
@@ -2947,7 +2947,7 @@ ul {
   line-height: 46px;
   padding: 0 30px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--paragraph-color);
   margin-right: 10px;
 }
@@ -3039,7 +3039,7 @@ ul {
   border-radius: 0 0 8px 8px;
 }
 .single-course-wrap .wrap-details h6 {
-  margin-bottom: 17px;
+  margin-bottom: 10px;
 }
 .single-course-wrap .wrap-details .user-area {
   font-size: 14px;
@@ -3332,12 +3332,12 @@ a.showMore-cat.showLess::after {
 }
 .course-tab .nav-item .nav-link {
   font-weight: 600;
-  font-size: 24px;
+  font-size: 18px;
   color: var(--heading-color);
   background: transparent;
   border-bottom: 4px solid transparent;
   border-radius: 0;
-  padding: 0 19px 30px;
+  padding: 15px 10px;
 }
 .course-tab .nav-item .nav-link.active {
   border-bottom: 4px solid var(--main-color);

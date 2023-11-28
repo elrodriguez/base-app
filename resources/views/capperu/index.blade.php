@@ -20,15 +20,21 @@
     <!-- Banner Area Start-->
     <section class="banner-area style-3"
         style="background-image: url({{ asset('themes/capperu/assets/img/banner/bg-2.jpg') }});">
+        <br>
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-xl-7 col-lg-8 align-self-center">
+                <div class="col-md-10 align-self-center">
                     <div class="banner-inner text-center">
-                        <h1>Estudia en línea con mucha facilidad.</h1>
+                        <h1>¿En que deseas especializarte?</h1>
                         <div class="banner-content">
-                            <p>Puede acceder a más de 150 cursos diferentes formadores profesionales.</p>
+                            <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                                    <p class="text-center">Puedes acceder a más de 150 cursos y más de 30 diplomados especializados.</p>
+                                </div>
+                                <div class="col-md-2"></div>
+                            </div>
                         </div>
-                        <a class="btn btn-base" href="categoria">Más Programas de Estudios</a>
                     </div>
                 </div>
             </div>
@@ -43,59 +49,43 @@
                 <div class="col-lg-12">
                     <div class="intro-slider owl-carousel">
                         <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/001.png') }}" alt="img">
+                            <a href="{{ route('web_categoria_sector', "Empresarial") }}">
+                                <div class="single-intro-wrap">
+                                    <div class="thumb">
+                                        <img src="{{ asset('themes/capperu/assets/img/intro/001.png') }}" alt="img">
+                                    </div>
+                                    <div class="wrap-details">
+                                        <h6><a href="{{ route('web_categoria_sector', "Empresarial") }}">Empresarial</a></h6>
+                                        <!--<p>236 Programas</p>-->
+                                    </div>
                                 </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Laboral</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/002.png') }}" alt="img">
+                            <a href="{{ route('web_categoria_sector', "Derecho") }}">
+                                <div class="single-intro-wrap">
+                                    <div class="thumb">
+                                        <img src="{{ asset('themes/capperu/assets/img/intro/004.png') }}" alt="img">
+                                    </div>
+                                    <div class="wrap-details">
+                                        <h6><a href="{{ route('web_categoria_sector', "Derecho") }}">Derecho</a></h6>
+                                        <!--<p>236 Programas</p>-->
+                                    </div>
                                 </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Público</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/003.png') }}" alt="img">
+                            <a href="{{ route('web_categoria_sector', "Publico") }}">
+                                <div class="single-intro-wrap">
+                                    <div class="thumb">
+                                        <img src="{{ asset('themes/capperu/assets/img/intro/005.png') }}" alt="img">
+                                    </div>
+                                    <div class="wrap-details">
+                                        <h6><a href="#">Público</a></h6>
+                                        <!--<p>236 Programas</p>-->
+                                    </div>
                                 </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Laboral</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/004.png') }}" alt="img">
-                                </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Ofinatica</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="single-intro-wrap">
-                                <div class="thumb">
-                                    <img src="{{ asset('themes/capperu/assets/img/intro/005.png') }}" alt="img">
-                                </div>
-                                <div class="wrap-details">
-                                    <h6><a href="#">Marketing</a></h6>
-                                    <p>236 Programas</p>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -111,29 +101,25 @@
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>Nuevos Programas</h2>
+                        <h3>Nuevos Programas</h3>
+                        <div class="ara-linea-cap"></div>
                     </div>
                 </div>
-
-
                 @if (count($programs) > 0)
                     @foreach ($programs as $key => $program)
                         <div class="col-md-3">
                             <div class="single-course-wrap" style="background-color: #F9FAFD;">
-                                <div class="thumb">
-                                    <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue"
-                                        style="font-size: 18px;">
+                                <div class="thumb ara-portada-programas-exterior">
+                                    <a href="{{ route('web_categoria_programa_cursos') }}" class="cat cat-blue" style="font-size: 18px;">
                                         {{ $program->additional }}
                                     </a>
-                                    <a href="{{ route('web_descripcion_programa', $program->id) }}">
-                                        <img style="height: 260px; object-fit: cover;" src="{{ asset($program->image) }}"
-                                            alt="img">
+                                    <a  href="{{ route('web_descripcion_programa', $program->id) }}">
+                                        <img class="img" src="{{ asset($program->image) }}" alt="img">
                                     </a>
                                 </div>
                                 <div class="wrap-details">
                                     <h6 title="{{ $program->name }}" class="texto-oculto2">
-                                        <a
-                                            href="{{ route('web_descripcion_programa', $program->id) }}">{{ $program->name }}</a>
+                                        <a href="{{ route('web_descripcion_programa', $program->id) }}">{{ $program->name }}</a>
                                     </h6>
                                     <div>
                                         <div>
@@ -194,13 +180,6 @@
                         </div>
                     @endforeach
                 @endif
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-xl-7 col-lg-8 align-self-center">
-                    <div class="banner-inner text-center">
-                        <a class="btn btn-base" href="categoria">Más Programas de Estudios</a>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

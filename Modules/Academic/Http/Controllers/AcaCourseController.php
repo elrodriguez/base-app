@@ -103,6 +103,7 @@ class AcaCourseController extends Controller
             $path = asset('storage/' . $img);
         }
         $timestamp = strtotime($request->get('course_date'));
+        
         AcaCourse::create([
             'status'            => $request->get('status') ? true : false,
             'description'       => $request->get('description'),
@@ -187,7 +188,8 @@ class AcaCourseController extends Controller
 
         $course = AcaCourse::find($id);
         $timestamp = strtotime($request->get('course_date'));
-
+        
+       
         $course->status           = $request->get('status') ? true : false;
         $course->description      = $request->get('description');
         $course->course_day       = date("d", $timestamp);

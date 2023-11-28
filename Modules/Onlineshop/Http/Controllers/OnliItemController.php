@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Modules\Academic\Entities\AcaCourse;
 use Modules\Onlineshop\Entities\OnliItem;
+use Modules\Onlineshop\Entities\AcaModality;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 
@@ -75,6 +76,7 @@ class OnliItemController extends Controller
                 ->from('onli_items')
                 ->where('onli_items.entitie', 'App-Models-Product');
         })->get();
+
 
         return Inertia::render('Onlineshop::Items/Create', [
             'courses'   => $courses,
@@ -143,7 +145,8 @@ class OnliItemController extends Controller
             'image'                     => $path,
             'status'                    => true,
             'additional'                => $request->get('additional'),
-            'additional1'                => $request->get('additional1')
+            'additional1'                => $request->get('additional1'),
+            'additional2'                => $request->get('category_description')
         ]);
 
         return redirect()->route('onlineshop_items')
@@ -212,7 +215,7 @@ class OnliItemController extends Controller
         $OnliItem->status = $request->get('status') ? true : false;
         $OnliItem->additional = $request->get('additional');
         $OnliItem->additional1 = $request->get('additional1');
-        $OnliItem->additional2 = $request->get('additional2');
+        $OnliItem->additional2 = $request->get('category_description');
 
         // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
         // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';

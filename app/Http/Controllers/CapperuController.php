@@ -91,8 +91,8 @@ class CapperuController extends Controller
                 'onli_items.category_description as category_description'
             )
             ->where('onli_items.status', true)->orderBy('onli_items.id', 'DESC')
-            ->where('onli_items.additional', $tipo)
-            ->where('onli_items.additional2', $sector)->get();
+            ->where('onli_items.additional', $tipo)     //Curso o Diplomado
+            ->where('onli_items.additional2', $sector)->get();  //Sector publico , derecho ,etc
             
         return view('capperu/sector-cursos', [
             'programs' => $programs

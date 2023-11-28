@@ -4,7 +4,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>Más Populares</h2>
+                        <h3>Más Populares</h3>
+                        <div class="ara-linea-cap"></div>
                     </div>
                 </div>
                 <div class="col-lg-12">

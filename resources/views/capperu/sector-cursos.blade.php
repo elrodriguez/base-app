@@ -55,7 +55,6 @@
                             <div class="row">
                                 
 
-
                                
                                 @foreach ($programs as $program)
                                     @if ($program->additional1 == "E-Learning")
