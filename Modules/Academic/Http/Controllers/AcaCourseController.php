@@ -103,8 +103,8 @@ class AcaCourseController extends Controller
             $path = asset('storage/' . $img);
         }
         $timestamp = strtotime($request->get('course_date'));
-        
-        AcaCourse::create([
+
+        $courseNew = AcaCourse::create([
             'status'            => $request->get('status') ? true : false,
             'description'       => $request->get('description'),
             'course_day'        => date("d", $timestamp),
@@ -117,8 +117,8 @@ class AcaCourseController extends Controller
             'sector_description' => AcaCategoryCourse::find($request->get('category_id'))->description
         ]);
 
-        return redirect()->route('aca_courses_list')
-            ->with('message', __('Curso creado con éxito'));
+        return redirect()->route('aca_courses_information', $courseNew->id)
+            ->with('message', 'Curso creado con éxito, registrar informacion del curso');
     }
 
     /**
@@ -188,8 +188,8 @@ class AcaCourseController extends Controller
 
         $course = AcaCourse::find($id);
         $timestamp = strtotime($request->get('course_date'));
-        
-       
+
+
         $course->status           = $request->get('status') ? true : false;
         $course->description      = $request->get('description');
         $course->course_day       = date("d", $timestamp);
