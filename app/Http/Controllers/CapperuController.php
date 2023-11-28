@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Modules\Academic\Entities\AcaCapRegistration;
 use Modules\Academic\Entities\AcaCourse;
 use Modules\Academic\Entities\AcaStudent;
+use Modules\Academic\Entities\AcaBrochure;
 
 class CapperuController extends Controller
 {
@@ -310,5 +311,29 @@ class CapperuController extends Controller
         return view('capperu/gracias', [
             'person' => $person
         ]);
+    }
+
+    public function download_brochure($id)
+    {
+        $brochure = AcaBrochure::find($id);//AcaBrochure::where('aca_brochures.id', $id)->join('aca_courses', 'aca_courses.id', 'aca_brochures.course_id')
+                    //->select('*.aca_brochures', 'aca_courses.description as description')->first();
+        $filePath = $brochure->path_file;
+
+        // Verificar si el archivo existe
+        if (Storage::exists($filePath)) {
+            // Obtener el nombre del archivo
+            $fileName = pathinfo($filePath, PATHINFO_FILENAME);
+            // Obtener la extensión del archivo
+            $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+    
+            // Definir el nombre del archivo para descarga
+            $downloadFileName = $brochure->description . '.' . $extension;
+    
+            // Generar la respuesta de descarga
+            return response()->download(storage_path('app/' . $filePath), $downloadFileName);
+        }
+        
+        // Si el archivo no existe, puedes retornar una respuesta de error o redireccionar a otra página
+        abort(404, 'El archivo no existe');
     }
 }
