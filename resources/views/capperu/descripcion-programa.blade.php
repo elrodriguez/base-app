@@ -172,53 +172,59 @@
                                 @endif
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="reviewers-area">
-                            <div class="meta-area d-flex">
-                                <div class="user-rating ms-0">
-                                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                    <b>Modalidad de Estudios Mixta</b>
-                                </div>
-                                <div class="ms-auto">
-                                    <i class="fa fa-video" aria-hidden="true"></i>
-                                    Google Meet
-                                </div>
-                                <div class="ms-md-5 ms-auto mb-0">
-                                    <a href="">
-                                        <i class="fa fa-laptop" aria-hidden="true"></i>
-                                        Campus Virtual
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h5><b>¿En qué consiste la modalidad de estudios E-Learning?</b></h5>
-                        </div>
-                        <div class="col-md-12">
-                            <h6>ESTA MODALIDAD PERMITE:</h6>
-                            <ul>
-                                <li>
-                                    Una formación completamente a distancia, donde los alumnos acceden a
-                                    los contenidos, actividades, tareas, tutores del curso, etc.
-                                </li>
-                                <li>
-                                    El proceso de aprendizaje se lleve a cabo a través de cualquier dispositivo 
-                                    electrónico. (laptop, Tablet, PC o dispositivo móvil).
-                                </li>
-                                <li>
-                                    FLEXIBILIDAD DE ESTUDIO: permite que el estudiante pueda estudiar conforme a su disponibilidad de tiempo y desde el lugar físico que él elija. 
-                                    (las 24 horas y los 7 días de la semana).
-                                </li>
-                                <li>
-                                    DISPOSICIÓN DE RECURSOS ON-LINE Y MULTIMEDIA, como PPTS, PDF, formatos en Excel y Word, que forman parte de los estudios.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    </div>          
+
+                   @if ($course->modality->description == "E-Learning")
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h5><b>¿En qué consiste la modalidad de estudios E-Learning?</b></h5>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h6>ESTA MODALIDAD PERMITE:</h6>
+                                                <ul>
+                                                    <li>
+                                                        Una formación completamente a distancia, donde los alumnos acceden a
+                                                        los contenidos, actividades, tareas, tutores del curso, etc.
+                                                    </li>
+                                                    <li>
+                                                        El proceso de aprendizaje se lleve a cabo a través de cualquier dispositivo 
+                                                        electrónico. (laptop, Tablet, PC o dispositivo móvil).
+                                                    </li>
+                                                    <li>
+                                                        FLEXIBILIDAD DE ESTUDIO: permite que el estudiante pueda estudiar conforme a su disponibilidad de tiempo y desde el lugar físico que él elija. 
+                                                        (las 24 horas y los 7 días de la semana).
+                                                    </li>
+                                                    <li>
+                                                        DISPOSICIÓN DE RECURSOS ON-LINE Y MULTIMEDIA, como PPTS, PDF, formatos en Excel y Word, que forman parte de los estudios.
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                   @else
+                                    <div class="row">
+                                        <div class="reviewers-area">
+                                            <div class="meta-area d-flex">
+                                                <div class="user-rating ms-0">
+                                                    <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                                    <b>Modalidad de Estudios Mixta</b>
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <i class="fa fa-video" aria-hidden="true"></i>
+                                                    Google Meet
+                                                </div>
+                                                <div class="ms-md-5 ms-auto mb-0">
+                                                    <a href="">
+                                                        <i class="fa fa-laptop" aria-hidden="true"></i>
+                                                        Campus Virtual
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                   @endif
+
+
                     <br>
                     <div class="row overview-area">
                         <div class="col-md-12 bg-gray">
