@@ -95,7 +95,7 @@
                             @endphp
                             @foreach ($agreements as $agreement)
                                 <a href="">
-                                    <img style="100%;" src="{{ $agreement->institution->image }}" alt="img">
+                                    <img style="height: 80px;" src="{{ $agreement->institution->image }}" alt="img">
                                 </a>
                             @endforeach
                         </div>
@@ -106,20 +106,19 @@
                                 <button class="nav-link active" id="pill-1" data-bs-toggle="pill"
                                     data-bs-target="#pills-01" type="button" role="tab" aria-controls="pills-01"
                                     aria-selected="true">
-                                    Presentación
+                                    Presentación <span style="color: orange;">></span>
                                 </button>
                             </li>
                             <li class="nav-item">
                                 <button class="nav-link" id="pill-2" data-bs-toggle="pill" data-bs-target="#pills-02"
                                     type="button" role="tab" aria-controls="pills-02" aria-selected="false">
-                                    Beneficios
+                                    Beneficios <span style="color: orange;">></span>
                                 </button>
                             </li>
                             <li class="nav-item">
                                 <button class="nav-link" id="pill-3" data-bs-toggle="pill" data-bs-target="#pills-03"
                                     type="button" role="tab" aria-controls="pills-03" aria-selected="false">
-                                    Plana Docente
-                                </button>
+                                    Plana Docente <span style="color: orange;">></span>
                             </li>
                             <li class="nav-item">
                                 <button class="nav-link" id="pill-4" data-bs-toggle="pill" data-bs-target="#pills-04"
