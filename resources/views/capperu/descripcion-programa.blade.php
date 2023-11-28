@@ -75,7 +75,7 @@
                                                 <b>{{ $course->type_description }}</b>
                                             </div> 
                                         @endif
-                                        @if ($course->modality->description != "E-Learning")
+                                        @if ( $item->additional1 != "E-Learning")
                                         <div class="user-rating">
                                             <span style="color:orange;">
                                                 <i>Inicio:</i>
