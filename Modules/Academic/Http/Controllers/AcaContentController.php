@@ -5,66 +5,57 @@ namespace Modules\Academic\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\DB;
+use Modules\Academic\Entities\AcaContent;
 
 class AcaContentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
-    {
-        return view('academic::index');
-    }
+    use ValidatesRequests;
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('academic::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
     public function store(Request $request)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'theme_id' => 'required',
+                'position' => 'required',
+                'description' => 'required',
+                'content' => 'required'
+            ]
+        );
+
+        $content = AcaContent::create([
+            'theme_id'      => $request->get('theme_id'),
+            'position'      => $request->get('position'),
+            'description'   => $request->get('description'),
+            'content'       => $request->get('content'),
+            'is_file'       => $request->get('is_file')
+        ]);
+
+        return response()->json(['success' => true, 'content' => $content]);
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('academic::show');
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('academic::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'position' => 'required',
+                'description' => 'required',
+                'content' => 'required'
+            ]
+        );
+
+        AcaContent::find($id)->update([
+            'position'      => $request->get('position'),
+            'description'   => $request->get('description'),
+            'content'       => $request->get('content'),
+            'is_file'       => $request->get('is_file')
+        ]);
+
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -74,6 +65,31 @@ class AcaContentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = null;
+        $success = false;
+
+        try {
+            // Usamos una transacción para asegurarnos de que la operación se realice de manera segura.
+            DB::beginTransaction();
+
+            $content = AcaContent::findOrFail($id);
+
+            $content->delete();
+
+            DB::commit();
+
+            $message =  'Contenido eliminado correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción durante la transacción, hacemos rollback para deshacer cualquier cambio.
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 }
