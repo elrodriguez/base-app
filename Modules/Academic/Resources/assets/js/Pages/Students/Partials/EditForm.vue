@@ -54,7 +54,6 @@ const createPatient = () => {
                 text: 'Se registró correctamente',
                 icon: 'success',
             });
-            form.reset()
         },
     });
 }

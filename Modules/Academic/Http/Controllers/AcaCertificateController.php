@@ -5,6 +5,8 @@ namespace Modules\Academic\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Inertia\Inertia;
+use Modules\Academic\Entities\AcaStudent;
 
 class AcaCertificateController extends Controller
 {
@@ -21,9 +23,13 @@ class AcaCertificateController extends Controller
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function create($id)
     {
-        return view('academic::create');
+        $student = AcaStudent::with('person')->where('id', $id)->first();
+
+        return Inertia::render('Academic::Certificates/Create', [
+            'student' => $student
+        ]);
     }
 
     /**

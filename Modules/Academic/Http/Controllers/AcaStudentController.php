@@ -127,8 +127,10 @@ class AcaStudentController extends Controller
                 $file_name,
                 'public'
             );
+
+            $path = asset('storage/' . $path);
         }
-        $path = env('APP_URL') . "/storage/" . $path;
+
         $per = Person::create([
             'document_type_id'      => $request->get('document_type_id'),
             'short_name'            => $request->get('names'),
@@ -226,6 +228,7 @@ class AcaStudentController extends Controller
     {
         $person_id = $request->get('id');
         $student_id = $request->get('student_id');
+        $user = User::where('person_id', $person_id)->first();
 
         $this->validate(
 
@@ -236,6 +239,8 @@ class AcaStudentController extends Controller
                 'number'            => 'unique:people,number,' . $person_id . ',id,document_type_id,' . $request->get('document_type_id'),
                 'telephone'         => 'required|max:12',
                 'email'             => 'required|max:255',
+                'email'            => 'unique:people,email,' . $person_id . ',id',
+                'email'            => 'unique:users,email,' . $user->id . ',id',
                 'address'           => 'required|max:255',
                 'ubigeo'            => 'required|max:255',
                 'birthdate'         => 'required|',
@@ -260,8 +265,10 @@ class AcaStudentController extends Controller
                 $file_name,
                 'public'
             );
+
+            $path = asset('storage/' . $path);
         }
-        $path = env('APP_URL') . "/storage/" . $path;
+
         Person::find($person_id)->update([
             'document_type_id'      => $request->get('document_type_id'),
             'short_name'            => $request->get('names'),
@@ -281,7 +288,7 @@ class AcaStudentController extends Controller
             'mother_lastname'       => $request->get('mother_lastname')
         ]);
 
-        User::where('person_id', $person_id)->update([
+        $user->update([
             'name'          => $request->get('names'),
             'email'         => $request->get('email'),
             'password'      => Hash::make($request->get('password')),
