@@ -59,11 +59,13 @@ watch(() => props.theme, (data) => {
     formContents.theme_id = data.theme_id;
     formContents.theme_name = data.theme_name
 
-    if(data.contents.length > 0){
-        formContents.contents = data.contents
-        contentsLoading.value = data.contents.map(() => ({ loading: false, editable: false }));
+    if(data.contents){
+        if(data.contents.length > 0){
+            formContents.contents = data.contents
+            contentsLoading.value = data.contents.map(() => ({ loading: false, editable: false }));
+        }
     }
-    
+
 });
 
 const closeModalContents = () => {
