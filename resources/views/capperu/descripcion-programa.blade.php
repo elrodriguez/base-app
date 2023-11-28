@@ -174,7 +174,7 @@
                         </div>
                     </div>          
 
-                   @if ($course->modality->description == "E-Learning")
+                   @if ($item->additional1 == "E-Learning")
                                         <br>
                                         <div class="row">
                                             <div class="col-md-12">
