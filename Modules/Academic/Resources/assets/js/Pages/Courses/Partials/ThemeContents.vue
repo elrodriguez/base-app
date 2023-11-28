@@ -320,7 +320,7 @@ const destroyContent = (index,id) => {
                                         </div>
                                     </template>
                                     <template v-else>
-                                        <template v-if="content.is_file">
+                                        <template v-if="content.is_file == '1'">
                                             <a :href="content.content" target="_blank" class="inline-flex items-center py-2 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-600">
                                                 <font-awesome-icon class="mr-1" :icon="faDownload" />
                                                 Descargar
