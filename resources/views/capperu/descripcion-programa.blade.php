@@ -193,6 +193,33 @@
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5><b>¿En qué consiste la modalidad de estudios E-Learning?</b></h5>
+                        </div>
+                        <div class="col-md-12">
+                            <h6>ESTA MODALIDAD PERMITE:</h6>
+                            <ul>
+                                <li>
+                                    Una formación completamente a distancia, donde los alumnos acceden a
+                                    los contenidos, actividades, tareas, tutores del curso, etc.
+                                </li>
+                                <li>
+                                    El proceso de aprendizaje se lleve a cabo a través de cualquier dispositivo 
+                                    electrónico. (laptop, Tablet, PC o dispositivo móvil).
+                                </li>
+                                <li>
+                                    FLEXIBILIDAD DE ESTUDIO: permite que el estudiante pueda estudiar conforme a su disponibilidad de tiempo y desde el lugar físico que él elija. 
+                                    (las 24 horas y los 7 días de la semana).
+                                </li>
+                                <li>
+                                    DISPOSICIÓN DE RECURSOS ON-LINE Y MULTIMEDIA, como PPTS, PDF, formatos en Excel y Word, que forman parte de los estudios.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row overview-area">
                         <div class="col-md-12 bg-gray">
                             El alumno obtendrá su diplomado con la siguiente mención:
@@ -221,12 +248,20 @@
                     </div>
 
                     <div class="price-wrap">
-                        <div class="row align-items-center">
+                        <div class="row align-items-center" style="padding: 5px 0px;">
                             <div class="col-md-12">
                                 <a class="btn btn-primary" href="#" style="width: 100%;" onclick="agregarAlCarrito({ id: {{ $item->id }}, nombre: '{{ $item->name }}', precio: {{ $item->price }} })">
                                     <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                     &nbsp;&nbsp;Comprar Ahora
                                     <b style="text-end"> &nbsp;&nbsp; S/. {{ $item->price }}</b>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row align-items-center" style="padding: 5px 0px;">
+                            <div class="col-md-12">
+                                <a class="btn btn-light" href="#" style="width: 100%;">
+                                    <i class="fa fa-file" aria-hidden="true"></i>
+                                    &nbsp;&nbsp;Descargar Brochure
                                 </a>
                             </div>
                         </div>
