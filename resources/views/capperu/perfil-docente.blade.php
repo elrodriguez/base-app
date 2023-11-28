@@ -110,7 +110,7 @@
                                         </div>
                                         <div class="user-area" style="padding: 0px;">
                                             <div class="user-details">
-                                                <a href="{{ route('web_categoria_sector') }}">{{ $program->category_description }}</a>
+                                                <a href="{{ route('web_categoria_sector', $program->category_description) }}">{{ $program->category_description }}</a>
                                             </div>
                                             <div class="user-rating">
                                                 <a href="{{ route('web_categoria_modalidad_en_vivo') }}">{{ $program->additional1 }}</a>
