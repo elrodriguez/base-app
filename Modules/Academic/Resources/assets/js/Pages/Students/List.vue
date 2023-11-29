@@ -138,7 +138,7 @@
                         </div> 
                     </div>
                     <div>
-                        <Pagination :data="teachers" />
+                        <Pagination :data="students" />
                     </div>
                 </template>
                 <template v-else>

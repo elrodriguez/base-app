@@ -55,7 +55,7 @@ class AcaTeacherController extends Controller
             $teachers->latest();
         }
 
-        $teachers = $teachers->paginate(10)->onEachSide(2);
+        $teachers = $teachers->paginate(12)->onEachSide(2);
 
         return Inertia::render('Academic::Teachers/List', [
             'teachers' => $teachers,

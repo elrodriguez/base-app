@@ -54,7 +54,7 @@ class AcaStudentController extends Controller
             $students->latest();
         }
 
-        $students = $students->paginate(10)->onEachSide(2);
+        $students = $students->paginate(12)->onEachSide(2);
 
         return Inertia::render('Academic::Students/List', [
             'students' => $students,
