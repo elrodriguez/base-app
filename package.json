@@ -25,6 +25,7 @@
         "@popperjs/core": "2.9.1",
         "@tinymce/tinymce-vue": "^5.1.0",
         "@websitebeaver/vue-magnifier": "^1.1.0",
+        "ant-design-vue": "^4.0.7",
         "cropperjs": "^1.5.13",
         "flowbite": "^1.8.1",
         "flowbite-vue": "^0.0.17",

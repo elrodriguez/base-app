@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
+use Modules\Academic\Entities\AcaCourse;
 use Modules\Academic\Entities\AcaStudent;
 
 class AcaCertificateController extends Controller
@@ -26,9 +27,11 @@ class AcaCertificateController extends Controller
     public function create($id)
     {
         $student = AcaStudent::with('person')->where('id', $id)->first();
+        $courses = AcaCourse::where('status', true)->get();
 
         return Inertia::render('Academic::Certificates/Create', [
-            'student' => $student
+            'student'   => $student,
+            'courses'   => $courses
         ]);
     }
 
@@ -39,7 +42,8 @@ class AcaCertificateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $student_id = $request->get('student_id');
+        $course_id = $request->get('course_id');
     }
 
     /**

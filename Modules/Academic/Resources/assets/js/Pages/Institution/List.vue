@@ -58,7 +58,7 @@
 </script>
 
 <template>
-    <AppLayout title="Resumen">
+    <AppLayout title="Institución">
         <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
             <!-- Breadcrumb Start -->
             <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">

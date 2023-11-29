@@ -63,7 +63,12 @@ Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
         ->get('students/create', 'AcaStudentController@create')
         ->name('aca_students_create');
 
-    Route::middleware(['permission:aca_estudiante_certificados_crear'])->get('students/certificates/{id}', 'AcaCertificateController@create')->name('aca_students_certificates_create');
+    Route::middleware(['permission:aca_estudiante_certificados_crear'])
+        ->get('students/certificates/{id}', 'AcaCertificateController@create')
+        ->name('aca_students_certificates_create');
+
+    Route::post('students/certificates_store', 'AcaCertificateController@store')
+        ->name('aca_students_certificates_store');
 
 
     Route::post('students/store', 'AcaStudentController@store')
