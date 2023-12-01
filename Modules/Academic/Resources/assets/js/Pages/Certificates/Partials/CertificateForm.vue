@@ -3,10 +3,11 @@ import { ref, onMounted } from 'vue';
 import { useForm, Link } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { FileInput } from 'flowbite-vue'
-import { Select, SelectOption } from 'ant-design-vue';
+import { Select } from 'ant-design-vue';
 import Keypad from '@/Components/Keypad.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
+import Swal2 from 'sweetalert2';
 
 const props = defineProps({
     student:{
@@ -19,6 +20,14 @@ const props = defineProps({
     }
 });
 
+const dataCourses = ref([]);
+
+onMounted(() => {
+    dataCourses.value = props.courses.map((obj) => ({
+        value: obj.id,
+        label: obj.description
+    }));
+});
 
 const form = useForm({
     image: null,
@@ -41,6 +50,10 @@ const saveCertificate = () => {
         },
     });
 }
+
+const filterOption = (input, option) => {
+  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+};
 </script>
 <template>
     <div class="grid grid-cols-6 gap-6">
@@ -48,17 +61,18 @@ const saveCertificate = () => {
             <div class="p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <form @submit.prevent="saveCertificate"> 
                     <div class="space-y-6 mb-4">
-                        <div>
+                        <div class="mb-2">
                             <InputLabel for="course_date" value="Curso *" />
                             <Select 
                                 show-search
                                 v-model:value="form.course_id" 
                                 class="w-full mb-2"
                                 placeholder="Seleccionar"
-                            >
-                                <SelectOption v-for="(course, key) in courses" :value="course.id">{{ course.description }}</SelectOption>
-                            </Select>
-                            <InputError :message="form.errors.course_id" class="mt-2" />
+                                :options="dataCourses"
+                                :filter-option="filterOption"
+                            />
+                            <InputError :message="form.errors.course_id" class="mt-1" />
+                            <InputError :message="form.errors.student_id" class="mt-1" />
                         </div>
                         <div>
                             <InputLabel for="image" value="Imagen *" />
@@ -68,10 +82,10 @@ const saveCertificate = () => {
                                 label="Subir archivo"
                                 dropzone
                             />
-                            <InputError :message="form.errors.image" class="mt-2" />
+                            <InputError :message="form.errors.image" class="mt-1" />
                         </div>
                     </div>
-                    
+
                     <Keypad>
                         <template #botones>
                             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -87,6 +101,9 @@ const saveCertificate = () => {
                     
                 </form>
             </div>
+        </div>
+        <div class="col-span-6 sm:col-span-3">
+
         </div>
     </div>
 </template>

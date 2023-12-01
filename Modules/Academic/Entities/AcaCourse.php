@@ -64,4 +64,9 @@ class AcaCourse extends Model
     {
         return $this->hasMany(AcaTeacherCourse::class, 'course_id');
     }
+
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(AcaCapRegistration::class, 'course_id');
+    }
 }

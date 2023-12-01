@@ -9,8 +9,14 @@ class AcaCertificate extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'student_id',
+        'registration_id',
+        'course_id',
+        'image',
+        'content'
+    ];
+
     protected static function newFactory()
     {
         return \Modules\Academic\Database\factories\AcaCertificateFactory::new();
