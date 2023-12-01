@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import CertificateForm from './Partials/CertificateForm.vue';
 import { Link } from '@inertiajs/vue3';
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 const props = defineProps({
     student:{
@@ -9,6 +10,10 @@ const props = defineProps({
         default : () => ({})
     },
     courses:{
+        type: Object,
+        default : () => ({})
+    },
+    registrations:{
         type: Object,
         default : () => ({})
     }
@@ -54,7 +59,12 @@ const props = defineProps({
                     </li>
                 </ol>
             </nav>
-            <CertificateForm :student="student" :courses="courses" />
+            <CertificateForm 
+                :faTrashAlt="faTrashAlt"
+                :registrations="registrations" 
+                :student="student" 
+                :courses="courses" 
+            />
         </div>
     </AppLayout>
 </template>

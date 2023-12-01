@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use Modules\Academic\Entities\AcaCourse;
 use Modules\Academic\Entities\AcaStudent;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\DB;
 use Modules\Academic\Entities\AcaCapRegistration;
 use Modules\Academic\Entities\AcaCertificate;
 
@@ -36,8 +37,9 @@ class AcaCertificateController extends Controller
             })
             ->get();
 
-        $registrations = AcaCapRegistration::with('course')
+        $registrations = AcaCertificate::with('course')
             ->where('student_id', $id)->get();
+
 
         return Inertia::render('Academic::Certificates/Create', [
             'student'   => $student,
@@ -65,6 +67,8 @@ class AcaCertificateController extends Controller
             ]
         );
 
+
+
         $path = null;
 
         $destination = 'uploads/certificate';
@@ -83,44 +87,22 @@ class AcaCertificateController extends Controller
 
             $path = asset('storage/' . $img);
         }
+        $true = AcaCertificate::where('student_id', $student_id)->where('course_id', $course_id)->doesntExist();
 
-        AcaCertificate::create([
-            'student_id'        => $student_id,
-            'registration_id'   => AcaCapRegistration::where('student_id', $student_id)->where('course_id', $course_id)->value('id'),
-            'course_id'         => $course_id,
-            'image'             => $path,
-            'content'           => null
-        ]);
+        if ($true) {
+            AcaCertificate::create([
+                'student_id'        => $student_id,
+                'registration_id'   => AcaCapRegistration::where('student_id', $student_id)->where('course_id', $course_id)->value('id'),
+                'course_id'         => $course_id,
+                'image'             => $path,
+                'content'           => null
+            ]);
+        }
 
         return redirect()->route('aca_students_certificates_create', $student_id);
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('academic::show');
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('academic::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
     public function update(Request $request, $id)
     {
         //
@@ -133,6 +115,33 @@ class AcaCertificateController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = null;
+        $success = false;
+        try {
+            // Usamos una transacción para asegurarnos de que la operación se realice de manera segura.
+            DB::beginTransaction();
+
+            // Verificamos si existe.
+            $item = AcaCertificate::findOrFail($id);
+
+            // Si no hay detalles asociados, eliminamos.
+            $item->delete();
+
+            // Si todo ha sido exitoso, confirmamos la transacción.
+            DB::commit();
+
+            $message =  'Certificado eliminado correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción durante la transacción, hacemos rollback para deshacer cualquier cambio.
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 }

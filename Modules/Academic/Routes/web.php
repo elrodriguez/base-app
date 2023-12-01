@@ -70,6 +70,9 @@ Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
     Route::post('students/certificates_store', 'AcaCertificateController@store')
         ->name('aca_students_certificates_store');
 
+    Route::delete('students/certificates_destroy/{id}', 'AcaCertificateController@destroy')
+        ->name('aca_students_certificates_destroy');
+
 
     Route::post('students/store', 'AcaStudentController@store')
         ->name('aca_students_store');

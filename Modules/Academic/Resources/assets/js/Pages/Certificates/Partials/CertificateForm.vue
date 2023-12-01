@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useForm, Link } from '@inertiajs/vue3';
+import { useForm, Link, router } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { FileInput } from 'flowbite-vue'
 import { Select } from 'ant-design-vue';
@@ -15,6 +15,14 @@ const props = defineProps({
         default : () => ({})
     },
     courses:{
+        type: Object,
+        default : () => ({})
+    },
+    registrations:{
+        type: Object,
+        default : () => ({})
+    },
+    faTrashAlt:{
         type: Object,
         default : () => ({})
     }
@@ -38,7 +46,7 @@ const form = useForm({
 const saveCertificate = () => {
     form.post(route('aca_students_certificates_store'), {
         forceFormData: true,
-        errorBag: 'createCourse',
+        errorBag: 'saveCertificate',
         preserveScroll: true,
         onSuccess: () => {
             Swal2.fire({
@@ -53,6 +61,38 @@ const saveCertificate = () => {
 
 const filterOption = (input, option) => {
   return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+};
+
+const destroyCertificate = (id) => {
+    Swal2.fire({
+        title: '¿Estas seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '¡Sí, Eliminar!',
+        cancelButtonText: 'Cancelar',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            return axios.delete(route('aca_students_certificates_destroy', id)).then((res) => {
+                if (!res.data.success) {
+                    Swal2.showValidationMessage(res.data.message)
+                }
+                return res
+            });
+        },
+        allowOutsideClick: () => !Swal2.isLoading()
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal2.fire({
+                title: 'Enhorabuena',
+                text: 'Se Eliminó correctamente',
+                icon: 'success',
+            });
+            router.visit(route('aca_students_certificates_create',props.student.id), { replace: true, method: 'get' });
+        }
+    });
 };
 </script>
 <template>
@@ -103,6 +143,25 @@ const filterOption = (input, option) => {
             </div>
         </div>
         <div class="col-span-6 sm:col-span-3">
+            <div
+                v-for="registration in registrations"
+                class="relative bg-white border border-gray-200 rounded-lg shadow p-4 mb-2"
+            >
+                <div class="flex items-center gap-4">
+                    <img class="w-20 h-20" :src="registration.image" alt="">
+                    <div class="flex-1 font-medium dark:text-white">
+                        <div>{{ registration.course.description }}</div>
+                        
+                    </div>
+                    <button
+                        @click="destroyCertificate(registration.id)"
+                        type="button"
+                        class="absolute top-2 right-2 px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                    >
+                        <font-awesome-icon :icon="faTrashAlt" />
+                    </button>
+                </div>
+            </div>
 
         </div>
     </div>
