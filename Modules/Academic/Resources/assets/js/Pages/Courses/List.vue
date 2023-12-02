@@ -223,7 +223,7 @@ const openModalModules = (course) =>{
                             </div>
                         </div>
                     </div>
-                    <div class="max-w-full overflow-x-auto">
+                    <div class="max-w-full">
                         <table class="w-full table-auto">
                             <thead class="border-b border-stroke">
                                 <tr class="bg-gray-50 text-left dark:bg-meta-4">
@@ -250,14 +250,14 @@ const openModalModules = (course) =>{
                             <tbody>
                                 <template v-for="(course, index) in courses.data" :key="course.id">
                                     <tr class="border-b border-stroke">
-                                        <td class="text-center py-2 dark:border-strokedark">
-                                            <dropdown>
+                                        <td class="relative text-center py-2 dark:border-strokedark">
+                                            <Dropdown text="Top">
                                                 <template #trigger="{ toggle }">
                                                     <button class="border py-1.5 px-2 dropdown-button inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm" type="button" @click="toggle">
                                                         <font-awesome-icon :icon="faGears" />
                                                     </button>
                                                 </template>
-                                                <div class="dropdown-div z-10 absolute text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                                <div class="dropdown-div z-9999 absolute text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                                     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
                                                         <li>
                                                             <Link :href="route('aca_courses_edit',course.id)" class="text-left block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Editar</Link>
@@ -276,7 +276,7 @@ const openModalModules = (course) =>{
                                                         <a @click="destroyCourse(course.id)" href="#" class="text-left block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Eliminar</a>
                                                     </div>
                                                 </div>
-                                            </dropdown>
+                                            </Dropdown>
                                         </td>
                                         <td class="py-2 px-2 dark:border-strokedark">
                                             {{ course.description }}

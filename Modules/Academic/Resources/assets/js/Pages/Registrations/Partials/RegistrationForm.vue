@@ -18,7 +18,7 @@ const props = defineProps({
         type: Object,
         default : () => ({})
     },
-    certificates:{
+    registrations:{
         type: Object,
         default : () => ({})
     },
@@ -38,15 +38,13 @@ onMounted(() => {
 });
 
 const form = useForm({
-    image: null,
     course_id: null,
     student_id: props.student.id
 })
 
-const saveCertificate = () => {
-    form.post(route('aca_students_certificates_store'), {
-        forceFormData: true,
-        errorBag: 'saveCertificate',
+const saveRegistration = () => {
+    form.post(route('aca_students_registrations_store'), {
+        errorBag: 'saveRegistration',
         preserveScroll: true,
         onSuccess: () => {
             Swal2.fire({
@@ -75,7 +73,7 @@ const destroyCertificate = (id) => {
         cancelButtonText: 'Cancelar',
         showLoaderOnConfirm: true,
         preConfirm: () => {
-            return axios.delete(route('aca_students_certificates_destroy', id)).then((res) => {
+            return axios.delete(route('aca_students_registrations_destroy', id)).then((res) => {
                 if (!res.data.success) {
                     Swal2.showValidationMessage(res.data.message)
                 }
@@ -90,26 +88,27 @@ const destroyCertificate = (id) => {
                 text: 'Se Eliminó correctamente',
                 icon: 'success',
             });
-            router.visit(route('aca_students_certificates_create',props.student.id), { replace: true, method: 'get' });
+            router.visit(route('aca_students_registrations_create', props.student.id), { replace: true, method: 'get' });
         }
     });
 };
 </script>
 <template>
     <div class="grid grid-cols-6 gap-6">
+
         <div class="col-span-6 sm:col-span-3">
             <div
-                v-for="certificate in certificates"
+                v-for="registration in registrations"
                 class="relative bg-white border border-gray-200 rounded-lg shadow p-4 mb-2"
             >
                 <div class="flex items-center gap-4">
-                    <img class="w-20 h-20" :src="certificate.image" alt="">
+                    <img class="w-20 h-20" :src="registration.course.image" alt="">
                     <div class="flex-1 font-medium dark:text-white">
-                        <div>{{ certificate.course.description }}</div>
+                        <div>{{ registration.course.description }}</div>
                         
                     </div>
                     <button
-                        @click="destroyCertificate(certificate.id)"
+                        @click="destroyCertificate(registration.id)"
                         type="button"
                         class="absolute top-2 right-2 px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                     >
@@ -121,7 +120,7 @@ const destroyCertificate = (id) => {
         </div>
         <div class="col-span-6 sm:col-span-3">
             <div class="p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <form @submit.prevent="saveCertificate"> 
+                <form @submit.prevent="saveRegistration"> 
                     <div class="space-y-6 mb-4">
                         <div class="mb-2">
                             <InputLabel for="course_date" value="Curso *" />
@@ -135,16 +134,6 @@ const destroyCertificate = (id) => {
                             />
                             <InputError :message="form.errors.course_id" class="mt-1" />
                             <InputError :message="form.errors.student_id" class="mt-1" />
-                        </div>
-                        <div>
-                            <InputLabel for="image" value="Imagen *" />
-                            <FileInput 
-                                id="image"
-                                v-model="form.image" 
-                                label="Subir archivo"
-                                dropzone
-                            />
-                            <InputError :message="form.errors.image" class="mt-1" />
                         </div>
                     </div>
 
@@ -164,6 +153,5 @@ const destroyCertificate = (id) => {
                 </form>
             </div>
         </div>
-        
     </div>
 </template>

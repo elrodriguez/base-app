@@ -72,7 +72,7 @@ const closeModalContents = () => {
     displayModalContent.value = false;
 }
 
-const newHeight = ref(380);
+const newHeight = ref(280);
 
 const modifiedContent = (content) => {
   // Copia el contenido original
@@ -246,7 +246,7 @@ const destroyContent = (index,id) => {
                                     <font-awesome-icon v-else :icon="faCheck" />
                                 </button>
                             </div>
-                            <textarea v-model="formContents.content" id="contentnew" rows="4" class="mt-1 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                            <textarea v-model="formContents.content" id="contentnew" rows="2" class="mt-1 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                             <div class="mt-1">
                                 <div class="flex items-center mb-1">
                                     <input v-model="formContents.is_file" id="default-radio-1-new" type="radio" value="1" name="default-radio-new" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -265,7 +265,7 @@ const destroyContent = (index,id) => {
                     </li>
                 </ol>
             </div>
-           <div style="max-height: 350px;overflow-y: auto;" class="p-4">
+           <div style="max-height: 200px;overflow-y: auto;" class="p-4">
                 <Timeline>
                     <TimelineItem v-for="(content, index) in formContents.contents" class="mb-2">
                         <TimelinePoint>
@@ -307,7 +307,7 @@ const destroyContent = (index,id) => {
                             <TimelineBody class="p-0">
                                 <template v-if="contentsLoading.length > 0">
                                     <template v-if="contentsLoading[index].editable">
-                                        <textarea v-model="content.content" id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                        <textarea v-model="content.content" id="messagexxx" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                                         <div class="mt-1">
                                             <div class="flex items-center mb-1">
                                                 <input v-model="content.is_file" id="default-radio-1" type="radio" value="1" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">

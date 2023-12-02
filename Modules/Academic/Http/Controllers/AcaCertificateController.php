@@ -31,20 +31,18 @@ class AcaCertificateController extends Controller
     {
         $student = AcaStudent::with('person')->where('id', $id)->first();
 
-        $courses = AcaCourse::where('status', true)
-            ->whereHas('registrations', function ($query) use ($id) {
-                $query->where('student_id', $id);
-            })
-            ->get();
+        $courses = AcaCourse::whereHas('registrations', function ($query) use ($id) {
+            $query->where('student_id', $id);
+        })->get();
 
-        $registrations = AcaCertificate::with('course')
+        $certificates = AcaCertificate::with('course')
             ->where('student_id', $id)->get();
 
 
         return Inertia::render('Academic::Certificates/Create', [
             'student'   => $student,
             'courses'   => $courses,
-            'registrations' => $registrations
+            'certificates' => $certificates
         ]);
     }
 

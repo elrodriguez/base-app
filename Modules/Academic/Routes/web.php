@@ -73,6 +73,15 @@ Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
     Route::delete('students/certificates_destroy/{id}', 'AcaCertificateController@destroy')
         ->name('aca_students_certificates_destroy');
 
+    Route::middleware(['permission:aca_estudiante_certificados_crear'])
+        ->get('students/registrations/{id}', 'AcaCapRegistrationController@create')
+        ->name('aca_students_registrations_create');
+
+    Route::post('students/registrations_store', 'AcaCapRegistrationController@store')
+        ->name('aca_students_registrations_store');
+
+    Route::delete('students/registrations_destroy/{id}', 'AcaCapRegistrationController@destroy')
+        ->name('aca_students_registrations_destroy');
 
     Route::post('students/store', 'AcaStudentController@store')
         ->name('aca_students_store');
@@ -129,4 +138,8 @@ Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
     Route::post('agreement/store', 'AcaAgreementController@store')->name('aca_agreements_store');
     Route::post('brochure/store', 'AcaBrochureController@store')->name('aca_brochure_store');
     Route::post('aca-upload-image', 'AcaBrochureController@uploadImage')->name('aca_upload_image_tiny');
+
+    Route::middleware(['middleware' => 'permission:aca_miscursos'])
+        ->get('mycourses/student', 'AcaStudentController@myCourses')
+        ->name('aca_mycourses');
 });

@@ -13,6 +13,8 @@ import {
     faGlobe
  } from "@fortawesome/free-solid-svg-icons";
 import { Link } from '@inertiajs/vue3';
+import menuAcademic from '../../../Modules/Academic/Resources/assets/js/Menu.js';
+import menuRestaurant from '../../../Modules/Restaurant/Resources/assets/js/Menu.js';
 
 const props = defineProps({
     sidebarToggle: {
@@ -293,40 +295,8 @@ const menu = ref([
             },
         ]
     },
-    {
-        status:false,
-        text: 'Académico',
-        icom: faBook,
-        route: null,
-        permissions: 'aca_dashboard',
-        items: [
-            {
-                route: route('aca_institutions_list'),
-                status: false,
-                text: 'Instituciones',
-                permissions: 'aca_institucion_listado',
-            },
-            {
-                route: route('aca_teachers_list'),
-                status: false,
-                text: 'Docentes',
-                permissions: 'aca_docente_listado',
-            },
-            {
-                route: route('aca_students_list'),
-                status: false,
-                text: 'Estudiantes',
-                permissions: 'aca_estudiante_listado',
-            },
-            {
-                route: route('aca_courses_list'),
-                status: false,
-                text: 'Cursos',
-                permissions: 'aca_cursos_listado',
-            },
-        ]
-    },
-    
+    menuAcademic,
+    menuRestaurant
 ]);
 
 const toggleSubItems = (index) => {

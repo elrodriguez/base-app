@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Modules\Academic\Entities\AcaStudent;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\Academic\Entities\AcaCourse;
 
 class AcaStudentController extends Controller
 {
@@ -312,5 +314,29 @@ class AcaStudentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function myCourses()
+    {
+        $user = Auth::user();
+        $student_id = AcaStudent::where('person_id', $user->person_id)->value('id');
+        $courses = [];
+        // También puedes verificar múltiples roles a la vez
+        if ($user->hasAnyRole(['admin', 'Docente', 'Administrador'])) {
+            $courses = AcaCourse::with('modules.themes.contents')
+                ->with('teacher.person')->where('status', true)
+                ->orderBy('id', 'DESC')
+                ->get();
+        } else {
+            $courses = AcaCourse::with('modules.themes.contents')
+                ->with('teacher.person')->whereHas('registrations', function ($query) use ($student_id) {
+                    $query->where('student_id', $student_id);
+                })->orderBy('id', 'DESC')
+                ->get();
+        }
+
+        return Inertia::render('Academic::Students/MyCourses', [
+            'courses' => $courses
+        ]);
     }
 }
