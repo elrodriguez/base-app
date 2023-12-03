@@ -145,7 +145,7 @@ class ProductController extends Controller
                 $total = $total + $item['quantity'];
             }
         } else {
-            $total = $request->get('stock');
+            $total = $request->get('stock') ?? 1;
         }
 
 
@@ -765,7 +765,7 @@ class ProductController extends Controller
                 'is_product' => true,
                 'type_sale_affectation_id' => $data[6],
                 'type_purchase_affectation_id' => $data[8],
-                'type_unit_measure_id' => $data[8],
+                'type_unit_measure_id' => $data[10],
                 'status' => true
             ]);
 
