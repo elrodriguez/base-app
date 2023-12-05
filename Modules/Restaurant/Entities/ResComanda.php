@@ -37,4 +37,9 @@ class ResComanda extends Model
     {
         return $this->belongsTo(ResPresentation::class, 'presentation_id');
     }
+
+    public function menus()
+    {
+        return $this->belongsToMany(ResMenu::class, 'res_menu_comandas', 'comanda_id', 'menu_id');
+    }
 }

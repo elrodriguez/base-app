@@ -25,6 +25,8 @@ class RestaurantPermissionSeeder extends Seeder
         array_push($permissions, Permission::create(['name' => 'res_comandas_editar']));
         array_push($permissions, Permission::create(['name' => 'res_comandas_eliminar']));
         array_push($permissions, Permission::create(['name' => 'res_menu']));
+        array_push($permissions, Permission::create(['name' => 'res_menu_verimprimir']));
+        array_push($permissions, Permission::create(['name' => 'res_menu_agregar_comandas']));
         array_push($permissions, Permission::create(['name' => 'res_menu_nuevo']));
         array_push($permissions, Permission::create(['name' => 'res_menu_editar']));
         array_push($permissions, Permission::create(['name' => 'res_menu_eliminar']));

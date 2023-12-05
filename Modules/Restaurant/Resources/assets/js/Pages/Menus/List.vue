@@ -2,14 +2,19 @@
     import AppLayout from '@/Layouts/AppLayout.vue';
     import { useForm } from '@inertiajs/vue3';
     import Keypad from '@/Components/Keypad.vue';
+    import ModalLargeXX from '@/Components/ModalLargeXX.vue';
     import Pagination from '@/Components/Pagination.vue';
-    import { Image } from 'ant-design-vue';
+    import StatusLoading from '@/Components/StatusLoading.vue';
+    import { Space, Tooltip, Transfer, ConfigProvider } from 'ant-design-vue';
+    import esES from 'ant-design-vue/es/locale/es_ES';
     import Swal2 from "sweetalert2";
     import { Link, router } from '@inertiajs/vue3';
-    import { faPencilAlt, faCheck, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+    import { faPencilAlt, faHotdog, faTrashAlt, faPrint } from "@fortawesome/free-solid-svg-icons";
+    import { ref, onMounted } from 'vue';
+    import 'ant-design-vue/dist/reset.css';
 
     const props = defineProps({
-        comandas: {
+        menus: {
             type: Object,
             default: () => ({}),
         },
@@ -23,7 +28,7 @@
         search: props.filters.search,
     });
 
-    const destroyComanda = (id) => {
+    const destroyMenu = (id) => {
         Swal2.fire({
             title: '¿Estas seguro?',
             text: "¡No podrás revertir esto!",
@@ -35,7 +40,7 @@
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                return axios.delete(route('res_comandas_destroy', id)).then((res) => {
+                return axios.delete(route('res_menus_destroy', id)).then((res) => {
                     if (!res.data.success) {
                         Swal2.showValidationMessage(res.data.message)
                     }
@@ -50,12 +55,74 @@
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
                 });
-                router.visit(route('res_comandas_list'), { replace: true, method: 'get' });
+                router.visit(route('res_menu_list'), { replace: true, method: 'get' });
             }
         });
     }
 
     const xhttp =  assetUrl;
+    const displayModalAddComanda = ref(false);
+    const comandasData = ref({
+        menu_id: null,
+        menu_name: null,
+        loading: false
+    });
+
+    const showModalAddComanda = async  (menu) => {
+        comandasData.value.menu_id = menu.id;
+        comandasData.value.loading = true;
+        comandasData.value.menu_name = menu.name;
+        axios.get(route('res_menus_comandas', menu.id)).then((res) => {
+            return getComandas(res.data.comandasFree).then(res => {
+                mockData.value = res.mockData;
+                targetKeys.value = res.targetKeys;
+                return true;
+            });
+            
+        }).then(() => {
+            comandasData.value.loading = false;
+        });
+        displayModalAddComanda.value = true;
+    }
+
+    const closeModalAddComanda = () => {
+        displayModalAddComanda.value = false;
+    }
+    const mockData = ref([]);
+    const targetKeys = ref([]);
+
+    const getComandas = async (comandas) => {
+        const keys = [];
+        const mData = [];
+        for (let i = 0; i < comandas.length; i++) {
+            const data = {
+                key: String(comandas[i].id),
+                title: comandas[i].name,
+                description: comandas[i].description,
+                chosen: comandas[i].chosen,
+            };
+            if (data.chosen) {
+                keys.push(data.key);
+            }
+            mData.push(data);
+        }
+        return { mockData: mData, targetKeys: keys };
+        
+    };
+
+    const filterOption = (inputValue, option) => {
+        const inputValueLower = inputValue.toLowerCase();
+        const optionTitleLower = option.title.toLowerCase();
+
+        return optionTitleLower.includes(inputValueLower);
+    };
+    const handleChange = (keys) => {
+        let id = comandasData.value.menu_id;
+        axios.put(route('res_menus_comandas_store', id),{
+            comandas: keys
+        });
+    };
+
 </script>
 
 <template>
@@ -80,7 +147,7 @@
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Comandas</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Menu Del Día</span>
                         </div>
                     </li>
                 </ol>
@@ -105,7 +172,7 @@
                             <div class="col-span-3 sm:col-span-2">
                                 <Keypad>
                                     <template #botones>
-                                        <Link v-can="'res_comandas_nuevo'" :href="route('res_comandas_create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                        <Link v-can="'res_menu_nuevo'" :href="route('res_menu_create')" class="flex items-center justify-center inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                             Nuevo
                                         </Link>
                                     </template>
@@ -121,19 +188,10 @@
                                         Acciones
                                     </th>
                                     <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Image
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
                                         Nombre
                                     </th>
                                     <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Categoría
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Presentación
-                                    </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
-                                        Precio
+                                        Descripción
                                     </th>
                                     <th class="py-2 px-4 font-medium text-black dark:text-white">
                                         Estado
@@ -141,36 +199,48 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <template v-for="(comanda, index) in comandas.data" :key="comanda.id">
+                                <template v-for="(menu, index) in menus.data" :key="menu.id">
                                     <tr class="border-b border-stroke">
                                         <td class="text-center py-2 dark:border-strokedark">
-                                            <Link v-can="'res_comandas_editar'" :href="route('res_comandas_edit',comanda.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                <font-awesome-icon :icon="faPencilAlt" />
-                                            </Link>
-                                            <button v-can="'res_comandas_eliminar'" @click="destroyComanda(comanda.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                                <font-awesome-icon :icon="faTrashAlt" />
-                                            </button>
+                                            <Space>
+                                                <div v-can="'res_menu_editar'">
+                                                    <Tooltip  placement="topLeft" title="Editar">
+                                                        <Link :href="route('res_menus_edit',menu.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                            <font-awesome-icon :icon="faPencilAlt" />
+                                                        </Link>
+                                                    </Tooltip>
+                                                </div>
+                                                <div v-can="'res_menu_verimprimir'">
+                                                    <Tooltip placement="top" title="Ver e Imprimir">
+                                                        <Link :href="route('res_menus_show',menu.id)" class="mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                                                            <font-awesome-icon :icon="faPrint" />
+                                                        </Link>
+                                                    </Tooltip>
+                                                </div>
+                                                <div v-can="'res_menu_agregar_comandas'">
+                                                    <Tooltip placement="top" title="Agregar Comandas">
+                                                        <button @click="showModalAddComanda(menu)" type="button" class="mr-1 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                            <font-awesome-icon :icon="faHotdog" />
+                                                        </button>
+                                                    </Tooltip>
+                                                </div>
+                                                <div v-can="'res_menu_eliminar'">
+                                                    <Tooltip placement="topRight" title="Eliminar" arrow-point-at-center>
+                                                        <button @click="destroyMenu(menu.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                            <font-awesome-icon :icon="faTrashAlt" />
+                                                        </button>
+                                                    </Tooltip>
+                                                </div>
+                                            </Space>
                                         </td>
                                         <td class="py-2 px-2 dark:border-strokedark">
-                                            <Image
-                                                :width="70"
-                                                :src="xhttp + 'storage/' + comanda.image"
-                                            />
+                                            {{ menu.name }}
                                         </td>
                                         <td class="py-2 px-2 dark:border-strokedark">
-                                            {{ comanda.name }}
-                                        </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
-                                            {{ comanda.category.description }}
-                                        </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
-                                            {{ comanda.presentation.description }}
-                                        </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
-                                            {{ comanda.price }}
+                                            {{ menu.description }}
                                         </td>
                                         <td class="text-center py-2 px-2 dark:border-strokedark">
-                                            <span v-if="comanda.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
+                                            <span v-if="menu.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
                                             <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Inactivo</span>
                                         </td>
                                     </tr>
@@ -178,10 +248,41 @@
                             </tbody>
                         </table>
                     </div>
-                    <Pagination :data="comandas" />
+                    <Pagination :data="menus" />
                 </div>
             </div>
         </div>
-        
+        <ModalLargeXX
+            :onClose="closeModalAddComanda"
+            :show="displayModalAddComanda"
+            :icon="'/img/cubiertos.png'"
+        >
+            <template #title>
+                Agregar Comandas
+            </template>
+            <template #message>
+                {{ comandasData.menu_name }}
+            </template>
+            <template #content>
+                <StatusLoading v-if="comandasData.loading" class="w-full"></StatusLoading>
+                <div v-else>
+                    <ConfigProvider :locale="esES">
+                        <Transfer
+                            :list-style="{
+                                width: '100%',
+                                height: '300px',
+                            }"
+                            v-model:target-keys="targetKeys"
+                            :data-source="mockData"
+                            show-search
+                            :filter-option="filterOption"
+                            :operations="['Agregar', 'Quitar']"
+                            :render="item => item.title"
+                            @change="handleChange"
+                        />
+                    </ConfigProvider>
+                </div>
+            </template>
+        </ModalLargeXX>
     </AppLayout>
 </template>

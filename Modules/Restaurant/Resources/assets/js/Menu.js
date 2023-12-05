@@ -13,6 +13,12 @@ const menuRestaurant = {
             text: "Comandas",
             permissions: "res_comandas",
         },
+        {
+            route: route("res_menu_list"),
+            status: false,
+            text: "Menu Del Día",
+            permissions: "res_menu",
+        },
     ],
 };
 
