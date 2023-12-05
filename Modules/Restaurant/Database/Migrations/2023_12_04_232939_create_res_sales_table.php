@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('sale_date')->comment('fecha que se vendio');
             $table->time('sale_hour')->comment('hora que se vendio');
             $table->string('correlative');
+            $table->unsignedBigInteger('petty_cash_id')->comment('id caja chica');
             $table->unsignedBigInteger('user_id')->comment('usuario que registra');
             $table->unsignedBigInteger('person_id')->comment('id del cliente');
             $table->unsignedBigInteger('local_id')->comment('local donde fue vendivo');
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->decimal('total_discount', 12, 2)->nullable();
             $table->json('payments')->nullable()->comment('metodos de pago');
             $table->timestamps();
+            $table->foreign('petty_cash_id')->references('id')->on('petty_cashes')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('local_id')->references('id')->on('local_sales')->onDelete('cascade');

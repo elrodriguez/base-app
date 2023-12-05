@@ -1,17 +1,49 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link,useForm, router } from '@inertiajs/vue3';
 import Keypad from '@/Components/Keypad.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-
+import { Select } from 'ant-design-vue';
+import { faFaceSmile } from "@fortawesome/free-solid-svg-icons";
+import InputLabel from '@/Components/InputLabel.vue';
 // const props = defineProps({
 //     resmenu: {
 //         type: Object,
 //         default: () => ({}),
 //     },
 // });
+
+import { ref, watch } from 'vue';
+
+const options = ref([
+  {
+    value: 'a1',
+    label: 'a1',
+  },
+  {
+    value: 'a2',
+    label: 'a2',
+  },
+  {
+    value: 'a3',
+    label: 'a3',
+  },
+]);
+const value = ref([]);
+
+const handleChange = (value) => {
+  console.log(`selected ${value}`);
+};
+
+watch(value, () => {
+  console.log('value', value.value);
+});
+
 const xhttp =  assetUrl;
 
+const form = useForm({
+    client_id: null
+});
 
 const saveSale = () => {
 
@@ -45,18 +77,39 @@ const saveSale = () => {
                     </li>
                 </ol>
             </nav>
-            <div class="flex flex-col gap-10">
-                
+            <div class="mt-5 md:mt-0 md:col-span-2">
+                <div class="px-4 py-5 bg-white sm:rounded-tl-md sm:rounded-tr-md sm:p-6 shadow dark:bg-gray-800 ">
+                    <div class="grid grid-cols-6">
+                        <div class="col-span-3 sm:col-span-2">
+                            <InputLabel for="client_id" value="Cliente *" class="mb-1" />
+                            <Select
+                                id="client_id"
+                                v-model:value="value"
+                                class="w-full"
+                                :options="options"
+                                @change="handleChange"
+                                >
+                                <template #suffixIcon>
+                                    <font-awesome-icon :icon="faFaceSmile" />
+                                </template>
+                            </Select>
+                            <InputError :message="form.errors.client_id" class="mt-2" />
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end px-4 py-3 bg-gray-50 text-right sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md dark:bg-gray-700">
+                    <Keypad>
+                        <template #botones>
+                            <PrimaryButton @click="saveSale()">
+                                Imprimir
+                            </PrimaryButton>
+                            <Link :href="route('res_menu_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
+                        </template>
+                    </Keypad>
+                </div>
             </div>
         </div>
-        <Keypad class="mb-6">
-            <template #botones>
-                <PrimaryButton @click="saveSale()">
-                    Imprimir
-                </PrimaryButton>
-                <Link :href="route('res_menu_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
-            </template>
-        </Keypad>
+        
     </AppLayout>
 </template>
 

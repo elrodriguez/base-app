@@ -11,7 +11,7 @@
     import { Link, router } from '@inertiajs/vue3';
     import { faPencilAlt, faHotdog, faTrashAlt, faPrint } from "@fortawesome/free-solid-svg-icons";
     import { ref, onMounted } from 'vue';
-    import 'ant-design-vue/dist/reset.css';
+
 
     const props = defineProps({
         menus: {

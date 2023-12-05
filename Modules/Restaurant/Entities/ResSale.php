@@ -13,8 +13,19 @@ class ResSale extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'sale_date',
+        'sale_hour',
+        'correlative',
+        'user_id',
+        'person_id',
+        'local_id',
+        'total',
+        'total_discount',
+        'payments',
+        'petty_cash_id'
+    ];
+
     protected static function newFactory(): ResSaleFactory
     {
         //return ResSaleFactory::new();
