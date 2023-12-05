@@ -19,6 +19,12 @@ const menuRestaurant = {
             text: "Menu Del Día",
             permissions: "res_menu",
         },
+        {
+            route: route("res_sales_create"),
+            status: false,
+            text: "Vender",
+            permissions: "res_venta_nuevo",
+        },
     ],
 };
 

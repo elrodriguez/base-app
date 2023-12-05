@@ -5,6 +5,7 @@ use Modules\Restaurant\Http\Controllers\ResComandaController;
 use Modules\Restaurant\Http\Controllers\ResMenuComandaController;
 use Modules\Restaurant\Http\Controllers\ResMenuController;
 use Modules\Restaurant\Http\Controllers\ResPresentationController;
+use Modules\Restaurant\Http\Controllers\ResSaleController;
 
 Route::middleware(['auth', 'verified'])->prefix('restaurant')->group(function () {
 
@@ -64,4 +65,12 @@ Route::middleware(['auth', 'verified'])->prefix('restaurant')->group(function ()
 
     Route::put('menus/comandas/store/{id}', [ResMenuComandaController::class, 'storeComandas'])
         ->name('res_menus_comandas_store');
+
+    Route::middleware(['middleware' => 'permission:res_venta_nuevo'])
+        ->get('sales/create', [ResSaleController::class, 'create'])
+        ->name('res_sales_create');
+
+    Route::middleware(['middleware' => 'permission:res_venta'])
+        ->get('sales/list', [ResSaleController::class, 'index'])
+        ->name('res_sales_list');
 });

@@ -152,7 +152,7 @@ class AcaStudentController extends Controller
             'mother_lastname'       => $request->get('mother_lastname')
         ]);
 
-        User::create([
+        $user = User::create([
             'name'          => $request->get('names'),
             'email'         => $request->get('email'),
             'password'      => Hash::make($request->get('password')),
@@ -160,6 +160,8 @@ class AcaStudentController extends Controller
             'avatar'        => $path,
             'person_id'     => $per->id
         ]);
+
+        $user->assignRole('Alumno');
 
         AcaStudent::create([
             'person_id'     => $per->id,
