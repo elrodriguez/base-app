@@ -28,7 +28,8 @@ class User extends Authenticatable
         'avatar',
         'information',
         'person_id',
-        'status'
+        'status',
+        'updated_information'
     ];
 
     /**

@@ -15,6 +15,10 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebController;
 use App\Mail\StudentRegistrationMailable;
+use App\Models\District;
+use App\Models\Person;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Modules\Blog\Http\Controllers\BlogController;
 
@@ -100,10 +104,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('clients', ClientController::class);
     Route::resource('users', UserController::class);
     Route::resource('establishments', LocalSaleController::class);
-	
-	Route::delete('establishments/destroies/{id}', [LocalSaleController::class, 'destroy'])->name('establishment_destroies');
+
+    Route::delete('establishments/destroies/{id}', [LocalSaleController::class, 'destroy'])->name('establishment_destroies');
     Route::post('establishments/updated', [LocalSaleController::class, 'update'])->name('establishment_updated');
-	
+
     Route::get(
         'inventory/product/establishment',
         [KardexController::class, 'index']
@@ -154,6 +158,37 @@ Route::middleware('auth')->group(function () {
     Route::get('parameters/list', [ParametersController::class, 'index'])->name('parameters');
     Route::get('parameters/create', [ParametersController::class, 'create'])->name('parameters_create');
     Route::post('parameters/store', [ParametersController::class, 'store'])->name('parameters_store');
+
+    ////////////////actualizar informacion de personas
+    Route::get('person/update_information', function () {
+        $person = Person::find(Auth::user()->person_id);
+        $identityDocumentTypes = DB::table('identity_document_type')->get();
+
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
+        if (Auth::user()->hasRole('Alumno')) {
+            return Inertia::render('Person/UpdateInformation', [
+                'person' => $person,
+                'identityDocumentTypes' => $identityDocumentTypes,
+                'ubigeo' => $ubigeo
+            ]);
+        } else {
+            return back();
+        }
+    })->name('user-update-profile');
+
+    Route::post(
+        'person/update_information/store',
+        [PersonController::class, 'updateInformationPerson']
+    )->name('user-update-profile-store');
 });
 
 require __DIR__ . '/auth.php';

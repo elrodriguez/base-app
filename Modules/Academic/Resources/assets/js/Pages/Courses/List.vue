@@ -202,7 +202,7 @@ const openModalModules = (course) =>{
                     <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
-                                <form id="form-search-items" @submit.prevent="form.get(route('cms_items_list'))">
+                                <form id="form-search-items" @submit.prevent="form.get(route('aca_courses_list'))">
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

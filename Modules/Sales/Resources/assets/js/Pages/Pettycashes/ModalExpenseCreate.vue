@@ -10,6 +10,13 @@
     import { ref } from 'vue';
     import { useForm } from '@inertiajs/vue3';
 
+    
+    const props = defineProps({
+        petty_cash_id: {
+            type: Number,
+            default: () => ({}),
+        }
+    });
     const form = useForm({
         petty_cash_id: props.petty_cash_id,
         description:'',
@@ -17,6 +24,7 @@
         document:''
 
     });
+
     const displayModal = ref(false);
     const openModalExpenseCreate = () => {
         displayModal.value = true;
@@ -26,13 +34,7 @@
         displayModal.value = false;
     };
 
-    const props = defineProps({
-        petty_cash_id: {
-            type: Object,
-            default: () => ({}),
-        }
-    });
-
+    
     const createExpense = () => {
         form.post(route('store_expense'), {
             forceFormData: true,

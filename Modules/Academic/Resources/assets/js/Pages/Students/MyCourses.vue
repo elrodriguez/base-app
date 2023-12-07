@@ -1,9 +1,10 @@
 <script  setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm, router, Link  } from '@inertiajs/vue3';
-import { Card, CardMeta, Avatar, Tree, DirectoryTree } from 'ant-design-vue';
+import { Card, CardMeta, Avatar, DirectoryTree } from 'ant-design-vue';
 import { ref, watch  } from 'vue';
 import ModalLargeXX from '@/Components/ModalLargeXX.vue';
+import { Alert } from 'flowbite-vue'
 
 const props = defineProps({
     courses: {
@@ -109,6 +110,7 @@ const onSelect = (selectedKeys, info) => {
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <div class="grid grid-cols-6 gap-6">
+
                     <div v-for="(course, index) in courses" class="col-span-6 sm:col-span-2">
                         <Card @click="showModalContents(course)" hoverable >
                             <!-- <template #cover>

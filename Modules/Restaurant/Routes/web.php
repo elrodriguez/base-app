@@ -73,4 +73,7 @@ Route::middleware(['auth', 'verified'])->prefix('restaurant')->group(function ()
     Route::middleware(['middleware' => 'permission:res_venta'])
         ->get('sales/list', [ResSaleController::class, 'index'])
         ->name('res_sales_list');
+
+    Route::post('sale/store', [ResSaleController::class, 'store'])
+        ->name('res_sales_store');
 });

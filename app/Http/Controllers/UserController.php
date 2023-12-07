@@ -81,14 +81,21 @@ class UserController extends Controller
     }
     public function update(Request $request, User $user)
     {
+        if ($user->hasAnyRole(['Vendedor'])) {
+
+            $this->validate($request, [
+                'local_id' => 'required'
+            ]);
+
+            $user->local_id = $request->get('local_id');
+        }
+
         $this->validate($request, [
-            //'local_id' => 'required|unique:users,local_id,' . $user->id,
-            'local_id' => 'required',
             'name' => 'required',
             'email' => 'required|string|max:255|unique:users,email,' . $user->id,
         ]);
 
-        $user->local_id = $request->get('local_id');
+
         $user->name = $request->get('name');
         $user->email = $request->get('email');
 

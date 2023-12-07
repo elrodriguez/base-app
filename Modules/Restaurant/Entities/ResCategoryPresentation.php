@@ -4,6 +4,7 @@ namespace Modules\Restaurant\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Restaurant\Database\factories\ResCategoryPresentationFactory;
 
 class ResCategoryPresentation extends Model
@@ -21,5 +22,9 @@ class ResCategoryPresentation extends Model
     protected static function newFactory(): ResCategoryPresentationFactory
     {
         //return ResCategoryPresentationFactory::new();
+    }
+    public function presentation(): HasOne
+    {
+        return $this->hasOne(ResPresentation::class, 'id', 'presentation_id');
     }
 }

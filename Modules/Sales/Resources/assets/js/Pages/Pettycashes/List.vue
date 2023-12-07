@@ -113,21 +113,20 @@ function openModalPettycashEdit(pettycash){
                 </li>
                 </ol>
             </nav>
-            <!-- Breadcrumb End -->
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
-                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
-                        <div class="grid grid-cols-2">
+                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
+                        <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
                                 <form @submit.prevent="form.get(route('pettycash.index'))">
                                     <div class="grid grid-cols-3">
                                         <div class="col-span-3 sm:col-span-1 mr-2">
-                                            <input v-mask="'##/##/####'" type="text" id="f1" aria-label="f1" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <input v-mask="'##/##/####'" type="text" id="f1" aria-label="f1" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="col-span-3 sm:col-span-1">
-                                            <input v-mask="'##/##/####'" type="text" id="f2" aria-label="d2" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <input v-mask="'##/##/####'" type="text" id="f2" aria-label="d2" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="col-span-3 sm:col-span-1">
                                             <button type="submit" class="p-2 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -138,7 +137,7 @@ function openModalPettycashEdit(pettycash){
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-span-3 sm:col-span-1">
+                            <div class="col-span-3 sm:col-span-2">
                                 <Keypad>
                                     <template #botones>
                                         <ModalCashCreate :locals="locals" />

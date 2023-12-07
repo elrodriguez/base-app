@@ -123,7 +123,7 @@ class AcaStudentController extends Controller
             $original_name = strtolower(trim($file->getClientOriginalName()));
             $original_name = str_replace(" ", "_", $original_name);
             $extension = $file->getClientOriginalExtension();
-            $file_name = date('YmdHis') . '.' . $extension;
+            $file_name = trim($request->get('number')) . '.' . $extension;
             $path = $request->file('image')->storeAs(
                 $destination,
                 $file_name,
@@ -155,7 +155,7 @@ class AcaStudentController extends Controller
         $user = User::create([
             'name'          => $request->get('names'),
             'email'         => $request->get('email'),
-            'password'      => Hash::make($request->get('password')),
+            'password'      => Hash::make($request->get('number')),
             'information'   => $request->get('description'),
             'avatar'        => $path,
             'person_id'     => $per->id
@@ -263,7 +263,7 @@ class AcaStudentController extends Controller
             $original_name = strtolower(trim($file->getClientOriginalName()));
             $original_name = str_replace(" ", "_", $original_name);
             $extension = $file->getClientOriginalExtension();
-            $file_name = date('YmdHis') . '.' . $extension;
+            $file_name = trim($request->get('number')) . '.' . $extension;
             $path = $request->file('image')->storeAs(
                 $destination,
                 $file_name,
@@ -295,7 +295,7 @@ class AcaStudentController extends Controller
         $user->update([
             'name'          => $request->get('names'),
             'email'         => $request->get('email'),
-            'password'      => Hash::make($request->get('password')),
+            'password'      => Hash::make($request->get('number')),
             'information'   => $request->get('description'),
             'avatar'        => $path
         ]);

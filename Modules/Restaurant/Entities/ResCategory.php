@@ -25,11 +25,16 @@ class ResCategory extends Model
 
     public function presentations(): HasMany
     {
-        return $this->hasMany(ResPresentation::class, 'category_id');
+        return $this->hasMany(ResCategoryPresentation::class, 'category_id');
     }
 
     public function subcategories(): HasMany
     {
         return $this->hasMany(ResCategory::class, 'category_id');
+    }
+
+    public function comandas(): HasMany
+    {
+        return $this->hasMany(ResComanda::class, 'category_id');
     }
 }

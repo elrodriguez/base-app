@@ -17,6 +17,8 @@ const emit = defineEmits(['displaySidebarToggle'])
 const showSidebarToggle = async () => {
     emit('displaySidebarToggle', true)
 }
+
+const xhttp =  assetUrl;
 </script>
 <template>
     <header class="sticky top-0 z-99 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
@@ -66,7 +68,8 @@ const showSidebarToggle = async () => {
                         </span>
 
                         <span class="h-12 w-12 rounded-full">
-                            <img :src="'https://ui-avatars.com/api/?name='+ $page.props.auth.user.name+'&size=48&rounded=true'" alt="User" />
+                            <img v-if="$page.props.auth.user.avatar" :src="xhttp+'storage/'+$page.props.auth.user.avatar" alt="User" class="rounded-full" />
+                            <img v-else :src="'https://ui-avatars.com/api/?name='+ $page.props.auth.user.name+'&size=48&rounded=true'"  alt="User" />
                         </span>
 
                         <svg :class="dropdownOpen && 'rotate-180'" class="hidden fill-current sm:block" width="12" height="8"

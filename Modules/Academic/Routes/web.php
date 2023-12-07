@@ -11,7 +11,7 @@
 |
 */
 
-Route::middleware(['auth', 'verified'])->prefix('academic')->group(function () {
+Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('academic')->group(function () {
     Route::middleware(['middleware' => 'permission:aca_dashboard'])
         ->get('dashboard', 'AcademicController@index')
         ->name('aca_dashboard');
