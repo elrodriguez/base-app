@@ -15,6 +15,7 @@ use Modules\Academic\Entities\AcaModality;
 use Modules\Academic\Entities\AcaTeacher;
 use Modules\Academic\Entities\AcaTeacherCourse;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Auth;
 
 class AcaCourseController extends Controller
 {
@@ -258,7 +259,11 @@ class AcaCourseController extends Controller
 
     public function getCoursesTeacherNull()
     {
-        $courses = AcaCourse::whereNull('teacher_id')->get();
+        $courses = [];
+        if (Auth::user()->hasAnyRole(['admin', 'Docente', 'Administrador'])) {
+            $courses = AcaCourse::whereNull('teacher_id')->get();
+        }
+
 
         return response()->json([
             'courses' => $courses
