@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import { faMoneyBillWave } from "@fortawesome/free-solid-svg-icons";
-const dropdownOpen = ref(false)
 import { Link } from '@inertiajs/vue3';
+const dropdownOpen = ref(false)
 
 const props = defineProps({
     sidebarToggle: {

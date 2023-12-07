@@ -142,4 +142,8 @@ Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('
     Route::middleware(['middleware' => 'permission:aca_miscursos'])
         ->get('mycourses/student', 'AcaStudentController@myCourses')
         ->name('aca_mycourses');
+
+
+    Route::get('courses_teacher_null', 'AcaCourseController@getCoursesTeacherNull')
+        ->name('courses_teacher_null');
 });

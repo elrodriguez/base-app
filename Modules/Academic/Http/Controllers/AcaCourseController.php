@@ -255,4 +255,13 @@ class AcaCourseController extends Controller
             'message' => $message
         ]);
     }
+
+    public function getCoursesTeacherNull()
+    {
+        $courses = AcaCourse::whereNull('teacher_id')->get();
+
+        return response()->json([
+            'courses' => $courses
+        ]);
+    }
 }

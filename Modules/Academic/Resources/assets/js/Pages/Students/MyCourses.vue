@@ -65,6 +65,18 @@ const hideModalContents = () => {
 const expandedKeys = ref([]);
 const selectedKeys = ref([]);
 const videoHtml = ref(null);
+const newWidth = ref(100);
+const newHeight = ref(200);
+
+const modifiedContent = (content) => {
+  // Copia el contenido original
+  let modifiedContent = content;
+
+  // Realiza la sustitución de la altura con un valor dinámico
+  modifiedContent = modifiedContent.replace(/width="\d+"/g, `width="${newWidth.value}%"`);
+  modifiedContent = modifiedContent.replace(/height="\d+"/g, `height="${newHeight.value}"`);
+  return modifiedContent;
+};
 
 const onSelect = (selectedKeys, info) => {
     if (info.node && info.node.content !== undefined) {
@@ -72,7 +84,7 @@ const onSelect = (selectedKeys, info) => {
             let url = info.node.content;
             window.open(url, "_blank");  
         }else{
-            videoHtml.value = info.node.content
+            videoHtml.value = modifiedContent(info.node.content)
         }
     }
 }
@@ -167,7 +179,6 @@ const onSelect = (selectedKeys, info) => {
                         </template>
                         <template v-else>
                             <DirectoryTree
-                               
                                 :height="233"
                                 v-model:expandedKeys="expandedKeys"
                                 v-model:selectedKeys="selectedKeys"
