@@ -295,18 +295,17 @@ onMounted(()=>{
                                     <tr class="bg-gray-50 text-left dark:bg-meta-4">
                                         <th class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark" colspan="6">GASTOS</th>
                                     </tr>
-                                    <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                        <th class="border border-stroke text-center text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">#</th>
-                                        <th class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">N° Documento</th>
-                                        <th colspan="3" class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">Motivo o Descripción</th>
-                                        <th class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">Monto</th>
+                                    <tr class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        
+                                        <th scope="col" class="px-6 py-3">N° Documento</th>
+                                        <th scope="col" colspan="4" class="px-6 py-3">Motivo o Descripción</th>
+                                        <th scope="col" class="px-6 py-3">Monto</th>
                                     </tr>
-                                    <tr  v-for="(expense, index) in expenses" :key="expense.id" :class="  index % 2 == 0 ? 'bg-gray-100 hover:bg-gray-300 border-b' : 'bg-gray-200 hover:bg-gray-300 border-b'">  
-                                        <td class="border border-stroke text-center text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">{{ index + 1 }}</td>
+                                    <tr v-for="(expense, index) in expenses" :key="expense.id" class="border border-stroke">  
                                         <td class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">
                                             {{ expense.document }}
                                         </td>
-                                        <td colspan="3" class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">
+                                        <td colspan="4" class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">
                                             {{ expense.description }}
                                         </td>      
                                         <td class="border border-stroke text-right text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">
