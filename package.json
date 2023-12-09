@@ -37,7 +37,6 @@
         "vue-cropperjs": "^5.0.0",
         "vue-gates": "^2.1.2",
         "vue-the-mask": "^0.11.1",
-        "vue3-select2-component": "^0.1.7",
         "xlsx": "^0.18.5"
     }
 }

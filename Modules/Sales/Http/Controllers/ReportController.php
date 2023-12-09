@@ -173,6 +173,7 @@ class ReportController extends Controller
     public function PettyCashReport($petty_cash_id)
     {
         $petty_cash = PettyCash::find($petty_cash_id);
+
         $sales = Sale::join('local_sales', 'sales.local_id', 'local_sales.id')
             ->join('sale_products', 'sale_products.sale_id', 'sales.id')
             ->join('products', 'products.id', 'sale_products.product_id')
@@ -181,6 +182,7 @@ class ReportController extends Controller
             ->where('sales.status', '=', 1)
             ->orderBy('id', 'desc')->orderBy('sale_products.id', 'desc')
             ->get();
+
         $expenses = Expense::where('petty_cash_id', $petty_cash_id)->get();
 
         return Inertia::render('Sales::Reports/PettyCashReport', [

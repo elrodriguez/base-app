@@ -47,7 +47,7 @@ const closeModalCoursesTeacherNull = () => {
                 Cursos
             </template>
             <template #message>
-                Faltandes de docente
+                Faltantes de docente
             </template>
             <template #content>
                 <div style="max-height: 200px;overflow-y: auto;">
