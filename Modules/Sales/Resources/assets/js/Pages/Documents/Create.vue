@@ -112,6 +112,7 @@
         getCurrentDate();
         startTaxes();
     });
+    
     const taxes = ref({});
     const startTaxes = () => {
         

@@ -9,6 +9,8 @@ import Keypad from '@/Components/Keypad.vue';
 import Swal2 from 'sweetalert2';
 import { ref, watch, onMounted } from 'vue';
 import { Select, TreeSelect } from 'ant-design-vue';
+import 'cropperjs/dist/cropper.css';
+import CropperImage from '@/Components/CropperImage.vue';
 
 const props = defineProps({
     categories: {
@@ -63,18 +65,23 @@ const selectedCategory = (value, info) => {
     });
 };
 
-watch(() => form.image, (newValue) => {
-    if (newValue instanceof File) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            form.image_preview = e.target.result;
-        };
-        reader.readAsDataURL(newValue);
-    } else {
-        // Puedes manejar el caso en el que newValue no sea un objeto File válido
-        console.error("El objeto no es un archivo válido.");
-    }
-});
+// watch(() => form.image, (newValue) => {
+//     if (newValue instanceof File) {
+//         const reader = new FileReader();
+//         reader.onload = (e) => {
+//             form.image_preview = e.target.result;
+//         };
+//         reader.readAsDataURL(newValue);
+//     } else {
+//         Puedes manejar el caso en el que newValue no sea un objeto File válido
+//         console.error("El objeto no es un archivo válido.");
+//     }
+// });
+
+const cropImageAndSave = (res) => {
+    form.image = res;
+}
+
 </script>
 
 <template>
@@ -127,13 +134,10 @@ watch(() => form.image, (newValue) => {
             </div>
             <div class="col-span-6">
                 <InputLabel for="file_input" value="Imagen *" />
-                <div class="flex justify-center space-x-2">
-                    <figure class="max-w-lg">
-                        <img class="h-auto w-20 rounded-lg" :src="form.image_preview">
-                        <figcaption v-if="form.image_preview" class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Vista previa</figcaption>
-                    </figure>
-                </div>
-                <input @input="form.image = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                <CropperImage
+                    ref="cropper"
+                    @onCrop="cropImageAndSave"
+                ></CropperImage>
                 <InputError :message="form.errors.image" class="mt-2" />
             </div>
             <div class="col-span-6">

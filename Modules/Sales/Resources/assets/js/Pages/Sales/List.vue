@@ -112,8 +112,8 @@
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
-                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
+                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
                                 <form @submit.prevent="form.get(route('sales.index'))">
@@ -145,32 +145,32 @@
                         <table class="w-full table-auto">
                             <thead class="border-b border-stroke">
                                 <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th class="py-4 px-4 text-center font-medium text-black dark:text-white">
+                                    <th class="py-2 px-2 text-center font-medium text-black dark:text-white">
                                         Acciones
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                                    <th class="py-2 px-2 font-medium text-black dark:text-white xl:pl-11">
                                         #
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
+                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
                                         Nmr. Ticket
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
+                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
                                         Fecha
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
+                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
                                         Cliente
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
+                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
                                         Total
                                     </th>
-                                    <th class="py-4 px-4 font-medium text-black dark:text-white">
+                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
                                         Estado
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(sale, index) in sales.data" :key="sale.id" >
-                                    <td class="text-center border-b border-stroke py-4 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                                    <td class="text-center border-b border-stroke py-2 px-2 pl-9 dark:border-strokedark xl:pl-11">
                                         <button @click="printTicket(sale.id)" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                             <font-awesome-icon :icon="faPrint" />
                                         </button>
@@ -185,22 +185,22 @@
                                             <font-awesome-icon :icon="faCopy" />
                                         </Link>
                                     </td>
-                                    <td class="text-center border-b border-stroke py-4 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                                    <td class="text-center border-b border-stroke py-2 px-2 pl-9 dark:border-strokedark xl:pl-11">
                                         {{ index + 1 }}
                                     </td>
-                                    <td class="w-32 border-b border-stroke py-4 px-4 dark:border-strokedark">
+                                    <td class="w-32 border-b border-stroke py-2 px-2 dark:border-strokedark">
                                         {{ sale.serie }}-{{ sale.number }}
                                     </td>
-                                    <td class="border-b border-stroke py-4 px-4 dark:border-strokedark">
+                                    <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
                                         {{ sale.created_at }}
                                     </td>
-                                    <td class="border-b border-stroke py-4 px-4 dark:border-strokedark">
+                                    <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
                                         {{ sale.full_name }}
                                     </td>
-                                    <td class="text-right border-b border-stroke py-4 px-4 dark:border-strokedark">
+                                    <td class="text-right border-b border-stroke py-2 px-2 dark:border-strokedark">
                                         {{ sale.total }}
                                     </td>
-                                    <td class="border-b border-stroke py-4 px-4 dark:border-strokedark">
+                                    <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
                                         <span v-if="sale.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Registrado</span>
                                         <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
                                     </td>

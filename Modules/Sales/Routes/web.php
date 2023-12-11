@@ -20,6 +20,8 @@ use Modules\Sales\Http\Controllers\ReportController;
 use Modules\Sales\Http\Controllers\SaleController;
 use Modules\Sales\Http\Controllers\SaleDocumentController;
 use Modules\Sales\Http\Controllers\SaleLowCommunicationController;
+use Modules\Sales\Http\Controllers\SaleProductBrandController;
+use Modules\Sales\Http\Controllers\SaleProductCategoryController;
 use Modules\Sales\Http\Controllers\SaleSummaryController;
 use Modules\Sales\Http\Controllers\SerieController;
 
@@ -113,4 +115,10 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::post('lowcommunication/store', [SaleLowCommunicationController::class, 'store'])->name('low_communication_store');
     Route::get('lowcommunication/check/{id}/{ticket}', [SaleLowCommunicationController::class, 'check'])->name('low_communication_check');
     Route::get('lowcommunication/destroy/{id}', [SaleLowCommunicationController::class, 'destroy'])->name('low_communication_destroy');
+
+
+    ///////////nuevo cambios en productos
+    Route::post('category/products/store', [SaleProductCategoryController::class, 'store'])->name('sale_category_product_store');
+
+    Route::post('brand/products/store', [SaleProductBrandController::class, 'store'])->name('sale_brand_product_store');
 });

@@ -13,6 +13,8 @@ use Modules\Restaurant\Entities\ResCategory;
 use Modules\Restaurant\Entities\ResCategoryPresentation;
 use Modules\Restaurant\Entities\ResComanda;
 use Modules\Restaurant\Entities\ResPresentation;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class ResComandaController extends Controller
 {
@@ -81,21 +83,32 @@ class ResComandaController extends Controller
         ]);
 
         $path = null;
-
         $destination = 'uploads/comandas';
-        $file = $request->file('image');
-        if ($file) {
-            $original_name = strtolower(trim($file->getClientOriginalName()));
-            $original_name = str_replace(" ", "_", $original_name);
-            $extension = $file->getClientOriginalExtension();
-            $file_name = $comanda->id . '.' . $extension;
-            $img = $request->file('image')->storeAs(
-                $destination,
-                $file_name,
-                'public'
-            );
+        $base64Image = $request->get('image');
 
-            $path = $img;
+        if ($base64Image) {
+            $fileData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+            if (PHP_OS == 'WINNT') {
+                $tempFile = tempnam(sys_get_temp_dir(), 'img');
+            } else {
+                $tempFile = tempnam('/var/www/html', 'img');
+            }
+            file_put_contents($tempFile, $fileData);
+            $mime = mime_content_type($tempFile);
+
+            $name = uniqid('', true) . '.' . str_replace('image/', '', $mime);
+            $file = new UploadedFile(realpath($tempFile), $name, $mime, null, true);
+
+
+            if ($file) {
+                // $original_name = strtolower(trim($file->getClientOriginalName()));
+                // $file_name = time() . rand(100, 999) . $original_name;
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $original_name = str_replace(" ", "_", $original_name);
+                $extension = $file->getClientOriginalExtension();
+                $file_name = $comanda->id . '.' . $extension;
+                $path = Storage::disk('public')->putFileAs($destination, $file, $file_name);
+            }
         }
 
         $comanda->image = $path;

@@ -24,7 +24,10 @@ class Product extends Model
         'type_sale_affectation_id',
         'type_purchase_affectation_id',
         'type_unit_measure_id',
-        'status'
+        'status',
+        'category_id',
+        'brand_id',
+        'icbper'
     ];
 
     public function getImageAttribute($value)

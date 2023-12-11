@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
-import { faTrashAlt, faPencilAlt, faGears, faCashRegister, faFileExcel, faMoneyBill1Wave} from "@fortawesome/free-solid-svg-icons";
+import { faGears } from "@fortawesome/free-solid-svg-icons";
 import Pagination from '@/Components/Pagination.vue';
 import ModalCashCreate from './ModalCashCreate.vue';
 import Keypad from '@/Components/Keypad.vue';

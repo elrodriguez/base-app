@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link,useForm, router } from '@inertiajs/vue3';
 import Keypad from '@/Components/Keypad.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
 import { 
     ConfigProvider, 
     Select,
@@ -24,7 +25,7 @@ import { faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import { ref, watch, onMounted } from 'vue';
-import { faXmark, faPen, faDollarSign } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faPen, faDollarSign, faTimes } from "@fortawesome/free-solid-svg-icons";
 import esES from 'ant-design-vue/es/locale/es_ES';
 
 const props = defineProps({
@@ -173,6 +174,12 @@ const addPayments = () => {
     });
 }
 
+const removePayment = (index) => {
+    if(form.payments.length > 1){
+        form.payments.splice(index,1);
+    }
+};
+
 const saveSale = () => {
     form.processing = true;
     return axios.post(route('res_sales_store', form)).then((res) => {
@@ -296,7 +303,7 @@ const cancelSale = () => {
                                             <template  v-if="column.key === 'quantity'">
                                                 <template v-if="record.editable">
                                                     <InputNumber v-model:value="record.quantity"
-                                                        @input="calculateTotals(index)" 
+                                                        @change="calculateTotals(index)" 
                                                         :id="'small-input'+column.key" 
                                                     />
                                                 </template>
@@ -339,12 +346,16 @@ const cancelSale = () => {
                                     </Flex>
                                     <template v-for="(met, ky) in form.payments">
                                         <Flex :style="{ ...boxStyle }" :justify="'space-between'" :align="'center'">
+                                            <DangerButton @click="removePayment(ky)" class="mr-1">
+                                                <font-awesome-icon :icon="faTimes" />
+                                            </DangerButton>
                                             <Select
+                                                class="mr-1"
                                                 v-model:value="met.type"
                                                 style="width: 220px"
                                                 :options="paymentMethods.map((obj) => ({value: obj.id, label: obj.description}))"
                                             />
-                                            <Input v-model:value="met.reference" style="width: 220px" placeholder="Referencia" />
+                                            <Input v-model:value="met.reference" style="width: 220px;margin-right: 4px;" placeholder="Referencia" />
                                             <Input v-model:value="met.amount" style="width: 120px; text-align: right;" />
                                         </Flex>
                                     </template>
