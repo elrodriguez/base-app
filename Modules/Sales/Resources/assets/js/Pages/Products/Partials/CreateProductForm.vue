@@ -268,7 +268,7 @@ const addBrand = () => {
                     ></textarea>
                     <InputError :message="form.errors.description" class="mt-2" />
                 </div>
-                <div class="col-span-6 sm:col-span-4">
+                <div class="col-span-6">
                     <InputLabel for="image" value="Imagen" />
                     <!-- <div class="flex justify-center space-x-2">
                         <figure class="max-w-lg">
@@ -291,6 +291,18 @@ const addBrand = () => {
                         class="block w-full mt-1"
                     />
                     <InputError :message="form.errors.purchase_prices" class="mt-2" />
+                </div>
+                <div class="col-span-6 sm:col-span-2">
+                    <InputLabel for="sale_prices_under" value="Stock" />
+                    <TextInput
+                        id="sale_prices_under"
+                        v-model="form.stock"
+                        type="number"
+                        class="block w-full mt-1"
+                        :class="form.presentations ? 'bg-gray-500' : ''"
+                        :readonly="form.presentations"
+                    />
+                    <InputError :message="form.errors.stock" class="mt-2" />
                 </div>
                 <div class="col-span-6 sm:col-span-2">
                     <InputLabel for="sale_prices" value="Precio de venta" />
@@ -327,18 +339,6 @@ const addBrand = () => {
                         <input v-model="form.presentations" id="checked-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         <label for="checked-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">¿Tiene diferentes tallas?</label>
                     </div>
-                </div>
-                <div class="col-span-6 sm:col-span-3">
-                    <InputLabel for="sale_prices_under" value="Stock" />
-                    <TextInput
-                        id="sale_prices_under"
-                        v-model="form.stock"
-                        type="number"
-                        class="block w-full mt-1"
-                        :class="form.presentations ? 'bg-gray-500' : ''"
-                        :readonly="form.presentations"
-                    />
-                    <InputError :message="form.errors.stock" class="mt-2" />
                 </div>
                 <div v-show="form.presentations" class="col-span-6 sm:col-span-6">
                     <label>

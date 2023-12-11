@@ -15,6 +15,7 @@ import {
 import { Link } from '@inertiajs/vue3';
 import menuAcademic from '../../../Modules/Academic/Resources/assets/js/Menu.js';
 import menuRestaurant from '../../../Modules/Restaurant/Resources/assets/js/Menu.js';
+import menuSales from '../../../Modules/Sales/Resources/assets/js/Menu.js';
 
 const props = defineProps({
     sidebarToggle: {
@@ -96,51 +97,7 @@ const menu = ref([
             
         ]
     },
-    {
-        status:false,
-        text: 'Ventas',
-        icom: faCashRegister,
-        route: null,
-        permissions: 'sale_dashboard',
-        items: [
-            {
-                route: route('establishments.index'),
-                status: false,
-                text: 'Tiendas',
-                permissions: 'sale_tienda',
-            },
-            {
-                route: route('clients.index'),
-                status: false,
-                text: 'Clientes',
-                permissions: 'clientes',
-            },
-            {
-                route: route('pettycash.index'),
-                status: false,
-                text: 'Caja Chica',
-                permissions: 'caja_chica',
-            },
-            {
-                status: false,
-                route: route('products.index'),
-                text: 'Gestión Productos & servicios',
-                permissions: 'productos',
-            },
-            {
-                route: route('sales.index'),
-                status: false,
-                text: 'Punto de venta (POS)',
-                permissions: 'punto_ventas',
-            },
-            {
-                route: route('reports'),
-                status: false,
-                text: 'Reportes',
-                permissions: 'sale_reportes',
-            }
-        ]
-    },
+    menuSales,
     {
         status:false,
         text: 'Ventas en línea',
