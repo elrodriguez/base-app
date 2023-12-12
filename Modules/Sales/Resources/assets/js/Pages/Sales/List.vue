@@ -20,7 +20,7 @@
             default: () => ({}),
         },
     });
-
+console.log(props.sales)
     const form = useForm({
         search: props.filters.search,
     });
@@ -192,7 +192,7 @@
                                         {{ sale.serie }}-{{ sale.number }}
                                     </td>
                                     <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
-                                        {{ sale.created_at }}
+                                        {{ sale.fecha }}
                                     </td>
                                     <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
                                         {{ sale.full_name }}

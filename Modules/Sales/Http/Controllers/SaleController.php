@@ -38,21 +38,8 @@ class SaleController extends Controller
 
         $search = request()->input('search');
 
-        if (request()->query('sort')) {
-            $attribute = request()->query('sort');
-            $sort_order = 'ASC';
-            if (strncmp($attribute, '-', 1) === 0) {
-                $sort_order = 'DESC';
-                $attribute = substr($attribute, 1);
-            }
-            $sales->orderBy($attribute, $sort_order);
-        } else {
-            $sales->latest();
-        }
-
-        $current_date = Carbon::now()->format('Y-m-d');
-
         $isAdmin = Auth::user()->hasRole('admin');
+
         $sales = $sales->join('people', 'client_id', 'people.id')
             ->join('sale_documents', 'sale_documents.sale_id', 'sales.id')
             ->join('series', 'sale_documents.serie_id', 'series.id')
@@ -63,14 +50,13 @@ class SaleController extends Controller
                 'advancement',
                 'total_discount',
                 'payments',
-                'sales.created_at',
+                DB::raw("DATE_FORMAT(sales.created_at, '%Y-%m-%d') AS fecha"),
                 'sales.local_id',
                 'sales.status',
                 'series.description AS serie',
                 'sale_documents.number'
             )
             ->where('series.document_type_id', 5)
-            //->whereDate('sales.created_at', '=', $current_date)
             ->when(!$isAdmin, function ($q) use ($search) {
                 return $q->where('sales.user_id', Auth::id());
             })
@@ -78,6 +64,7 @@ class SaleController extends Controller
                 return $q->whereRaw('CONCAT("series.description","-",sale_documents.number) = ?', [$search])
                     ->orWhere('people.full_name', 'like', '%' . $search . '%');
             })
+            ->orderBy('sales.created_at', 'DESC')
             ->paginate(10)
             ->onEachSide(2);
 

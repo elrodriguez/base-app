@@ -28,10 +28,6 @@ class Sale extends Model
         return $this->hasMany(SaleProduct::class, 'sale_id', 'id');
     }
 
-    public function getCreatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->format('d-m-Y');
-    }
     public function documents(): HasMany
     {
         return $this->hasMany(SaleDocument::class, 'sale_id', 'id');
