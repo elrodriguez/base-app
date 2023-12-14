@@ -54,7 +54,9 @@ class SaleController extends Controller
                 'sales.local_id',
                 'sales.status',
                 'series.description AS serie',
-                'sale_documents.number'
+                'sale_documents.number',
+                DB::raw("(SELECT CONCAT(invoice_serie,'-',LPAD(invoice_correlative, 8, '0')) FROM sale_documents WHERE sale_documents.sale_id=sales.id AND invoice_serie IS NOT NULL) AS name_document"),
+                DB::raw("(SELECT COUNT(sale_id) FROM sale_documents WHERE sale_documents.sale_id=sales.id) AS have_document")
             )
             ->where('series.document_type_id', 5)
             ->when(!$isAdmin, function ($q) use ($search) {
@@ -160,7 +162,9 @@ class SaleController extends Controller
                     SaleProduct::create([
                         'sale_id' => $sale->id,
                         'product_id' => $produc['id'],
-                        'product' => json_encode($produc),
+                        'product' => json_encode(Product::find($produc['id'])),
+                        'saleProduct' => json_encode($produc),
+                        'size'      => $produc['size'],
                         'price' => $produc['price'],
                         'discount' => $produc['discount'],
                         'quantity' => $produc['quantity'],

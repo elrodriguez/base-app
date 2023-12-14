@@ -91,7 +91,7 @@
             if(form.data.size){
                 if(form.data.price){
                     let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
-                    form.data.total = total;
+                    form.data.total = total.toFixed(2);
                     let data = {
                         id: form.data.id,
                         interne: form.data.interne,
@@ -116,7 +116,7 @@
         }else{
             if(form.data.price){
                 let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
-                form.data.total = total;
+                form.data.total = total.toFixed(2);
                 let data = {
                     id: form.data.id,
                     interne: form.data.interne,

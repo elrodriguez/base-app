@@ -3,19 +3,17 @@ import { ref } from 'vue';
 import { 
     faPoll, 
     faGear, 
-    faCashRegister, 
     faBolt, 
     faUserGear,
     faEarthAmericas,
-    faCartShopping,
     faKitMedical,
-    faBook,
     faGlobe
  } from "@fortawesome/free-solid-svg-icons";
 import { Link } from '@inertiajs/vue3';
 import menuAcademic from '../../../Modules/Academic/Resources/assets/js/Menu.js';
 import menuRestaurant from '../../../Modules/Restaurant/Resources/assets/js/Menu.js';
 import menuSales from '../../../Modules/Sales/Resources/assets/js/Menu.js';
+import menuPurchases from '../../../Modules/Purchases/Resources/assets/js/Menu.js';
 
 const props = defineProps({
     sidebarToggle: {
@@ -75,28 +73,7 @@ const menu = ref([
             }
         ]
     },
-    {
-        status:false,
-        text: 'Compras',
-        icom: faCartShopping,
-        route: null,
-        permissions: 'purc_dashboard',
-        items: [
-            {
-                route: route('purc_documents_list'),
-                status: false,
-                text: 'Documentos',
-                permissions: 'purc_documentos_listado',
-            },
-            {
-                route: route('clients.index'),
-                status: false,
-                text: 'Reporte',
-                permissions: 'purc_reporte',
-            },
-            
-        ]
-    },
+    menuPurchases,
     menuSales,
     {
         status:false,

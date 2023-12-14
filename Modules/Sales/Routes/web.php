@@ -95,6 +95,7 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     ///rutas de docuemntos de ventas boletas y facturas
     Route::get('saledocuments', [SaleDocumentController::class, 'create'])->name('saledocuments_create');
     Route::post('saledocuments/store', [SaleDocumentController::class, 'store'])->name('saledocuments_store');
+    Route::post('saledocuments/store_from_ticket', [SaleDocumentController::class, 'storeFromTicket'])->name('saledocuments_store_from_ticket');
     Route::get('saledocuments/list', [SaleDocumentController::class, 'index'])->name('saledocuments_list');
     Route::get('saledocuments/send/{id}/{type}', [SaleDocumentController::class, 'sendSunatDocument'])->name('saledocuments_send');
     Route::post('saledocuments/update/details', [SaleDocumentController::class, 'updateDetailsAndHeader'])->name('saledocuments_update_details');

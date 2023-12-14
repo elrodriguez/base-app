@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
 use App\Models\Person;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ClientController extends Controller
@@ -13,7 +15,7 @@ class ClientController extends Controller
         $clients = (new Person())->newQuery()->where('is_client', true)->where('number', '<>', 99999999);
         if (request()->has('search')) {
             $clients->where('full_name', 'Like', '%' . request()->input('search') . '%')
-            ->orWhere('number','Like', '%' . request()->input('search') . '%');
+                ->orWhere('number', 'Like', '%' . request()->input('search') . '%');
         }
         if (request()->query('sort')) {
             $attribute = request()->query('sort');
@@ -42,7 +44,21 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Clients/Create');
+        $identityDocumentTypes = DB::table('identity_document_type')->get();
+
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+        return Inertia::render('Clients/Create', [
+            'identityDocumentTypes' => $identityDocumentTypes,
+            'ubigeo'       => $ubigeo,
+        ]);
     }
 
     /**
@@ -56,12 +72,12 @@ class ClientController extends Controller
 
         $this->validate($request, [
             'document_type_id' => 'required',
-            'full_name' => 'required|unique:people,full_name,'.$request->get('id'),
-            'number' => 'required|numeric|unique:people,number,'.$request->get('id'),
-            'email' => 'email|unique:people,email,'.$request->get('id'),
+            'full_name' => 'required|unique:people,full_name,' . $request->get('id'),
+            'number' => 'required|numeric|unique:people,number,' . $request->get('id'),
+            'email' => 'email|unique:people,email,' . $request->get('id'),
         ]);
 
-        if(count(Person::where('number', $request->get('number'))->get())==0){
+        if (count(Person::where('number', $request->get('number'))->get()) == 0) {
             Person::create([
                 'full_name'  => $request->get('full_name'),
                 'document_type_id' => $request->get('document_type_id'),
@@ -69,9 +85,10 @@ class ClientController extends Controller
                 'telephone'  => $request->get('telephone'),
                 'email'  => $request->get('email'),
                 'address'  => $request->get('address'),
-                'is_client' => true
+                'is_client' => true,
+                'ubigeo'    => $request->get('ubigeo')
             ]);
-        }else{
+        } else {
             Person::where('number', $request->get('number'))->first()->update([
                 'full_name'  => $request->get('full_name'),
                 'document_type_id' => $request->get('document_type_id'),
@@ -79,7 +96,8 @@ class ClientController extends Controller
                 'telephone'  => $request->get('telephone'),
                 'email'  => $request->get('email'),
                 'address'  => $request->get('address'),
-                'is_client' => true
+                'is_client' => true,
+                'ubigeo'    => $request->get('ubigeo')
             ]);
         }
 
@@ -106,8 +124,22 @@ class ClientController extends Controller
      */
     public function edit(Person $client)
     {
+        $identityDocumentTypes = DB::table('identity_document_type')->get();
+
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
         return Inertia::render('Clients/Edit', [
-            'client' => $client
+            'client' => $client,
+            'identityDocumentTypes' => $identityDocumentTypes,
+            'ubigeo'       => $ubigeo,
         ]);
     }
 
@@ -123,9 +155,9 @@ class ClientController extends Controller
         // dd($request->all());
         $this->validate($request, [
             'full_name' => 'required',
-            'number' => 'required|numeric|unique:people,number,'.$client->id,
+            'number' => 'required|numeric|unique:people,number,' . $client->id,
             'document_type_id' => 'required',
-            'email' => 'required|unique:people,email,'.$client->id
+            'email' => 'required|unique:people,email,' . $client->id
         ]);
 
         //dd($request->get('sale_prices'));
@@ -138,6 +170,7 @@ class ClientController extends Controller
             'document_type_id'  => $request->get('document_type_id'),
             'address'  => $request->get('address'),
             'email' => $request->get('email'),
+            'ubigeo'    => $request->get('ubigeo')
         ]);
 
         return redirect()->route('clients.index')

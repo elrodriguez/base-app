@@ -453,6 +453,7 @@ class ProductController extends Controller
         ]);
 
         $json_pro_sizes = null;
+        $pt = 0;
 
         if ($presentations) {
             $c = 0;
@@ -503,7 +504,7 @@ class ProductController extends Controller
                 }
             }
 
-            $pt = 0;
+
             for ($r = 0; $r < count($pro_sizes); $r++) {
                 $pt = $pt + $pro_sizes[$r]['quantity'];
             }
