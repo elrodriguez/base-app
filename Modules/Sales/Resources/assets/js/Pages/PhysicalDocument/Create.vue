@@ -10,7 +10,7 @@
     import { ref, onMounted } from 'vue';
     import Swal2 from 'sweetalert2';
     import { Link, router } from '@inertiajs/vue3';
-    import { ConfigProvider, Dropdown,Menu,Tooltip, Button } from 'ant-design-vue';
+    import { ConfigProvider, Dropdown,Menu,Tooltip, Button, message } from 'ant-design-vue';
 
     const props = defineProps({
         payments: {
@@ -227,7 +227,6 @@
         
         formDocument.processing = true
 
-        if(formDocument.serie){
             if(formDocument.client_dti != 6 && formDocument.sale_documenttype_id == 1){
                 Swal2.fire({
                     title: 'Información Importante',
@@ -263,45 +262,60 @@
                     amount:0
                 }];
                 formDocument.processing =  false;
-                Swal2.fire({
-                    title: 'Comprobante creado con éxito',
-                    text: "¿deseas enviar a sunat y/o Imprimir?",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Enviar Ahora',
-                    cancelButtonText: 'Seguir vendiendo',
-                    showDenyButton: true,
-                    denyButtonText: `Solo Imprimir`,
-                    denyButtonColor: '#5E5A5A'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        if(res.data.invoice_type_doc == '01'){
-                            sendSunatDocumentCreated(res.data)
-                        }else{
-                            Swal2.fire({
-                                title: 'Información Importante',
-                                text: "Las boletas se envian mediante un resumen",
-                                icon: 'info',
-                            });
-                        }
-                    } else if (result.isDenied) {
-                        downloadDocument(res.data.id,res.data.invoice_type_doc,'PDF')
-                    }
-                });
+                message.success('El documento se registró correctamente',10)
             }).catch(function (error) {
-                console.log(error)
+                let validationErrors = error.response.data.errors;
+                
+                if (validationErrors && validationErrors.corelative) {
+                    const corelativeErrors = validationErrors.corelative;
+                    for (let i = 0; i < corelativeErrors.length; i++) {
+                        formDocument.setError('corelative', corelativeErrors[i]);
+                    }
+                }
+                if (validationErrors && validationErrors.serie) {
+                    const serieErrors = validationErrors.serie;
+                    for (let i = 0; i < serieErrors.length; i++) {
+                        formDocument.setError('serie', serieErrors[i]);
+                    }
+                }
+                if (validationErrors && validationErrors.client_name) {
+                    const client_nameErrors = validationErrors.client_name;
+                    for (let i = 0; i < client_nameErrors.length; i++) {
+                        formDocument.setError('client_name', client_nameErrors[i]);
+                    }
+                }
+                if (validationErrors && validationErrors.total) {
+                    const totalErrors = validationErrors.total;
+                    for (let i = 0; i < totalErrors.length; i++) {
+                        formDocument.setError('total', totalErrors[i]);
+                    }
+                }
+
+                if (validationErrors && validationErrors.client_rzn_social) {
+                    const client_rzn_socialErrors = validationErrors.client_rzn_social;
+                    for (let i = 0; i < client_rzn_socialErrors.length; i++) {
+                        formDocument.setError('client_rzn_social', client_rzn_socialErrors[i]);
+                    }
+                }
+
+                if (validationErrors && validationErrors.items) {
+                    const itemsErrors = validationErrors.items;
+
+                    for (let i = 0; i < itemsErrors.length; i++) {
+                        formDocument.setError('items.'+index+'.quantity', itemsErrors[i]);
+                    }
+                }
+                if (validationErrors && validationErrors.payments) {
+                    const paymentsErrors = validationErrors.payments;
+
+                    for (let i = 0; i < paymentsErrors.length; i++) {
+                        formDocument.setError('payments.'+index+'.amount', paymentsErrors[i]);
+                    }
+                }
+                message.error('Faltan ingresar datos importantes',10)
+                formDocument.processing =  false;
             });
-        }else{
-            Swal2.fire({
-                title: 'Información Importante',
-                text: "Elejir serie de documento",
-                icon: 'error',
-            });
-            formDocument.processing = false
-            return;
-        }
+        
     }
     const addPayment = () => {
         let ar = {
@@ -480,6 +494,7 @@
                                         :ubigeo="departments"
                                     />
                                    <div><InputError :message="formDocument.errors.client_id" class="mt-2" /></div> 
+                                   <InputError :message="formDocument.errors.client_name" class="mt-2" />
                                 </div>
                             </div>
                             <div class="grid grid-cols-3 gap-4 justify-between mb-1">
@@ -584,6 +599,7 @@
                                                 <input v-model="row.quantity" 
                                                 @input="calculateTotals(key)" 
                                                 class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                                <InputError :message="formDocument.errors[`items.${key}.quantity`]" class="mt-2" />
                                             </td>
                                             <td style="width: 120px;" class="text-right">
                                                 <input v-model="row.unit_price" 

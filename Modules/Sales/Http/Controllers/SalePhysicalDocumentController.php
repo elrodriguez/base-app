@@ -12,6 +12,7 @@ use App\Models\PaymentMethod;
 use App\Models\Person;
 use App\Models\PettyCash;
 use App\Models\Product;
+use App\Models\Sale;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -115,6 +116,7 @@ class SalePhysicalDocumentController extends Controller
             $request,
             [
                 'serie' => 'required',
+                'corelative' => 'required',
                 'date_issue' => 'required',
                 'date_end' => 'required',
                 'sale_documenttype_id' => 'required',
@@ -124,7 +126,8 @@ class SalePhysicalDocumentController extends Controller
                 'items.*.quantity' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
                 'items.*.unit_price' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
                 'items.*.total' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-                'client_id' => 'required',
+                'client_rzn_social' => 'required',
+                'client_name' => 'required',
             ],
             [
                 'items.*.quantity.required' => 'Ingrese Cantidad',
@@ -152,13 +155,25 @@ class SalePhysicalDocumentController extends Controller
                     'income' => 0
                 ]);
                 ///se crea la venta
+                $tk = Sale::create([
+                    'user_id' => Auth::id(),
+                    'client_id' => $request->get('client_id'),
+                    'local_id' => $local_id,
+                    'total' => $request->get('total'),
+                    'advancement' => $request->get('total'),
+                    'total_discount' => $request->get('total_discount'),
+                    'payments' => json_encode($request->get('payments')),
+                    'petty_cash_id' => $petty_cash->id
+                ]);
+
                 $sale = SalePhysicalDocument::create([
+                    'sale_id' => $tk->id,
                     'user_id' => Auth::id(),
                     'serie' => $request->get('serie'),
                     'corelative' => $request->get('corelative'),
-                    'document_date' => $request->get('corelative'),
-                    'document_expiration' => $request->get('corelative'),
-                    'client_id' => $request->get('corelative'),
+                    'document_date' => $request->get('date_issue'),
+                    'document_expiration' => $request->get('date_end'),
+                    'client_id' => $request->get('client_id'),
                     'client_type_doc' => $request->get('client_dti'),
                     'client_number' => $request->get('client_number'),
                     'client_rzn_social' => $request->get('client_rzn_social'),

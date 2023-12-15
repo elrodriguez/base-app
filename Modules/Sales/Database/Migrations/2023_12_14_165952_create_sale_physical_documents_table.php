@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sale_physical_documents', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('sale_id');
             $table->unsignedBigInteger('user_id');
             $table->string('document_type')->nullable();
             $table->string('serie')->nullable();
