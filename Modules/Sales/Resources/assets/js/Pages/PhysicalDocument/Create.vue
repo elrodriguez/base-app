@@ -239,18 +239,19 @@
             }
 
             axios.post(route('sale_physical_document_store'), formDocument ).then((res) => {
-                formDocument.client_id = props.client.id,
-                formDocument.client_name = props.client.number+"-"+props.client.full_name,
-                formDocument.client_ubigeo = props.client.ubigeo,
-                formDocument.client_dti = props.client.document_type_id,
-                formDocument.client_number = props.client.number,
-                formDocument.client_ubigeo_description = props.company.city,
-                formDocument.client_direction = props.company.fiscal_address,
-                formDocument.client_phone = props.client.telephone,
-                formDocument.client_email = props.client.email,
-                formDocument.sale_documenttype_id = 2,
-                formDocument.type_operation = props.type_operation,
-                formDocument.serie = null
+                formDocument.client_id = props.client.id;
+                formDocument.client_name = props.client.number+"-"+props.client.full_name;
+                formDocument.client_ubigeo = props.client.ubigeo;
+                formDocument.client_dti = props.client.document_type_id;
+                formDocument.client_number = props.client.number;
+                formDocument.client_ubigeo_description = props.company.city;
+                formDocument.client_direction = props.company.fiscal_address;
+                formDocument.client_phone = props.client.telephone;
+                formDocument.client_email = props.client.email;
+                formDocument.sale_documenttype_id = 2;
+                formDocument.type_operation = props.type_operation;
+                formDocument.serie = null;
+                formDocument.corelative = null;
                 formDocument.items = [];
                 formDocument.total_discount = 0;
                 formDocument.total_igv = 0;
@@ -442,14 +443,13 @@
                     <li>
                         <div class="flex items-center">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Facturación Electrónica</span>
+                            <Link :href="route('sale_physical_document_list')" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Documento Físico</Link>
                         </div>
                     </li>
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Crear Documentos</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Registrar Documentos</span>
                         </div>
                     </li>
                 </ol>
@@ -705,6 +705,7 @@
                             </svg>
                             Generar
                         </DangerButton> 
+                        <Link :href="route('sale_physical_document_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
                     </div>
                 </div>
             </div>

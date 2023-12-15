@@ -138,6 +138,7 @@ class SaleController extends Controller
                 $serie_id = $serie->id;
 
                 $sale = Sale::create([
+                    'sale_date' => Carbon::now()->format('Y-m-d'),
                     'user_id' => Auth::id(),
                     'client_id' => $request->get('client')['id'],
                     'local_id' => $local_id,
@@ -221,11 +222,6 @@ class SaleController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => $e]);
         }
-        //return response()->json(['message' => 'Success']);
-
-        // return redirect()->route('sales.index')
-        //     ->with('message', __('Venta creada con éxito'));
-
     }
 
     public function destroy(Sale $sale)

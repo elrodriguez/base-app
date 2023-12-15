@@ -181,27 +181,23 @@
                                         </Dropdown>
                                     </td>
                                     <td class="text-center border-b border-stroke py-2 px-2 pl-9 dark:border-strokedark xl:pl-11">
-                                        {{ sale.name_document }}  
+                                        {{ sale.serie + '-' + sale.corelative }}  
                                     </td>
                                     <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
-                                        {{ sale.fecha }}
+                                        {{ sale.document_date }}
                                     </td>
                                     <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
-                                        {{ sale.full_name }}
+                                        {{ sale.client_rzn_social }}
                                     </td>
                                     <td class="text-right border-b border-stroke py-2 px-2 dark:border-strokedark">
                                         {{ sale.total }}
                                     </td>
                                     <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
-                                        <template v-if="sale.have_document <= 1">
-                                            <Badge v-if="sale.status == 1" type="yellow">Registrado</Badge>
-                                            <Badge v-else type="red">Anulado</Badge>
-                                        </template>
-                                        <template v-else>
-                                            <Badge type="purple">
-                                                con documento
-                                            </Badge>
-                                        </template>
+
+                                        <Badge v-if="sale.status == 'R'" type="yellow">Registrado</Badge>
+                                        <Badge v-else-if="sale.status == 'A'" type="red">Anulado</Badge>
+                                        <!-- <Badge v-else type="red">Anulado</Badge> -->
+
                                     </td>
                                 </tr>
                             </tbody>

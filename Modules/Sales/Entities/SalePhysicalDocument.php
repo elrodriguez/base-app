@@ -32,7 +32,8 @@ class SalePhysicalDocument extends Model
         'products',
         'payments',
         'total',
-        'status'
+        'status',
+        'sale_id'
     ];
 
     protected static function newFactory(): SalePhysicalDocumentFactory

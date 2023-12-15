@@ -231,6 +231,7 @@ class SaleDocumentController extends Controller
                 ]);
                 ///se crea la venta
                 $sale = Sale::create([
+                    'sale_date' => $request->get('date_issue'),
                     'user_id' => Auth::id(),
                     'client_id' => $request->get('client_id'),
                     'local_id' => $local_id,

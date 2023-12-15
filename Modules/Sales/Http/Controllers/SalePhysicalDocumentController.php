@@ -49,7 +49,7 @@ class SalePhysicalDocumentController extends Controller
 
         $sales = $sales->when($search, function ($q) use ($search) {
             return $q->where('corelative', 'like', '%' . $search . '%');
-        })->orderBy('said', 'DESC')
+        })->orderBy('id', 'DESC')
             ->paginate(10)
             ->onEachSide(2);
 
@@ -109,7 +109,7 @@ class SalePhysicalDocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         ///se validan los campos requeridos
         $this->validate(
@@ -156,6 +156,7 @@ class SalePhysicalDocumentController extends Controller
                 ]);
                 ///se crea la venta
                 $tk = Sale::create([
+                    'sale_date' => Carbon::now()->format('Y-m-d'),
                     'user_id' => Auth::id(),
                     'client_id' => $request->get('client_id'),
                     'local_id' => $local_id,
@@ -163,7 +164,8 @@ class SalePhysicalDocumentController extends Controller
                     'advancement' => $request->get('total'),
                     'total_discount' => $request->get('total_discount'),
                     'payments' => json_encode($request->get('payments')),
-                    'petty_cash_id' => $petty_cash->id
+                    'petty_cash_id' => $petty_cash->id,
+                    'physical' => true
                 ]);
 
                 $sale = SalePhysicalDocument::create([
@@ -182,7 +184,6 @@ class SalePhysicalDocumentController extends Controller
                     'client_ubigeo_description' => $request->get('client_ubigeo_description'),
                     'client_phone' => $request->get('client_phone'),
                     'client_email' => $request->get('client_email'),
-                    'products'  => json_encode($request->get('items')),
                     'payments' => json_encode($request->get('payments')),
                     'total' => $request->get('total'),
                     'status' => 'R'
@@ -192,7 +193,7 @@ class SalePhysicalDocumentController extends Controller
                 ///obtenemos los productos o servicios para insertar en los 
                 ///detalles de la venta y el documento
                 $products = $request->get('items');
-
+                $items = [];
                 foreach ($products as $produc) {
                     /// ahora tenemos que saber si es un producto o servicio ya existente
                     /// o si sera creado para esta venta, verificaremos esto por el id del producto
@@ -202,6 +203,7 @@ class SalePhysicalDocumentController extends Controller
                     if ($produc['id']) {
                         $product_id = $produc['id'];
                         $interne = $produc['interne'];
+                        array_push($items, $produc);
                     } else {
                         $length = 9; // Longitud del número aleatorio
                         $randomNumber = random_int(0, 999999999); // Genera un número aleatorio entre 0 y 999999999
@@ -228,7 +230,7 @@ class SalePhysicalDocumentController extends Controller
                             'status'                        => true
                         ]);
                         $product_id = $new_product->id;
-                        $interne = $randomNumberPadded;
+                        $produc['id'] = $product_id;
                         // le creamos un kardex en caso de ser un producto
                         if ($produc['is_product']) {
                             Kardex::create([
@@ -240,7 +242,8 @@ class SalePhysicalDocumentController extends Controller
                                 'description'       => 'Stock Inicial',
                             ]);
                         }
-                        $item = $new_product;
+
+                        array_push($items, $produc);
                     }
 
                     if ($produc['is_product']) {
@@ -288,6 +291,8 @@ class SalePhysicalDocumentController extends Controller
 
                 }
 
+                $sale->products = json_encode($items);
+                $sale->save();
                 return $sale;
             });
 

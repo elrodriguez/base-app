@@ -20,7 +20,9 @@ class Sale extends Model
         'total_discount',
         'payments',
         'petty_cash_id',
-        'status'
+        'status',
+        'sale_date',
+        'physical'
     ];
 
     public function saleProduct(): HasMany
