@@ -38,6 +38,12 @@ const menuSales = {
             permissions: "punto_ventas",
         },
         {
+            route: route("sale_physical_document_list"),
+            status: false,
+            text: "Documento Físico",
+            permissions: "sale_documento_fisico",
+        },
+        {
             route: route("reports"),
             status: false,
             text: "Reportes",

@@ -32,6 +32,10 @@ class PermissionsTableSeeder extends Seeder
         array_push($permissions, Permission::create(['name' => 'sale_marcas_agregar']));
         array_push($permissions, Permission::create(['name' => 'sale_categorias_visualizar']));
         array_push($permissions, Permission::create(['name' => 'sale_categorias_agregar']));
+        array_push($permissions, Permission::create(['name' => 'sale_documento_fisico']));
+        array_push($permissions, Permission::create(['name' => 'sale_documento_fisico_nuevo']));
+        array_push($permissions, Permission::create(['name' => 'sale_documento_fisico_editar']));
+        array_push($permissions, Permission::create(['name' => 'sale_documento_fisico_eliminar']));
 
         foreach ($permissions as $permission) {
             $role->givePermissionTo($permission->name);

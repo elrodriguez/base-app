@@ -63,7 +63,7 @@ class SaleController extends Controller
                 return $q->where('sales.user_id', Auth::id());
             })
             ->when($search, function ($q) use ($search) {
-                return $q->whereRaw('CONCAT("series.description","-",sale_documents.number) = ?', [$search])
+                return $q->whereRaw('CONCAT(series.description,"-",sale_documents.number) = ?', [$search])
                     ->orWhere('people.full_name', 'like', '%' . $search . '%');
             })
             ->orderBy('sales.created_at', 'DESC')

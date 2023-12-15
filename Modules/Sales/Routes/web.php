@@ -20,6 +20,7 @@ use Modules\Sales\Http\Controllers\ReportController;
 use Modules\Sales\Http\Controllers\SaleController;
 use Modules\Sales\Http\Controllers\SaleDocumentController;
 use Modules\Sales\Http\Controllers\SaleLowCommunicationController;
+use Modules\Sales\Http\Controllers\SalePhysicalDocumentController;
 use Modules\Sales\Http\Controllers\SaleProductBrandController;
 use Modules\Sales\Http\Controllers\SaleProductCategoryController;
 use Modules\Sales\Http\Controllers\SaleSummaryController;
@@ -122,4 +123,10 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::post('category/products/store', [SaleProductCategoryController::class, 'store'])->name('sale_category_product_store');
 
     Route::post('brand/products/store', [SaleProductBrandController::class, 'store'])->name('sale_brand_product_store');
+
+
+    ///////documentos fisico o de otra plataforma
+    Route::get('physicaldocument/list', [SalePhysicalDocumentController::class, 'index'])->name('sale_physical_document_list');
+    Route::get('physicaldocument/create', [SalePhysicalDocumentController::class, 'create'])->name('sale_physical_document_create');
+    Route::post('physicaldocument/store', [SalePhysicalDocumentController::class, 'store'])->name('sale_physical_document_store');
 });
