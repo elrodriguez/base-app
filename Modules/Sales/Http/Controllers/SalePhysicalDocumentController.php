@@ -13,6 +13,7 @@ use App\Models\Person;
 use App\Models\PettyCash;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\SaleProduct;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -195,9 +196,6 @@ class SalePhysicalDocumentController extends Controller
                 $products = $request->get('items');
                 $items = [];
                 foreach ($products as $produc) {
-                    /// ahora tenemos que saber si es un producto o servicio ya existente
-                    /// o si sera creado para esta venta, verificaremos esto por el id del producto
-                    /// si el id es nulo quiere decir que es un producto nuevo y procedemos a crearlo
                     $product_id = null;
                     $interne = null;
                     if ($produc['id']) {
@@ -285,6 +283,19 @@ class SalePhysicalDocumentController extends Controller
                                 'sizes' => json_encode($n_tallas)
                             ]);
                         }
+
+                        SaleProduct::create([
+                            'sale_id' => $tk->id,
+                            'product_id' => $product_id,
+                            'product' => json_encode(Product::find($product_id)),
+                            'saleProduct' => json_encode($produc),
+                            'size'      => $produc['size'],
+                            'price' => $produc['unit_price'],
+                            'discount' => $produc['discount'],
+                            'quantity' => $produc['quantity'],
+                            'total' => $produc['total']
+                        ]);
+
                         Product::find($product_id)->decrement('stock', $produc['quantity']);
                     }
                     //fin parte de codigo actualiza el kardex
@@ -331,6 +342,77 @@ class SalePhysicalDocumentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = null;
+        $success = false;
+        try {
+
+            DB::beginTransaction();
+
+            $dos = SalePhysicalDocument::findOrFail($id);
+            $sal = Sale::findOrFail($dos->sale_id);
+
+            $dos->update(['status' => 'A']);
+
+            $sal->update(['status' => false]);
+
+            $sal_pros = SaleProduct::where('sale_id', $sal->id)->get();
+
+            foreach ($sal_pros as $sal_pro) {
+                $k = Kardex::create([
+                    'date_of_issue' => Carbon::now()->format('Y-m-d'),
+                    'motion' => 'sale',
+                    'product_id' => $sal_pro->product_id,
+                    'local_id' => $sal->local_id,
+                    'quantity' => $sal_pro->quantity,
+                    'document_id' => $dos->id,
+                    'document_entity' => SalePhysicalDocument::class,
+                    'description' => 'Venta Anulada'
+                ]);
+                $product = Product::find($sal_pro->product_id);
+                if ($product->presentations) {
+                    KardexSize::create([
+                        'kardex_id' => $k->id,
+                        'product_id' => $product->id,
+                        'local_id' => $sal->local_id,
+                        'size'      => json_decode($sal_pro->product)['size'],
+                        'quantity'  => $sal_pro->quantity
+                    ]);
+                    $tallas = $product->sizes;
+                    $n_tallas = [];
+                    foreach (json_decode($tallas, true) as $k => $talla) {
+                        if ($talla['size'] == json_decode($sal_pro->product)['size']) {
+                            $n_tallas[$k] = array(
+                                'size' => $talla['size'],
+                                'quantity' => ($talla['quantity'] + $sal_pro->quantity)
+                            );
+                        } else {
+                            $n_tallas[$k] = array(
+                                'size' => $talla['size'],
+                                'quantity' => $talla['quantity']
+                            );
+                        }
+                    }
+                    $product->update([
+                        'sizes' => json_encode($n_tallas)
+                    ]);
+                }
+                Product::find($sal_pro->product_id)->decrement('stock', $sal_pro->quantity);
+            }
+
+            DB::commit();
+
+            $message =  'Documento anulado correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción durante la transacción, hacemos rollback para deshacer cualquier cambio.
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 }

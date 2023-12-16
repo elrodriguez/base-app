@@ -77,6 +77,14 @@ return new class extends Migration
             'json_query_data'   => null,
             'value_default'     => '10'
         ]);
+
+        Parameter::create([
+            'parameter_code'    => 'P000009',
+            'description'       => 'Tipo de negocio o empresa',
+            'control_type'      => 'in',
+            'json_query_data'   => null,
+            'value_default'     => 1
+        ]);
     }
 
     /**

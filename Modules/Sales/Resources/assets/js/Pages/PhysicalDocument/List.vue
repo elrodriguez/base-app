@@ -1,16 +1,13 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import { useForm } from '@inertiajs/vue3';
     import { faTimes, faCopy, faGears } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import Keypad from '@/Components/Keypad.vue';
-    import PrimaryButton from '@/Components/PrimaryButton.vue';
     import { ref } from 'vue';
-    import ModalSmall from '@/Components/ModalSmall.vue';
-    import swal from "sweetalert";
-    import { Link } from '@inertiajs/vue3';
+    import swal from "sweetalert2";
+    import { Link, router, useForm } from '@inertiajs/vue3';
     import { Badge } from 'flowbite-vue'
-    import { ConfigProvider, Dropdown,Menu,MenuItem,Button } from 'ant-design-vue';
+    import { ConfigProvider, Dropdown,Menu , MenuItem, Button } from 'ant-design-vue';
 
     const props = defineProps({
         sales: {
@@ -27,59 +24,35 @@
         search: props.filters.search,
     });
     
-    const printTicket = (id) => {
-        //window.location.href = "../pdf/sales/ticket/" + id;
-        let url = route('ticketpdf_sales',id)
-        window.open(url, "_blank");
-    }
-
-
-    const displayModalPrint = ref(false);
-
-    const formPrint = useForm({
-        date: '',
-    });
-
-    const openPrintSaleDay = async () => {
-        
-        var fecha = new Date(); //Fecha actual
-        var mes = fecha.getMonth()+1; //obteniendo mes
-        var dia = fecha.getDate(); //obteniendo dia
-        var ano = fecha.getFullYear(); //obteniendo año
-        if(dia<10)dia='0'+dia; //agrega cero si el menor de 10
-        if(mes<10)mes='0'+mes //agrega cero si el menor de 10
-        fecha = ano + "-" + mes + "-" + dia;
-        formPrint.date = fecha;
-        displayModalPrint.value = true;
-    }
-    const closePrintSaleDay = async () => {
-        displayModalPrint.value = false;
-    }
-
-    const printSales = () => {
-        let url = route('print_sale_user',formPrint.date)
-        window.open(url, "_blank");
-        //window.location.href = "../print/sales/user/" + formPrint.date;
-    }
-
-    const formDelete= useForm({});
-
-    const deleteSale = (id) => {
-        swal({
-            title: "Estas seguro",
-            text: "No podrás revertir esto!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                formDelete.delete(route('sales.destroy',id),{
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        swal('Venta Anulada correctamente');
+    const anularDocument = (id) => {
+        swal.fire({
+            title: '¿Estas seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Sí, Anular!',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return axios.delete(route('sale_physical_document_destroy', id)).then((res) => {
+                    if (!res.data.success) {
+                        swal.showValidationMessage(res.data.message)
                     }
+                    return res
                 });
-            } 
+            },
+            allowOutsideClick: () => !swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swal.fire({
+                    title: 'Enhorabuena',
+                    text: 'Se Eliminó correctamente',
+                    icon: 'success',
+                });
+                router.visit(route('sale_physical_document_list'), { replace: true, method: 'get' });
+            }
         });
     }
 </script>
@@ -119,7 +92,7 @@
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
                                 <form @submit.prevent="form.get(route('sale_physical_document_list'))">
-                                <label for="table-search" class="sr-only">Search</label>
+                                    <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
@@ -165,20 +138,9 @@
                             <tbody>
                                 <tr v-for="(sale, index) in sales.data" :key="sale.id" >
                                     <td class="text-center border-b border-stroke py-2 px-2 pl-9 dark:border-strokedark xl:pl-11">
-                                        <Dropdown :placement="'bottomLeft'">
-                                            <button class="border py-1.5 px-2 dropdown-button inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm" type="button">
-                                                <font-awesome-icon :icon="faGears" />
-                                            </button>
-                                            <template #overlay>
-                                                <Menu>
-                                                    <MenuItem  v-role="'admin'" >
-                                                        <Button type="button" @click="deleteSale(sale.id)" >
-                                                            Anular
-                                                        </Button>
-                                                    </MenuItem>
-                                                </Menu>
-                                            </template>
-                                        </Dropdown>
+                                        <Button type="dashed" @click="anularDocument(sale.id)" >
+                                            Anular
+                                        </Button>
                                     </td>
                                     <td class="text-center border-b border-stroke py-2 px-2 pl-9 dark:border-strokedark xl:pl-11">
                                         {{ sale.serie + '-' + sale.corelative }}  
@@ -195,7 +157,7 @@
                                     <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
 
                                         <Badge v-if="sale.status == 'R'" type="yellow">Registrado</Badge>
-                                        <Badge v-else-if="sale.status == 'A'" type="red">Anulado</Badge>
+                                        <Badge v-else="sale.status == 'A'" type="red">Anulado</Badge>
                                         <!-- <Badge v-else type="red">Anulado</Badge> -->
 
                                     </td>
