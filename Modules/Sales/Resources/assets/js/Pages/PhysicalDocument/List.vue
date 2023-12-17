@@ -138,7 +138,7 @@
                             <tbody>
                                 <tr v-for="(sale, index) in sales.data" :key="sale.id" >
                                     <td class="text-center border-b border-stroke py-2 px-2 pl-9 dark:border-strokedark xl:pl-11">
-                                        <Button type="dashed" @click="anularDocument(sale.id)" >
+                                        <Button v-can="'sale_documento_fisico_eliminar'" type="dashed" @click="anularDocument(sale.id)" >
                                             Anular
                                         </Button>
                                     </td>
