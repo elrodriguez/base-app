@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('sales', function (Blueprint $table) {
             $table->date('sale_date')->nullable();
-            $table->boolean('physical')->default(false);
+            $table->integer('physical')->default(1)->comment('1=nota,2=electronica,3=fisica');
         });
     }
 

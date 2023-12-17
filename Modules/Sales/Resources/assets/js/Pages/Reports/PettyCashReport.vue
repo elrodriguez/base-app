@@ -14,7 +14,11 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
-    sales: {
+    tickets: {
+        type: Object,
+        default: () => ({}),
+    },
+    physicals: {
         type: Object,
         default: () => ({}),
     },
@@ -37,8 +41,13 @@ const props = defineProps({
     expenses: {
         type: Object,
         default: () => ({}),
+    },
+    total : {
+        type: Number,
+        default: 0,
     }
 });
+
 const form = useForm({
     local_id: props.petty_cash.local_sale_id,
 });
@@ -57,19 +66,13 @@ const  getLocal = (id = null) => {
 }
 const getTotalQuantities = () => {
     let quantities=0;
-    let arreglo = props.sales;
+    let arreglo = props.tickets;
     arreglo.forEach(sale => {
         quantities+=JSON.parse(sale.product).quantity;
     });
     return quantities;
 }
-const getTotalPrices = () => {
-    let prices=0;
-    props.sales.forEach(sale => {
-        prices+=JSON.parse(sale.product).quantity*JSON.parse(sale.product).price;
-    });
-    return prices;
-}
+
 
 const getTotalExpenses = () => {
     let expenses=0.0;
@@ -131,7 +134,6 @@ const downloadPdf = () => {
 
 onMounted(()=>{
     getLocal();
-    getTotalPrices();
     getTotalQuantities();
 });
 </script>
@@ -250,7 +252,7 @@ onMounted(()=>{
                                         Tienda
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Producto
+                                        Producto / Servicio
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Precio Vendido
@@ -264,30 +266,51 @@ onMounted(()=>{
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(sale, index) in sales" :key="sale.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ sale.created_at }}
+                                <tr v-for="(ticket, index) in tickets" :key="ticket.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <th class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ ticket.sale_date }}
                                     </th>
-                                    <td class="px-6 py-4">
-                                        {{ getLocal(sale.local_id) }}
+                                    <td class="px-2 py-2">
+                                        {{ getLocal(ticket.local_id) }}
                                     </td>
-                                    <td class="px-6 py-4">
-                                        {{ sale.interne + " - " + sale.product_description }}
+                                    <td class="px-2 py-2">
+                                        {{ ticket.interne + " - " + ticket.product_description }}
                                     </td>
-                                    <td class="px-6 py-4">
-                                        {{ JSON.parse(sale.product).price }}
+                                    <td class="px-2 py-2">
+                                        {{ JSON.parse(ticket.product).price }}
                                     </td>
-                                    <td class="px-6 py-4">
-                                        {{ JSON.parse(sale.product).quantity }}
+                                    <td class="px-2 py-2">
+                                        {{ JSON.parse(ticket.product).quantity }}
                                     </td>
-                                    <td class="px-6 py-4">
-                                        {{ JSON.parse(sale.product).quantity * JSON.parse(sale.product).price }}
+                                    <td class="px-2 py-2">
+                                        {{ JSON.parse(ticket.product).quantity * JSON.parse(ticket.product).price }}
                                     </td>
                                 </tr>
+                                <template v-for="(physical, key) in physicals">
+                                    <tr v-for="(pro, k) in JSON.parse(physical.products)"  :key="pro.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <th class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{ physical.sale_date }}
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            {{ physical.description }}
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            {{ pro.interne + " - " + pro.description }}
+                                        </td>
+                                        <td class="px-2 py-2 text-right">
+                                            {{ pro.unit_price }}
+                                        </td>
+                                        <td class="px-2 py-2 text-right">
+                                            {{ pro.quantity }}
+                                        </td>
+                                        <td class="px-2 py-2 text-right">
+                                            {{ pro.total }}
+                                        </td>
+                                    </tr>
+                                </template>
                                 <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th colspan="4" class="text-right  px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Totales En Ventas</th>
-                                    <th class="px-6 py-4 text-right ">{{ getTotalQuantities()}}</th>
-                                    <th class="px-6 py-4 text-right ">S/ {{ getTotalPrices()}}</th>
+                                    <th colspan="5" class="text-right  px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Totales En Ventas</th>
+                                    <th class="px-2 py-2 text-right ">S/ {{ total }}</th>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -302,19 +325,19 @@ onMounted(()=>{
                                         <th scope="col" class="px-6 py-3">Monto</th>
                                     </tr>
                                     <tr v-for="(expense, index) in expenses" :key="expense.id" class="border border-stroke">  
-                                        <td class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">
+                                        <td class="border border-stroke text-left text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">
                                             {{ expense.document }}
                                         </td>
-                                        <td colspan="4" class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">
+                                        <td colspan="4" class="border border-stroke text-left text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">
                                             {{ expense.description }}
                                         </td>      
-                                        <td class="border border-stroke text-right text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">
+                                        <td class="border border-stroke text-right text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">
                                             {{ expense.amount }}
                                         </td>                          
                                     </tr>
                                     <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                        <th colspan="5" class="border border-stroke text-right text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">Total en Gastos:</th>
-                                        <th class="border border-stroke text-right text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark">S/ {{ getTotalExpenses() }}</th>
+                                        <th colspan="5" class="border border-stroke text-right text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">Total en Gastos:</th>
+                                        <th class="border border-stroke text-right text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">S/ {{ getTotalExpenses() }}</th>
                                     </tr>
                                 </template>
                             </tfoot>

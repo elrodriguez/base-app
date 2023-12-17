@@ -146,7 +146,8 @@ class SaleController extends Controller
                     'advancement' => $request->get('total'),
                     'total_discount' => 0,
                     'payments' => json_encode($request->get('payments')),
-                    'petty_cash_id' => $petty_cash->id
+                    'petty_cash_id' => $petty_cash->id,
+                    'physical' => 1
                 ]);
 
                 $document = SaleDocument::create([

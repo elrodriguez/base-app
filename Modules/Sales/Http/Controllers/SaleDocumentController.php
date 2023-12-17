@@ -239,7 +239,8 @@ class SaleDocumentController extends Controller
                     'advancement' => $request->get('total'),
                     'total_discount' => $request->get('total_discount'),
                     'payments' => json_encode($request->get('payments')),
-                    'petty_cash_id' => $petty_cash->id
+                    'petty_cash_id' => $petty_cash->id,
+                    'physical' => 2
                 ]);
 
                 ///obtenemos la serie elejida para hacer la venta
@@ -477,6 +478,7 @@ class SaleDocumentController extends Controller
                                 'sizes' => json_encode($n_tallas)
                             ]);
                         }
+
                         Product::find($product_id)->decrement('stock', $produc['quantity']);
                     }
                     //fin parte de codigo actualiza el kardex

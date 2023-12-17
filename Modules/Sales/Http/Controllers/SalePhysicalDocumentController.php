@@ -166,7 +166,7 @@ class SalePhysicalDocumentController extends Controller
                     'total_discount' => $request->get('total_discount'),
                     'payments' => json_encode($request->get('payments')),
                     'petty_cash_id' => $petty_cash->id,
-                    'physical' => true
+                    'physical' => 3
                 ]);
 
                 $sale = SalePhysicalDocument::create([
@@ -229,6 +229,9 @@ class SalePhysicalDocumentController extends Controller
                         ]);
                         $product_id = $new_product->id;
                         $produc['id'] = $product_id;
+                        $produc['usine'] = $randomNumberPadded;
+                        $produc['interne'] = $randomNumberPadded;
+
                         // le creamos un kardex en caso de ser un producto
                         if ($produc['is_product']) {
                             Kardex::create([
