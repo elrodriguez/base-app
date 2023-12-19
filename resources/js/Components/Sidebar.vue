@@ -14,6 +14,8 @@ import menuAcademic from '../../../Modules/Academic/Resources/assets/js/Menu.js'
 import menuRestaurant from '../../../Modules/Restaurant/Resources/assets/js/Menu.js';
 import menuSales from '../../../Modules/Sales/Resources/assets/js/Menu.js';
 import menuPurchases from '../../../Modules/Purchases/Resources/assets/js/Menu.js';
+import menuConfig from '../../../Modules/Security/Resources/assets/js/Menu.js';
+import menuCMS from '../../../Modules/CMS/Resources/assets/js/Menu.js';
 
 const props = defineProps({
     sidebarToggle: {
@@ -34,45 +36,7 @@ const menu = ref([
         route: route('dashboard'),
         permissions: 'dashboard',
     },
-    {
-        status:false,
-        text: 'Configuraciones',
-        icom: faGear,
-        route: null,
-        permissions: 'configuracion',
-        items: [
-            {
-                route: route('company_show'),
-                status: false,
-                text: 'Empresa',
-                permissions: 'empresa',
-            },
-            {
-                route: route('roles.index'),
-                status: false,
-                text: 'Roles',
-                permissions: 'roles',
-            },
-            {
-                route: route('permissions.index'),
-                status: false,
-                text: 'Permisos',
-                permissions: 'permisos',
-            },
-            {
-                route: route('users.index'),
-                status: false,
-                text: 'usuarios',
-                permissions: 'usuarios',
-            },
-            {
-                route: route('parameters'),
-                status: false,
-                text: 'Parámetros del sistema',
-                permissions: 'parametros',
-            }
-        ]
-    },
+    menuConfig,
     menuPurchases,
     menuSales,
     {
@@ -151,63 +115,7 @@ const menu = ref([
             
         ]
     },
-    {
-        status:false,
-        text: 'CMS',
-        icom: faEarthAmericas,
-        route: null,
-        permissions: 'cms_dashboard',
-        items: [
-            {
-                route: route('cms_items_list'),
-                status: false,
-                text: 'Items',
-                permissions: 'cms_items',
-            },
-            {
-                route: route('cms_section_list'),
-                status: false,
-                text: 'Secciones',
-                permissions: 'cms_seccion',
-            },
-            {
-                route: route('cms_pages_list'),
-                status: false,
-                text: 'Paginas',
-                permissions: 'cms_pagina',
-            },
-            {
-                route: route('establishments.index'),
-                status: false,
-                text: 'Centros de distribución',
-                permissions: 'sale_tienda',
-            },
-            {
-                route: route('blog-category.index'),
-                status: false,
-                text: 'Blog Categorías',
-                permissions: 'blog_categorias',
-            },
-            {
-                route: route('blog-article.index'),
-                status: false,
-                text: 'Blog Artículos',
-                permissions: 'blog_articulos',
-            },
-            {
-                route: route('blog_subscriber'),
-                status: false,
-                text: 'Suscriptores',
-                permissions: 'cms_seccion',
-            },
-            {
-                route: route('cms_testimonies_list'),
-                status: false,
-                text: 'Testimonios',
-                permissions: 'cms_testimonios',
-            }
-        ]
-    },
+    menuCMS,
     {
         status:false,
         text: 'Salud',
