@@ -124,7 +124,7 @@ watch(() => form.image, (newValue) => {
                     v-model="form.video"
                     :rows="4"
                     label="Iframe del vídeo *"
-                    placeholder="Código del vídeo..."
+                    placeholder="Código del vídeo... por favor verifique que el código no contenga emoticonos(genera error). Borre los emoticonos manualmente"
                 />
                 <InputError :message="form.errors.video" class="mt-2" />
                 <div class="mt-4 w-full" v-html="form.video"></div>
