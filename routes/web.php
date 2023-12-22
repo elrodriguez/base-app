@@ -22,14 +22,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Modules\Blog\Http\Controllers\BlogController;
 
-/* Sitio Webs KENTHA
-Route::get('/kentha', [WebController::class, 'index'])->name('cms_principal');
-Route::get('/nosotros', [KenthaController::class, 'nosotros'])->name('web_nosotros');
-Route::get('/servicios', [KenthaController::class, 'servicios'])->name('web_servicios');
-Route::get('/proyectos', [KenthaController::class, 'proyectos'])->name('web_proyectos');
-Route::get('/contacto', [KenthaController::class, 'contacto'])->name('web_contacto');
-*/
-
 Route::get('/test-image/{content}/{fecha?}', [WebController::class, 'testimage'])->name('test-image');
 Route::get('/capperu', [WebController::class, 'capperu'])->name('cms_principal');
 Route::get('/nosotros', [CapperuController::class, 'nosotros'])->name('web_nosotros');
