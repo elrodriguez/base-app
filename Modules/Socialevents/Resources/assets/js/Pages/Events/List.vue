@@ -3,11 +3,12 @@
     import { useForm } from '@inertiajs/vue3';
     import Keypad from '@/Components/Keypad.vue';
     import Pagination from '@/Components/Pagination.vue';
-    import { Image, AvatarGroup, Avatar, Tooltip, Badge } from 'ant-design-vue';
+    import { ConfigProvider, Image, AvatarGroup, Avatar, Tooltip, Badge } from 'ant-design-vue';
     import Swal2 from "sweetalert2";
     import { Link, router } from '@inertiajs/vue3';
     import { faPencilAlt, faCheck, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-
+    import esES from 'ant-design-vue/es/locale/es_ES';
+    
     const props = defineProps({
         socialevents: {
             type: Object,
@@ -130,6 +131,7 @@
                         </div>
                     </div>
                     <div class="max-w-full overflow-x-auto">
+                        <ConfigProvider :locale="esES">
                         <table class="w-full table-auto">
                             <thead class="border-b border-stroke">
                                 <tr class="bg-gray-50 text-left dark:bg-meta-4">
@@ -199,6 +201,7 @@
                                 </template>
                             </tbody>
                         </table>
+                        </ConfigProvider>
                     </div>
                     <Pagination :data="socialevents" />
                 </div>
