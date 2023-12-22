@@ -2,6 +2,7 @@
 
 namespace Modules\Academic\Http\Controllers;
 
+use App\Models\Parameter;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -24,11 +25,14 @@ class AcaCourseController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+    protected $P000010; ///token Tiny
+
     protected $RPTABLE;
 
     public function __construct()
     {
         $this->RPTABLE = env('RECORDS_PAGE_TABLE') ?? 10;
+        $this->P000010  = Parameter::where('parameter_code', 'P000010')->value('value_default');
     }
 
     public function index()
@@ -143,7 +147,7 @@ class AcaCourseController extends Controller
         return Inertia::render('Academic::Courses/Information', [
             'brochure' => AcaBrochure::where('course_id', $id)->first(),
             'course' => AcaCourse::find($id),
-            'tiny_api_key' => env('TINY_API_KEY'),
+            'tiny_api_key' => $this->P000010,
             'teachers' => $teachers,
             'course_teachers' => $course_teachers
         ]);

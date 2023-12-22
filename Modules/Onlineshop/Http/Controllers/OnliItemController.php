@@ -22,11 +22,13 @@ class OnliItemController extends Controller
     use ValidatesRequests;
 
     protected $P000009;
+    protected $P000010; ///token Tiny
 
     public function __construct()
     {
         $vallue = Parameter::where('parameter_code', 'P000009')->value('value_default');
         $this->P000009 = $vallue ?? 1;
+        $this->P000010  = Parameter::where('parameter_code', 'P000010')->value('value_default');
     }
 
     public function index()
@@ -82,7 +84,7 @@ class OnliItemController extends Controller
         return Inertia::render('Onlineshop::Items/Create', [
             'courses'   => $courses,
             'products'  => $products,
-            'tiny_api_key' => env('TINY_API_KEY'),
+            'tiny_api_key' => $this->P000010,
             'type'  => $this->P000009
         ]);
     }
@@ -118,7 +120,9 @@ class OnliItemController extends Controller
 
         // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
         // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
-        $path = $request->get('image_view');
+        $image_url = $request->get('image_view');
+        $path = str_replace(asset('storage/'), "", $image_url);
+
         $destination = 'uploads/onlineshop/items';
         $file = $request->file('image');
         if ($file) {
@@ -176,7 +180,7 @@ class OnliItemController extends Controller
         return Inertia::render('Onlineshop::Items/Edit', [
             'item' => $item,
             'type'  => $this->P000009,
-            'tiny_api_key' => env('TINY_API_KEY'),
+            'tiny_api_key' => $this->P000010,
         ]);
     }
 

@@ -1,42 +1,30 @@
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faMasksTheater } from "@fortawesome/free-solid-svg-icons";
 
-const menuConfig = {
+const menuSocialevents = {
     status: false,
     text: "Eventos",
-    icom: faGear,
+    icom: faMasksTheater,
     route: null,
-    permissions: "configuracion",
+    permissions: "even_dashboard",
     items: [
         {
-            route: route("company_show"),
+            route: route("even_categories_list"),
             status: false,
-            text: "Empresa",
-            permissions: "empresa",
+            text: "Categorías",
+            permissions: "even_categoria_listado",
         },
         {
-            route: route("roles.index"),
+            route: route("even_local_list"),
             status: false,
-            text: "Roles",
-            permissions: "roles",
+            text: "Locales",
+            permissions: "even_local_listado",
         },
         {
-            route: route("permissions.index"),
+            route: route("even_eventos_list"),
             status: false,
-            text: "Permisos",
-            permissions: "permisos",
-        },
-        {
-            route: route("users.index"),
-            status: false,
-            text: "usuarios",
-            permissions: "usuarios",
-        },
-        {
-            route: route("parameters"),
-            status: false,
-            text: "Parámetros del sistema",
-            permissions: "parametros",
+            text: "Eventos",
+            permissions: "even_evento_listado",
         },
     ],
 };
-export default menuConfig;
+export default menuSocialevents;

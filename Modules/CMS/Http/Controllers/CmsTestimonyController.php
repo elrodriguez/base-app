@@ -16,12 +16,14 @@ class CmsTestimonyController extends Controller
 {
     protected $P000009;
     protected $reg;
+    protected $P000010; ///token Tiny
 
     public function __construct()
     {
         $vallue = Parameter::where('parameter_code', 'P000009')->value('value_default');
         $this->P000009 = $vallue ?? 1;
         $this->reg = env('RECORDS_PAGE_TABLE');
+        $this->P000010  = Parameter::where('parameter_code', 'P000010')->value('value_default');
     }
 
     public function index()
@@ -71,7 +73,7 @@ class CmsTestimonyController extends Controller
         return Inertia::render('CMS::Testimonies/Create', [
             'venture'  => $this->P000009,
             'items' => $items,
-            'tiny_api_key' => env('TINY_API_KEY')
+            'tiny_api_key' => $this->P000010
         ]);
     }
 
@@ -145,7 +147,7 @@ class CmsTestimonyController extends Controller
             'venture'  => $this->P000009,
             'testimony' => CmsTestimony::find($id),
             'items' => $items,
-            'tiny_api_key' => env('TINY_API_KEY')
+            'tiny_api_key' => $this->P000010
         ]);
     }
 

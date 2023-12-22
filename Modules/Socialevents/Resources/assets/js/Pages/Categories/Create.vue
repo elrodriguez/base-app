@@ -1,22 +1,8 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import EditForm from './Partials/EditForm.vue';
+import CreateForm from './Partials/CreateForm.vue';
 import { Link } from '@inertiajs/vue3';
 
-const props = defineProps({
-    categories: {
-        type: Object,
-        default: () => ({}),
-    },
-    comanda: {
-        type: Object,
-        default: () => ({}),
-    },
-    presentations: {
-        type: Object,
-        default: () => ({}),
-    }
-});
 </script>
 
 <template>
@@ -34,25 +20,25 @@ const props = defineProps({
                         <div class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                         <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Restaurante</span>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Eventos sociales</span>
                         </div>
                     </li>
                     <li>
                         <div class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                         <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <Link :href="route('res_comandas_list')"><span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Comandas</span></Link>
+                        <Link :href="route('even_categories_list')"><span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Categorías</span></Link>
                         </div>
                     </li>
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Editar</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Nuevo</span>
                         </div>
                     </li>
                 </ol>
             </nav>
-            <EditForm :categories="categories" :comanda="comanda" :presentations="presentations" /> 
+            <CreateForm /> 
         </div>
     </AppLayout>
 </template>

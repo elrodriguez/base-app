@@ -13,8 +13,12 @@ class EvenCategory extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'icon',
+        'description',
+        'status',
+    ];
+
     protected static function newFactory(): EvenCategoryFactory
     {
         //return EvenCategoryFactory::new();

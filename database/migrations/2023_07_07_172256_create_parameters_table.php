@@ -85,6 +85,14 @@ return new class extends Migration
             'json_query_data'   => null,
             'value_default'     => 1
         ]);
+
+        Parameter::create([
+            'parameter_code'    => 'P000010',
+            'description'       => 'Token de Editor en linea Tiny',
+            'control_type'      => 'in',
+            'json_query_data'   => null,
+            'value_default'     => 'xmpsrss1dh49by6nnf83jicfv477cz0o31h0xu3ejsnnhsnz'
+        ]);
     }
 
     /**

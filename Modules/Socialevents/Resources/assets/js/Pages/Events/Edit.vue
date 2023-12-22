@@ -2,25 +2,40 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import EditForm from './Partials/EditForm.vue';
 import { Link } from '@inertiajs/vue3';
-
 const props = defineProps({
     categories: {
         type: Object,
         default: () => ({}),
     },
-    comanda: {
+    instructors: {
         type: Object,
         default: () => ({}),
     },
-    presentations: {
+    locales: {
         type: Object,
+        default: () => ({}),
+    },
+    tiny_api_key: {
+        type: String,
+        default: null,
+    },
+    socialevent:{
+        type: Object,
+        default: () => ({}),
+    },
+    eventLocales:{
+        type: Array,
+        default: () => ({}),
+    },
+    eventExhibitors:{
+        type: Array,
         default: () => ({}),
     }
 });
 </script>
 
 <template>
-    <AppLayout title="Crear Institución">
+    <AppLayout title="Eventos">
         <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
             <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -34,14 +49,14 @@ const props = defineProps({
                         <div class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                         <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Restaurante</span>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Eventos sociales</span>
                         </div>
                     </li>
                     <li>
                         <div class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                         <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <Link :href="route('res_comandas_list')"><span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Comandas</span></Link>
+                        <Link :href="route('even_eventos_list')"><span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Eventos</span></Link>
                         </div>
                     </li>
                     <li aria-current="page">
@@ -52,7 +67,15 @@ const props = defineProps({
                     </li>
                 </ol>
             </nav>
-            <EditForm :categories="categories" :comanda="comanda" :presentations="presentations" /> 
+            <EditForm 
+                :tiny_api_key="tiny_api_key" 
+                :categories="categories" 
+                :instructors="instructors" 
+                :locales="locales" 
+                :socialevent="socialevent"
+                :eventLocales="eventLocales"
+                :eventExhibitors="eventExhibitors"
+            /> 
         </div>
     </AppLayout>
 </template>

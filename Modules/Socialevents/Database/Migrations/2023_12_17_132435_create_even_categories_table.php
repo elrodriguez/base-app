@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('even_categories', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('icon')->nullable();
+            $table->string('description');
+            $table->string('status');
             $table->timestamps();
         });
     }
