@@ -30,6 +30,7 @@ class PermissionsModuleSeeder extends Seeder
         array_push($permissions, Permission::create(['name' => 'even_evento_nuevo']));
         array_push($permissions, Permission::create(['name' => 'even_evento_editar']));
         array_push($permissions, Permission::create(['name' => 'even_evento_eliminar']));
+        array_push($permissions, Permission::create(['name' => 'even_evento_precios']));
         array_push($permissions, Permission::create(['name' => 'even_ventas_listado']));
         array_push($permissions, Permission::create(['name' => 'even_ventas_editar']));
         array_push($permissions, Permission::create(['name' => 'even_ventas_nuevo']));

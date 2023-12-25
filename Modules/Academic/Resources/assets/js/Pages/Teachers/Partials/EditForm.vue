@@ -32,7 +32,7 @@ const form = useForm({
     number: props.teacher.number,
     telephone: props.teacher.telephone,
     email: props.teacher.email,
-    image: props.teacher.image,
+    image: null,
     image_preview: props.teacher.image_preview,
     address: props.teacher.address,
     ubigeo: props.teacher.ubigeo,
@@ -40,7 +40,8 @@ const form = useForm({
     names: props.teacher.names,
     father_lastname: props.teacher.father_lastname,
     mother_lastname: props.teacher.mother_lastname,
-    ubigeo_description: props.teacher.city
+    ubigeo_description: props.teacher.city,
+    presentacion: props.teacher.presentacion
 });
 
 const createPatient = () => {
@@ -144,13 +145,7 @@ const loadFile = (event) => {
                     </div>
                     <label class="block ml-1">
                         <span class="sr-only">Elige foto</span>
-                        <input  type="file" @change="loadFile" class="block w-full text-sm text-slate-500
-                            mr-4 py-2 px-4
-                            rounded-full border-0
-                            text-sm font-semibold
-                            bg-violet-50 text-violet-700
-                            hover:bg-violet-100
-                        " />
+                        <input @change="loadFile" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
                     </label>
                 </div>
             </div>
@@ -236,6 +231,17 @@ const loadFile = (event) => {
                     
                 />
                 <InputError :message="form.errors.email" class="mt-2" />
+            </div>
+            <div class="col-span-6">
+                <InputLabel for="presentacion" value="Presentación *" />
+                <textarea
+                    id="presentacion"
+                    v-model="form.presentacion"
+                    rows="4" 
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                </textarea>
+                <InputError :message="form.errors.presentacion" class="mt-2" />
             </div>
         </template>
 

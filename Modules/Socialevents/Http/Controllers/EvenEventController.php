@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\Socialevents\Entities\EvenEventExhibitor;
 use Modules\Socialevents\Entities\EvenEventLocal;
+use Modules\Socialevents\Entities\EvenTicketType;
 
 class EvenEventController extends Controller
 {
@@ -39,12 +40,16 @@ class EvenEventController extends Controller
         }
         $events = $events->with('exhibitors.exhibitor');
         $events = $events->with('locales.local');
+        $events = $events->with('prices');
         $events = $events->orderBy('id', 'DESC');
         $events = $events->paginate(10);
 
+        $types = EvenTicketType::all();
+
         return Inertia::render('Socialevents::Events/List', [
             'socialevents' => $events,
-            'filters' => request()->all('search')
+            'filters' => request()->all('search'),
+            'types' => $types
         ]);
     }
 

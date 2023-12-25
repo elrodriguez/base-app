@@ -46,4 +46,9 @@ class EvenEvent extends Model
     {
         return $this->hasMany(EvenEventExhibitor::class, 'event_id');
     }
+
+    public function prices(): HasMany
+    {
+        return $this->hasMany(EvenEventTicketPrice::class, 'event_id');
+    }
 }

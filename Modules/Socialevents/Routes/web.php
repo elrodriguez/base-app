@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Socialevents\Http\Controllers\EvenCategoryController;
 use Modules\Socialevents\Http\Controllers\EvenEventController;
+use Modules\Socialevents\Http\Controllers\EvenEventTickePriceController;
 use Modules\Socialevents\Http\Controllers\EvenLocalController;
 use Modules\Socialevents\Http\Controllers\SocialeventsController;
 
@@ -40,4 +41,5 @@ Route::middleware(['auth', 'verified'])->prefix('socialevents')->group(function 
     Route::middleware(['middleware' => 'permission:even_evento_editar'])->get('events/{id}/edit', [EvenEventController::class, 'edit'])->name('even_eventos_editar');
     Route::post('events/update', [EvenEventController::class, 'update'])->name('even_eventos_update');
     Route::middleware(['middleware' => 'permission:even_evento_eliminar'])->delete('events/destroy/{id}', [EvenEventController::class, 'destroy'])->name('even_eventos_destroy');
+    Route::post('events/prices/tickets/store', [EvenEventTickePriceController::class, 'store'])->name('even_events_preices_ticket_store');
 });
