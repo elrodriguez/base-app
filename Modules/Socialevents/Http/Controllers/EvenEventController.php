@@ -102,7 +102,8 @@ class EvenEventController extends Controller
             'number_days'   => $days + 1,
             'tickets_quantity' => $request->get('tickets_quantity'),
             'status' => $request->get('status') ? true : false,
-            'broadcast' => $request->get('broadcast') ? true : false
+            'broadcast' => $request->get('broadcast') ? true : false,
+            'tickets_available' => $request->get('tickets_quantity')
         ]);
 
 

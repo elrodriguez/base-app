@@ -35,7 +35,8 @@ class EvenEventTickePriceController extends Controller
                 [
                     'user_id' => Auth::id(),
                     'price' => $row['price'] ?? 0,
-                    'quantity' => $row['quantity'] ?? 0
+                    'quantity' => $row['quantity'] ?? 0,
+                    'tickets_available' => $row['quantity'] ?? 0
                 ]
             );
         }
