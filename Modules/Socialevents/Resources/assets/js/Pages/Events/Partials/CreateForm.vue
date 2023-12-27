@@ -122,7 +122,7 @@ watch(() => form.just_transmit, (data) => {
                         id="category_id"
                         :options="categories.map((obj) => ({value:obj.id,label:obj.description}))"
                     />
-                    <InputError :message="form.errors.title" class="mt-2" />
+                    <InputError :message="form.errors.category_id" class="mt-2" />
                 </div>
                 <div v-if="form.just_transmit == 0" class="col-span-6 sm:col-span-4">
                     <InputLabel for="dates" value="Fechas desde Hasta *" class="mb-1" />

@@ -101,7 +101,7 @@ class EvenEventController extends Controller
             'date_end'  => Carbon::parse($de)->format('Y-m-d'),
             'number_days'   => $days + 1,
             'tickets_quantity' => $request->get('tickets_quantity'),
-            'status' => $request->get('status') ? true : false,
+            'status' => 'PE',
             'broadcast' => $request->get('broadcast') ? true : false,
             'tickets_available' => $request->get('tickets_quantity')
         ]);
@@ -231,7 +231,6 @@ class EvenEventController extends Controller
             'date_end'  => Carbon::parse($de)->format('Y-m-d'),
             'number_days'   => $days + 1,
             'tickets_quantity' => $request->get('tickets_quantity'),
-            'status' => $request->get('status') ? true : false,
             'broadcast' => $request->get('broadcast') ? true : false
         ]);
 

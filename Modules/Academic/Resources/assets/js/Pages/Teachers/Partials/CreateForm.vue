@@ -202,7 +202,7 @@ const openSwal2Search = () => {
             }
             return axios.post(route('search_person_number'),data).then((res) => {
                 if (!res.data.status) {
-                    swal.showValidationMessage(res.data.message)
+                    Swal2.showValidationMessage(res.data.alert)
                 }
                 return res
             });
