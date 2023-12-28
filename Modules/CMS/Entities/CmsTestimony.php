@@ -23,6 +23,9 @@ class CmsTestimony extends Model
         'status'
     ];
 
+    protected $charset = 'utf8mb4';
+    protected $collation = 'utf8mb4_unicode_ci';
+
     protected static function newFactory(): CmsTestimonyFactory
     {
         //return CmsTestimonyFactory::new();
