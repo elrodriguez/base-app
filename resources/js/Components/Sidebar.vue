@@ -17,6 +17,7 @@ import menuPurchases from '../../../Modules/Purchases/Resources/assets/js/Menu.j
 import menuConfig from '../../../Modules/Security/Resources/assets/js/Menu.js';
 import menuCMS from '../../../Modules/CMS/Resources/assets/js/Menu.js';
 import menuSocialevents from '../../../Modules/Socialevents/Resources/assets/js/Menu.js';
+import menuHelpdesk from '../../../Modules/Helpdesk/Resources/assets/js/Menu.js';
 
 const props = defineProps({
     sidebarToggle: {
@@ -94,28 +95,7 @@ const menu = ref([
             }
         ]
     },
-    {
-        status:false,
-        text: 'Centro de Soporte',
-        icom: faUserGear,
-        route: null,
-        permissions: 'help_dashboard',
-        items: [
-            {
-                route: route('help-level.index'),
-                status: false,
-                text: 'Niveles',
-                permissions: 'help_nivel',
-            },
-            {
-                route: route('help-boards.index'),
-                status: false,
-                text: 'Tableros',
-                permissions: 'help_tableros',
-            },
-            
-        ]
-    },
+    menuHelpdesk,
     menuCMS,
     {
         status:false,

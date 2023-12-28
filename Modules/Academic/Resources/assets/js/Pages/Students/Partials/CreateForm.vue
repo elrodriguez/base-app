@@ -201,6 +201,8 @@ const openSwal2Search = () => {
             }
             return axios.post(route('search_person_number'),data).then((res) => {
                 if (!res.data.status) {
+                    form.document_type_id = data.document_type,
+                    form.number = data.number,
                     Swal2.showValidationMessage(res.data.alert)
                 }
                 return res
