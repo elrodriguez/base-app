@@ -47,4 +47,12 @@ class CmsTestimony extends Model
             $testimony->video = htmlspecialchars_decode($testimony->video, ENT_QUOTES);
         });
     }
+    public function getDescriptionAttribute($value)
+    {
+        return htmlspecialchars_decode($value, ENT_QUOTES);
+    }
+    public function getVideoAttribute($value)
+    {
+        return htmlspecialchars_decode($value, ENT_QUOTES);
+    }
 }
