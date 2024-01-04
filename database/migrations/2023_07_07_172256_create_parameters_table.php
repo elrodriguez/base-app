@@ -82,7 +82,7 @@ return new class extends Migration
             'parameter_code'    => 'P000009',
             'description'       => 'Tipo de negocio o empresa',
             'control_type'      => 'in',
-            'json_query_data'   => null,
+            'json_query_data'   => '[{"value": "1","label":"Cursos"},{"value": "2","label":"Productos"}]',
             'value_default'     => 1
         ]);
 
