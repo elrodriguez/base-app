@@ -69,8 +69,6 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
-        // Añade esto a tu array de $middlewareGroups o $middleware
         'invalid_updated_information' => \App\Http\Middleware\RedirectIfInvalidUserData::class,
-
     ];
 }

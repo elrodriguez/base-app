@@ -4,7 +4,9 @@ namespace Modules\CMS\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\CMS\Database\factories\CmsTestimonyFactory;
+use Modules\Onlineshop\Entities\OnliItem;
 
 class CmsTestimony extends Model
 {
@@ -54,5 +56,10 @@ class CmsTestimony extends Model
     public function getVideoAttribute($value)
     {
         return htmlspecialchars_decode($value, ENT_QUOTES);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(OnliItem::class, 'item_id');
     }
 }

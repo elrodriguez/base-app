@@ -121,7 +121,7 @@ class ProductController extends Controller
             $this->validate(
                 $request,
                 [
-                    'sizes.*.size' => 'required|numeric',
+                    'sizes.*.size' => 'required',
                     'sizes.*.quantity' => 'required|numeric',
                 ],
                 [

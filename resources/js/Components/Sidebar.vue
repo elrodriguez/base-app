@@ -137,7 +137,7 @@ const toggleSubItems = (index) => {
         class="absolute left-0 top-0 z-999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0"
         >
                 <!-- SIDEBAR HEADER -->
-        <div class="flex items-center justify-between gap-2 px-6 py-4 lg:py-3.5 dark:bg-gray-800">
+        <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
             <Link  :href="route('dashboard')">
                 <img :src="$page.props.company.logo_dark"  alt="Logo" />
             </Link >

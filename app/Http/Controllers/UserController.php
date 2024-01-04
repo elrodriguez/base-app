@@ -29,8 +29,9 @@ class UserController extends Controller
             $users->latest();
         }
 
+        $users = $users->with('tokens');
         $users = $users->paginate(10)->onEachSide(2);
-
+        //dd($users);
         return Inertia::render('Users/List', [
             'users' => $users
         ]);
@@ -52,14 +53,19 @@ class UserController extends Controller
             'password' => 'required|string'
         ]);
 
-        User::create([
+        $user = User::create([
             'name'          => $request->get('name'),
             'email'         => $request->get('email'),
             'password'      => Hash::make($request->get('password')),
             'local_id'      => $request->get('local_id')
         ]);
 
-        return redirect()->route('users.create')
+        $token = $user->createToken($request->get('email'))->plainTextToken;
+
+        $user->api_token = $token;
+        $user->save();
+
+        return redirect()->route('users.index')
             ->with('message', __('Usuario creado con éxito'));
     }
 

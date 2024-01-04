@@ -1,8 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import { faMoneyBillWave } from "@fortawesome/free-solid-svg-icons";
+import { faStarAndCrescent, faSun } from "@fortawesome/free-solid-svg-icons";
 import { Link } from '@inertiajs/vue3';
+import GLobalRegister from '../../../resources/js/Pages/Helpdesk/Tickets/GlobalRegister.vue';
+import { Switch } from 'ant-design-vue';
 const dropdownOpen = ref(false)
 
 const props = defineProps({
@@ -17,6 +19,51 @@ const emit = defineEmits(['displaySidebarToggle'])
 const showSidebarToggle = async () => {
     emit('displaySidebarToggle', true)
 }
+
+const darkMode = ref(false);
+
+const darkModeActive = () => {
+    const body = document.body;
+    const clasesDark = ['dark', 'text-bodydark', 'bg-boxdark-2'];
+    const clasesLight = ['font-sans', 'antialiased'];
+
+    const modo = localStorage.getItem('modo');
+    let xmodo = modo ?? 'light';
+    darkMode.value = xmodo == 'light' ? false : true;
+
+    darkMode.value = !darkMode.value;
+    body.classList.remove(...clasesDark, ...clasesLight);
+
+    if (darkMode.value) {
+        body.classList.add(...clasesDark);
+        localStorage.setItem('modo', 'dark');
+    } else {
+        body.classList.add(...clasesLight);
+        localStorage.setItem('modo', 'light');
+    }
+}
+
+const aplicarClasesSegunLocalStorage = () => {
+    const body = document.body;
+    const clasesDark = ['dark', 'text-bodydark', 'bg-boxdark-2'];
+    const clasesLight = ['font-sans', 'antialiased'];
+
+    const modoAlmacenado = localStorage.getItem('modo');
+
+    body.classList.remove(...clasesDark, ...clasesLight);
+
+    if (modoAlmacenado === 'dark') {
+        body.classList.add(...clasesDark);
+        darkMode.value = true;
+    } else {
+        body.classList.add(...clasesLight);
+        darkMode.value = false;
+    }
+}
+
+onMounted(() => {
+    aplicarClasesSegunLocalStorage();
+});
 
 const xhttp =  assetUrl;
 </script>
@@ -45,10 +92,10 @@ const xhttp =  assetUrl;
                         </span>
                     </span>
                 </button>
-            <!-- Hamburger Toggle BTN -->
-            <Link class="block flex-shrink-0 lg:hidden" :href="route('dashboard')">
-                <img :src="$page.props.company.isotipo" alt="Logo" style="max-width: 36px;height: 36px;" />
-            </Link>
+                <!-- Hamburger Toggle BTN -->
+                <Link class="block flex-shrink-0 lg:hidden" :href="route('dashboard')">
+                    <img :src="$page.props.company.isotipo" alt="Logo" style="max-width: 36px;height: 36px;" />
+                </Link>
             </div>
             <div class="hidden sm:block">
                 <!-- <Link :href="route('sales.create')" type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
@@ -58,9 +105,21 @@ const xhttp =  assetUrl;
             </div>
 
             <div class="flex items-center gap-3 2xsm:gap-7">
-
+                <!-- boton de ayuda y registro de insidencias en el sistema -->
+                <GLobalRegister />
+                <ul class="flex items-center gap-2 2xsm:gap-4">
+                    <li>
+                        <!-- Dark Mode Toggler -->
+                        <Switch v-model:checked="darkMode" @change="darkModeActive" class="bg-gray-600">
+                            <template #checkedChildren><font-awesome-icon :icon="faSun" /></template>
+                            <template #unCheckedChildren><font-awesome-icon :icon="faStarAndCrescent" /></template>
+                        </Switch>
+                        <!-- Dark Mode Toggler -->
+                    </li>
+                </ul>
                 <!-- User Area -->
                 <div class="relative">
+
                     <a class="flex items-center gap-4" href="#" @click.prevent="dropdownOpen = ! dropdownOpen">
                         <span class="hidden text-right lg:block">
                             <span class="block text-sm font-medium text-black dark:text-white">{{ $page.props.auth.user.name }}</span>

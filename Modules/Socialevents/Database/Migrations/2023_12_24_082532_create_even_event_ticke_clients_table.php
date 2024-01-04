@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('email', 150)->nullable();
             $table->string('ubigeo')->nullable();
             $table->string('name_city', 300)->nullable();
+            $table->integer('quantity')->default(1)->comment('cantidad de entradas compradas');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

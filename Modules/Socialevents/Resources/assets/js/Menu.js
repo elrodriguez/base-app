@@ -25,6 +25,12 @@ const menuSocialevents = {
             text: "Eventos",
             permissions: "even_evento_listado",
         },
+        {
+            route: route("even_tickets_listado"),
+            status: false,
+            text: "Ticket Vendidos",
+            permissions: "even_ventas_listado",
+        },
     ],
 };
 export default menuSocialevents;

@@ -26,9 +26,10 @@
 
 <body class="font-sans antialiased">
     @inertia
+    <script>
+        window.assetUrl = @json(asset(''));
+    </script>
 </body>
-<script>
-    window.assetUrl = @json(asset(''));
-</script>
+
 
 </html>

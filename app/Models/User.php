@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\PersonalAccessToken;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -29,7 +30,8 @@ class User extends Authenticatable
         'information',
         'person_id',
         'status',
-        'updated_information'
+        'updated_information',
+        'api_token'
     ];
 
     /**
@@ -53,5 +55,10 @@ class User extends Authenticatable
     public function company(): HasOne
     {
         return $this->hasOne(Company::class, 'id', 'company_id');
+    }
+
+    public function tokens()
+    {
+        return $this->morphMany(PersonalAccessToken::class, 'tokenable');
     }
 }

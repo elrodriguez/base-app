@@ -5,13 +5,13 @@
             type: Function,
             default: () => {},
         },
-        show:{
+        show: {
             type: Boolean,
             default: false,
         },
-        icon:{
+        icon: {
             type: String,
-            default: () => {},
+            default: null,
         }
     });
 </script>
@@ -19,7 +19,7 @@
   <div v-show="show" class="fixed z-9999 inset-0 overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
       <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-        <div class="absolute inset-0 bg-gray-500 opacity-75 dark:bg-gray-800"></div>
+        <div class="absolute inset-0 bg-gray-500 opacity-75 dark:bg-gray-900"></div>
       </div>
 
       <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
@@ -48,7 +48,7 @@
         <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 dark:bg-gray-700 text-right">
           <slot name="buttons" />
           <SecondaryButton @click="onClose">
-            Cancel
+            Cerrar
           </SecondaryButton>
         </div>
       </div>
