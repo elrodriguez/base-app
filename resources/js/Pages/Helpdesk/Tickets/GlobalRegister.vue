@@ -1,5 +1,5 @@
 <script setup>
-import { faScrewdriverWrench, faFolderOpen } from "@fortawesome/free-solid-svg-icons";
+import { faScrewdriverWrench, faFolderOpen, faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import { 
     ConfigProvider, 
     Drawer,
@@ -14,7 +14,9 @@ import {
     Input, 
     Button, 
     Space, 
-    Badge 
+    Badge ,
+    Alert,
+    notification
 } from 'ant-design-vue';
 import { ref, onMounted } from 'vue';
 
@@ -40,6 +42,16 @@ const showDrawer = () => {
     open.value = true;
 };
   
+const openNotificationWithIcon = (type) => {
+  notification.warning({
+    message: 'ESTIMADO USUARIO',
+    description: 'Actualmente, aún no dispone del servicio de atención al cliente. Le solicitamos amablemente que se comunique con nosotros a través del número de contacto de Aracode Perú para recibir la asistencia que necesite. Agradecemos su comprensión y colaboración.',
+    style: {
+        zIndex: 999999999,
+    }
+  });
+};
+
 const onClose = () => {
     open.value = false;
 };
@@ -154,11 +166,20 @@ onMounted(() => {
                         <font-awesome-icon :icon="faFolderOpen" />
                         Manuales
                     </button>
-                    <button @click="onClose" type="button" class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Enviar Solicitud</button>
+                    <button @click="openNotificationWithIcon" type="button" class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Enviar Solicitud</button>
                 </Space>
             </template>
-            <Drawer v-model:open="childrenDrawer" title="Two-level Drawer" width="320" :closable="false">
-                <Button type="primary" @click="showChildrenDrawer">This is two-level drawer</Button>
+            <Drawer v-model:open="childrenDrawer" title="Manuales" width="320" :closable="false">
+                <Alert 
+                    message="Lamentamos informarle que"
+                    description="por el momento, los manuales no están disponibles. Estamos trabajando diligentemente para poner a su disposición la información necesaria lo antes posible."
+                    type="Warning"
+                    show-icon
+                >
+                    <template #icon>
+                        <font-awesome-icon :icon="faFaceSadTear" />
+                    </template>
+                </Alert>
             </Drawer>
         </Drawer>
     </ConfigProvider>
