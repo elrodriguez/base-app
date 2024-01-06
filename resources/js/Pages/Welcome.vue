@@ -5,6 +5,7 @@ import Footer from './Landing/Footer.vue';
 import About from './Landing/About.vue';
 import Services from './Landing/Services.vue';
 import Contact from './Landing/Contact.vue';
+import Customers from './Landing/Customers.vue';
 
 defineProps({
     canLogin: Boolean,
@@ -54,5 +55,6 @@ defineProps({
     <About />
     <Services />
     <Contact />
+    <Customers />
     <Footer :laravelVersion="laravelVersion" :phpVersion="phpVersion" />
 </template>
