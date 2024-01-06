@@ -65,3 +65,6 @@ Route::middleware(['auth', 'verified'])->prefix('cms')->group(function () {
     Route::middleware(['permission:cms_testimonios_editar'])->get('testimonies/edit/{id}', [CmsTestimonyController::class, 'edit'])->name('cms_testimonies_edit');
     Route::middleware(['permission:cms_testimonios_eliminar'])->delete('testimonies/destroy/{id}', [CmsTestimonyController::class, 'destroy'])->name('cms_testimonies_destroy');
 });
+
+
+Route::post('subscriber', 'CmsSubscriberController@store')->name('subscriber_public');

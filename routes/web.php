@@ -86,7 +86,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('index_main');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

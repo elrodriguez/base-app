@@ -73,16 +73,39 @@ class CmsSubscriberController extends Controller
         ]);
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
+    public function store(Request $request)
     {
-        return view('cms::show');
-    }
+        $this->validate(
+            $request,
+            [
+                'full_name' => 'required|max:255',
+                'email' => 'required|max:255',
+                'phone' => 'required|max:255',
+                'message' => 'required',
+            ],
+            [
+                'full_name.required' => 'El nombre completo es requerido',
+                'email.required' => 'El email es requerido',
+                'phone.required' => 'El teléfono es requerido',
+                'message.required' => 'El mensaje es requerido',
+                'full_name.max' => 'La cantidad maxima es de 255 caracteres',
+                'email.max' => 'La cantidad maxima es de 255 caracteres',
+                'phone.max' => 'La cantidad maxima es de 255 caracteres',
+            ]
+        );
 
+        CmsSubscriber::create([
+            'full_name'     => $request->get('full_name') ?? null,
+            'email'         => $request->get('email'),
+            'phone'         => $request->get('phone') ?? null,
+            'client_ip'     => $request->ip(),
+            'read'          => 0,
+            'subject'       => $request->get('subject') ?? null,
+            'message'       => $request->get('message') ?? null,
+        ]);
+
+        return to_route('index_main');
+    }
     /**
      * Show the form for editing the specified resource.
      * @param int $id
@@ -118,13 +141,13 @@ class CmsSubscriberController extends Controller
     {
         $subscribers = (new CmsSubscriber())->newQuery();
         $subscribers->orderBy('created_at', 'desc'); // Ordenar por la columna "created_at" de forma descendente
-        
+
         if (request()->has('search')) {
             $subscribers->where('email', 'like', '%' . request()->input('search') . '%');
         }
-        
+
         $subscribers = $subscribers->paginate(20)->onEachSide(2)->appends(request()->query());
-        
+
         return Inertia::render('CMS::Subscribers/List', [
             'subscribers' => $subscribers,
             'filters' => request()->all('search')
