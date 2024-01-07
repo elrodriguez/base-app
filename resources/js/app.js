@@ -53,6 +53,7 @@ createInertiaApp({
                 });
             },
         });
+
         return app.mount(el);
     },
     progress: {

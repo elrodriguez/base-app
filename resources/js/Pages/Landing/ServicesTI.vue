@@ -1,9 +1,13 @@
+<script setup>
+const xtassetUrl = assetUrl;
+const bg_imaget = xtassetUrl+"img/Landing/bg/tech-bg.png";
+</script>
 <template>
-    <section class="bg-blue-900 dark:bg-gray-900">
+    <section class="bg-blue-50 dark:bg-gray-900" :class="`bg-[url('${bg_imaget}')]`">
         <div class="px-4 mx-auto max-w-screen-xl lg:py-16 py-20 lg:py-20 lg:gap-16">
             <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 w-full text-center">
-                    <h5 class="mb-2 text-white text-3xl font-bold text-gray-900 dark:text-white">Nuestros Servicios</h5> 
+                    <h5 class="mb-12 text-3xl font-bold text-gray-900 dark:text-white">Servicios de TI</h5> 
                 </div>
                 <div class="col-span-6 sm:col-span-2 md:col-span-2">
                     <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">

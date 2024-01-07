@@ -3,7 +3,8 @@ import { Head, Link } from '@inertiajs/vue3';
 import Jumbotron from './Landing/Jumbotron.vue';
 import Footer from './Landing/Footer.vue';
 import About from './Landing/About.vue';
-import Services from './Landing/Services.vue';
+import ServicesTI from './Landing/ServicesTI.vue';
+import ServicesAcademic from './Landing/ServicesAcademic.vue';
 import Contact from './Landing/Contact.vue';
 import Customers from './Landing/Customers.vue';
 
@@ -13,6 +14,7 @@ defineProps({
     laravelVersion: String,
     phpVersion: String,
 });
+
 </script>
 
 <template>
@@ -53,7 +55,8 @@ defineProps({
     
     <Jumbotron />
     <About />
-    <Services />
+    <ServicesAcademic />
+    <ServicesTI />
     <Contact />
     <Customers />
     <Footer :laravelVersion="laravelVersion" :phpVersion="phpVersion" />

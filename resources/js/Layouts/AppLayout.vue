@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Sidebar from '@/Components/Sidebar.vue';
 import Header from '@/Components/Header.vue';
+import Preloader from '@/Components/Preloader.vue';
 import BannerMessage from '../../../Modules/Academic/Resources/assets/js/Components/BannerMessage.vue';
 const sidebarToggle = ref(false);
 
@@ -17,6 +18,7 @@ defineProps({
 </script>
 
 <template>
+    <!-- <Preloader id="page-preloader" /> -->
     <BannerMessage /> 
     <Head :title="title" />
     <div class="flex h-screen overflow-hidden">
