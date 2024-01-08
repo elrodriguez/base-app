@@ -55,7 +55,7 @@ defineProps({
     
     <Jumbotron />
     <About />
-    <ServicesAcademic />
+    <!-- <ServicesAcademic /> -->
     <ServicesTI />
     <Contact />
     <Customers />
