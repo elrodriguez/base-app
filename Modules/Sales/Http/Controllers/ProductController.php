@@ -298,15 +298,35 @@ class ProductController extends Controller
 
     public function searchProduct(Request $request)
     {
+        // dd($request->all());
         $local_id = Auth::user()->local_id;
         $search = $request->get('search');
         $products = [];
         $success = false;
         $message = null;
         if ($local_id) {
+            //dd($local_id);
             $products = DB::table('products as t1')
                 ->select(
-                    't1.*',
+                    't1.id',
+                    't1.usine',
+                    't1.interne',
+                    't1.description',
+                    't1.image',
+                    't1.purchase_prices',
+                    't1.sale_prices',
+                    't1.sizes',
+                    't1.stock_min',
+                    't1.stock',
+                    't1.presentations',
+                    't1.is_product',
+                    't1.type_sale_affectation_id',
+                    't1.type_purchase_affectation_id',
+                    't1.type_unit_measure_id',
+                    't1.status',
+                    't1.category_id',
+                    't1.brand_id',
+                    't1.icbper',
                     DB::raw(`
                 SELECT
                     JSON_ARRAYAGG(JSON_OBJECT('size', size, 'quantity', quantity_sum)) AS productos
@@ -329,7 +349,27 @@ class ProductController extends Controller
                         ->orWhere('t1.description', 'like', '%' . $search . '%');
                 })
                 ->where('kardexes.local_id', '=', $local_id)
-                ->groupBy('t1.id')
+                ->groupBy([
+                    't1.id',
+                    't1.usine',
+                    't1.interne',
+                    't1.description',
+                    't1.image',
+                    't1.purchase_prices',
+                    't1.sale_prices',
+                    't1.sizes',
+                    't1.stock_min',
+                    't1.stock',
+                    't1.presentations',
+                    't1.is_product',
+                    't1.type_sale_affectation_id',
+                    't1.type_purchase_affectation_id',
+                    't1.type_unit_measure_id',
+                    't1.status',
+                    't1.category_id',
+                    't1.brand_id',
+                    't1.icbper',
+                ])
                 ->get();
 
             if (count($products) > 0) {
