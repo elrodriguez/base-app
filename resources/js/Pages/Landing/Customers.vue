@@ -3,7 +3,7 @@ const xassetUrl = assetUrl;
 const bg_image = xassetUrl + "img/Landing/bg/testi12-bg.jpg";
 </script>
 <template>
-    <section class="bg-center bg-no-repeat bg-gray-400 bg-blend-multiply bg-white dark:bg-gray-700"
+    <section class="bg-center bg-no-repeat bg-gray-800 bg-blend-multiply dark:bg-gray-700"
         :class="`bg-[url('${bg_image}')]`">
         <div class="px-4 mx-auto max-w-screen-xl text-center py-20 lg:py-50">
             <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">Nuestros Clientes</h1>
