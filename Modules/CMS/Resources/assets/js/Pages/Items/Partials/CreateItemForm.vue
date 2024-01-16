@@ -49,6 +49,8 @@ watch(() => form.content, (newValue) => {
         reader.readAsDataURL(newValue);
     }
 });
+
+const xassetUrl = assetUrl;
 </script>
 
 <template>
@@ -75,7 +77,7 @@ watch(() => form.content, (newValue) => {
                     <InputLabel for="content" value="Imagen *" />
                     <div class="flex justify-center space-x-2">
                         <figure class="max-w-lg">
-                            <img class="h-auto max-w-full rounded-lg" :src="form.image_pre">
+                            <img class="h-auto max-w-full rounded-lg" :src="xassetUrl + 'storage/' + form.image_pre">
                             <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                         </figure>
                     </div>

@@ -292,6 +292,8 @@ const updateImagePreview = (index,image) => {
         
         reader.readAsDataURL(photo);
     };
+
+    const xassetUrl = assetUrl;
 </script>
 
 <template>
@@ -368,7 +370,7 @@ const updateImagePreview = (index,image) => {
                                             </p>
                                             <div class="flex justify-center space-x-2">
                                                 <figure class="max-w-lg">
-                                                    <img class="h-auto max-w-full rounded-lg" :src="it.image_preview">
+                                                    <img class="h-auto max-w-full rounded-lg" :src="xassetUrl + 'storage/' + it.image_preview">
                                                     <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                                                 </figure>
                                             </div>
@@ -426,7 +428,7 @@ const updateImagePreview = (index,image) => {
                                                     </p>
                                                     <div class="flex justify-center space-x-2">
                                                         <figure class="max-w-lg">
-                                                            <img style="width: 200px;" class="h-auto rounded-lg" :src="itm.content">
+                                                            <img style="width: 200px;" class="h-auto rounded-lg" :src="xassetUrl + 'storage/' + itm.content">
                                                             <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                                                         </figure>
                                                     </div>

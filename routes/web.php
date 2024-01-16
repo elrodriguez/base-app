@@ -3,15 +3,13 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\KenthaController;
-use App\Http\Controllers\CapperuController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\LocalSaleController;
 use App\Http\Controllers\ParametersController;
 use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Foundation\Application;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebController;
 use App\Mail\StudentRegistrationMailable;
@@ -22,33 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Modules\Blog\Http\Controllers\BlogController;
 
-Route::get('/test-image/{content}/{fecha?}', [WebController::class, 'testimage'])->name('test-image');
-Route::get('/capperu', [WebController::class, 'capperu'])->name('cms_principal');
-Route::get('/nosotros', [CapperuController::class, 'nosotros'])->name('web_nosotros');
-Route::get('/categoria-sector/{sector}', [CapperuController::class, 'categoriasector'])->name('web_categoria_sector');
-Route::get('/categoria-modalidad', [CapperuController::class, 'categoriamodalidad'])->name('web_categoria_modalidad');
-Route::get('/categoria-modalidad-en-vivo', [CapperuController::class, 'categoriamodalidadenvivo'])->name('web_categoria_modalidad_en_vivo');
-Route::get('/categoria-modalidad-e-learning', [CapperuController::class, 'categoriamodalidadelearning'])->name('web_categoria_modalidad_e_learning');
-Route::get('/categoria-programa-cursos', [CapperuController::class, 'categoriaprogramacursos'])->name('web_categoria_programa_cursos');
-Route::get('/categoria-programa-diplomados', [CapperuController::class, 'categoriaprogramadiplomados'])->name('web_categoria_programa_diplomados');
-Route::get('/modalidad-presencial', [CapperuController::class, 'modalidadpresencial'])->name('web_modalidad_presencial');
-Route::get('/sectors/{sector}/{tipo}', [CapperuController::class, 'sector_programs'])->name('web_sectors');
-Route::get('/descripcion-programa/{id}', [CapperuController::class, 'descripcionPrograma'])->name('web_descripcion_programa'); //describe cursos, diplomados, e-learning o en vivo
-Route::get('/descripcion-e-learning', [CapperuController::class, 'descripcionelearning'])->name('web_descripcion_e_learning');
-Route::get('/perfil-docente/{teacher_id}', [CapperuController::class, 'perfildocente'])->name('web_perfil_docente');
-Route::get('/carrito', [CapperuController::class, 'carrito'])->name('web_carrito');
-Route::get('/pagar', [CapperuController::class, 'pagar'])->name('web_pagar');
-Route::get('/gracias/{sale_id}', [CapperuController::class, 'gracias'])->name('web_gracias');
 
-Route::get('/convenios', [CapperuController::class, 'convenios'])->name('web_convenios');
-Route::get('/contacto', [CapperuController::class, 'contacto'])->name('web_contacto');
-
-
-Route::get('/categorias', [CapperuController::class, 'categorias'])->name('web_categorias');
-
-
-
-Route::get('/download/brochure/{id}', [CapperuController::class, 'download_brochure'])->name('download_brochure');
 
 Route::get('/blog/home', [BlogController::class, 'index'])->name('blog_principal');
 Route::get('/article/{url}', [BlogController::class, 'article'])->name('blog_article_by_url');
@@ -79,14 +51,7 @@ Route::get('/email', function () {
     return 'mensaje enviado';
 });
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('index_main');
+Route::get('/', [WebController::class, 'index'])->name('index_main');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

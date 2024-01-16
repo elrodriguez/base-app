@@ -92,7 +92,7 @@ class CmsItemController extends Controller
                 'public'
             );
 
-            $content = $type_id == 1 ? asset('storage/' . $path) : $path;
+            $content = $type_id == 1 ? $path : $path;
         }
         if ($type_id == 2 || $type_id == 4) {
             $content = $request->get('content');
@@ -161,7 +161,7 @@ class CmsItemController extends Controller
                 'public'
             );
 
-            $content = $type_id == 1 ? asset('storage/' . $path) : $path;
+            $content = $type_id == 1 ?  $path : $path;
         }
         if ($type_id == 2 || $type_id == 4) {
             $content = $request->get('content');

@@ -53,6 +53,8 @@ const updateItem = () => {
             reader.readAsDataURL(newValue);
         }
     });
+
+    const xassetUrl = assetUrl;
 </script>
 
 <template>
@@ -80,7 +82,7 @@ const updateItem = () => {
 
                     <div class="flex justify-center space-x-2">
                         <figure class="max-w-lg">
-                            <img class="h-auto max-w-full rounded-lg" :src="form.image_old">
+                            <img class="h-auto max-w-full rounded-lg" :src="xassetUrl + 'storage/' + form.image_old">
                             <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                         </figure>
                     </div>

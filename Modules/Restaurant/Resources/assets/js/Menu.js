@@ -25,6 +25,12 @@ const menuRestaurant = {
             text: "Vender",
             permissions: "res_venta_nuevo",
         },
+        {
+            route: route("res_sales_list"),
+            status: false,
+            text: "Listado de Ventas",
+            permissions: "res_venta",
+        },
     ],
 };
 

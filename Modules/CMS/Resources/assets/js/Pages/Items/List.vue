@@ -120,7 +120,7 @@
                     </div>
                     <div class="max-w-full overflow-x-auto">
                         <table class="w-full table-auto">
-                            <thead class="border-b border-stroke">
+                            <thead class="border-b border-stroke dark:border-strokedark">
                                 <tr class="bg-gray-50 text-left dark:bg-meta-4">
                                     <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
                                         Acciones
@@ -135,7 +135,7 @@
                             </thead>
                             <tbody>
                                 <template v-for="(item, index) in items.data" :key="item.id">
-                                    <tr class="border-b border-stroke">
+                                    <tr class="border-b border-stroke dark:border-strokedark">
                                         <td class="text-center py-2 dark:border-strokedark">
                                             <Link v-can="'cms_pagina_editar'" :href="route('cms_items_edit',item.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <font-awesome-icon :icon="faPencilAlt" />

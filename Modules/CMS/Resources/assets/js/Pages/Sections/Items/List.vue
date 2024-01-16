@@ -126,6 +126,8 @@
             },
         });
     }
+
+    const xassetUrl = assetUrl;
 </script>
 
 <template>
@@ -182,7 +184,7 @@
                                                 <template v-if="item.type_id == 1">
                                                     <label @click="addItem(item,index)" :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                                                         <div class="block">
-                                                            <img  :src="item.content" style="width: 60px;" />
+                                                            <img  :src="xassetUrl + 'storage/' + item.content" style="width: 60px;" />
                                                             <div class="w-full text-sm">{{ item.description }}</div>
                                                             <!-- <a :href="item.content" target="_blank" class="w-full text-sm">{{ item.content }}</a> -->
                                                         </div>
@@ -233,7 +235,7 @@
                                             <template v-if="item.type_id == 1">
                                                 <label :for="'react-option'+index" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                                                     <div class="block">
-                                                        <img  :src="item.content" style="width: 60px;" />
+                                                        <img  :src="xassetUrl + 'storage/' + item.content" style="width: 60px;" />
                                                         <div class="w-full text-sm">{{ item.description }}</div>
                                                         <!-- <a :href="item.content" target="_blank" class="w-full text-sm">{{ item.content }}</a> -->
                                                     </div>

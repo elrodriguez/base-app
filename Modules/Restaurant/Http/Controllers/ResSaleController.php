@@ -5,6 +5,7 @@ namespace Modules\Restaurant\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentMethod;
 use App\Models\Person;
+use App\Models\PettyCash;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,7 +26,38 @@ class ResSaleController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Restaurant::Sales/List');
+        $sales = (new ResSale())->newQuery();
+        $sales = $sales->join('people', 'person_id', 'people.id')
+            ->select(
+                'res_sales.id',
+                'res_sales.sale_date',
+                'res_sales.sale_hour',
+                'res_sales.correlative',
+                'res_sales.petty_cash_id',
+                'res_sales.user_id',
+                'res_sales.person_id',
+                'res_sales.local_id',
+                'res_sales.total',
+                'res_sales.total_discount',
+                'res_sales.payments',
+                'res_sales.queue_status',
+                'people.full_name'
+            );
+
+        if (request()->has('search')) {
+            $sales->where('people.full_name', 'like', '%' . request()->input('search') . '%');
+        }
+
+        if (request()->has('sale_date' && request()->input('date_end'))) {
+            $sales->whereBetween('sale_date', [request()->input('date_start'), request()->input('date_end')]);
+        }
+
+
+        $sales = $sales->paginate(10);
+
+        return Inertia::render('Restaurant::Sales/List', [
+            'sales' => $sales
+        ]);
     }
 
     /**
@@ -70,14 +102,27 @@ class ResSaleController extends Controller
             $success = false;
             $message = 'El total de venta no coincide con el total de los pagos';
         } else {
+
+            $petty_cash = PettyCash::firstOrCreate([
+                'user_id' => Auth::id(),
+                'state' => 1,
+                'local_sale_id' => Auth::user()->local_id
+            ], [
+                'date_opening' => Carbon::now()->format('Y-m-d'),
+                'time_opening' => date('H:i:s'),
+                'income' => 0
+            ]);
+
             $sale = ResSale::create([
                 'sale_date' => Carbon::now()->format('Y-m-d'),
                 'sale_hour' => Carbon::now()->format('H:i:s'),
                 'user_id'   => Auth::id(),
+                'petty_cash_id' => $petty_cash->id,
                 'person_id' => $client_id,
                 'local_id'  => Auth::user()->local_id,
                 'total'     => $total,
-                'payments'  => json_encode($payments)
+                'payments'  => json_encode($payments),
+                'queue_status' => '01'
             ]);
 
             foreach ($comandas  as  $comanda) {

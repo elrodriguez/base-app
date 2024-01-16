@@ -17,13 +17,14 @@ class ResSale extends Model
         'sale_date',
         'sale_hour',
         'correlative',
+        'petty_cash_id',
         'user_id',
         'person_id',
         'local_id',
         'total',
         'total_discount',
         'payments',
-        'petty_cash_id'
+        'queue_status'
     ];
 
     protected static function newFactory(): ResSaleFactory

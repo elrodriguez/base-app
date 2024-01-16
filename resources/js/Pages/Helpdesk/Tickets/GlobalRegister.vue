@@ -21,6 +21,7 @@ import {
 import { ref, onMounted } from 'vue';
 
 const token = '2|a6BgqSpoYeppRExixUrZ8OPgy6TcsFwTYREn72z22ccdea3f';
+const helpActive = false;
 
 const form = ref({
     category_id: null,
@@ -92,7 +93,9 @@ const handleChangeCategory = () => {
 }
 
 onMounted(() => {
-    getRecords();
+    if(helpActive){
+        getRecords();
+    }
 });
 </script>
   
