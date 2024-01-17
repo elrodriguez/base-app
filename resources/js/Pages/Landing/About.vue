@@ -1,5 +1,5 @@
 <template>
-    <section class="bg-red-50 dark:bg-gray-900">
+    <section class="bg-red-50 dark:bg-gray-900" id="nosotros">
         <div class="px-4 mx-auto max-w-screen-xl lg:py-16 py-20 lg:py-20 lg:gap-16">
             <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3 md:col-span-3">
