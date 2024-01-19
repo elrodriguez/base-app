@@ -4,6 +4,7 @@ namespace Modules\Restaurant\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Restaurant\Database\factories\ResSaleFactory;
 
 class ResSale extends Model
@@ -55,5 +56,9 @@ class ResSale extends Model
                 $model->correlative = 'RV0000000001';
             }
         });
+    }
+    public function details(): HasMany
+    {
+        return $this->hasMany(ResSaleDetail::class, 'sale_id');
     }
 }

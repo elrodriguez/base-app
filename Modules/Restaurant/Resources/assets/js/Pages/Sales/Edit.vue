@@ -21,11 +21,11 @@ import {
     Popconfirm,
     message
  } from 'ant-design-vue';
-import { faFaceSmile } from "@fortawesome/free-solid-svg-icons";
+
 import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import { ref, watch, onMounted } from 'vue';
-import { faXmark, faPen, faDollarSign, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faPen, faRotate, faFaceSmile, faTimes } from "@fortawesome/free-solid-svg-icons";
 import esES from 'ant-design-vue/es/locale/es_ES';
 
 const props = defineProps({
@@ -38,6 +38,10 @@ const props = defineProps({
         default: () => ({}),
     },
     comandas: {
+        type: Object,
+        default: () => ({}),
+    },
+    sale: {
         type: Object,
         default: () => ({}),
     }
@@ -75,10 +79,6 @@ watch(activeKey, (value) => {
     comandasData.value = array.comandas;
 });
 
-onMounted(() => {
-    comandasData.value = props.comandas[0].comandas
-});
-
 const xhttp =  assetUrl;
 
 const columns = [
@@ -110,14 +110,12 @@ const columns = [
 ]
 
 const form = useForm({
-    client_id: 1,
-    total: 0,
+    id: props.sale.id,
+    client_id: props.sale.person_id,
+    total: props.sale.total,
+    queue_status: props.sale.queue_status,
     comandas: [],
-    payments: [{
-        type:1,
-        reference: null,
-        amount: 0
-    }]
+    payments: []
 });
 
 const addComanda = (comanda) => {
@@ -182,23 +180,53 @@ const removePayment = (index) => {
 
 const saveSale = () => {
     form.processing = true;
-    return axios.post(route('res_sales_store', form)).then((res) => {
+    return axios.put(route('res_sales_update', form)).then((res) => {
         if (!res.data.success) {
             message.error(res.data.message);
         }else{
             message.success(res.data.message);
         }
         form.processing = false;
-        form.reset();
-    });
+     });
 }
 
 const cancelSale = () => {
     message.info('Confirmación pendiente');
 }
+
+onMounted(() => {
+    comandasData.value = props.comandas[0].comandas
+
+    for (var i = 0; i < props.sale.details.length; i++) {
+        form.comandas.push({
+            id: props.sale.details[i].comanda_id,
+            name: props.sale.details[i].comanda.name,
+            description: props.sale.details[i].comanda.description,
+            image: props.sale.details[i].comanda.image,
+            presentation: props.sale.details[i].comanda.presentation.description,
+            price: props.sale.details[i].price,
+            quantity: props.sale.details[i].quantity,
+            total: props.sale.details[i].quantity * props.sale.details[i].price,
+            editable: false
+        });
+    }
+
+    const oldPayments = JSON.parse(props.sale.payments);
+
+    for (var f = 0; f < oldPayments.length; f++) {
+        var reference = oldPayments[f].hasOwnProperty('reference') ? oldPayments[f].reference : null;
+        console.log(f);
+        form.payments.push({
+            type: parseInt(oldPayments[f].type, 10),
+            reference: reference,
+            amount: oldPayments[f].amount
+        });
+    }
+});
+
 </script>
 <template>
-    <AppLayout title="Vender">
+    <AppLayout title="Editar Venta">
         <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
             <!-- Breadcrumb Start -->
             <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
@@ -359,6 +387,15 @@ const cancelSale = () => {
                                             <Input v-model:value="met.amount" style="width: 120px; text-align: right;" />
                                         </Flex>
                                     </template>
+                                    <Flex :justify="'flex-end'" :align="'center'" class="mt-6">
+                                        <label for="queue_status" class="block mr-2 text-sm font-medium text-gray-900 dark:text-white">Estado del pedido</label>
+                                        <select v-model="form.queue_status" id="queue_status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value="01">Pendiente</option>
+                                            <option value="02">Atendido</option>
+                                            <option value="03">Cobrar</option>
+                                            <option value="04"><Param></Param>agado</option>
+                                        </select>
+                                    </Flex>
                                 </div>
                             </div>
                         </div>
@@ -371,8 +408,8 @@ const cancelSale = () => {
                                     @confirm="saveSale" 
                                     @cancel="cancelSale">
                                     <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="button">
-                                        <font-awesome-icon class="mr-1" :icon="faDollarSign" />
-                                        Cobrar
+                                        <font-awesome-icon class="mr-1" :icon="faRotate" />
+                                        Actualizar
                                     </PrimaryButton>
                                 </Popconfirm>
                                 <Link :href="route('res_sales_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>

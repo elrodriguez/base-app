@@ -76,4 +76,11 @@ Route::middleware(['auth', 'verified'])->prefix('restaurant')->group(function ()
 
     Route::post('sale/store', [ResSaleController::class, 'store'])
         ->name('res_sales_store');
+
+    Route::middleware(['middleware' => 'permission:res_venta_editar'])
+        ->get('sales/{id}/edit', [ResSaleController::class, 'edit'])
+        ->name('res_sales_edit');
+
+    Route::put('sale/update/{id}', [ResSaleController::class, 'update'])
+        ->name('res_sales_update');
 });

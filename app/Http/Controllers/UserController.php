@@ -40,7 +40,8 @@ class UserController extends Controller
     public function create()
     {
         return Inertia::render('Users/Create', [
-            'establishments' => LocalSale::all()
+            'establishments' => LocalSale::all(),
+            'roles' => Role::all()
         ]);
     }
     public function store(Request $request)
@@ -59,6 +60,8 @@ class UserController extends Controller
             'password'      => Hash::make($request->get('password')),
             'local_id'      => $request->get('local_id')
         ]);
+
+        $user->assignRole($request->get('role'));
 
         $token = $user->createToken($request->get('email'))->plainTextToken;
 
@@ -81,7 +84,7 @@ class UserController extends Controller
         return Inertia::render('Users/Edit', [
             'establishments' => LocalSale::all(),
             'xuser' => $user,
-            'xrole' => $user->roles->pluck('name')->first(),
+            'xrole' => $user->getRoleNames(),
             'roles' => Role::all()
         ]);
     }
@@ -102,12 +105,15 @@ class UserController extends Controller
         ]);
 
 
+        $user->syncRoles([]);
+
         $user->name = $request->get('name');
         $user->email = $request->get('email');
 
         if ($request->get('password')) {
             $user->password = Hash::make($request->get('password'));
         }
+
         $user->assignRole($request->get('role'));
 
         $user->save();

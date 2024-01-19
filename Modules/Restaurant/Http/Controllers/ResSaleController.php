@@ -145,28 +145,81 @@ class ResSaleController extends Controller
         ]);
     }
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('restaurant::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
-        return view('restaurant::edit');
+        $clients = Person::where('is_client', true)->get();
+        $comandas = ResCategory::with('subcategories.comandas.presentation')
+            ->with('comandas.presentation')
+            ->whereNull('category_id')
+            ->get();
+        $paymentMethods = PaymentMethod::all();
+
+        $sale = ResSale::with('details.comanda.presentation')->where('id', $id)->first();
+
+        return Inertia::render('Restaurant::Sales/Edit', [
+            'clients'   => $clients,
+            'comandas'  => $comandas,
+            'paymentMethods' => $paymentMethods,
+            'sale' => $sale
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)
     {
-        //
+        $success = false;
+        $message = null;
+
+        $client_id = $request->get('client_id');
+        $total = $request->get('total');
+        $comandas = $request->get('comandas');
+        $payments = $request->get('payments');
+        $queue_status = $request->get('queue_status');
+
+        $tt = 0;
+
+        foreach ($payments  as  $payment) {
+            $tt = $tt + $payment['amount'];
+        }
+
+        if ($total <> $tt) {
+            $success = false;
+            $message = 'El total de venta no coincide con el total de los pagos';
+        } else {
+            $sale = ResSale::find($id);
+
+            $sale->update([
+                // 'sale_date' => Carbon::now()->format('Y-m-d'),
+                // 'sale_hour' => Carbon::now()->format('H:i:s'),
+                'user_id'   => Auth::id(),
+                'person_id' => $client_id,
+                'total'     => $total,
+                'payments'  => json_encode($payments),
+                'queue_status' => $queue_status
+            ]);
+
+            ResSaleDetail::where('sale_id', $id)->delete();
+
+            foreach ($comandas  as  $comanda) {
+                ResSaleDetail::create([
+                    'sale_id'       => $sale->id,
+                    'comanda_id'    => $comanda['id'],
+                    'quantity'      => $comanda['quantity'],
+                    'price'         => $comanda['price']
+                ]);
+            }
+            $success = true;
+            $message = 'Actualizado con éxito';
+        }
+
+
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 
     /**

@@ -112,9 +112,16 @@ class ProductController extends Controller
             $request,
             [
                 'interne' => 'required|unique:products,interne',
-                'description' => 'required',
+                'description' => 'required|max:300',
                 'purchase_prices' => 'required',
-                'sale_prices.high' => 'required'
+                'sale_prices.high' => 'required|numeric',
+                'sale_prices.medium' => 'nullable|numeric',
+                'sale_prices.under' => 'nullable|numeric',
+            ],
+            [
+                'sale_prices.high.numeric' => 'Ingrese solo numeros',
+                'sale_prices.medium.numeric' => 'Ingrese solo numeros',
+                'sale_prices.under.numeric' => 'Ingrese solo numeros',
             ]
         );
         if ($presentations) {
@@ -264,7 +271,7 @@ class ProductController extends Controller
         //dd($request->all());
         $this->validate($request, [
             'interne' => 'required|unique:products,interne,' . $product->id,
-            'description' => 'required',
+            'description' => 'required|max:300',
             'purchase_prices' => 'required',
             'sale_prices.high' => 'required',
         ]);
