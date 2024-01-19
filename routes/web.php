@@ -24,8 +24,8 @@ Route::get('/', [LandingController::class, 'index'])->name('index_main');
 Route::get('/computer/store', [LandingController::class, 'computerStore'])->name('index_computer_store');
 
 //////mensajes de whatsapp///////
-Route::get('/webhook', [LandingController::class, 'webhook']);
-Route::post('/webhook', [LandingController::class, 'recibe']);
+Route::get('/webhook', [LandingController::class, 'webhook'])->name('whatsapp_webhook');
+Route::post('/webhook', [LandingController::class, 'recibe'])->name('whatsapp_recibe');
 
 
 Route::get('/blog/home', [BlogController::class, 'index'])->name('blog_principal');
