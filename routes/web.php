@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\WebController;
+use App\Http\Controllers\LandingController;
 use App\Mail\StudentRegistrationMailable;
 use App\Models\District;
 use App\Models\Person;
@@ -20,6 +20,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Modules\Blog\Http\Controllers\BlogController;
 
+Route::get('/', [LandingController::class, 'index'])->name('index_main');
+Route::get('/computer/store', [LandingController::class, 'computerStore'])->name('index_computer_store');
+
+//////mensajes de whatsapp///////
+Route::get('/webhook', [LandingController::class, 'webhook']);
+Route::post('/webhook', [LandingController::class, 'recibe']);
 
 
 Route::get('/blog/home', [BlogController::class, 'index'])->name('blog_principal');
@@ -51,7 +57,7 @@ Route::get('/email', function () {
     return 'mensaje enviado';
 });
 
-Route::get('/', [WebController::class, 'index'])->name('index_main');
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -192,6 +192,17 @@ const loadFile = (event) => {
                         </select>
                         <InputError :message="form.errors.category_description" class="mt-2" />
                     </div>
+                    <div v-else class="mt-2">
+                        <InputLabel for="category_description" value="Sector" />                       
+                        <TextInput
+                            id="category_description"
+                            v-model="form.category_description"
+                            type="text"
+                            class="block w-full mt-1"
+                            autocomplete="off"
+                        />
+                        <InputError :message="form.errors.category_description" class="mt-2" />
+                    </div>
 
                     <div v-if="form.type == 1" class="mt-2">
                         <InputLabel for="additional1" :value="titles.additional1+'*'" />
