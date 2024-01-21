@@ -41,7 +41,7 @@ const props = defineProps({
                                 </a>
                                 <div class="flex items-center justify-between">
                                     <span class="text-3xl font-bold text-gray-900 dark:text-white">S/ {{ product.price }}</span>
-                                    <a :href="route('whatsapp_webhook')" type="button" class="px-2.5 py-2.5 text-center inline-flex items-center me-2 mb-2">
+                                    <a :href="route('whatsapp_send', product.id)" target="_blank" type="button" class="px-2.5 py-2.5 text-center inline-flex items-center me-2 mb-2">
                                         <img src="/img/Landing/whatsapp.png" style="width: 40px;">
                                     </a>
                                 </div>
