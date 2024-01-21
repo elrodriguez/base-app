@@ -28,7 +28,7 @@ for (var objeto of itemsData) {
 
 </script>
 <template>
-    <section class="bg-white dark:bg-gray-900">
+    <section v-if="promotions" class="bg-white dark:bg-gray-900">
         <div class="py-24 px-4 mx-auto max-w-screen-xl lg:py-24 grid lg:grid-cols-2 gap-8 lg:gap-16">
             <div class="flex flex-col justify-center">
                 <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">{{ promotions.items[0].item.content }}</h1>
