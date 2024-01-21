@@ -61,7 +61,7 @@ class LandingController extends Controller
     public function webhook()
     {
         //TOQUEN QUE QUERRAMOS PONER 
-        $token = 'EAAF2Qg4wBKABO0YZAM7xRCYfurumZAmZBQ5MiePU6OTH1rifGA4fi7DoYn8WKBq6RvlZAZAVF0qayHyaWSrKCsLGrPgmvlRJ0KgWKFOw0sw4IFEgBCNjkFtQxyoLn5V6ShTdsGJbzL26ZBnMaWnyS9V7F7SAt97ARctxcumsaCoQcxxyMmEsaooIPYdImAgbVfknFRLk5ADFuG9bBE2mEZD';
+        $token = 'aracodeperu';
         //RETO QUE RECIBIREMOS DE FACEBOOK
         $hub_challenge = isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : '';
         //TOQUEN DE VERIFICACION QUE RECIBIREMOS DE FACEBOOK
