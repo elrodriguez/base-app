@@ -24,7 +24,7 @@ const props = defineProps({
 const form = useForm({
     id: props.item.id,
     type_id: props.item.type_id,
-    content: null,
+    content: props.item.type_id == 4 ? props.item.content : null ,
     image_old: props.item.content,
     description: props.item.description,
 });
@@ -51,6 +51,12 @@ const updateItem = () => {
                 form.image_old  = e.target.result;
             };
             reader.readAsDataURL(newValue);
+        }
+    });
+
+    watch(() => form.type_id, () => {
+        if(form.type_id == 1){
+            form.image_old  = null;
         }
     });
 
@@ -82,7 +88,8 @@ const updateItem = () => {
 
                     <div class="flex justify-center space-x-2">
                         <figure class="max-w-lg">
-                            <img class="h-auto max-w-full rounded-lg" :src="xassetUrl + 'storage/' + form.image_old">
+                            <img v-if="form.image_old" class="h-auto max-w-full rounded-lg" :src="xassetUrl + 'storage/' + form.image_old">
+                            <img class="h-auto max-w-full rounded-lg" :src="'/img/imagen-no-disponible.jpg'">
                             <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                         </figure>
                     </div>

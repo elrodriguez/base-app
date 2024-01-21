@@ -65,7 +65,12 @@ const addItemInSection = () => {
         position: 0
     };
     form.contents.push(item);
+}
 
+const removeIItemInSection = (index) => {
+    if(index > 0){
+        form.contents.splice(index,1);
+    }
 }
 
 const arrayGroups = ref([]);
@@ -140,6 +145,21 @@ const destroyGroup = (id) => {
     });
 }
 
+const xassetUrl = assetUrl;
+
+const readImageFile = (file,gr,it) => {
+    const reader = new FileReader();
+    arrayGroups.value[gr].group.items[it].content = file; 
+    reader.onload = (e) => {
+        arrayGroups.value[gr].group.items[it].image_preview  = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+const esImageBase64 = (cadena) => {
+  return /^data:image\/(png|jpeg|jpg|gif);base64,/.test(cadena);
+}
+
 </script>
 
 <template>
@@ -172,6 +192,11 @@ const destroyGroup = (id) => {
             </div>
             <div class="col-span-6 p-4 border border-stroke">
                 <div v-for="(item, ke) in form.contents" class="grid grid-cols-6 gap-6 ">
+                    <div class="col-span-6 sm:col-span-1 ">
+                        <button @click="removeIItemInSection(ke)" type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                            <font-awesome-icon :icon="faTrashAlt" />
+                        </button>
+                    </div>
                     <div class="col-span-6 sm:col-span-2 ">
                         <InputLabel for="type_id" value="Tipo *" />
                         <select v-model="item.type_id" id="type_id" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -180,7 +205,7 @@ const destroyGroup = (id) => {
                         </select>
                         <InputError :message="form.errors[`contents.${ke}.type_id`]" class="mt-2" />
                     </div>
-                    <div class="col-span-6 sm:col-span-4 ">
+                    <div class="col-span-6 sm:col-span-3 ">
                         <InputLabel for="description" value="Descripción *" />
                         <TextInput
                             id="description"
@@ -231,11 +256,12 @@ const destroyGroup = (id) => {
                             <InputLabel for="content" :value="item.description" />
                             <div class="flex justify-center space-x-2">
                                 <figure class="max-w-lg">
-                                    <img class="h-auto max-w-full rounded-lg" :src="item.content">
+                                    <img v-if="esImageBase64(item.image_preview)" style="width: 200px;" class="h-auto rounded-lg" :src="item.image_preview">
+                                    <img v-else style="width: 200px;" class="h-auto rounded-lg" :src="xassetUrl + 'storage/' + item.image_preview">
                                     <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                                 </figure>
                             </div>
-                            <input @input="item.content = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                            <input @input="readImageFile($event.target.files[0],groupIndex,itemIndex)" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
                         </template>
                         <template v-if="item.type_id == 2">

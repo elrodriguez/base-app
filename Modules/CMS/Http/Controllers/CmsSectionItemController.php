@@ -115,16 +115,27 @@ class CmsSectionItemController extends Controller
     {
         $types = CmsItemType::where('id', '<>', 5)->get();
 
-        $groups = CmsSectionItem::with(['group' => function ($query) {
-            $query->where('type_id', 5); // Ordena por el campo 'position' de la tabla 'cms_section_items'
-        }, 'group.items'])->where('section_id', $id)->get();
+        $groups = CmsSectionItem::whereHas('group', function ($query) {
+            $query->where('type_id', 5);
+        })
+            ->with(['group' => function ($query) {
+                $query->where('type_id', 5); // Ordena por el campo 'position' de la tabla 'cms_section_items'
+            }, 'group.items'])
+            ->where('section_id', $id)
+            ->get();
 
-        //$groups = CmsSectionItem::with('group.items')->where('section_id', $id)->get();
-        // return response()->json([
-        //     'types'     => $types,
-        //     'section'   => CmsSection::find($id),
-        //     'groups'    => $groups
-        // ]);
+        $groups->each(function ($group) {
+            // Verifica si el grupo y la relación 'group' están presentes
+            if ($group->group && $group->group->items) {
+                $group->group->items->each(function ($item) {
+                    // Verifica si el campo 'content' existe antes de acceder a él
+                    if (isset($item->content)) {
+                        $item->image_preview = $item->content;
+                    }
+                });
+            }
+        });
+        //dd($groups);
         return Inertia::render('CMS::Sections/GroupItems', [
             'types'     => $types,
             'section'   => CmsSection::find($id),

@@ -63,7 +63,20 @@ class CmsPageSectionController extends Controller
     public function getSectionItems($id)
     {
         $items = CmsSectionItem::with('item.items')->where('section_id', $id)->get();
-        //dd($items->toRawSql());
+
+        $items->each(function ($item) {
+            // Verifica si la relación 'items' está presente y no es nula
+            if ($item->item && $item->item->items) {
+                $item->item->items->each(function ($subItem) {
+                    // Verifica si el campo 'content' existe antes de acceder a él
+                    if (isset($subItem->content)) {
+                        // Agrega el campo 'image_preview' a cada elemento en la relación 'items'
+                        $subItem->image_preview = $subItem->content;
+                    }
+                });
+            }
+        });
+
         return response()->json([
             'items' => $items
         ]);
@@ -93,7 +106,7 @@ class CmsPageSectionController extends Controller
                         'public'
                     );
 
-                    $content = $type_id == 1 ? asset('storage/' . $path) : $path;
+                    $content = $type_id == 1 ? $path : $path;
                 } else {
                     $content = $item['content'];
                 }

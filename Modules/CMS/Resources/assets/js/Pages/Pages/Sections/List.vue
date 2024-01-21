@@ -128,7 +128,7 @@
         
         element.classList.add('bg-red-500');
         element.classList.add('text-white');
-        axios.get(route('cms_pages_section_items_data',id)).then((res) => {
+        axios.get(route('cms_pages_section_items_data', id)).then((res) => {
             res.data.items.forEach((it, index) => {
                 if (it.item.type_id == 5) {
                     activeButonGroup.value = true;
@@ -137,7 +137,6 @@
                     activeButonGroup.value = false;
                 }
             });
-
             itemsForm.items = res.data.items;
 
             itemsForm.items = itemsForm.items.map(obj => ({ ...obj, image_preview: (obj.item.type_id == 1 ? obj.item.content : null ) }));
@@ -294,6 +293,20 @@ const updateImagePreview = (index,image) => {
     };
 
     const xassetUrl = assetUrl;
+
+const readImageFile = (file, gr, it) => {
+    const reader = new FileReader();
+    itemsForm.items[gr].item.items[it].content = file;
+    reader.onload = (e) => {
+        console.log(e.target.result)
+        itemsForm.items[gr].item.items[it].image_preview = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+const esImageBase64 = (cadena) => {
+  return /^data:image\/(png|jpeg|jpg|gif);base64,/.test(cadena);
+}
 </script>
 
 <template>
@@ -370,7 +383,8 @@ const updateImagePreview = (index,image) => {
                                             </p>
                                             <div class="flex justify-center space-x-2">
                                                 <figure class="max-w-lg">
-                                                    <img class="h-auto max-w-full rounded-lg" :src="xassetUrl + 'storage/' + it.image_preview">
+                                                    <img v-if="esImageBase64(it.image_preview)" style="width: 200px;" class="h-auto rounded-lg" :src="it.image_preview">
+                                                    <img v-else style="width: 200px;" class="h-auto rounded-lg" :src="xassetUrl + 'storage/' + it.image_preview">
                                                     <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                                                 </figure>
                                             </div>
@@ -409,63 +423,64 @@ const updateImagePreview = (index,image) => {
                                         
                                         <template v-if="it.item.type_id == 5">
                                            <div>
-                                            <div class="flex justify-end px-4 pt-4">
-                                                <button @click="saveChangesGroupItems(ky)" title="Guardar Cambios" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                                    <font-awesome-icon :icon="faCheck" />
-                                                </button>
-                                                <button @click="destroyGroup(it.item.id)" title="Eliminar" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                    <font-awesome-icon :icon="faTrashAlt" />
-                                                </button>
-                                            </div>
-                                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ it.item.description }}</h5>
+                                                <div class="flex justify-end px-4 pt-4">
+                                                    <button @click="saveChangesGroupItems(ky)" title="Guardar Cambios" type="button" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                        <font-awesome-icon :icon="faCheck" />
+                                                    </button>
+                                                    <button @click="destroyGroup(it.item.id)" title="Eliminar" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                        <font-awesome-icon :icon="faTrashAlt" />
+                                                    </button>
+                                                </div>
+                                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ it.item.description }}</h5>
                                             
-                                            <template v-for="(itm, ky) in it.item.items">
-                                                
-                                                <template v-if="itm.type_id == 1">
-                                                    <InputLabel for="content" value="Imagen *" />
-                                                    <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-                                                        {{ itm.description }}
-                                                    </p>
-                                                    <div class="flex justify-center space-x-2">
-                                                        <figure class="max-w-lg">
-                                                            <img style="width: 200px;" class="h-auto rounded-lg" :src="xassetUrl + 'storage/' + itm.content">
-                                                            <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
-                                                        </figure>
-                                                    </div>
+                                                <template v-for="(itm, key) in it.item.items">
                                                     
-                                                    <input @input="itm.content = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
-                                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+                                                    <template v-if="itm.type_id == 1">
+                                                        <InputLabel for="content" value="Imagen *" />
+                                                        <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+                                                            {{ itm.description }}
+                                                        </p>
+                                                        <div class="flex justify-center space-x-2">
+                                                            <figure class="max-w-lg">
+                                                                <img v-if="esImageBase64(itm.image_preview)" style="width: 200px;" class="h-auto rounded-lg" :src="itm.image_preview">
+                                                                <img v-else style="width: 200px;" class="h-auto rounded-lg" :src="xassetUrl + 'storage/' + itm.image_preview">
+                                                                <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
+                                                            </figure>
+                                                        </div>
+                                                        
+                                                        <input @input="readImageFile($event.target.files[0], ky, key)" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+                                                    </template>
+                                                    <template v-if="itm.type_id == 2">
+                                                        <InputLabel for="content" value="URL del Video *" />
+                                                        <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+                                                            {{ itm.description }}
+                                                        </p>
+                                                        <TextInput
+                                                            id="content"
+                                                            v-model="itm.content"
+                                                            type="text"
+                                                            class="block w-full mt-1"
+                                                        />
+                                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">AV1, VP9, MP4 (RECOMENDADO. 5-10 MB).</p>
+                                                    </template>
+                                                    <template v-if="itm.type_id == 3">
+                                                        <InputLabel for="content" value="Archivo *" />
+                                                        <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+                                                            {{ itm.description }}
+                                                        </p>
+                                                        <input @input="itm.content = $event.target.files[0]" accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF, DOC, PPT o PPTX, XLS o XLSX (RECOMENDADO. 5-10 MB).</p>
+                                                    </template>
+                                                    <template v-if="itm.type_id == 4">
+                                                        <InputLabel for="content" value="Texto *" />
+                                                        <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+                                                            {{ itm.description }}
+                                                        </p>
+                                                        <textarea v-model="itm.content" id="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                                    </template>
                                                 </template>
-                                                <template v-if="itm.type_id == 2">
-                                                    <InputLabel for="content" value="URL del Video *" />
-                                                    <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-                                                        {{ itm.description }}
-                                                    </p>
-                                                    <TextInput
-                                                        id="content"
-                                                        v-model="itm.content"
-                                                        type="text"
-                                                        class="block w-full mt-1"
-                                                    />
-                                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">AV1, VP9, MP4 (RECOMENDADO. 5-10 MB).</p>
-                                                </template>
-                                                <template v-if="itm.type_id == 3">
-                                                    <InputLabel for="content" value="Archivo *" />
-                                                    <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-                                                        {{ itm.description }}
-                                                    </p>
-                                                    <input @input="itm.content = $event.target.files[0]" accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
-                                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF, DOC, PPT o PPTX, XLS o XLSX (RECOMENDADO. 5-10 MB).</p>
-                                                </template>
-                                                <template v-if="itm.type_id == 4">
-                                                    <InputLabel for="content" value="Texto *" />
-                                                    <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-                                                        {{ itm.description }}
-                                                    </p>
-                                                    <textarea v-model="itm.content" id="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
-                                                </template>
-                                            </template>
-                                           </div> 
+                                            </div> 
                                         </template>
                                         <!-- <InputError :message="form.errors.content" class="mt-2" /> -->
                                     </div>

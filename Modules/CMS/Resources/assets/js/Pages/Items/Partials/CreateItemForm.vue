@@ -49,6 +49,11 @@ watch(() => form.content, (newValue) => {
         reader.readAsDataURL(newValue);
     }
 });
+watch(() => form.type_id, () => {
+    if(form.type_id == 1){
+        form.image_old  = null;
+    }
+});
 
 const xassetUrl = assetUrl;
 </script>
@@ -77,7 +82,8 @@ const xassetUrl = assetUrl;
                     <InputLabel for="content" value="Imagen *" />
                     <div class="flex justify-center space-x-2">
                         <figure class="max-w-lg">
-                            <img class="h-auto max-w-full rounded-lg" :src="xassetUrl + 'storage/' + form.image_pre">
+                            <img v-if="form.image_old" class="h-auto max-w-full rounded-lg" :src="xassetUrl + 'storage/' + form.image_old">
+                            <img class="h-auto max-w-full rounded-lg" :src="'/img/imagen-no-disponible.jpg'">
                             <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                         </figure>
                     </div>

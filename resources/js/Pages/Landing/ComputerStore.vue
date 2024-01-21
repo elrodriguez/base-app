@@ -28,6 +28,10 @@ const props = defineProps({
         type: Object,
         default: () => ({})
     },
+    promotions: {
+        type: Object,
+        default: () => ({})
+    }
 });
 </script>
 
@@ -38,7 +42,7 @@ const props = defineProps({
         :authCompany="$page.props.company" 
         :pageActive="pageActive"
     />
-    <CarouselProducts />
+    <CarouselProducts :promotions="promotions" />
     <GalleryProducts
         :categories="categories"
         :products="products"

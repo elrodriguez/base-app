@@ -13,6 +13,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Modules\CMS\Entities\CmsSection;
+use Modules\CMS\Entities\CmsSectionItem;
 use Modules\Sales\Entities\SaleProductCategory;
 
 class LandingController extends Controller
@@ -45,10 +46,15 @@ class LandingController extends Controller
         $categories = OnliItem::select('category_description')->groupBy('category_description')->get();
         $products = OnliItem::where('status', true)->inRandomOrder()->get();
 
+        $promotions = CmsSection::where('component_id', 'carrusel_productos_2')
+            ->with('items.item.items')
+            ->first();
+        //dd($promotions);
         return Inertia::render('Landing/ComputerStore', [
             'pageActive' => 'store',
             'categories' => $categories,
-            'products' => $products
+            'products' => $products,
+            'promotions' => $promotions
         ]);
     }
 

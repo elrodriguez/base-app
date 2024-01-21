@@ -35,7 +35,7 @@ class Product extends Model
 
     public function getImageAttribute($value)
     {
-        return ($value != 'img/imagen-no-disponible.jpg' ? asset('storage/' . $value) : asset($value));
+        return ($value != '/img/imagen-no-disponible.jpg' ? asset('storage/' . $value) : asset($value));
     }
     public function category(): BelongsTo
     {
