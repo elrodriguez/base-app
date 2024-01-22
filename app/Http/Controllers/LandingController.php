@@ -61,7 +61,7 @@ class LandingController extends Controller
     public function redirectToWhatsApp($id)
     {
         $product = OnliItem::find($id);
-        $telefono = '51919565699';
+        $telefono = '51921008708';
         $mensaje = 'Hola, estoy interesado en el producto: ' . $product->name . ' (%0A) Precio: ' . $product->price;
 
         $urlWhatsApp = 'https://api.whatsapp.com/send/?phone=' . $telefono . '&text=' . urlencode($mensaje) . '&type=phone_number&app_absent=0';
