@@ -80,9 +80,9 @@ return new class extends Migration
 
         Parameter::create([
             'parameter_code'    => 'P000009',
-            'description'       => 'Tipo de negocio o empresa',
+            'description'       => 'Tipo de negocio o empresa, para ventas en linea',
             'control_type'      => 'in',
-            'json_query_data'   => '[{"value": "1","label":"Cursos"},{"value": "2","label":"Productos"}]',
+            'json_query_data'   => '[{"value": "1","label":"Cursos"},{"value": "2","label":"Productos"},{"value": "3","label":"Productos con Especificaciónes"}]',
             'value_default'     => 1
         ]);
 

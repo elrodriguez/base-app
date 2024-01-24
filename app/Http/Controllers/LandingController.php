@@ -62,7 +62,7 @@ class LandingController extends Controller
     {
         $product = OnliItem::find($id);
         $telefono = '51921008708';
-        $mensaje = 'Hola, estoy interesado en el producto: ' . $product->name . ' (%0A) Precio: ' . $product->price;
+        $mensaje = 'Hola, estoy interesado en el producto: ' . $product->name . ' Precio: ' . $product->price;
 
         $urlWhatsApp = 'https://api.whatsapp.com/send/?phone=' . $telefono . '&text=' . urlencode($mensaje) . '&type=phone_number&app_absent=0';
 
