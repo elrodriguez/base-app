@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import Jumbotron from './Components/Jumbotron.vue';
 import Footer from './Components/Footer.vue';
 import About from './Components/About.vue';
+import SliderHome from './Components/SliderHome.vue';
 import ServicesTI from './Components/ServicesTI.vue';
 import ServicesAcademic from './Components/ServicesAcademic.vue';
 import Contact from './Components/Contact.vue';
@@ -32,6 +33,7 @@ const props = defineProps({
     />
     <Jumbotron :jumbotron="jumbotron" />
     <About />
+    <SliderHome />
     <!-- <ServicesAcademic /> -->
     <ServicesTI />
     <Contact />
