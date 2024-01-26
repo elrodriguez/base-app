@@ -1,11 +1,10 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import { useForm } from '@inertiajs/vue3';
-    import Keypad from '@/Components/Keypad.vue';
+     import Keypad from '@/Components/Keypad.vue';
     import Pagination from '@/Components/Pagination.vue';
     import { Image } from 'ant-design-vue';
     import Swal2 from "sweetalert2";
-    import { Link, router } from '@inertiajs/vue3';
+    import { Link, router, useForm } from '@inertiajs/vue3';
     import { faPencilAlt, faCheck, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
     const props = defineProps({

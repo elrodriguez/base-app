@@ -49,8 +49,8 @@ class CompanyController extends Controller
         if ($file) {
             $original_name = strtolower(trim($file->getClientOriginalName()));
             $original_name = str_replace(" ", "_", $original_name);
-            //$extension = $file->getClientOriginalExtension();
-            $file_name = 'logo.png';
+            $extension = $file->getClientOriginalExtension();
+            $file_name = date('YmdHis') . '.' . $extension;
             $path = $request->file('logo')->storeAs(
                 $destination,
                 $file_name,
@@ -61,8 +61,8 @@ class CompanyController extends Controller
         if ($file176x32) {
             $original_name = strtolower(trim($file176x32->getClientOriginalName()));
             $original_name = str_replace(" ", "_", $original_name);
-            //$extension = $file->getClientOriginalExtension();
-            $file_name176x32 = 'logo176x32.png';
+            $extension = $file->getClientOriginalExtension();
+            $file_name176x32 = date('YmdHis') . '176x32.' . $extension;
             $path176x32 = $request->file('logo_document')->storeAs(
                 $destination,
                 $file_name176x32,
