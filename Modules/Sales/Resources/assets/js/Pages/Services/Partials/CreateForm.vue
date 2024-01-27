@@ -46,21 +46,10 @@
         <template #title>
             Producto Detalles
         </template>
-
         <template #description>
             Crear nuevo producto para realizar ventas
         </template>
-
         <template #form>
-            <div class="col-span-6 sm:col-span-2 ">
-                <InputLabel for="stablishment" value="Establecimiento" />
-                <select v-model="form.local_id" id="stablishment" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <template v-for="(establishment, index) in props.establishments" :key="index">
-                        <option :value="establishment.id">{{ establishment.description }}</option>
-                    </template>
-                </select>
-                <InputError :message="form.errors.local_id" class="mt-2" />
-            </div>
             <div class="col-span-6 sm:col-span-2">
                 <InputLabel for="usine" value="Código SUNAT" />
                 <TextInput
@@ -129,7 +118,7 @@
                     <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                         Guardar
                     </PrimaryButton>
-                    <Link :href="route('products.index')+'?displayProduct=false'"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
+                    <Link :href="route('sales_services')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
                 </template>
             </Keypad>
         </template>

@@ -25,14 +25,12 @@ use Modules\Sales\Http\Controllers\SaleProductBrandController;
 use Modules\Sales\Http\Controllers\SaleProductCategoryController;
 use Modules\Sales\Http\Controllers\SaleSummaryController;
 use Modules\Sales\Http\Controllers\SerieController;
+use Modules\Sales\Http\Controllers\ServicesController;
 
 Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('pettycash', PettyCashController::class);
     Route::resource('providers', ProviderController::class);
-
-    Route::get('service/create', [ProductController::class, 'createService'])->name('create_service');
-    Route::post('service/store', [ProductController::class, 'storeService'])->name('store_service');
 
     Route::post('petty/cash/close/{petty_id}', [PettyCashController::class, 'close_petty'])->name('close_petty_cash');
 
@@ -134,7 +132,21 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::post('category/products/update', [SaleProductCategoryController::class, 'update'])->name('sale_category_product_update_2');
     Route::delete('category/products/destroy/{id}', [SaleProductCategoryController::class, 'destroy'])->name('sale_category_product_destroy');
 
-    Route::post('brand/products/store', [SaleProductBrandController::class, 'store'])->name('sale_brand_product_store');
+    Route::middleware(['middleware' => 'permission:sale_marcas'])
+        ->get('brands/list', [SaleProductBrandController::class, 'index'])
+        ->name('sale_brands_product_list');
+    Route::middleware(['middleware' => 'permission:sale_marcas_nuevo'])
+        ->get('brands/create', [SaleProductBrandController::class, 'create'])
+        ->name('sale_brands_product_create');
+    Route::middleware(['middleware' => 'permission:sale_marcas_nuevo'])
+        ->get('brands/{id}/edit', [SaleProductBrandController::class, 'edit'])
+        ->name('sale_brands_product_edit');
+
+    Route::post('brand/products/store', [SaleProductBrandController::class, 'storeDirect'])->name('sale_brand_product_store');
+    Route::post('brands/store', [SaleProductBrandController::class, 'store'])->name('sale_brand_product_store_2');
+    Route::post('brands/update', [SaleProductBrandController::class, 'update'])->name('sale_brand_product_update');
+    Route::delete('brands/destroy/{id}', [SaleProductBrandController::class, 'destroy'])->name('sale_brand_product_destroy');
+
 
 
     ///////documentos fisico o de otra plataforma
@@ -142,4 +154,12 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::get('physicaldocument/create', [SalePhysicalDocumentController::class, 'create'])->name('sale_physical_document_create');
     Route::post('physicaldocument/store', [SalePhysicalDocumentController::class, 'store'])->name('sale_physical_document_store');
     Route::delete('physicaldocument/destroy/{id}', [SalePhysicalDocumentController::class, 'destroy'])->name('sale_physical_document_destroy');
+
+
+    Route::get('services/list', [ServicesController::class, 'index'])->name('sales_services');
+    Route::get('services/{id}/edit', [ServicesController::class, 'edit'])->name('sales_services_edit');
+    Route::get('services/create', [ServicesController::class, 'create'])->name('create_service');
+    Route::post('services/store', [ServicesController::class, 'store'])->name('store_service');
+    Route::put('services/update/{id}', [ServicesController::class, 'update'])->name('update_service');
+    Route::delete('services/destroy/{id}', [ServicesController::class, 'destroy'])->name('destroy_service');
 });
