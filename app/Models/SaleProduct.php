@@ -17,7 +17,8 @@ class SaleProduct extends Model
         'discount',
         'quantity',
         'total',
-        'saleProduct'
+        'saleProduct',
+        'entity_name_product'
     ];
 
     public function sale()

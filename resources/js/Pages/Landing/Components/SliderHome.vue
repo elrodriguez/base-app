@@ -1,4 +1,5 @@
-
+<template>
+    
 
 <div id="default-carousel" class="relative w-full" data-carousel="slide">
     <!-- Carousel wrapper -->
@@ -50,3 +51,5 @@
         </span>
     </button>
 </div>
+
+</template>

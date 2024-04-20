@@ -162,12 +162,14 @@
             swal('Stock insuficiente')
         }
     }
+
+    const astUrl = assetUrl;
 </script>
 
 
 <template>
 
-    <div v-show="displaySearch" style="min-width: 350px;max-width: 350px;" class="absolute z-99 mt-1 bg-white border border-gray-400 shadow w-60 dark:bg-gray-700">
+    <div v-show="displaySearch" style="min-width: 50em;max-width: 50em;" class="absolute z-99 mt-1 bg-white border border-gray-400 shadow dark:bg-gray-700">
         <div class="p-4">
             <form @submit.prevent="searchProducts()">
                 <!-- <div class="flex">
@@ -200,7 +202,17 @@
             <li v-for="(product, index) in form.products">
                 <div @click="openModalSelectProduct(product)" style="cursor: pointer;" class="flex items-center space-x-4">
                     <div class="flex-shrink-0">
-                        <img class="w-8 h-8 rounded-full" :src="'/storage/'+product.image" :alt="product.interne">
+                        <img v-if="product.image=='img/imagen-no-disponible.jpg'"
+                        :src="astUrl+product.image"
+                        class="w-8 h-8 rounded-full"
+                        :alt="product.interne"
+                        />
+
+                        <img v-else
+                        :src="astUrl+'storage/'+product.image"
+                        class="w-8 h-8 rounded-full"
+                        :alt="product.interne"
+                        />
                     </div>
                     <div class="text-left flex-1 min-w-0 ml-2">
                         <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
@@ -210,7 +222,7 @@
                             {{ product.description }}
                         </p>
                     </div>
-                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                    <div v-if="product.is_product" class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                         Stock {{ product.stock }}
                     </div>
                 </div>
@@ -234,14 +246,27 @@
         @close="closeModalSelectProduct"
     >
         <template #title>
-            Detalles del Producto
+            <template v-if="form.product.is_product">
+                Detalles del Producto
+            </template>
+            <template v-else>
+                Detalles del Servicio
+            </template>
+            
         </template>
         <template #content>
             <div class="grid grid-cols-3">
                 <div class="col-span-1">
                     <div class="flex flex-wrap justify-center p-4">
-                        <img
-                        :src="'/storage/'+form.product.image"
+                        <img v-if="form.product.image=='img/imagen-no-disponible.jpg'"
+                        :src="astUrl+form.product.image"
+                        class="p-1 bg-white border rounded max-w-sm"
+                        :alt="form.product.description"
+                        style="width: 100%;"
+                        />
+
+                        <img v-else
+                        :src="astUrl+'storage/'+form.product.image"
                         class="p-1 bg-white border rounded max-w-sm"
                         :alt="form.product.description"
                         style="width: 100%;"

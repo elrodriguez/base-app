@@ -25,7 +25,10 @@ class ResSale extends Model
         'total',
         'total_discount',
         'payments',
-        'queue_status'
+        'queue_status',
+        'document_id',
+        'entity_name_document',
+        'type_name_document'
     ];
 
     protected static function newFactory(): ResSaleFactory

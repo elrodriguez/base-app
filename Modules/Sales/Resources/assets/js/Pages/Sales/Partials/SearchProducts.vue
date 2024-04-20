@@ -164,8 +164,18 @@
                 <ul class="max-w-md divide-y bg-white">
                     <li v-for="(product, index) in form.products" class="p-4 border-b border-stroke bg-gray-100 pb-3 sm:pb-4 dark:border-strokedark dark:bg-boxdark" >
                         <div @click="openModalSelectProduct(product)" style="cursor: pointer;" class="flex items-center space-x-4">
-                            <div class="flex-shrink-0" v-if="product.is_product">
-                                <img class="w-8 h-8 rounded-full" :src="astUrl+'storage/'+product.image" :alt="product.interne">
+                            <div class="flex-shrink-0" >
+                                <img v-if="product.image=='img/imagen-no-disponible.jpg'"
+                                :src="astUrl+product.image"
+                                class="w-8 h-8 rounded-full"
+                                :alt="product.interne"
+                                />
+
+                                <img v-else
+                                :src="astUrl+'storage/'+product.image"
+                                class="w-8 h-8 rounded-full"
+                                :alt="product.interne"
+                                />
                             </div>
                             <div class="flex-1 min-w-0 ml-2">
                                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">

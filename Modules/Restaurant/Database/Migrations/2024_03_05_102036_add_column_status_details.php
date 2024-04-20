@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('res_sales', function (Blueprint $table) {
-            $table->string('queue_status', 2)->nullable()->comment('01=pendiente,02=atendido,03=cobrar,04=pagado,99=anulado');
+        Schema::table('res_sale_details', function (Blueprint $table) {
+            $table->enum('preparation_status', ['pendiente', 'listo'])->default('pendiente');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('res_sales', function (Blueprint $table) {
-            $table->dropColumn('queue_status');
+        Schema::table('res_sale_details', function (Blueprint $table) {
+            $table->dropColumn('preparation_status');
         });
     }
 };

@@ -26,6 +26,7 @@ class ResSaleController extends Controller
      */
     public function index()
     {
+        //dd(request()->all());
         $sales = (new ResSale())->newQuery();
         $sales = $sales->join('people', 'person_id', 'people.id')
             ->select(
@@ -48,15 +49,23 @@ class ResSaleController extends Controller
             $sales->where('people.full_name', 'like', '%' . request()->input('search') . '%');
         }
 
-        if (request()->has('sale_date' && request()->input('date_end'))) {
+        if (request()->has('date_start') && request()->has('date_end')) {
             $sales->whereBetween('sale_date', [request()->input('date_start'), request()->input('date_end')]);
+        }
+
+        if (request()->has('queue_status')) {
+            $queue_status = request()->input('queue_status');
+            $sales->when($queue_status != '00', function ($query)  use ($queue_status) {
+                $query->where('res_sales.queue_status', '=', $queue_status);
+            });
         }
 
 
         $sales = $sales->paginate(10);
 
         return Inertia::render('Restaurant::Sales/List', [
-            'sales' => $sales
+            'sales' => $sales,
+            'filters' => request()->all()
         ]);
     }
 
@@ -227,6 +236,71 @@ class ResSaleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        ResSale::find($id)->update(['queue_status' => '99']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Venta anulada'
+        ]);
+    }
+
+    public function cuisine()
+    {
+        $comandas = ResSale::with('details.comanda')
+            ->where('queue_status', '01')
+            ->get();
+        //dd($comandas);
+        return Inertia::render('Restaurant::Sales/Cuisine', [
+            'comandas' => $comandas
+        ]);
+    }
+
+    public function getSale($id)
+    {
+        $sale = ResSale::with('details.comanda')
+            ->where('id', $id)
+            ->first();
+
+        return response()->json(['sale' => $sale]);
+    }
+
+    public function createBoleta($id)
+    {
+
+        $sale = ResSale::with('details')->where('id', $id)->first();
+        $payments = PaymentMethod::all();
+        $company = Company::first();
+
+        $client = Person::find($sale->client_id);
+        $unitTypes = DB::table('sunat_unit_types')->get();
+        $documentTypes = DB::table('identity_document_type')->get();
+        $saleDocumentTypes = DB::table('sale_document_types')->whereIn('sunat_id', ['01', '03'])->get();
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                'districts.name AS district_name',
+                'provinces.name AS province_name',
+                'departments.name AS department_name'
+            )
+            ->get();
+
+        $company->load('district.province.department');
+
+        // Obtener el nombre de la ciudad usando los datos relacionados
+        $city = $company->district->province->department->name . "-" . $company->district->province->name . "-" . $company->district->name;
+        $company->city = $city;
+        if ($client->ubigeo) {
+            $clientCity = $client->district->province->department->name . "-" . $client->district->province->name . "-" . $client->district->name;
+            $client->city = $clientCity;
+        } else {
+            $client->city = $city;
+        }
+
+
+
+        return Inertia::render('Restaurant::Documents/CreateBoleta', [
+            'sale' => $sale
+        ]);
     }
 }

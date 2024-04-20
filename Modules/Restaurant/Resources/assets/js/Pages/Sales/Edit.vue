@@ -393,7 +393,8 @@ onMounted(() => {
                                             <option value="01">Pendiente</option>
                                             <option value="02">Atendido</option>
                                             <option value="03">Cobrar</option>
-                                            <option value="04"><Param></Param>agado</option>
+                                            <option value="04">Pagado</option>
+                                            <option value="99">Anulado</option>
                                         </select>
                                     </Flex>
                                 </div>

@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('res_sales', function (Blueprint $table) {
-            $table->string('queue_status', 2)->nullable()->comment('01=pendiente,02=atendido,03=cobrar,04=pagado,99=anulado');
+            $table->unsignedBigInteger('document_id')->nullable();
+            $table->string('entity_name_document')->nullable();
+            $table->string('type_name_document')->nullable();
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('res_sales', function (Blueprint $table) {
-            $table->dropColumn('queue_status');
+            $table->dropColumn('type_name_document');
+            $table->dropColumn('entity_name_document');
+            $table->dropColumn('document_id');
         });
     }
 };

@@ -1,6 +1,9 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
+
+const baseUrl = assetUrl;
+
 </script>
 
 <template>
@@ -9,8 +12,8 @@ import { Link } from '@inertiajs/vue3';
             <div class="hidden w-full xl:block xl:w-1/2">
                 <div class="py-10.5 px-26 text-center">
                   <a class="mb-5.5 inline-block" :href="route('login')">
-                    <img class="hidden dark:block" :src="$page.props.company.logo" alt="Logo" />
-                    <img style="width: 242px; height: 53.0667px;" class="dark:hidden" :src="$page.props.company.logo" alt="Logo" />
+                    <img class="hidden dark:block" :src="baseUrl + 'storage/' + $page.props.company.logo" alt="Logo" />
+                    <img style="width: 242px; height: 53.0667px;" class="dark:hidden" :src="baseUrl + 'storage/' + $page.props.company.logo" alt="Logo" />
                   </a>
 
                   <p class="font-medium 2xl:px-20">

@@ -19,7 +19,8 @@ class ResSaleDetail extends Model
         'comanda_id',
         'quantity',
         'price',
-        'discount'
+        'discount',
+        'preparation_status'
     ];
 
     protected static function newFactory(): ResSaleDetailFactory

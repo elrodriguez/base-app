@@ -83,4 +83,16 @@ Route::middleware(['auth', 'verified'])->prefix('restaurant')->group(function ()
 
     Route::put('sale/update/{id}', [ResSaleController::class, 'update'])
         ->name('res_sales_update');
+
+    Route::delete('sale/destroy/{id}', [ResSaleController::class, 'destroy'])
+        ->name('res_sales_destroy');
+
+    Route::get('sales/cuisine', [ResSaleController::class, 'cuisine'])
+        ->name('res_sales_cuisine');
+
+    Route::get('sales/find/sale/{id}', [ResSaleController::class, 'getSale'])
+        ->name('res_sales_find_reset');
+
+    Route::get('sales/document/boleta/{id}', [ResSaleController::class, 'createBoleta'])
+        ->name('res_sales_document_boleta');
 });
