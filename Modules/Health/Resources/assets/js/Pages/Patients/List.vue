@@ -1,12 +1,12 @@
 <script setup>
-    import AppLayout from '@/Layouts/AppLayout.vue';
-    import { useForm } from '@inertiajs/vue3';
+    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
+    import {  useForm, Link } from '@inertiajs/vue3';
     import { faTrashAlt, faPencilAlt, faPrint, faCashRegister, faFileExcel, faMoneyBill1Wave} from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import Keypad from '@/Components/Keypad.vue';
     import Swal2 from "sweetalert2";
-    import { Link } from '@inertiajs/vue3';
     import { Dropdown } from 'flowbite-vue'
+    import { ref } from 'vue';
 
     const props = defineProps({
         patients: {
@@ -58,10 +58,11 @@
             }
         });
     }
+
 </script>
 
 <template>
-    <AppLayout title="Cajas Chicas">
+    <AppLayout title="Pacientes">
         <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
             <!-- Breadcrumb Start -->
             <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">

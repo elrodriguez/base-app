@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '../../Layouts/AppLayout.vue';
+import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 import InformationForm from './Partials/InformationForm.vue';
 
 const props = defineProps({

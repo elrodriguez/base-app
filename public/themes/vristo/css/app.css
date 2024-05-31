@@ -1,0 +1,5 @@
+@import 'vue3-perfect-scrollbar/style.css';
+@import 'tippy.js/dist/tippy.css';
+@import '@bhplugin/vue3-datatable/dist/style.css';
+@import 'file-upload-with-preview/dist/style.css';
+@import 'tailwind.css';

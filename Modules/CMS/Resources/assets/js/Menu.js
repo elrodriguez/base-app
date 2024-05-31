@@ -4,7 +4,7 @@ const menuCMS = {
     status: false,
     text: "CMS",
     icom: faEarthAmericas,
-    route: null,
+    route: 'module',
     permissions: "cms_dashboard",
     items: [
         {

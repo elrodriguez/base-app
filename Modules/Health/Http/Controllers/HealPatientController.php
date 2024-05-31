@@ -56,7 +56,7 @@ class HealPatientController extends Controller
 
         $patients = $patients->paginate(10)->onEachSide(2);
 
-        return Inertia::render('Health::Patients/List', [
+        return Inertia::render('Health::Patients/CardList', [
             'patients' => $patients,
             'filters' => request()->all('search')
         ]);
@@ -123,6 +123,7 @@ class HealPatientController extends Controller
             $original_name = str_replace(" ", "_", $original_name);
             $extension = $file->getClientOriginalExtension();
             $file_name = date('YmdHis') . '.' . $extension;
+            //dd($destination);
             $path = $request->file('image')->storeAs(
                 $destination,
                 $file_name,

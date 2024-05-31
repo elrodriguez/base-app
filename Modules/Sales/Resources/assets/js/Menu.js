@@ -1,10 +1,10 @@
 import { faCashRegister } from "@fortawesome/free-solid-svg-icons";
 
 const menuSales = {
-    status: false,
+    status: true,
     text: "Ventas",
     icom: faCashRegister,
-    route: null,
+    route: 'module',
     permissions: "sale_dashboard",
     items: [
         

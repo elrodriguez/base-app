@@ -1,134 +1,215 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+    import { computed, reactive } from 'vue';
+    import { useI18n } from 'vue-i18n';
+    import appSetting from '@/app-setting';
+    import { useAppStore } from '@/stores/index';
+    import AuthLayout from '@/Layouts/Vristo/AuthLayout.vue';
+    import IconCaretDown from '@/Components/vristo/icon/icon-caret-down.vue';
+    import IconMail from '@/Components/vristo/icon/icon-mail.vue';
+    import IconLockDots from '@/Components/vristo/icon/icon-lock-dots.vue';
+    import IconInstagram from '@/Components/vristo/icon/icon-instagram.vue';
+    import IconFacebookCircle from '@/Components/vristo/icon/icon-facebook-circle.vue';
+    import IconTwitter from '@/Components/vristo/icon/icon-twitter.vue';
+    import IconGoogle from '@/Components/vristo/icon/icon-google.vue';
+    import { Link, router, useForm, Head } from '@inertiajs/vue3';
+    import Checkbox from '@/Components/vristo/inputs/Checkbox.vue';
 
-defineProps({
-    canResetPassword: {
-        type: Boolean,
-    },
-    status: {
-        type: String,
-    },
-});
+    const store = useAppStore();
+    // multi language
+    const i18n = reactive(useI18n());
+    const changeLanguage = (item) => {
+        i18n.locale = item.code;
+        appSetting.toggleLanguage(item);
+    };
 
-const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
-});
+    const baseUrl = assetUrl;
 
-const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+    const currentFlag = computed(() => {
+        return baseUrl  + `/themes/vristo/images/flags/${i18n.locale.toUpperCase()}.svg`;
     });
-};
+
+    const form = useForm({
+        email: '',
+        password: '',
+        remember: false,
+    });
+
+    const submit = () => {
+        form.post(route('login'), {
+            onFinish: () => form.reset('password'),
+        });
+    }
+
 </script>
-
 <template>
-    <GuestLayout>
+    <AuthLayout>
         <Head title="Acceso" />
-        <div class="w-full p-4 sm:p-12.5 xl:p-17.5">
-            <span class="mb-1.5 block font-medium">Empezar</span>
-            <h2 class="mb-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Iniciar sesión en {{ $page.props.company.name }}
-            </h2>
-
-            <form @submit.prevent="submit">
-                <div class="mb-4">
-                    <label class="mb-2.5 block font-medium text-black dark:text-white">Email</label>
-                    <div class="relative">
-                        <input v-model="form.email" type="email" placeholder="Introduce tu correo electrónico"
-                        class="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
-
-                        <span class="absolute right-4 top-4">
-                        <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <g opacity="0.5">
-                            <path
-                                d="M19.2516 3.30005H2.75156C1.58281 3.30005 0.585938 4.26255 0.585938 5.46567V16.6032C0.585938 17.7719 1.54844 18.7688 2.75156 18.7688H19.2516C20.4203 18.7688 21.4172 17.8063 21.4172 16.6032V5.4313C21.4172 4.26255 20.4203 3.30005 19.2516 3.30005ZM19.2516 4.84692C19.2859 4.84692 19.3203 4.84692 19.3547 4.84692L11.0016 10.2094L2.64844 4.84692C2.68281 4.84692 2.71719 4.84692 2.75156 4.84692H19.2516ZM19.2516 17.1532H2.75156C2.40781 17.1532 2.13281 16.8782 2.13281 16.5344V6.35942L10.1766 11.5157C10.4172 11.6875 10.6922 11.7563 10.9672 11.7563C11.2422 11.7563 11.5172 11.6875 11.7578 11.5157L19.8016 6.35942V16.5688C19.8703 16.9125 19.5953 17.1532 19.2516 17.1532Z"
-                                fill="" />
-                            </g>
-                        </svg>
-                        </span>
-                    </div>
-                    <InputError class="mt-2" :message="form.errors.email" />
-                </div>
-                <div class="mb-4">
-                    <label class="mb-2.5 block font-medium text-black dark:text-white">Contraseña</label>
-                    <div class="relative">
-                        <input v-model="form.password" type="password" placeholder="6+ caracteres"
-                        class="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
-
-                        <span class="absolute right-4 top-4">
-                        <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <g opacity="0.5">
-                            <path
-                                d="M16.1547 6.80626V5.91251C16.1547 3.16251 14.0922 0.825009 11.4797 0.618759C10.0359 0.481259 8.59219 0.996884 7.52656 1.95938C6.46094 2.92188 5.84219 4.29688 5.84219 5.70626V6.80626C3.84844 7.18438 2.33594 8.93751 2.33594 11.0688V17.2906C2.33594 19.5594 4.19219 21.3813 6.42656 21.3813H15.5016C17.7703 21.3813 19.6266 19.525 19.6266 17.2563V11C19.6609 8.93751 18.1484 7.21876 16.1547 6.80626ZM8.55781 3.09376C9.31406 2.40626 10.3109 2.06251 11.3422 2.16563C13.1641 2.33751 14.6078 3.98751 14.6078 5.91251V6.70313H7.38906V5.67188C7.38906 4.70938 7.80156 3.78126 8.55781 3.09376ZM18.1141 17.2906C18.1141 18.7 16.9453 19.8688 15.5359 19.8688H6.46094C5.05156 19.8688 3.91719 18.7344 3.91719 17.325V11.0688C3.91719 9.52189 5.15469 8.28438 6.70156 8.28438H15.2953C16.8422 8.28438 18.1141 9.52188 18.1141 11V17.2906Z"
-                                fill="" />
-                            <path
-                                d="M10.9977 11.8594C10.5852 11.8594 10.207 12.2031 10.207 12.65V16.2594C10.207 16.6719 10.5508 17.05 10.9977 17.05C11.4102 17.05 11.7883 16.7063 11.7883 16.2594V12.6156C11.7883 12.2031 11.4102 11.8594 10.9977 11.8594Z"
-                                fill="" />
-                            </g>
-                        </svg>
-                        </span>
-                    </div>
-                    <InputError class="mt-2" :message="form.errors.password" />
-                </div>
-                <div class="block mb-6">
-                    <label class="flex items-center">
-                        <Checkbox name="remember" v-model:checked="form.remember" />
-                        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Acuérdate de mí</span>
-                    </label>
-                </div>
-                <div class="mb-5">
-                    <input :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="submit" value="Iniciar sesión" class="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90" />
-                </div>
-                <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-                    {{ status }}
-                </div>
-                <!-- <button class="flex w-full items-center justify-center gap-3.5 font-medium rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-70 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-70">
-                    <span>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_191_13499)">
-                            <path
-                            d="M19.999 10.2217C20.0111 9.53428 19.9387 8.84788 19.7834 8.17737H10.2031V11.8884H15.8266C15.7201 12.5391 15.4804 13.162 15.1219 13.7195C14.7634 14.2771 14.2935 14.7578 13.7405 15.1328L13.7209 15.2571L16.7502 17.5568L16.96 17.5774C18.8873 15.8329 19.9986 13.2661 19.9986 10.2217"
-                            fill="#4285F4" />
-                            <path
-                            d="M10.2055 19.9999C12.9605 19.9999 15.2734 19.111 16.9629 17.5777L13.7429 15.1331C12.8813 15.7221 11.7248 16.1333 10.2055 16.1333C8.91513 16.1259 7.65991 15.7205 6.61791 14.9745C5.57592 14.2286 4.80007 13.1801 4.40044 11.9777L4.28085 11.9877L1.13101 14.3765L1.08984 14.4887C1.93817 16.1456 3.24007 17.5386 4.84997 18.5118C6.45987 19.4851 8.31429 20.0004 10.2059 19.9999"
-                            fill="#34A853" />
-                            <path
-                            d="M4.39899 11.9777C4.1758 11.3411 4.06063 10.673 4.05807 9.99996C4.06218 9.32799 4.1731 8.66075 4.38684 8.02225L4.38115 7.88968L1.19269 5.4624L1.0884 5.51101C0.372763 6.90343 0 8.4408 0 9.99987C0 11.5589 0.372763 13.0963 1.0884 14.4887L4.39899 11.9777Z"
-                            fill="#FBBC05" />
-                            <path
-                            d="M10.2059 3.86663C11.668 3.84438 13.0822 4.37803 14.1515 5.35558L17.0313 2.59996C15.1843 0.901848 12.7383 -0.0298855 10.2059 -3.6784e-05C8.31431 -0.000477834 6.4599 0.514732 4.85001 1.48798C3.24011 2.46124 1.9382 3.85416 1.08984 5.51101L4.38946 8.02225C4.79303 6.82005 5.57145 5.77231 6.61498 5.02675C7.65851 4.28118 8.9145 3.87541 10.2059 3.86663Z"
-                            fill="#EB4335" />
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_191_13499">
-                            <rect width="20" height="20" fill="white" />
-                            </clipPath>
-                        </defs>
-                        </svg>
-                    </span>
-                    Sign in with Google
-                </button> -->
-
-                <div class="mt-6 text-center">
-                    <Link
-                        v-if="canResetPassword"
-                        :href="route('password.request')"
-                        class="underline text-sm text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+        <div>
+            <div class="absolute inset-0">
+                <img :src="`${baseUrl}/themes/vristo/images/auth/bg-gradient.png`" alt="image" class="h-full w-full object-cover" />
+            </div>
+            <div
+                class="relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-6 py-10 dark:bg-[#060818] sm:px-16"
+                :style="`background-image:url('${baseUrl}/themes/vristo/images/auth/map.png');`"
+            >
+                <img :src="`${baseUrl}/themes/vristo/images/auth/coming-soon-object1.png`" alt="image" class="absolute left-0 top-1/2 h-full max-h-[893px] -translate-y-1/2" />
+                <img :src="`${baseUrl}/themes/vristo/images/auth/coming-soon-object2.png`" alt="image" class="absolute left-24 top-0 h-40 md:left-[30%]" />
+                <img :src="`${baseUrl}/themes/vristo/images/auth/coming-soon-object3.png`" alt="image" class="absolute right-0 top-0 h-[300px]" />
+                <img :src="`${baseUrl}/themes/vristo/images/auth/polygon-object.svg`" alt="image" class="absolute bottom-0 end-[28%]" />
+                <div
+                    class="relative flex w-full max-w-[1502px] flex-col justify-between overflow-hidden rounded-md bg-white/60 backdrop-blur-lg dark:bg-black/50 lg:min-h-[758px] lg:flex-row lg:gap-10 xl:gap-0"
+                >
+                    <div
+                        class="relative hidden w-full items-center justify-center bg-[linear-gradient(225deg,rgba(239,18,98,1)_0%,rgba(67,97,238,1)_100%)] p-5 lg:inline-flex lg:max-w-[835px] xl:-ms-28 ltr:xl:skew-x-[14deg] rtl:xl:skew-x-[-14deg]"
                     >
-                        ¿Olvidaste tu contraseña?
-                    </Link>
+                        <div
+                            class="absolute inset-y-0 w-8 from-primary/10 via-transparent to-transparent ltr:-right-10 ltr:bg-gradient-to-r rtl:-left-10 rtl:bg-gradient-to-l xl:w-16 ltr:xl:-right-20 rtl:xl:-left-20"
+                        ></div>
+                        <div class="ltr:xl:-skew-x-[14deg] rtl:xl:skew-x-[14deg]">
+                            <Link href="/" class="w-48 block lg:w-72 ms-10">
+                                <img :src="`${baseUrl}/themes/vristo/images/auth/logo-white.svg`" alt="Logo" class="w-full" />
+                            </Link>
+                            <div class="mt-24 hidden w-full max-w-[430px] lg:block">
+                                <img :src="`${baseUrl}/themes/vristo/images/auth/login.svg`" alt="Cover Image" class="w-full" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative flex w-full flex-col items-center justify-center gap-6 px-4 pb-16 pt-6 sm:px-6 lg:max-w-[667px]">
+                        <div class="flex w-full max-w-[440px] items-center gap-2 lg:absolute lg:end-6 lg:top-6 lg:max-w-full">
+                            <Link href="/" class="w-8 block lg:hidden">
+                                <img :src="`${baseUrl}/themes/vristo/images/logo.svg`" alt="Logo" class="mx-auto w-10" />
+                            </Link>
+                            <div class="dropdown ms-auto w-max">
+                                <Popper :placement="store.rtlClass === 'rtl' ? 'bottom-start' : 'bottom-end'" offsetDistance="8">
+                                    <button
+                                        type="button"
+                                        class="flex items-center gap-2.5 rounded-lg border border-white-dark/30 bg-white px-2 py-1.5 text-white-dark hover:border-primary hover:text-primary dark:bg-black"
+                                    >
+                                        <div>
+                                            <img :src="currentFlag" alt="image" class="h-5 w-5 rounded-full object-cover" />
+                                        </div>
+                                        <div class="text-base font-bold uppercase">{{ store.locale }}</div>
+                                        <span class="shrink-0">
+                                            <icon-caret-down />
+                                        </span>
+                                    </button>
+                                    <template #content="{ close }">
+                                        <ul class="!px-2 text-dark dark:text-white-dark grid grid-cols-2 gap-2 font-semibold dark:text-white-light/90 w-[280px]">
+                                            <template v-for="item in store.languageList" :key="item.code">
+                                                <li>
+                                                    <button
+                                                        type="button"
+                                                        class="w-full hover:text-primary"
+                                                        :class="{ 'bg-primary/10 text-primary': i18n.locale === item.code }"
+                                                        @click="changeLanguage(item), close()"
+                                                    >
+                                                        <img
+                                                            class="w-5 h-5 object-cover rounded-full"
+                                                            :src="`${baseUrl}/themes/vristo/images/flags/${item.code.toUpperCase()}.svg`"
+                                                            alt=""
+                                                        />
+                                                        <span class="ltr:ml-3 rtl:mr-3">{{ item.name }}</span>
+                                                    </button>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </template>
+                                </Popper>
+                            </div>
+                        </div>
+                        <div class="w-full max-w-[440px] lg:mt-16">
+                            <div class="mb-10">
+                                <h1 class="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">Sign in</h1>
+                                <p class="text-base font-bold leading-normal text-white-dark">Enter your email and password to login</p>
+                            </div>
+                            <form class="space-y-5 dark:text-white" @submit.prevent="submit">
+                                <div>
+                                    <label for="Email">Email</label>
+                                    <div class="relative text-white-dark">
+                                        <input v-model="form.email" id="Email" type="email" placeholder="Enter Email" class="form-input ps-10 placeholder:text-white-dark" />
+                                        <span class="absolute start-4 top-1/2 -translate-y-1/2">
+                                            <icon-mail :fill="true" />
+                                        </span>
+                                    </div>
+                                    <InputError class="mt-2" :message="form.errors.email" />
+                                </div>
+                                <div>
+                                    <label for="Password">Password</label>
+                                    <div class="relative text-white-dark">
+                                        <input v-model="form.password" id="Password" type="password" placeholder="Enter Password" class="form-input ps-10 placeholder:text-white-dark" />
+                                        <span class="absolute start-4 top-1/2 -translate-y-1/2">
+                                            <icon-lock-dots :fill="true" />
+                                        </span>
+                                    </div>
+                                    <InputError class="mt-2" :message="form.errors.password" />
+                                </div>
+                                <div>
+                                    <label class="flex cursor-pointer items-center">
+                                        <Checkbox v-model:checked="form.remember" />
+                                        <span class="text-white-dark">Subscribe to weekly newsletter</span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-gradient !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
+                                    Sign in
+                                </button>
+                            </form>
+
+                            <div class="relative my-7 text-center md:mb-9">
+                                <span class="absolute inset-x-0 top-1/2 h-px w-full -translate-y-1/2 bg-white-light dark:bg-white-dark"></span>
+                                <span class="relative bg-white px-2 font-bold uppercase text-white-dark dark:bg-dark dark:text-white-light">or</span>
+                            </div>
+                            <div class="mb-10 md:mb-[60px]">
+                                <ul class="flex justify-center gap-3.5 text-white">
+                                    <li>
+                                        <a
+                                            href="javascript:"
+                                            class="inline-flex h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
+                                            style="background: linear-gradient(135deg, rgba(239, 18, 98, 1) 0%, rgba(67, 97, 238, 1) 100%)"
+                                        >
+                                            <icon-instagram />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="javascript:"
+                                            class="inline-flex h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
+                                            style="background: linear-gradient(135deg, rgba(239, 18, 98, 1) 0%, rgba(67, 97, 238, 1) 100%)"
+                                        >
+                                            <icon-facebook-circle />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="javascript:"
+                                            class="inline-flex h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
+                                            style="background: linear-gradient(135deg, rgba(239, 18, 98, 1) 0%, rgba(67, 97, 238, 1) 100%)"
+                                        >
+                                            <icon-twitter :fill="true" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="javascript:"
+                                            class="inline-flex h-8 w-8 items-center justify-center rounded-full p-0 transition hover:scale-110"
+                                            style="background: linear-gradient(135deg, rgba(239, 18, 98, 1) 0%, rgba(67, 97, 238, 1) 100%)"
+                                        >
+                                            <icon-google />
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="text-center dark:text-white">
+                                Don't have an account ?
+                                <Link :href="route('register')" class="uppercase text-primary underline transition hover:text-black dark:hover:text-white">
+                                    SIGN UP
+                                </Link>
+                            </div>
+                        </div>
+                        <p class="absolute bottom-6 w-full text-center dark:text-white">© {{ new Date().getFullYear() }}.ARACODE All Rights Reserved.</p>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </GuestLayout>
+    </AuthLayout>
 </template>
+

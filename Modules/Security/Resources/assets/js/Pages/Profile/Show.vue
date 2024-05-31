@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import LogoutOtherBrowserSessionsForm from './Partials/LogoutOtherBrowserSessionsForm.vue';
 import SectionBorder from '@/Components/SectionBorder.vue';

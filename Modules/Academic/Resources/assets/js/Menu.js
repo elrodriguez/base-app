@@ -4,7 +4,7 @@ const menuAcademic = {
     status: false,
     text: "Académico",
     icom: faBook,
-    route: null,
+    route: 'module',
     permissions: "aca_dashboard",
     items: [
         {

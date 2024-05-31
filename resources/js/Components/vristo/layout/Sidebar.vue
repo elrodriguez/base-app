@@ -1,0 +1,307 @@
+<script setup>
+    import { ref, onMounted } from 'vue';
+
+    import { useAppStore } from '@/stores/index';
+    import IconCaretsDown from '@/Components/vristo/icon/icon-carets-down.vue';
+    import IconMenuDashboard from '@/Components/vristo/icon/menu/icon-menu-dashboard.vue';
+    import IconMinus from '@/Components/vristo/icon/icon-minus.vue';
+    import IconMenuChat from '@/Components/vristo/icon/menu/icon-menu-chat.vue';
+    import IconMenuMailbox from '@/Components/vristo/icon/menu/icon-menu-mailbox.vue';
+    import IconMenuTodo from '@/Components/vristo/icon/menu/icon-menu-todo.vue';
+    import IconMenuNotes from '@/Components/vristo/icon/menu/icon-menu-notes.vue';
+    import IconMenuScrumboard from '@/Components/vristo/icon/menu/icon-menu-scrumboard.vue';
+    import IconMenuContacts from '@/Components/vristo/icon/menu/icon-menu-contacts.vue';
+    import IconMenuInvoice from '@/Components/vristo/icon/menu/icon-menu-invoice.vue';
+    import IconCaretDown from '@/Components/vristo/icon/icon-caret-down.vue';
+    import IconMenuCalendar from '@/Components/vristo/icon/menu/icon-menu-calendar.vue';
+    import IconMenuComponents from '@/Components/vristo/icon/menu/icon-menu-components.vue';
+    import IconMenuElements from '@/Components/vristo/icon/menu/icon-menu-elements.vue';
+    import IconMenuCharts from '@/Components/vristo/icon/menu/icon-menu-charts.vue';
+    import IconMenuWidgets from '@/Components/vristo/icon/menu/icon-menu-widgets.vue';
+    import IconMenuFontIcons from '@/Components/vristo/icon/menu/icon-menu-font-icons.vue';
+    import IconMenuDragAndDrop from '@/Components/vristo/icon/menu/icon-menu-drag-and-drop.vue';
+    import IconMenuTables from '@/Components/vristo/icon/menu/icon-menu-tables.vue';
+    import IconMenuDatatables from '@/Components/vristo/icon/menu/icon-menu-datatables.vue';
+    import IconMenuForms from '@/Components/vristo/icon/menu/icon-menu-forms.vue';
+    import IconMenuUsers from '@/Components/vristo/icon/menu/icon-menu-users.vue';
+    import IconMenuPages from '@/Components/vristo/icon/menu/icon-menu-pages.vue';
+    import IconMenuAuthentication from '@/Components/vristo/icon/menu/icon-menu-authentication.vue';
+    import IconMenuDocumentation from '@/Components/vristo/icon/menu/icon-menu-documentation.vue';
+    
+    import { Link } from '@inertiajs/vue3';
+    import { 
+        faPoll, 
+        faPeopleRoof,
+        faWheelchair, 
+        faChevronUp,
+        faArrowLeftLong,
+        faKitMedical,
+        faGlobe
+    } from "@fortawesome/free-solid-svg-icons";
+    import menuAcademic from 'Modules/Academic/Resources/assets/js/Menu.js';
+    import menuRestaurant from 'Modules/Restaurant/Resources/assets/js/Menu.js';
+    import menuSales from 'Modules/Sales/Resources/assets/js/Menu.js';
+    import menuPurchases from 'Modules/Purchases/Resources/assets/js/Menu.js';
+    import menuConfig from 'Modules/Security/Resources/assets/js/Menu.js';
+    import menuCMS from 'Modules/CMS/Resources/assets/js/Menu.js';
+    import menuSocialevents from 'Modules/Socialevents/Resources/assets/js/Menu.js';
+    import menuHelpdesk from 'Modules/Helpdesk/Resources/assets/js/Menu.js';
+
+
+    const store = useAppStore();
+    const activeDropdown = ref('');
+    const subActive  = ref('');
+    const baseUrl = assetUrl;
+
+    onMounted(() => {
+        const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
+        if (selector) {
+            selector.classList.add('active');
+            const ul = selector.closest('ul.sub-menu');
+            if (ul) {
+                let ele  = ul.closest('li.menu').querySelectorAll('.nav-link') || [];
+                if (ele.length) {
+                    ele = ele[0];
+                    setTimeout(() => {
+                        ele.click();
+                    });
+                }
+            }
+        }
+    });
+
+    const toggleMobileMenu = () => {
+        if (window.innerWidth < 1024) {
+            store.toggleSidebar();
+        }
+    };
+
+    const menuData = ref([
+        {
+            status: false,
+            text: 'Dashboard',
+            icom: faPoll,
+            route: route('dashboard'),
+            permissions: 'dashboard',
+        },
+        menuConfig,
+        // menuPurchases,
+        // menuSales,
+        // {
+        //     status: false,
+        //     text: 'Ventas en línea',
+        //     icom: faGlobe,
+        //     route: 'module',
+        //     permissions: 'onli_dashboard',
+        //     items: [
+        //         {
+        //             route: route('onlineshop_items'),
+        //             status: false,
+        //             text: 'Productos & servicios',
+        //             permissions: 'onli_items',
+        //         },
+        //         {
+        //             route: route('onlineshop_sales'),
+        //             status: false,
+        //             text: 'Pedidos',
+        //             permissions: 'onli_pedidos',
+        //         },
+        //     ]
+        // },
+        // {
+        //     status:false,
+        //     text: 'Facturación Electrónica',
+        //     icom: faBolt,
+        //     route: null,
+        //     permissions: 'invo_dashboard',
+        //     items: [
+        //         {
+        //             route: route('saledocuments_create'),
+        //             status: false,
+        //             text: 'Crear Documento',
+        //             permissions: 'invo_documento',
+        //         },
+        //         {
+        //             route: route('saledocuments_list'),
+        //             status: false,
+        //             text: 'Lista de Documentos',
+        //             permissions: 'invo_documento_lista',
+        //         },
+        //         {
+        //             route: route('salesummaries_list'),
+        //             status: false,
+        //             text: 'Resumen',
+        //             permissions: 'invo_resumenes_lista',
+        //         },
+        //         {
+        //             route: route('low_communication_list'),
+        //             status: false,
+        //             text: 'Comunicacion de Baja',
+        //             permissions: 'invo_comunicacion_baja',
+        //         }
+        //     ]
+        // },
+        // menuHelpdesk,
+        // menuCMS,
+        {
+            status:false,
+            text: 'Salud',
+            icom: faKitMedical,
+            route: 'module',
+            permissions: 'heal_dashboard',
+            items: [
+                {
+                    route: route('heal_patients_list'),
+                    status: false,
+                    text: 'Pacientes',
+                    icom: faWheelchair,
+                    permissions: 'heal_pacientes_listado',
+                },
+                {
+                    route: null,
+                    status: false,
+                    text: 'Odontología',
+                    permissions: 'cms_seccion',
+                },
+            ]
+        },
+        // menuAcademic,
+        // menuRestaurant,
+        // menuSocialevents
+    ]);
+    const xasset = assetUrl;
+</script>
+<template>
+    <div :class="{ 'dark text-white-dark': store.semidark }">
+        <nav class="sidebar fixed min-h-screen h-full top-0 bottom-0 w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] z-50 transition-all duration-300">
+            <div class="bg-white dark:bg-[#0e1726] h-full">
+                <div class="flex justify-between items-center px-4 py-3">
+                    <Link href="/" class="main-logo flex items-center shrink-0">
+                        <img class="w-8 ml-[5px] flex-none" :src="xasset+$page.props.company.isotipo" alt="" />
+                        <span class="text-2xl ltr:ml-1.5 rtl:mr-1.5 font-semibold align-middle lg:inline dark:text-white-light">{{ $page.props.company.name }}</span>
+                    </Link>
+                    <a
+                        href="javascript:;"
+                        class="collapse-icon w-8 h-8 rounded-full flex items-center hover:bg-gray-500/10 dark:hover:bg-dark-light/10 dark:text-white-light transition duration-300 rtl:rotate-180 hover:text-primary"
+                        @click="store.toggleSidebar()"
+                    >
+                        <icon-carets-down class="m-auto rotate-90" />
+                    </a>
+                </div>
+                <perfect-scrollbar
+                    :options="{
+                        swipeEasing: true,
+                        wheelPropagation: false,
+                    }"
+                    class="h-[calc(100vh-80px)] relative"
+                >
+                    <ul class="relative font-semibold space-y-0.5 p-4 py-0">
+
+                        <template v-for="(item, index) in menuData" :key="index">
+                            <div v-can="item.permissions">
+                                <template v-if="item.route == null">
+                                    <li class="menu nav-item">
+                                        <button
+                                            type="button"
+                                            class="nav-link group w-full"
+                                            :class="{ active: activeDropdown === item.text }"
+                                            @click="activeDropdown === item.text ? (activeDropdown = null) : (activeDropdown = item.text)"
+                                        >
+                                            <div class="flex items-center">
+                                                <icon-menu-dashboard class="group-hover:!text-primary shrink-0" />
+                                                <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                                                    {{ item.text }}
+                                                </span>
+                                            </div>
+                                            <div :class="{ 'rtl:rotate-90 -rotate-90': activeDropdown !== item.text }">
+                                                <icon-caret-down />
+                                            </div>
+                                        </button>
+                                        <HeightTransition v-show="activeDropdown === item.text">
+                                            <template v-if="item.items && item.items.length > 0" >
+                                                <ul class="sub-menu text-gray-500">
+                                                    
+                                                    <li v-for="(subItem, subIndex) in item.items" :key="subIndex">
+                                                        <Link :href="subItem.route" @click="toggleMobileMenu">{{ subItem.text }}</Link>
+                                                    </li>
+
+                                                </ul>
+                                            </template>
+                                        </HeightTransition>
+                                    </li>
+                                </template>
+                                <template v-else-if="item.route == 'module'" class="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
+                                    <h2 class="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
+                                        <icon-minus class="w-4 h-5 flex-none hidden" />
+                                        <span>{{ item.text }}</span>
+                                    </h2>
+                                    <template v-if="item.items && item.items.length > 0" >
+                                        <template v-for="(subItem, subIndex) in item.items" :key="subIndex">
+                                            <template v-if="subItem.route == null">
+                                                <li class="menu nav-item">
+                                                    <button
+                                                        type="button"
+                                                        class="nav-link group w-full"
+                                                        :class="{ active: activeDropdown === subItem.text }"
+                                                        @click="activeDropdown === subItem.text ? (activeDropdown = null) : (activeDropdown = subItem.text)"
+                                                    >
+                                                        <div class="flex items-center">
+                                                            <icon-menu-dashboard class="group-hover:!text-primary shrink-0" />
+                                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                                                                {{ subItem.text }}
+                                                            </span>
+                                                        </div>
+                                                        <div :class="{ 'rtl:rotate-90 -rotate-90': activeDropdown !== subItem.text }">
+                                                            <icon-caret-down />
+                                                        </div>
+                                                    </button>
+                                                    <HeightTransition v-show="activeDropdown === subItem.text">
+                                                        <ul v-if="subItem.items && subItem.items.length > 0" class="sub-menu text-gray-500">
+                                                            <template v-for="(subSubItem, subSubIndex) in subItem.items" :key="subSubIndex">
+                                                                <li v-can="subSubItem.permissions">
+                                                                    <Link :href="subSubItem.route" @click="toggleMobileMenu">{{ subSubItem.text }}</Link>
+                                                                </li>
+                                                            </template>
+                                                        </ul>
+                                                    </HeightTransition>
+                                                </li>
+                                            </template>
+                                            <template v-else>
+                                                <li class="menu nav-item">
+                                                    <Link :href="subItem.route" class="nav-link group" @click="toggleMobileMenu">
+                                                        <div class="flex items-center">
+                                                            <font-awesome-icon :icon="subItem.icom" class="group-hover:!text-primary shrink-0" />
+
+                                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                                                                {{ subItem.text }}
+                                                            </span>
+                                                        </div>
+                                                    </Link>
+                                                </li>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </template>
+                                <template v-else>
+                                    <li class="menu nav-item">
+                                        <Link :href="item.route" class="nav-link group" @click="toggleMobileMenu">
+                                            <div class="flex items-center">
+                                                <!-- <icon-menu-font-icons class="group-hover:!text-primary shrink-0" /> -->
+                                                <font-awesome-icon :icon="item.icom" class="group-hover:!text-primary shrink-0" />
+                                                <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                                                    {{ item.text }}
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                </template>
+                            </div>
+                        </template>
+                    </ul>
+                </perfect-scrollbar>
+            </div>
+        </nav>
+    </div>
+</template>
+
+
