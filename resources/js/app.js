@@ -21,15 +21,11 @@ import HeightTransition from '@/Components/vristo/transitions/HeightTransition.v
 import Popper from 'vue3-popper';
 import * as Maska from 'maska';
 
-
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
 const pinia = createPinia();
 const head = createHead();
-
-
-
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

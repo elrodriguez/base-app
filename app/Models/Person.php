@@ -34,7 +34,10 @@ class Person extends Model
         'father_lastname',
         'mother_lastname',
         'ocupacion',
-        'presentacion'
+        'presentacion',
+        'gender',
+        'status',
+        'social_networks'
     ];
     // se esta guardando la ruta completa por eso se comento
     // public function getImageAttribute($value)

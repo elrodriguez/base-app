@@ -2,32 +2,31 @@
 
 namespace Modules\Health\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\District;
 use App\Models\Person;
-use App\Models\User;
-use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Modules\Health\Entities\HealPatient;
+use Modules\Health\Entities\HealDoctor;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
-class HealPatientController extends Controller
+class DoctorController extends Controller
 {
     use ValidatesRequests;
     /**
      * Display a listing of the resource.
-     * @return Renderable
      */
     public function index()
     {
-        $patients = (new HealPatient())->newQuery();
-        $patients = $patients->join('people', 'heal_patients.person_id', 'people.id')
+        $doctors = (new HealDoctor())->newQuery();
+        $doctors = $doctors->join('people', 'heal_doctors.person_id', 'people.id')
             ->select(
-                'heal_patients.id',
-                'heal_patients.person_id',
-                'heal_patients.patient_code',
+                'heal_doctors.id',
+                'heal_doctors.person_id',
+                'heal_doctors.doctor_code',
                 'people.document_type_id',
                 'people.full_name',
                 'people.number',
@@ -35,12 +34,12 @@ class HealPatientController extends Controller
                 'people.email',
                 'people.address',
                 'people.birthdate',
-                'heal_patients.created_at',
+                'heal_doctors.created_at',
                 'people.image',
                 'people.gender'
             );
         if (request()->has('search')) {
-            $patients->where('people.full_name', 'Like', '%' . request()->input('search') . '%');
+            $doctors->where('people.full_name', 'Like', '%' . request()->input('search') . '%');
         }
 
         if (request()->query('sort')) {
@@ -50,22 +49,21 @@ class HealPatientController extends Controller
                 $sort_order = 'DESC';
                 $attribute = substr($attribute, 1);
             }
-            $patients->orderBy($attribute, $sort_order);
+            $doctors->orderBy($attribute, $sort_order);
         } else {
-            $patients->latest();
+            $doctors->latest();
         }
 
-        $patients = $patients->paginate(10)->onEachSide(2);
+        $doctors = $doctors->paginate(10)->onEachSide(2);
 
-        return Inertia::render('Health::Patients/CardList', [
-            'patients' => $patients,
+        return Inertia::render('Health::Doctors/CardList', [
+            'doctors' => $doctors,
             'filters' => request()->all('search')
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Renderable
      */
     public function create()
     {
@@ -81,7 +79,7 @@ class HealPatientController extends Controller
             )
             ->get();
 
-        return Inertia::render('Health::Patients/Create', [
+        return Inertia::render('Health::Doctors/Create', [
             'identityDocumentTypes' => $identityDocumentTypes,
             'ubigeo'       => $ubigeo,
         ]);
@@ -89,10 +87,8 @@ class HealPatientController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $update_id = null;
 
@@ -118,7 +114,7 @@ class HealPatientController extends Controller
         // $path = 'img' . DIRECTORY_SEPARATOR . 'imagen-no-disponible.jpeg';
         // $destination = 'uploads' . DIRECTORY_SEPARATOR . 'products';
         $path = null;
-        $destination = 'uploads/patients';
+        $destination = 'uploads/doctores';
         $file = $request->file('image');
         if ($file) {
             $original_name = strtolower(trim($file->getClientOriginalName()));
@@ -137,14 +133,14 @@ class HealPatientController extends Controller
             'document_type_id'      => $request->get('document_type_id'),
             'short_name'            => $request->get('names'),
             'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
-            'description'           => 'Paciente',
+            'description'           => 'Doctor',
             'number'                => $request->get('number'),
             'telephone'             => $request->get('telephone'),
             'email'                 => $request->get('email'),
             'image'                 => $path,
             'address'               => $request->get('address'),
             'is_provider'           => false,
-            'is_client'             => true,
+            'is_client'             => false,
             'ubigeo'                => $request->get('ubigeo'),
             'birthdate'             => $request->get('birthdate'),
             'names'                 => $request->get('names'),
@@ -153,19 +149,17 @@ class HealPatientController extends Controller
             'gender'                => $request->get('gender')
         ]);
 
-        HealPatient::create([
+        HealDoctor::create([
             'person_id'     => $per->id,
-            'patient_code'  => $request->get('number')
+            'doctor_code'  => $request->get('number')
         ]);
 
-        return redirect()->route('heal_patients_create')
-            ->with('message', __('Producto creado con éxito'));
+        return redirect()->route('heal_doctors_create')
+            ->with('message', __('Doctor creado con éxito'));
     }
 
     /**
      * Show the specified resource.
-     * @param int $id
-     * @return Renderable
      */
     public function show($id)
     {
@@ -174,8 +168,6 @@ class HealPatientController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
      */
     public function edit($id)
     {
@@ -191,28 +183,26 @@ class HealPatientController extends Controller
             )
             ->get();
 
-        $person = Person::leftJoin('districts', 'ubigeo', 'districts.id')
+        $doctor = Person::leftJoin('districts', 'ubigeo', 'districts.id')
             ->leftJoin('provinces', 'districts.province_id', 'provinces.id')
             ->leftJoin('departments', 'provinces.department_id', 'departments.id')
             ->select(
                 'people.*',
-                DB::raw('CONCAT(departments.name,"-",provinces.name,"-",districts.name) AS city')
+                DB::raw('CONCAT(departments.name,"-",provinces.name,"-",districts.name) AS city'),
+
             )
             ->where('people.id', $id)
             ->first();
 
-        return Inertia::render('Health::Patients/Edit', [
+        return Inertia::render('Health::Doctors/Edit', [
             'identityDocumentTypes' => $identityDocumentTypes,
             'ubigeo'                => $ubigeo,
-            'patient'               => $person
+            'doctor'               => $doctor
         ]);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
      */
     public function update(Request $request)
     {
@@ -226,7 +216,7 @@ class HealPatientController extends Controller
                 'number'            => 'required|max:12',
                 'number'            => 'unique:people,number,' . $update_id . ',id,document_type_id,' . $request->get('document_type_id'),
                 'telephone'         => 'required|max:12',
-                'email'             => 'required|max:255',
+                'email'             => 'required|max:255|unique:people,email,' . $update_id . ',id',
                 'address'           => 'required|max:255',
                 'ubigeo'            => 'required|max:255',
                 'birthdate'         => 'required|',
@@ -253,9 +243,10 @@ class HealPatientController extends Controller
         $person->names              = $request->get('names');
         $person->father_lastname    = $request->get('father_lastname');
         $person->mother_lastname    = $request->get('mother_lastname');
+        $person->gender             = $request->get('gender');
 
         $path = null;
-        $destination = 'uploads/patients';
+        $destination = 'uploads/doctores';
         $file = $request->file('image');
         if ($file) {
             $original_name = strtolower(trim($file->getClientOriginalName()));
@@ -272,15 +263,13 @@ class HealPatientController extends Controller
 
         $person->save();
 
-        HealPatient::where('person_id', $update_id)->update([
-            'patient_code'  => $request->get('number')
+        HealDoctor::where('person_id', $update_id)->update([
+            'doctor_code'  => $request->get('number')
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
      */
     public function destroy($id)
     {

@@ -175,15 +175,15 @@
                     <ul class="flex items-center space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
                         <li>
                             <Link
-                                href="/apps/calendar"
+                                :href="route('calendar')"
                                 class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
                             >
                                 <icon-calendar />
                             </Link>
                         </li>
                         <li>
-                            <Link
-                                href="/apps/todolist"
+                            <Link v-can="'empresa'"
+                                :href="route('company_show')"
                                 class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
                             >
                                 <icon-edit />
@@ -390,7 +390,7 @@
                                                     <div class="w-12 h-12 relative">
                                                         <img
                                                             class="w-12 h-12 rounded-full object-cover"
-                                                            :src="`/assets/images/${notification.profile}`"
+                                                            :src="`${baseUrl}themes/vristo/images/${notification.profile}`"
                                                             alt=""
                                                         />
                                                         <span class="bg-success w-2 h-2 rounded-full block absolute right-[6px] bottom-0"></span>

@@ -39,7 +39,9 @@ const form = useForm({
     names: props.patient.names,
     father_lastname: props.patient.father_lastname,
     mother_lastname: props.patient.mother_lastname,
-    ubigeo_description: props.patient.city
+    ubigeo_description: props.patient.city,
+    gender: props.patient.gender,
+    
 });
 
 const updatePatient = () => {
@@ -236,6 +238,16 @@ const loadFile = (event) => {
                     
                 />
                 <InputError :message="form.errors.email" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-6 space-x-2">
+                <label class="inline-flex">
+                    <input type="radio" v-model="form.gender" value="M" name="square_radio" class="form-radio text-success rounded-none" />
+                    <span>Masculino</span>
+                </label>
+                <label class="inline-flex">
+                    <input type="radio" v-model="form.gender" value="F" name="square_radio" class="form-radio rounded-none" />
+                    <span>Femenino</span>
+                </label>
             </div>
         </template>
 

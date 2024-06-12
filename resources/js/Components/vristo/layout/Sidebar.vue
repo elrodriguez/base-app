@@ -31,12 +31,7 @@
     import { Link } from '@inertiajs/vue3';
     import { 
         faPoll, 
-        faPeopleRoof,
-        faWheelchair, 
-        faChevronUp,
-        faArrowLeftLong,
-        faKitMedical,
-        faGlobe
+
     } from "@fortawesome/free-solid-svg-icons";
     import menuAcademic from 'Modules/Academic/Resources/assets/js/Menu.js';
     import menuRestaurant from 'Modules/Restaurant/Resources/assets/js/Menu.js';
@@ -46,7 +41,7 @@
     import menuCMS from 'Modules/CMS/Resources/assets/js/Menu.js';
     import menuSocialevents from 'Modules/Socialevents/Resources/assets/js/Menu.js';
     import menuHelpdesk from 'Modules/Helpdesk/Resources/assets/js/Menu.js';
-
+    import menuHealth from 'Modules/Health/Resources/assets/js/Menu.js';
 
     const store = useAppStore();
     const activeDropdown = ref('');
@@ -143,28 +138,7 @@
         // },
         // menuHelpdesk,
         // menuCMS,
-        {
-            status:false,
-            text: 'Salud',
-            icom: faKitMedical,
-            route: 'module',
-            permissions: 'heal_dashboard',
-            items: [
-                {
-                    route: route('heal_patients_list'),
-                    status: false,
-                    text: 'Pacientes',
-                    icom: faWheelchair,
-                    permissions: 'heal_pacientes_listado',
-                },
-                {
-                    route: null,
-                    status: false,
-                    text: 'Odontología',
-                    permissions: 'cms_seccion',
-                },
-            ]
-        },
+        menuHealth,
         // menuAcademic,
         // menuRestaurant,
         // menuSocialevents

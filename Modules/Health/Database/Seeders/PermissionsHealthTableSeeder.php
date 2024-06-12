@@ -30,6 +30,16 @@ class PermissionsHealthTableSeeder extends Seeder
         array_push($permissions, Permission::create(['name' => 'heal_codigo_cie10_nuevo']));
         array_push($permissions, Permission::create(['name' => 'heal_codigo_cie10_editar']));
         array_push($permissions, Permission::create(['name' => 'heal_codigo_cie10_eliminar']));
+        array_push($permissions, Permission::create(['name' => 'heal_doctores_listado']));
+        array_push($permissions, Permission::create(['name' => 'heal_doctores_nuevo']));
+        array_push($permissions, Permission::create(['name' => 'heal_doctores_editar']));
+        array_push($permissions, Permission::create(['name' => 'heal_doctores_eliminar']));
+        ///////odontologico///////////
+        array_push($permissions, Permission::create(['name' => 'heal_odontology']));
+        array_push($permissions, Permission::create(['name' => 'heal_citas_listado']));
+        array_push($permissions, Permission::create(['name' => 'heal_citas_nuevo']));
+        array_push($permissions, Permission::create(['name' => 'heal_citas_editar']));
+        array_push($permissions, Permission::create(['name' => 'heal_citas_eliminar']));
 
         foreach ($permissions as $permission) {
             $role->givePermissionTo($permission->name);

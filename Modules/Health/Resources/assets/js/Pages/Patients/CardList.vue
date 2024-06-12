@@ -8,12 +8,11 @@
     import IconListCheck from '@/Components/vristo/icon/icon-list-check.vue';
     import IconLayoutGrid from '@/Components/vristo/icon/icon-layout-grid.vue';
     import IconSearch from '@/Components/vristo/icon/icon-search.vue';
-    import IconUser from '@/Components/vristo/icon/icon-user.vue';
-    import IconFacebook from '@/Components/vristo/icon/icon-facebook.vue';
+    import { faPerson, faPersonDress, faFile, faClock, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+    import IconEdit from '@/Components/vristo/icon/icon-edit.vue';
     import IconInstagram from '@/Components/vristo/icon/icon-instagram.vue';
     import IconLinkedin from '@/Components/vristo/icon/icon-linkedin.vue';
     import IconTwitter from '@/Components/vristo/icon/icon-twitter.vue';
-    import IconX from '@/Components/vristo/icon/icon-x.vue';
     import { useForm, Link } from '@inertiajs/vue3';
 
     const props = defineProps({
@@ -32,7 +31,7 @@
     });
 
     const displayType = ref('list');
-    const addContactModal = ref(false);
+    const showAppointmentsModal = ref(false);
     const baseUrl = assetUrl;
 
     const getImage = (path) => {
@@ -43,9 +42,9 @@
         form.get(route('heal_patients_list'));
     };
 
-    const saveUser = () => {
+    const showAppointments = () => {
 
-
+        showAppointmentsModal.value = true;
     };
 
     const deleteUser = (user = null) => {
@@ -136,15 +135,30 @@
                                 <th>Email</th>
                                 <th>Dirección</th>
                                 <th>Teléfono</th>
+                                <th>Género</th>
                             </tr>
                         </thead>
                         <tbody>
                             <template v-for="contact in patients.data" :key="contact.id">
                                 <tr>
                                     <td>
-                                        <div class="flex gap-4 items-center justify-center">
-                                            <Link :href="route('heal_patients_edit',contact.person_id)" type="button" class="btn btn-sm btn-outline-primary">Editar</Link>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" @click="deleteUser(contact.person_id)">Eliminar</button>
+                                        <div class="flex gap-1 items-center justify-center">
+                                            <Link v-tippy:bottom :href="route('heal_patients_edit',contact.person_id)" type="button" class="btn btn-sm btn-outline-primary">
+                                                <font-awesome-icon  :icon="faPencil" class="m-0" />
+                                            </Link>
+                                            <tippy target="bottom" placement="bottom">Editar</tippy>
+                                            <Link v-tippy:bottom :href="route('heal_patients_edit',contact.person_id)" type="button" class="btn btn-sm btn-outline-success">
+                                                <font-awesome-icon :icon="faFile" class="m-0" />
+                                            </Link>
+                                            <tippy target="bottom" placement="bottom">Historia</tippy>
+                                            <button v-tippy:bottom type="button" class="btn btn-sm btn-outline-warning" @click="deleteUser(contact.person_id)">
+                                                <font-awesome-icon :icon="faClock" />
+                                            </button>
+                                            <tippy target="bottom" placement="bottom">Citas</tippy>
+                                            <button v-tippy:bottom type="button" class="btn btn-sm btn-outline-danger" @click="deleteUser(contact.person_id)">
+                                                <font-awesome-icon :icon="faTrash" />
+                                            </button>
+                                            <tippy target="bottom" placement="bottom">Eliminar</tippy>
                                         </div>
                                     </td>
                                     <td>
@@ -162,8 +176,17 @@
                                     </td>
                                     <td>{{ contact.email }}</td>
                                     <td class="whitespace-nowrap">{{ contact.address }}</td>
-                                    <td class="whitespace-nowrap">{{ contact.phone }}</td>
-                                    
+                                    <td class="whitespace-nowrap">{{ contact.telephone }}</td>
+                                    <td class="whitespace-nowrap text-center">
+                                        <div class="" >
+                                            <template v-if="contact.gender == 'M'">
+                                                <font-awesome-icon :icon="faPerson" class="w-6 h-6 text-success" /> 
+                                            </template> 
+                                            <template v-else>
+                                                <font-awesome-icon :icon="faPersonDress" class="w-6 h-6 text-primary" /> 
+                                            </template> 
+                                        </div>
+                                    </td>
                                 </tr>
                             </template>
                         </tbody>
@@ -206,14 +229,16 @@
                                 <div class="mt-4">
                                     <ul class="flex space-x-4 rtl:space-x-reverse items-center justify-center">
                                         <li>
-                                            <a href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
-                                                <icon-facebook />
+                                            <a v-tippy:bottom href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
+                                                <font-awesome-icon :icon="faFile" />
                                             </a>
+                                            <tippy target="bottom" placement="bottom">Historia</tippy>
                                         </li>
                                         <li>
-                                            <a href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
-                                                <icon-instagram />
+                                            <a v-tippy:bottom href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
+                                                <font-awesome-icon :icon="faClock" />
                                             </a>
+                                            <tippy target="bottom" placement="bottom">Citas</tippy>
                                         </li>
                                         <li>
                                             <a href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">

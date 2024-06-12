@@ -4,6 +4,7 @@ namespace Modules\Dental\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Health\Database\Seeders\PermissionsDentalTableSeeder;
 
 class DentalDatabaseSeeder extends Seeder
 {
@@ -14,8 +15,8 @@ class DentalDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
-        // $this->call("OthersTableSeeder");
+        $this->call([
+            PermissionsDentalTableSeeder::class
+        ]);
     }
 }

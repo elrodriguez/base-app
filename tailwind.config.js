@@ -20,6 +20,8 @@ module.exports = {
         "node_modules/flowbite/**/*.{js,jsx,ts,tsx}",
         './Modules/**/Resources/views/**/*.blade.php',
         './Modules/**/Resources/assets/js/**/*.vue',
+        './Modules/**/Resources/views/**/**.blade.php',
+        './Modules/**/Resources/assets/js/**/**.vue',
     ],
     darkMode: 'class',
     safelist: [

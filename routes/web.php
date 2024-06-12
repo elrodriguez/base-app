@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\KardexController;
@@ -12,6 +12,7 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\MetaController;
 use App\Mail\StudentRegistrationMailable;
 use App\Models\District;
 use App\Models\Person;
@@ -154,6 +155,12 @@ Route::middleware('auth')->group(function () {
         'person/update_information/store',
         [PersonController::class, 'updateInformationPerson']
     )->name('user-update-profile-store');
+
+    Route::get('calendar/index', [CalendarController::class, 'index'])->name('calendar');
+
+    ///////////////META FACEBOOK WHATSAPP/////////////////
+
+    Route::post('meta/whatsapp/message/send', [MetaController::class, 'sendMessageWhatsapp'])->name('meta_whatsapp_message_send');
 });
 
 require __DIR__ . '/auth.php';

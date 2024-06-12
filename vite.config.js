@@ -24,5 +24,10 @@ export default defineConfig({
             'Modules': path.resolve(__dirname, './Modules'),
         },
     },
-    
+    build: {
+        sourcemap: true,
+    },
+    server: {
+        sourcemap: true,
+    }
 });
