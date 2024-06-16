@@ -38,7 +38,8 @@ class AcaInstitutionController extends Controller
         $institutions = $institutions->paginate(20)->onEachSide(2);
 
         return Inertia::render('Academic::Institution/List', [
-            'institutions' => $institutions
+            'institutions' => $institutions,
+            'filters' => request()->all()
         ]);
     }
 
@@ -79,7 +80,7 @@ class AcaInstitutionController extends Controller
                 'public'
             );
 
-            $path = asset('storage/' . $img);
+            $path =  $img;
         }
 
         AcaInstitution::create([
@@ -143,7 +144,7 @@ class AcaInstitutionController extends Controller
                 'public'
             );
 
-            $path = asset('storage/' . $img);
+            $path = $img;
         }
         AcaInstitution::find($id)->update([
             'name'      => $request->get('name'),

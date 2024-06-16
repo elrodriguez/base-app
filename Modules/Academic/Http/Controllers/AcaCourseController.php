@@ -105,7 +105,8 @@ class AcaCourseController extends Controller
                 'public'
             );
 
-            $path = asset('storage/' . $img);
+            //$path = asset('storage/' . $img);
+            $path = $img;
         }
         $timestamp = strtotime($request->get('course_date'));
 
@@ -218,7 +219,8 @@ class AcaCourseController extends Controller
                 'public'
             );
 
-            $course->image  = asset('storage/' . $img);
+            //$course->image  = asset('storage/' . $img);
+            $course->image  = $img;
         }
 
         $course->save();

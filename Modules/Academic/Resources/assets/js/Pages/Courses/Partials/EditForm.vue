@@ -64,6 +64,13 @@ watch(() => form.image, (newValue) => {
         console.error("El objeto no es un archivo válido.");
     }
 });
+
+const baseUrl = assetUrl;
+
+const getImage = (path) => {
+    return baseUrl + 'storage/'+ path;
+}
+
 </script>
 
 <template>
@@ -106,7 +113,7 @@ watch(() => form.image, (newValue) => {
                 <InputLabel for="file_input" value="Imagen *" />
                 <div class="flex justify-center space-x-2">
                     <figure class="max-w-lg">
-                        <img class="h-auto max-w-full rounded-lg" :src="form.image_preview">
+                        <img class="h-auto max-w-full rounded-lg" :src="getImage(form.image_preview)">
                         <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                     </figure>
                 </div>

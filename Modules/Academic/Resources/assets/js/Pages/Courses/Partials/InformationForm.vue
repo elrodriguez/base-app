@@ -187,6 +187,12 @@ const uploadImage = (blobInfo, progress) => {
             }
         });
     }
+
+    const baseUrl = assetUrl;
+
+    const getImage = (path) => {
+        return baseUrl + 'storage/'+ path;
+    }
 </script>
 
 <template>
@@ -296,7 +302,8 @@ const uploadImage = (blobInfo, progress) => {
                                     </div>
                                 </td>
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <img class="w-10 h-10 rounded" :src="tea.teacher.person.image" alt="Medium avatar" >
+                                    <img v-if="tea.teacher.person.image" class="w-10 h-10 rounded" :src="getImage(tea.teacher.person.image)" alt="Medium avatar" >
+                                    <img v-else :src="'https://ui-avatars.com/api/?name='+tea.teacher.person.full_name+'&size=500&rounded=true'" class="w-10 h-10 rounded" :alt="tea.teacher.person.full_name"/>
                                 </th>
                                 <td class="px-6 py-4">
                                     {{ tea.teacher.person.father_lastname+" "+ tea.teacher.person.mother_lastname+" "+ tea.teacher.person.names }}

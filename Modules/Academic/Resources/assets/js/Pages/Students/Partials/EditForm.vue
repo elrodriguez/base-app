@@ -94,6 +94,12 @@ const loadFile = (event) => {
         URL.revokeObjectURL(imageFile); // libera memoria
     }
 };
+
+const baseUrl = assetUrl;
+
+const getImage = (path) => {
+    return baseUrl + 'storage/'+ path;
+}
 </script>
 
 <template>

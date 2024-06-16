@@ -8,7 +8,7 @@
     });
 </script>
 <template>
-    <nav v-if="data.links.length > 0" role="navigation" aria-label="Pagination Navigation" class="w-full flex m-4 items-center justify-between">
+    <nav v-if="data.links.length > 0" role="navigation" aria-label="Pagination Navigation" class="flex m-4 items-center justify-between">
         <div class="flex justify-between flex-1 sm:hidden">
             <span v-if="data.current_page <= 1" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
                 Previous
@@ -40,8 +40,7 @@
             <div>
                 <ul class="inline-flex items-center space-x-1 rtl:space-x-reverse m-auto mb-4">
                     <li v-if="data.current_page <= 1">
-                        <button
-                        type="button"
+                        <button type="button"
                         class="
                             flex
                             justify-center
@@ -61,8 +60,7 @@
                         </button>
                     </li>
                     <li v-else :href="data.prev_page_url">
-                        <button
-                        type="button"
+                        <button type="button"
                         class="
                             flex
                             justify-center
@@ -84,8 +82,7 @@
                     <template v-for="(link, key) in data.links">
                         <template v-if="key > 0 && key < data.last_page + 1">
                             <li v-if="!link.active && link.url === null" :key="key">
-                                <button
-                                type="button"
+                                <button type="button"
                                 class="
                                     flex
                                     justify-center
@@ -107,8 +104,7 @@
                                 <button type="button" class="flex justify-center font-semibold px-3.5 py-2 rounded-full transition bg-primary text-white dark:text-white-light dark:bg-primary">{{ link.label }}</button>
                             </li>
                             <li v-else :key="`link-${key}`">
-                                <Link  :href="link.url" 
-                                    type="button"
+                                <Link  :href="link.url" type="button"
                                     class="
                                         flex
                                         justify-center
@@ -131,8 +127,7 @@
                         </template>
                     </template>
                     <li v-if="data.current_page < data.last_page">
-                        <Link :href="data.next_page_url"
-                        type="button"
+                        <Link :href="data.next_page_url" type="button"
                         class="
                             flex
                             justify-center
@@ -152,8 +147,7 @@
                         </Link>
                     </li>
                     <li v-else>
-                        <button
-                        type="button"
+                        <button type="button"
                         class="
                             flex
                             justify-center

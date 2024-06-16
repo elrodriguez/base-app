@@ -67,7 +67,7 @@
                         ></div>
                         <div class="ltr:xl:-skew-x-[14deg] rtl:xl:skew-x-[14deg]">
                             <Link href="/" class="w-48 block lg:w-72 ms-10">
-                                <img :src="`${baseUrl}/themes/vristo/images/auth/logo-white.svg`" alt="Logo" class="w-full" />
+                                <img :src="`${baseUrl}/img/logo176x32_negativo.png`" alt="Logo" class="w-full" />
                             </Link>
                             <div class="mt-24 hidden w-full max-w-[430px] lg:block">
                                 <img :src="`${baseUrl}/themes/vristo/images/auth/login.svg`" alt="Cover Image" class="w-full" />
@@ -119,14 +119,14 @@
                         </div>
                         <div class="w-full max-w-[440px] lg:mt-16">
                             <div class="mb-10">
-                                <h1 class="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">Sign in</h1>
-                                <p class="text-base font-bold leading-normal text-white-dark">Enter your email and password to login</p>
+                                <h1 class="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">Iniciar sesión</h1>
+                                <p class="text-base font-bold leading-normal text-white-dark">Ingrese su correo electrónico y contraseña para iniciar sesión</p>
                             </div>
                             <form class="space-y-5 dark:text-white" @submit.prevent="submit">
                                 <div>
-                                    <label for="Email">Email</label>
+                                    <label for="Email">Correo Electrónico</label>
                                     <div class="relative text-white-dark">
-                                        <input v-model="form.email" id="Email" type="email" placeholder="Enter Email" class="form-input ps-10 placeholder:text-white-dark" />
+                                        <input v-model="form.email" id="Email" type="email" placeholder="Ingrese correo electrónico" class="form-input ps-10 placeholder:text-white-dark" />
                                         <span class="absolute start-4 top-1/2 -translate-y-1/2">
                                             <icon-mail :fill="true" />
                                         </span>
@@ -134,9 +134,9 @@
                                     <InputError class="mt-2" :message="form.errors.email" />
                                 </div>
                                 <div>
-                                    <label for="Password">Password</label>
+                                    <label for="Password">Contraseña</label>
                                     <div class="relative text-white-dark">
-                                        <input v-model="form.password" id="Password" type="password" placeholder="Enter Password" class="form-input ps-10 placeholder:text-white-dark" />
+                                        <input v-model="form.password" id="Password" type="password" placeholder="Ingrese la contraseña" class="form-input ps-10 placeholder:text-white-dark" />
                                         <span class="absolute start-4 top-1/2 -translate-y-1/2">
                                             <icon-lock-dots :fill="true" />
                                         </span>
@@ -146,11 +146,11 @@
                                 <div>
                                     <label class="flex cursor-pointer items-center">
                                         <Checkbox v-model:checked="form.remember" />
-                                        <span class="text-white-dark">Subscribe to weekly newsletter</span>
+                                        <span class="text-white-dark">Acuérdate de mí</span>
                                     </label>
                                 </div>
                                 <button type="submit" class="btn btn-gradient !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
-                                    Sign in
+                                    Iniciar sesión
                                 </button>
                             </form>
 
@@ -199,9 +199,9 @@
                                 </ul>
                             </div>
                             <div class="text-center dark:text-white">
-                                Don't have an account ?
+                                ¿No tienes una cuenta?
                                 <Link :href="route('register')" class="uppercase text-primary underline transition hover:text-black dark:hover:text-white">
-                                    SIGN UP
+                                    REGISTRATE
                                 </Link>
                             </div>
                         </div>

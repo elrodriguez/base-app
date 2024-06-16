@@ -157,7 +157,8 @@ class AcaTeacherController extends Controller
                 'public'
             );
 
-            $path = asset("storage/" . $path); //guardar la ruta COMPLETA
+            //$path = asset("storage/" . $path); //guardar la ruta COMPLETA
+            $path =  $path;
             $per->image = $path;
             $per->save();
         }
@@ -273,7 +274,8 @@ class AcaTeacherController extends Controller
                 'public'
             );
 
-            $path = asset("storage/" . $path); //RUTA COMPLETA
+            // $path = asset("storage/" . $path); //RUTA COMPLETA
+            $path =  $path;
         }
 
         Person::find($person_id)->update([

@@ -10,7 +10,7 @@ class MetaController extends Controller
     public function sendMessageWhatsapp(Request $request)
     {
         $url = "https://graph.facebook.com/v19.0/347133948480424/messages";
-        $token = "EAAUfk2ptXbIBO3TRQ46CyIWhn2O2QCoKUgMqT7AZAvHKyHx7Rt3SWu7oSQHG1Moz2lE8TnQFEzgdZCAQM30tPoR3oOucKiJPzHkJ1KSpYS9pFKS8BC7JtI2wZAy4XmeFuOfxqvd3ZCPAHMoUzSyM32D9Hx1mgfCNevQcCh0zkN7x9E5GvIY6pvMg3YS5V5wcL55ZCjU56pKeHHSJr90sZD";
+        $token = "EAAUfk2ptXbIBO8x7rDpnPXg5ZCn3mJMKodyBXaRMYAZC7kZBfMS8YCCwuFcw2vXHP5U6W9aZAdESIAwfotLGCYFZAxQUxeLhZCmcjQgXQFV5zZARoYADU5t9modRZBQx4xbFmdDs9kzYzrBHrXUZCrAelfyl6vJ1WzqbbxndeVGC5cN9Ku5zowXZC4QS8r3vjjodhRqs2JEc62pDRAs7qaN30ZD";
 
         // Obtener los parámetros de la solicitud
         // $number = $request->input('number');
@@ -35,7 +35,7 @@ class MetaController extends Controller
                 "language" => [
                     "code" => "es"
                 ],
-            ]
+            ],
         ];
 
 
@@ -45,12 +45,13 @@ class MetaController extends Controller
 
             $headers = [
                 'Authorization' => 'Bearer ' . $token,
-                'Accept' => 'application/json'
+                'Accept' => '*/*',
+                'Content-Type' => 'application/json'
             ];
 
             $response = $client->request('POST', $url, [
                 'headers' => $headers,
-                'form_params' => $data
+                'body'    => json_encode($data)
             ]);
 
             // Obtener el código de estado y el cuerpo de la respuesta

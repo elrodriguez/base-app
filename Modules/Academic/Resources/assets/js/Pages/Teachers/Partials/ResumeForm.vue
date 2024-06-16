@@ -104,7 +104,7 @@ const destroyExperience = (id, index) => {
 </script>
 <template>
     <div class="grid grid-cols-6 gap-6">
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 sm:col-span-6">
             <div class="p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <div class="space-y-6">
                     <h5 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Experiencias</h5>
@@ -124,17 +124,16 @@ const destroyExperience = (id, index) => {
                         </div>
                     </template>
                 </div>
+                <div class="mt-4 mb-4">
+                    <Keypad>
+                        <template #botones>
+                            <Link :href="route('aca_teachers_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
+                        </template>
+                    </Keypad>
+                </div>
             </div>
         </div>
         
     </div>
-    <div class="grid grid-cols-6 gap-6 mt-4">
-        <div class="col-span-6">
-            <Keypad>
-                <template #botones>
-                    <Link :href="route('aca_teachers_list')"  class="ml-2 inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Ir al Listado</Link>
-                </template>
-            </Keypad>
-        </div>
-    </div>
+
 </template>

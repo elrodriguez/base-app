@@ -16,6 +16,12 @@ const props = defineProps({
     }
 });
 
+const baseUrl = assetUrl;
+
+const getImage = (path) => {
+    return baseUrl + 'storage/'+ path;
+}
+
 const form = useForm({
     id: props.institution.id,
     name: props.institution.name,
@@ -80,7 +86,7 @@ watch(() => form.image, (newValue) => {
                 <InputLabel for="file_input" value="Imagen *" />
                 <div class="flex justify-center space-x-2">
                     <figure class="max-w-lg">
-                        <img class="h-auto max-w-full rounded-lg" :src="form.image_preview">
+                        <img v-if="form.image_preview" class="h-auto max-w-full rounded-lg" :src="getImage(form.image_preview)">
                         <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                     </figure>
                 </div>

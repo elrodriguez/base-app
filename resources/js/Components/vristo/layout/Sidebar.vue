@@ -139,7 +139,7 @@
         // menuHelpdesk,
         // menuCMS,
         menuHealth,
-        // menuAcademic,
+        menuAcademic,
         // menuRestaurant,
         // menuSocialevents
     ]);

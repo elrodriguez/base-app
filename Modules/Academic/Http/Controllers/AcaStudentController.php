@@ -130,7 +130,8 @@ class AcaStudentController extends Controller
                 'public'
             );
 
-            $path = asset('storage/' . $path);
+            // $path = asset('storage/' . $path);
+            $path =  $path;
         }
 
         $per = Person::create([
@@ -269,8 +270,8 @@ class AcaStudentController extends Controller
                 $file_name,
                 'public'
             );
-
-            $path = asset('storage/' . $path);
+            //$path = asset('storage/' . $path);
+            $path =  $path;
         }
 
         Person::find($person_id)->update([
@@ -327,18 +328,30 @@ class AcaStudentController extends Controller
         if ($user->hasAnyRole(['admin', 'Docente', 'Administrador'])) {
             $courses = AcaCourse::with('modules.themes.contents')
                 ->with('teacher.person')->where('status', true)
+                ->with('category')
+                ->with('modality')
                 ->orderBy('id', 'DESC')
                 ->get();
         } else {
             $courses = AcaCourse::with('modules.themes.contents')
+                ->with('modality')
+                ->with('category')
                 ->with('teacher.person')->whereHas('registrations', function ($query) use ($student_id) {
                     $query->where('student_id', $student_id);
                 })->orderBy('id', 'DESC')
                 ->get();
         }
-
-        return Inertia::render('Academic::Students/MyCourses', [
+        //dd($courses);
+        return Inertia::render('Academic::Students/Courses', [
             'courses' => $courses
+        ]);
+    }
+
+    public function courseLessons($id)
+    {
+        $course = AcaCourse::where('id', $id)->first();
+        return Inertia::render('Academic::Students/Lessons', [
+            'course' => $course
         ]);
     }
 }
