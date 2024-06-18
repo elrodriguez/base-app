@@ -1,4 +1,4 @@
-import { faBook } from "@fortawesome/free-solid-svg-icons";
+import { faBook, faUserGraduate, faLandmarkFlag, faUserTie, faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 const menuAcademic = {
     status: false,
@@ -11,30 +11,35 @@ const menuAcademic = {
             route: route("aca_institutions_list"),
             status: false,
             text: "Instituciones",
+            icom: faLandmarkFlag,
             permissions: "aca_institucion_listado",
         },
         {
             route: route("aca_teachers_list"),
             status: false,
             text: "Docentes",
+            icom: faUserTie,
             permissions: "aca_docente_listado",
         },
         {
             route: route("aca_students_list"),
             status: false,
             text: "Estudiantes",
+            icom: faUserGraduate,
             permissions: "aca_estudiante_listado",
         },
         {
             route: route("aca_courses_list"),
             status: false,
             text: "Cursos",
+            icom: faBook,
             permissions: "aca_cursos_listado",
         },
         {
             route: route("aca_mycourses"),
             status: false,
             text: "Mis Cursos",
+            icom: faBookOpen,
             permissions: "aca_miscursos",
         },
     ],

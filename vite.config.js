@@ -24,6 +24,9 @@ export default defineConfig({
             'Modules': path.resolve(__dirname, './Modules'),
         },
     },
+    optimizeDeps: {
+        include: ['quill'],
+    },
     build: {
         sourcemap: true,
     },
