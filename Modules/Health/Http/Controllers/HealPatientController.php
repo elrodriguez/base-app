@@ -286,4 +286,15 @@ class HealPatientController extends Controller
     {
         //
     }
+
+    public function patientPanel($id)
+    {
+        $patient = HealPatient::with('person')
+            ->where('id', $id)
+            ->first();
+
+        return Inertia::render('Health::Patients/Panel', [
+            'patient' => $patient
+        ]);
+    }
 }

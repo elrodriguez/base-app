@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->prefix('health')->group(function () {
     Route::get('patients/edit/{id}', 'HealPatientController@edit')->name('heal_patients_edit');
     Route::post('patients/update', 'HealPatientController@update')->name('heal_patients_update');
     Route::delete('patients/destroy/{id}', 'HealPatientController@destroy')->name('heal_patients_destroy');
+    Route::get('patients/panel/{id}', 'HealPatientController@patientPanel')->name('heal_patients_panel');
 
     Route::get('doctor', 'DoctorController@index')->name('heal_doctors_list');
     Route::get('doctor/create', 'DoctorController@create')->name('heal_doctors_create');

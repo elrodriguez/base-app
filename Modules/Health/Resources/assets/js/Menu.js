@@ -2,6 +2,7 @@ import {
     faWheelchair, 
     faKitMedical,
     faUserDoctor,
+    faTooth
 } from "@fortawesome/free-solid-svg-icons";
 
 const menuHealth = {
@@ -29,6 +30,7 @@ const menuHealth = {
             route: null,
             status: false,
             text: 'Odontología',
+            icom: faTooth,
             permissions: 'dental_dashboard',
             items: [
                 {

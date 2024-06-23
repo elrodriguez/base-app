@@ -66,6 +66,7 @@ const form = useForm({
     message: null,
     status: true,
     important: false,
+    sick_time: null
 });
 
 const isAddNoteModal = ref(false);
@@ -176,6 +177,7 @@ const editNote = (note = null) => {
         form.details = pp.details;
         form.message = pp.message;
         form.status = pp.status;
+        form.sick_time = pp.sick_time;
     }
     isAddNoteModal.value = true;
 };
@@ -453,25 +455,15 @@ const sendMessageWhatsapp = () => {
                         </button>
                     </div>
                     <template v-if="!appointments.data.length">
-                        <div
-                            class="flex justify-center items-center sm:min-h-[300px] min-h-[400px] font-semibold text-lg h-full"
-                        >
+                        <div class="flex justify-center items-center sm:min-h-[300px] min-h-[400px] font-semibold text-lg h-full">
                             Datos no disponibles
                         </div>
                     </template>
                     <template v-if="appointments.data.length">
-                        <div
-                            class="table-responsive grow overflow-y-auto sm:min-h-[300px] min-h-[400px]"
-                        >
-                            <div
-                                class="grid 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5"
-                            >
-                                <template
-                                    v-for="note in appointments.data"
-                                    :key="note.id"
-                                >
-                                    <div
-                                        class="panel pb-12"
+                        <div class="table-responsive grow overflow-y-auto sm:min-h-[300px] min-h-[400px]">
+                            <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
+                                <template v-for="note in appointments.data" :key="note.id" >
+                                    <div class="panel pb-12"
                                         :class="{
                                             // 'bg-primary-light shadow-primary': note.status === '1',
                                             'bg-warning-light shadow-warning':
@@ -485,135 +477,47 @@ const sendMessageWhatsapp = () => {
                                     >
                                         <div class="min-h-[142px]">
                                             <div class="flex justify-between">
-                                                <div
-                                                    class="flex items-center w-max"
-                                                >
+                                                <div class="flex items-center w-max" >
                                                     <div class="flex-none">
-                                                        <div
-                                                            v-if="
-                                                                note.patient
-                                                                    .image
-                                                            "
-                                                            class="p-0.5 bg-gray-300 dark:bg-gray-700 rounded-full"
-                                                        >
-                                                            <img
-                                                                class="h-8 w-8 rounded-full object-cover"
-                                                                :src="
-                                                                    getImage(
-                                                                        note
-                                                                            .patient
-                                                                            .image
-                                                                    )
-                                                                "
-                                                            />
+                                                        <div v-if="note.patient.image" class="p-0.5 bg-gray-300 dark:bg-gray-700 rounded-full">
+                                                            <img class="h-8 w-8 rounded-full object-cover" :src="getImage(note.patient.image)" />
                                                         </div>
                                                         <div v-else>
-                                                            <img
-                                                                :src="
-                                                                    'https://ui-avatars.com/api/?name=' +
-                                                                    note.patient
-                                                                        .full_name +
-                                                                    '&size=54&rounded=true'
-                                                                "
-                                                                class="h-8 w-8 rounded-full object-cover ltr:mr-2 rtl:ml-2"
-                                                                :alt="
-                                                                    note.patient
-                                                                        .full_name
-                                                                "
-                                                            />
+                                                            <img :src="'https://ui-avatars.com/api/?name=' +note.patient.full_name +'&size=54&rounded=true'" class="h-8 w-8 rounded-full object-cover ltr:mr-2 rtl:ml-2" :alt="note.patient.full_name" />
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="ltr:ml-2 rtl:mr-2"
-                                                    >
-                                                        <div
-                                                            class="font-semibold"
-                                                        >
-                                                            {{
-                                                                note.patient
-                                                                    .full_name
-                                                            }}
+                                                    <div class="ltr:ml-2 rtl:mr-2" >
+                                                        <div class="font-semibold" >
+                                                            {{ note.patient.full_name }}
                                                         </div>
-                                                        <div
-                                                            class="text-sx text-white-dark"
-                                                        >
-                                                            {{
-                                                                note.date_appointmen
-                                                            }}
+                                                        <div  class="text-sx text-white-dark" >
+                                                            {{ note.date_appointmen }}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="dropdown">
-                                                    <Popper
-                                                        :placement="
-                                                            store.rtlClass ===
-                                                            'rtl'
-                                                                ? 'bottom-start'
-                                                                : 'bottom-end'
-                                                        "
-                                                        offsetDistance="0"
-                                                    >
-                                                        <button
-                                                            type="button"
-                                                            class="text-primary"
-                                                        >
-                                                            <icon-horizontal-dots
-                                                                class="rotate-90 opacity-70 hover:opacity-100"
-                                                            />
+                                                    <Popper :placement=" store.rtlClass === 'rtl' ? 'bottom-start' : 'bottom-end'" offsetDistance="0" >
+                                                        <button type="button" class="text-primary" >
+                                                            <icon-horizontal-dots class="rotate-90 opacity-70 hover:opacity-100" />
                                                         </button>
-                                                        <template
-                                                            #content="{ close }"
-                                                        >
-                                                            <ul
-                                                                @click="close()"
-                                                                class="text-sm font-medium"
-                                                            >
+                                                        <template #content="{ close }" >
+                                                            <ul @click="close()" class="text-sm font-medium" >
                                                                 <li>
-                                                                    <a
-                                                                        href="javascript:;"
-                                                                        class="w-full"
-                                                                        @click="
-                                                                            editNote(
-                                                                                note
-                                                                            )
-                                                                        "
-                                                                    >
-                                                                        <icon-pencil
-                                                                            class="w-4 h-4 ltr:mr-3 rtl:ml-3 shrink-0"
-                                                                        />
+                                                                    <a href="javascript:;" class="w-full" @click="editNote(note)" >
+                                                                        <icon-pencil class="w-4 h-4 ltr:mr-3 rtl:ml-3 shrink-0" />
 
                                                                         Editar
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a
-                                                                        href="javascript:;"
-                                                                        class="w-full"
-                                                                        @click="
-                                                                            deleteNote(
-                                                                                note
-                                                                            )
-                                                                        "
-                                                                    >
-                                                                        <icon-trash-lines
-                                                                            class="w-4.5 h-4.5 ltr:mr-3 rtl:ml-3 shrink-0"
-                                                                        />
+                                                                    <a href="javascript:;" class="w-full" @click="deleteNote(note)" >
+                                                                        <icon-trash-lines class="w-4.5 h-4.5 ltr:mr-3 rtl:ml-3 shrink-0" />
                                                                         Eliminar
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a
-                                                                        href="javascript:;"
-                                                                        class="w-full"
-                                                                        @click="
-                                                                            viewNote(
-                                                                                note
-                                                                            )
-                                                                        "
-                                                                    >
-                                                                        <icon-eye
-                                                                            class="w-4.5 h-4.5 ltr:mr-3 rtl:ml-3 shrink-0"
-                                                                        />
+                                                                    <a href="javascript:;"  class="w-full" @click="viewNote(note)" >
+                                                                        <icon-eye class="w-4.5 h-4.5 ltr:mr-3 rtl:ml-3 shrink-0" />
                                                                         Ver
                                                                     </a>
                                                                 </li>
@@ -631,58 +535,29 @@ const sendMessageWhatsapp = () => {
                                                 </p>
                                             </div>
                                         </div>
-                                        <div
-                                            class="absolute bottom-5 left-0 w-full px-5"
-                                        >
-                                            <div
-                                                class="flex items-center justify-between mt-2"
-                                            >
+                                        <div class="absolute bottom-5 left-0 w-full px-5" >
+                                            <div  class="flex items-center justify-between mt-2" >
                                                 <div class="dropdown">
-                                                    <Popper
-                                                        :placement="
-                                                            store.rtlClass ===
-                                                            'rtl'
-                                                                ? 'bottom-start'
-                                                                : 'bottom-end'
-                                                        "
-                                                        offsetDistance="0"
-                                                    >
-                                                        <button
-                                                            type="button"
+                                                    <Popper :placement=" store.rtlClass === 'rtl' ? 'bottom-start' : 'bottom-end'" offsetDistance="0" >
+                                                        <button type="button"
                                                             :class="{
                                                                 // 'text-primary': note.status === '1',
-                                                                'text-warning':
-                                                                    note.status ===
-                                                                    '1',
-                                                                'text-info':
-                                                                    note.status ===
-                                                                    '2',
-                                                                'text-danger':
-                                                                    note.status ===
-                                                                    '0',
+                                                                'text-warning': note.status === '1',
+                                                                'text-info': note.status === '2',
+                                                                'text-danger': note.status === '0',
                                                             }"
                                                         >
                                                             <icon-square-rotated
                                                                 :class="{
                                                                     // 'fill-primary': note.tag === 'personal',
-                                                                    'fill-warning':
-                                                                        note.status ===
-                                                                        '1',
-                                                                    'fill-info':
-                                                                        note.status ===
-                                                                        '2',
-                                                                    'fill-danger':
-                                                                        note.status ===
-                                                                        '0',
+                                                                    'fill-warning': note.status === '1',
+                                                                    'fill-info':  note.status === '2',
+                                                                    'fill-danger': note.status === '0',
                                                                 }"
                                                             />
                                                         </button>
-                                                        <template
-                                                            #content="{ close }"
-                                                        >
-                                                            <ul
-                                                                @click="close()"
-                                                            >
+                                                        <template #content="{ close }" >
+                                                            <ul  @click="close()" >
                                                                 <!-- <li>
                                                                 <a href="javascript:;" @click="setTag(note, 'personal')">
                                                                     <icon-square-rotated class="ltr:mr-2 rtl:ml-2 fill-primary text-primary" />
@@ -722,18 +597,8 @@ const sendMessageWhatsapp = () => {
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a
-                                                                        href="javascript:;"
-                                                                        @click="
-                                                                            setTag(
-                                                                                note,
-                                                                                '0'
-                                                                            )
-                                                                        "
-                                                                    >
-                                                                        <icon-square-rotated
-                                                                            class="ltr:mr-2 rtl:ml-2 fill-danger text-danger"
-                                                                        />
+                                                                    <a href="javascript:;" @click="setTag(note,'0')" >
+                                                                        <icon-square-rotated  class="ltr:mr-2 rtl:ml-2 fill-danger text-danger" />
                                                                         Cancelado
                                                                     </a>
                                                                 </li>
@@ -742,13 +607,7 @@ const sendMessageWhatsapp = () => {
                                                     </Popper>
                                                 </div>
                                                 <div class="flex items-center">
-                                                    <button
-                                                        type="button"
-                                                        class="text-danger"
-                                                        @click="
-                                                            deleteNote(note)
-                                                        "
-                                                    >
+                                                    <button type="button" class="text-danger" @click=" deleteNote(note)" >
                                                         <icon-trash-lines />
                                                     </button>
                                                     <button
@@ -825,44 +684,16 @@ const sendMessageWhatsapp = () => {
                                             >
                                                 <icon-x />
                                             </button>
-                                            <div
-                                                class="text-lg font-medium bg-[#fbfbfb] dark:bg-[#121c2c] ltr:pl-5 rtl:pr-5 py-3 ltr:pr-[50px] rtl:pl-[50px]"
-                                            >
-                                                {{
-                                                    form.id
-                                                        ? "Editar cita"
-                                                        : "Nueva cita"
-                                                }}
+                                            <div  class="text-lg font-medium bg-[#fbfbfb] dark:bg-[#121c2c] ltr:pl-5 rtl:pr-5 py-3 ltr:pr-[50px] rtl:pl-[50px]" >
+                                                {{ form.id ? "Editar cita" : "Nueva cita" }}
                                             </div>
                                             <div class="p-5">
-                                                <form
-                                                    @submit.prevent="
-                                                        saveAppointment
-                                                    "
-                                                    class="space-y-5"
-                                                >
-                                                    <div
-                                                        :class="[
-                                                            form.doctor_id
-                                                                ? form.errors
-                                                                      .doctor_id
-                                                                    ? 'has-success'
-                                                                    : 'has-error'
-                                                                : '',
-                                                        ]"
-                                                        class=""
-                                                    >
-                                                        <label for="doctor_id"
-                                                            >Doctores</label
-                                                        >
+                                                <form @submit.prevent="saveAppointment" class="space-y-5" >
+                                                    <div :class="[form.doctor_id? form.errors.doctor_id ? 'has-success' : 'has-error' : '', ]" class="" >
+                                                        <label for="doctor_id" >Doctores</label>
                                                         <multiselect
-                                                            id="doctor_id"
-                                                            :model-value="
-                                                                form.doctor_id
-                                                            "
-                                                            v-model="
-                                                                form.doctor_id
-                                                            "
+                                                            id="doctor_id" :model-value="form.doctor_id"
+                                                            v-model="form.doctor_id"
                                                             :options="doctors"
                                                             class="custom-multiselect"
                                                             :searchable="true"
@@ -892,14 +723,10 @@ const sendMessageWhatsapp = () => {
                                                         ]"
                                                         class=""
                                                     >
-                                                        <label for="patient_id"
-                                                            >Paciente</label
-                                                        >
+                                                        <label for="patient_id" >Paciente</label>
                                                         <multiselect
                                                             id="patient_id"
-                                                            v-model="
-                                                                form.patient_id
-                                                            "
+                                                            v-model="form.patient_id"
                                                             :options="patients"
                                                             class="custom-multiselect"
                                                             :searchable="true"
@@ -909,21 +736,11 @@ const sendMessageWhatsapp = () => {
                                                             deselect-label="Quitar"
                                                             label="name"
                                                             track-by="code"
-                                                            @update:model-value="
-                                                                updateSelected
-                                                            "
+                                                            @update:model-value="updateSelected"
                                                         ></multiselect>
-                                                        <InputError
-                                                            :message="
-                                                                form.errors
-                                                                    .patient_id
-                                                            "
-                                                            class="mt-1"
-                                                        />
+                                                        <InputError :message="form.errors.patient_id" class="mt-1" />
                                                     </div>
-                                                    <div
-                                                        class="grid grid-cols-1 gap-5 md:grid-cols-2"
-                                                    >
+                                                    <div class="grid grid-cols-1 gap-5 md:grid-cols-2" >
                                                         <div
                                                             :class="[
                                                                 form.date_appointmen
@@ -989,147 +806,45 @@ const sendMessageWhatsapp = () => {
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        class="grid grid-cols-1 gap-5 md:grid-cols-2"
-                                                    >
-                                                        <div
-                                                            :class="[
-                                                                form.email
-                                                                    ? form
-                                                                          .errors
-                                                                          .email
-                                                                        ? 'has-success'
-                                                                        : 'has-error'
-                                                                    : '',
-                                                            ]"
-                                                            class=""
-                                                        >
-                                                            <label for="email"
-                                                                >Email</label
-                                                            >
-                                                            <input
-                                                                id="email"
-                                                                type="text"
-                                                                class="form-input"
-                                                                v-model="
-                                                                    form.email
-                                                                "
-                                                            />
-                                                            <InputError
-                                                                :message="
-                                                                    form.errors
-                                                                        .email
-                                                                "
-                                                                class="mt-1"
-                                                            />
+                                                    <div class="grid grid-cols-1 gap-5 md:grid-cols-2" >
+                                                        <div :class="[form.email ? form.errors.email ? 'has-success' : 'has-error' : '', ]" class="">
+                                                            <label for="email" >Email</label>
+                                                            <input id="email" type="text" class="form-input" v-model="form.email" />
+                                                            <InputError :message="form.errors.email" class="mt-1" />
                                                         </div>
-                                                        <div
-                                                            :class="[
-                                                                form.telephone
-                                                                    ? form
-                                                                          .errors
-                                                                          .telephone
-                                                                        ? 'has-success'
-                                                                        : 'has-error'
-                                                                    : '',
-                                                            ]"
-                                                            class=""
-                                                        >
-                                                            <label for="email"
-                                                                >Teléfono</label
-                                                            >
-                                                            <input
-                                                                id="email"
-                                                                type="text"
-                                                                class="form-input"
-                                                                v-model="
-                                                                    form.telephone
-                                                                "
-                                                            />
-                                                            <InputError
-                                                                :message="
-                                                                    form.errors
-                                                                        .telephone
-                                                                "
-                                                                class="mt-1"
-                                                            />
+                                                        <div :class="[form.telephone ? form.errors.telephone ? 'has-success' : 'has-error' : '', ]" class="" >
+                                                            <label for="email" >Teléfono</label>
+                                                            <input id="email" type="text" class="form-input" v-model="form.telephone" />
+                                                            <InputError :message="form.errors.telephone" class="mt-1" />
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <label for="description"
-                                                            >Asunto</label
-                                                        >
-                                                        <textarea
-                                                            v-model="
-                                                                form.description
-                                                            "
-                                                            id="description"
-                                                            rows="3"
-                                                            class="form-textarea"
-                                                        ></textarea>
-                                                        <InputError
-                                                            :message="
-                                                                form.errors
-                                                                    .description
-                                                            "
-                                                            class="mt-1"
-                                                        />
+                                                        <label for="description" >Motivo de consulta</label>
+                                                        <input v-model="form.description" id="description" class="form-input" />
+                                                        <InputError :message="form.errors.description" class="mt-1" />
                                                     </div>
                                                     <div>
-                                                        <label for="details"
-                                                            >Detalles
-                                                            Adicionales</label
-                                                        >
-                                                        <textarea
-                                                            v-model="
-                                                                form.details
-                                                            "
-                                                            id="details"
-                                                            rows="3"
-                                                            class="form-textarea"
-                                                        ></textarea>
-                                                        <InputError
-                                                            :message="
-                                                                form.errors
-                                                                    .details
-                                                            "
-                                                            class="mt-1"
-                                                        />
+                                                        <label for="details">Signos y Sintomas</label>
+                                                        <input v-model="form.details" id="details" class="form-input" />
+                                                        <InputError :message="form.errors.details" class="mt-1" />
                                                     </div>
-                                                    <div
-                                                        class="flex justify-end items-center mt-8"
-                                                    >
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-outline-danger gap-2"
-                                                            @click="
-                                                                isAddNoteModal = false
-                                                            "
-                                                        >
+                                                    <div>
+                                                        <label for="message">Tiempo de Enfermedad</label>
+                                                        <input v-model="form.message" id="message" class="form-input" />
+                                                        <InputError :message="form.errors.message" class="mt-1" />
+                                                    </div>
+                                                    <div>
+                                                        <label for="sick_time">Relato Cronológico</label>
+                                                        <input v-model="form.sick_time" id="sick_time" class="form-input" />
+                                                        <InputError :message="form.errors.sick_time" class="mt-1" />
+                                                    </div>
+                                                    <div class="flex justify-end items-center mt-8" >
+                                                        <button type="button" class="btn btn-outline-danger gap-2" @click="isAddNoteModal = false" >
                                                             Cancelar
                                                         </button>
-                                                        <button
-                                                            type="submit"
-                                                            class="btn btn-primary ltr:ml-4 rtl:mr-4"
-                                                            :class="{
-                                                                'opacity-25':
-                                                                    form.processing,
-                                                            }"
-                                                            :disabled="
-                                                                form.processing
-                                                            "
-                                                        >
-                                                            <icon-loader
-                                                                v-show="
-                                                                    form.processing
-                                                                "
-                                                                class="animate-[spin_2s_linear_infinite] inline-block align-middle ltr:mr-2 rtl:ml-2 shrink-0"
-                                                            />
-                                                            {{
-                                                                form.id
-                                                                    ? "Actualizar"
-                                                                    : "Guardar"
-                                                            }}
+                                                        <button type="submit" class="btn btn-primary ltr:ml-4 rtl:mr-4" :class="{ 'opacity-25': form.processing, }" :disabled="form.processing" >
+                                                            <icon-loader v-show="form.processing" class="animate-[spin_2s_linear_infinite] inline-block align-middle ltr:mr-2 rtl:ml-2 shrink-0" />
+                                                            {{ form.id ? "Actualizar" : "Guardar"}}
                                                         </button>
                                                     </div>
                                                 </form>
@@ -1141,16 +856,8 @@ const sendMessageWhatsapp = () => {
                         </Dialog>
                     </TransitionRoot>
 
-                    <TransitionRoot
-                        appear
-                        :show="isViewNoteModal"
-                        as="template"
-                    >
-                        <Dialog
-                            as="div"
-                            @close="isViewNoteModal = false"
-                            class="relative z-[51]"
-                        >
+                    <TransitionRoot appear :show="isViewNoteModal" as="template" >
+                        <Dialog as="div"  @close="isViewNoteModal = false" class="relative z-[51]" >
                             <TransitionChild
                                 as="template"
                                 enter="duration-300 ease-out"
@@ -1160,15 +867,11 @@ const sendMessageWhatsapp = () => {
                                 leave-from="opacity-100"
                                 leave-to="opacity-0"
                             >
-                                <DialogOverlay
-                                    class="fixed inset-0 bg-[black]/60"
-                                />
+                                <DialogOverlay class="fixed inset-0 bg-[black]/60" />
                             </TransitionChild>
 
                             <div class="fixed inset-0 overflow-y-auto">
-                                <div
-                                    class="flex min-h-full items-center justify-center px-4 py-8"
-                                >
+                                <div class="flex min-h-full items-center justify-center px-4 py-8">
                                     <TransitionChild
                                         as="template"
                                         enter="duration-300 ease-out"
@@ -1178,63 +881,31 @@ const sendMessageWhatsapp = () => {
                                         leave-from="opacity-100 scale-100"
                                         leave-to="opacity-0 scale-95"
                                     >
-                                        <DialogPanel
-                                            class="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg text-black dark:text-white-dark"
-                                        >
-                                            <button
-                                                type="button"
-                                                class="absolute top-4 ltr:right-4 rtl:left-4 text-gray-400 hover:text-gray-800 dark:hover:text-gray-600 outline-none"
-                                                @click="isViewNoteModal = false"
-                                            >
+                                        <DialogPanel class="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg text-black dark:text-white-dark">
+                                            <button type="button" class="absolute top-4 ltr:right-4 rtl:left-4 text-gray-400 hover:text-gray-800 dark:hover:text-gray-600 outline-none" @click="isViewNoteModal = false" >
                                                 <icon-x />
                                             </button>
-                                            <div
-                                                class="flex items-center flex-wrap gap-2 text-lg font-medium bg-[#fbfbfb] dark:bg-[#121c2c] ltr:pl-5 rtl:pr-5 py-3 ltr:pr-[50px] rtl:pl-[50px]"
-                                            >
+                                            <div class="flex items-center flex-wrap gap-2 text-lg font-medium bg-[#fbfbfb] dark:bg-[#121c2c] ltr:pl-5 rtl:pr-5 py-3 ltr:pr-[50px] rtl:pl-[50px]">
                                                 <div class="ltr:mr-3 rtl:ml-3">
-                                                    {{
-                                                        selectedNote.description
-                                                    }}
+                                                    {{ selectedNote.description }}
                                                 </div>
                                                 <button
                                                     v-show="selectedNote.status"
                                                     type="button"
                                                     class="badge badge-outline-primary rounded-3xl capitalize ltr:mr-3 rtl:ml-3"
                                                     :class="{
-                                                        'shadow-primary':
-                                                            selectedNote.status ===
-                                                            '4',
-                                                        'shadow-warning':
-                                                            selectedNote.status ===
-                                                            '1',
-                                                        'shadow-info':
-                                                            selectedNote.status ===
-                                                            '2',
-                                                        'shadow-danger':
-                                                            selectedNote.status ===
-                                                            '0',
+                                                        'shadow-primary': selectedNote.status === '4',
+                                                        'shadow-warning': selectedNote.status === '1',
+                                                        'shadow-info': selectedNote.status === '2',
+                                                        'shadow-danger': selectedNote.status === '0',
                                                     }"
                                                 >
                                                     <span v-if="selectedNote.status === '1'">Pendiente</span>
                                                     <span v-else-if="selectedNote.status == '2'">Atendido</span>
-                                                    <span
-                                                        v-else-if="
-                                                            selectedNote.status ==
-                                                            '0'
-                                                        "
-                                                        >Cancelado</span
-                                                    >
+                                                    <span v-else-if="selectedNote.status == '0'" >Cancelado</span>
                                                 </button>
-                                                <button
-                                                    v-show="
-                                                        selectedNote.important
-                                                    "
-                                                    type="button"
-                                                    class="text-warning"
-                                                >
-                                                    <icon-star
-                                                        class="fill-warning"
-                                                    />
+                                                <button v-show="selectedNote.important" type="button"  class="text-warning">
+                                                    <icon-star class="fill-warning" />
                                                 </button>
                                             </div>
                                             <div class="p-5">
@@ -1242,16 +913,8 @@ const sendMessageWhatsapp = () => {
                                                     {{ selectedNote.details }}
                                                 </div>
 
-                                                <div
-                                                    class="ltr:text-right rtl:text-left mt-8"
-                                                >
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-outline-danger"
-                                                        @click="
-                                                            isViewNoteModal = false
-                                                        "
-                                                    >
+                                                <div class="ltr:text-right rtl:text-left mt-8" >
+                                                    <button type="button" class="btn btn-outline-danger" @click="isViewNoteModal = false" >
                                                         cerrar
                                                     </button>
                                                 </div>

@@ -10,7 +10,7 @@ class MetaController extends Controller
     public function sendMessageWhatsapp(Request $request)
     {
         $url = "https://graph.facebook.com/v19.0/347133948480424/messages";
-        $token = "EAAUfk2ptXbIBO8x7rDpnPXg5ZCn3mJMKodyBXaRMYAZC7kZBfMS8YCCwuFcw2vXHP5U6W9aZAdESIAwfotLGCYFZAxQUxeLhZCmcjQgXQFV5zZARoYADU5t9modRZBQx4xbFmdDs9kzYzrBHrXUZCrAelfyl6vJ1WzqbbxndeVGC5cN9Ku5zowXZC4QS8r3vjjodhRqs2JEc62pDRAs7qaN30ZD";
+        $token = "EAAUfk2ptXbIBO40bbaDXEYMIBmvxeoguwZBBv7iBms6F2eEbeCvSNltzzSPdicLTuoKZCqNchbNTPuU5alHLyDCyxuyLZA6iJAxuQFYfVysfZA14Tn3nOjuayXTkWrpW5cHbk0j9qYSqZCSJLqIJ0ZBgsrBW1JlLeLhy2T8LurSCoNReSd8OZA2ZAjGuvRvTyfT1HOioL6dXvFXUj1LXvawZD";
 
         // Obtener los parámetros de la solicitud
         // $number = $request->input('number');
@@ -31,9 +31,9 @@ class MetaController extends Controller
             "to" => $number,
             "type" => "template",
             "template" => [
-                "name" => "citas_odontologo",
+                "name" => "prueba_dos",
                 "language" => [
-                    "code" => "es"
+                    "code" => "es-ARG"
                 ],
             ],
         ];

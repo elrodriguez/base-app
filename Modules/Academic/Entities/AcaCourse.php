@@ -69,4 +69,14 @@ class AcaCourse extends Model
     {
         return $this->hasMany(AcaCapRegistration::class, 'course_id');
     }
+
+    public function questions(): HasMany
+    {
+        return $this->hasMany(AcaThemeQuestion::class, 'course_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(AcaThemeComment::class, 'course_id');
+    }
 }

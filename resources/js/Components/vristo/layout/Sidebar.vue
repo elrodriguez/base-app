@@ -29,19 +29,7 @@
     import IconMenuDocumentation from '@/Components/vristo/icon/menu/icon-menu-documentation.vue';
     
     import { Link } from '@inertiajs/vue3';
-    import { 
-        faPoll, 
-
-    } from "@fortawesome/free-solid-svg-icons";
-    import menuAcademic from 'Modules/Academic/Resources/assets/js/Menu.js';
-    import menuRestaurant from 'Modules/Restaurant/Resources/assets/js/Menu.js';
-    import menuSales from 'Modules/Sales/Resources/assets/js/Menu.js';
-    import menuPurchases from 'Modules/Purchases/Resources/assets/js/Menu.js';
-    import menuConfig from 'Modules/Security/Resources/assets/js/Menu.js';
-    import menuCMS from 'Modules/CMS/Resources/assets/js/Menu.js';
-    import menuSocialevents from 'Modules/Socialevents/Resources/assets/js/Menu.js';
-    import menuHelpdesk from 'Modules/Helpdesk/Resources/assets/js/Menu.js';
-    import menuHealth from 'Modules/Health/Resources/assets/js/Menu.js';
+    import menuData from './MenuData.js'
 
     const store = useAppStore();
     const activeDropdown = ref('');
@@ -71,78 +59,7 @@
         }
     };
 
-    const menuData = ref([
-        {
-            status: false,
-            text: 'Dashboard',
-            icom: faPoll,
-            route: route('dashboard'),
-            permissions: 'dashboard',
-        },
-        menuConfig,
-        // menuPurchases,
-        // menuSales,
-        // {
-        //     status: false,
-        //     text: 'Ventas en línea',
-        //     icom: faGlobe,
-        //     route: 'module',
-        //     permissions: 'onli_dashboard',
-        //     items: [
-        //         {
-        //             route: route('onlineshop_items'),
-        //             status: false,
-        //             text: 'Productos & servicios',
-        //             permissions: 'onli_items',
-        //         },
-        //         {
-        //             route: route('onlineshop_sales'),
-        //             status: false,
-        //             text: 'Pedidos',
-        //             permissions: 'onli_pedidos',
-        //         },
-        //     ]
-        // },
-        // {
-        //     status:false,
-        //     text: 'Facturación Electrónica',
-        //     icom: faBolt,
-        //     route: null,
-        //     permissions: 'invo_dashboard',
-        //     items: [
-        //         {
-        //             route: route('saledocuments_create'),
-        //             status: false,
-        //             text: 'Crear Documento',
-        //             permissions: 'invo_documento',
-        //         },
-        //         {
-        //             route: route('saledocuments_list'),
-        //             status: false,
-        //             text: 'Lista de Documentos',
-        //             permissions: 'invo_documento_lista',
-        //         },
-        //         {
-        //             route: route('salesummaries_list'),
-        //             status: false,
-        //             text: 'Resumen',
-        //             permissions: 'invo_resumenes_lista',
-        //         },
-        //         {
-        //             route: route('low_communication_list'),
-        //             status: false,
-        //             text: 'Comunicacion de Baja',
-        //             permissions: 'invo_comunicacion_baja',
-        //         }
-        //     ]
-        // },
-        // menuHelpdesk,
-        // menuCMS,
-        menuHealth,
-        menuAcademic,
-        // menuRestaurant,
-        // menuSocialevents
-    ]);
+
     const xasset = assetUrl;
 </script>
 <template>
@@ -182,9 +99,9 @@
                                             @click="activeDropdown === item.text ? (activeDropdown = null) : (activeDropdown = item.text)"
                                         >
                                             <div class="flex items-center">
-                                                <icon-menu-dashboard class="group-hover:!text-primary shrink-0" />
+                                                <font-awesome-icon :icon="item.icom" class="group-hover:!text-primary shrink-0" />
                                                 <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
-                                                    {{ item.text }}
+                                                    {{ item.text }} 
                                                 </span>
                                             </div>
                                             <div :class="{ 'rtl:rotate-90 -rotate-90': activeDropdown !== item.text }">
@@ -194,11 +111,9 @@
                                         <HeightTransition v-show="activeDropdown === item.text">
                                             <template v-if="item.items && item.items.length > 0" >
                                                 <ul class="sub-menu text-gray-500">
-                                                    
                                                     <li v-for="(subItem, subIndex) in item.items" :key="subIndex">
                                                         <Link :href="subItem.route" @click="toggleMobileMenu">{{ subItem.text }}</Link>
                                                     </li>
-
                                                 </ul>
                                             </template>
                                         </HeightTransition>
@@ -207,7 +122,7 @@
                                 <template v-else-if="item.route == 'module'" class="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
                                     <h2 class="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
                                         <icon-minus class="w-4 h-5 flex-none hidden" />
-                                        <span>{{ item.text }}</span>
+                                        <span>{{ item.text }}</span> 
                                     </h2>
                                     <template v-if="item.items && item.items.length > 0" >
                                         <template v-for="(subItem, subIndex) in item.items" :key="subIndex">
@@ -220,7 +135,7 @@
                                                         @click="activeDropdown === subItem.text ? (activeDropdown = null) : (activeDropdown = subItem.text)"
                                                     >
                                                         <div class="flex items-center">
-                                                            <icon-menu-dashboard class="group-hover:!text-primary shrink-0" />
+                                                            <font-awesome-icon :icon="subItem.icom" class="group-hover:!text-primary shrink-0" />
                                                             <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
                                                                 {{ subItem.text }}
                                                             </span>

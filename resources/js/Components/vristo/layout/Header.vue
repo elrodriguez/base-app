@@ -1,7 +1,7 @@
 
     <script setup>
     import { ref, onMounted, computed, reactive, watch } from 'vue';
-    import { Link } from '@inertiajs/vue3';
+    import { Link, router } from '@inertiajs/vue3';
     import { useI18n } from 'vue-i18n';
 
     import appSetting from '@/app-setting';
@@ -35,7 +35,8 @@
     import IconMenuForms from '@/Components/vristo/icon/menu/icon-menu-forms.vue';
     import IconMenuPages from '@/Components/vristo/icon/menu/icon-menu-pages.vue';
     import IconMenuMore from '@/Components/vristo/icon/menu/icon-menu-more.vue';
-    import { router } from '@inertiajs/vue3'
+
+    import menuData from './MenuData.js'
 
     const logout = () => {
         router.post(route('logout'));
@@ -148,6 +149,10 @@
         messages.value = messages.value.filter((d) => d.id !== value);
     };
     const xasset = assetUrl;
+
+    const getImage = (path) => {
+        return baseUrl + 'storage/'+ path;
+    }
 </script>
 <template>
     
@@ -437,34 +442,36 @@
                     <div class="dropdown shrink-0">
                         <Popper :placement="store.rtlClass === 'rtl' ? 'bottom-end' : 'bottom-start'" offsetDistance="8" class="!block">
                             <button type="button" class="relative group block">
-                                <img
+                                <img v-if="$page.props.auth.user.avatar"
                                     class="w-9 h-9 rounded-full object-cover saturate-50 group-hover:saturate-100"
-                                    :src="`${baseUrl}/themes/vristo/images/user-profile.jpeg`"
-                                    alt=""
+                                    :src="getImage($page.props.auth.user.avatar)"
+                                    :alt="$page.props.auth.user.name"
                                 />
+                                <img v-else :src="`https://ui-avatars.com/api/?name=${$page.props.auth.user.name}&size=150&rounded=true`" class="w-9 h-9 rounded-full object-cover saturate-50 group-hover:saturate-100" :alt="$page.props.auth.user.name"/>
                             </button>
                             <template #content="{ close }">
                                 <ul class="text-dark dark:text-white-dark !py-0 w-[230px] font-semibold dark:text-white-light/90">
                                     <li>
                                         <div class="flex items-center px-4 py-4">
                                             <div class="flex-none">
-                                                <img class="rounded-md w-10 h-10 object-cover" :src="`${baseUrl}/themes/vristo/images/user-profile.jpeg`" alt="" />
+                                                <img v-if="$page.props.auth.user.avatar" class="rounded-md w-10 h-10 object-cover" :src="getImage($page.props.auth.user.avatar)" alt="" />
+                                                <img v-else :src="`https://ui-avatars.com/api/?name=${$page.props.auth.user.name}&size=150&rounded=true`" class="rounded-md w-10 h-10 object-cover" :alt="$page.props.auth.user.name"/>
                                             </div>
                                             <div class="ltr:pl-4 rtl:pr-4 truncate">
                                                 <h4 class="text-base">
-                                                    John Doe<span class="text-xs bg-success-light rounded text-success px-1 ltr:ml-2 rtl:ml-2">Pro</span>
+                                                    {{ $page.props.auth.user.name }}
+                                                    <span class="text-xs bg-success-light rounded text-success px-1 ltr:ml-2 rtl:ml-2">Pro</span>
                                                 </h4>
-                                                <a class="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white" href="javascript:;"
-                                                    >johndoe@gmail.com</a
-                                                >
+                                                <a class="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white" href="javascript:;">
+                                                    {{ $page.props.auth.user.email }}
+                                                </a>
                                             </div>
                                         </div>
                                     </li>
                                     <li>
                                         <Link :href="route('profile.edit')" class="dark:hover:text-white" @click="close()">
                                             <icon-user class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0" />
-
-                                            Profile
+                                            Perfil
                                         </Link>
                                     </li>
                                     <li>
@@ -484,7 +491,7 @@
                                     <li class="border-t border-white-light dark:border-white-light/10">
                                         <Link href="#" @click="logout" class="text-danger !py-3" >
                                             <icon-logout class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 rotate-90 shrink-0" />
-                                            Sign Out
+                                            Cerrar sesión
                                         </Link>
                                     </li>
                                 </ul>
@@ -495,518 +502,80 @@
             </div>
 
             <!-- horizontal menu -->
-            <ul
-                class="horizontal-menu hidden py-1.5 font-semibold px-6 lg:space-x-1.5 xl:space-x-8 rtl:space-x-reverse bg-white border-t border-[#ebedf2] dark:border-[#191e3a] dark:bg-[#0e1726] text-black dark:text-white-dark"
-            >
-                <li class="menu nav-item relative">
-                    <a href="javascript:;" class="nav-link">
-                        <div class="flex items-center">
-                            <icon-menu-dashboard class="shrink-0" />
-
-                            <span class="px-2">{{ $t('dashboard') }}</span>
-                        </div>
-                        <div class="right_arrow">
-                            <icon-caret-down />
-                        </div>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <Link href="/">{{ $t('sales') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/analytics">{{ $t('analytics') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/finance">{{ $t('finance') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/crypto">{{ $t('crypto') }}</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu nav-item relative">
-                    <a href="javascript:;" class="nav-link">
-                        <div class="flex items-center">
-                            <icon-menu-apps class="shrink-0" />
-
-                            <span class="px-2">{{ $t('apps') }}</span>
-                        </div>
-                        <div class="right_arrow">
-                            <icon-caret-down />
-                        </div>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <Link href="/apps/chat">{{ $t('chat') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/apps/mailbox">{{ $t('mailbox') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/apps/todolist">{{ $t('todo_list') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/apps/notes">{{ $t('notes') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/apps/scrumboard">{{ $t('scrumboard') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/apps/contacts">{{ $t('contacts') }}</Link>
-                        </li>
-                        <li class="relative">
-                            <a href="javascript:;"
-                                >{{ $t('invoice') }}
-                                <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-90 -rotate-90">
+            <ul class="horizontal-menu hidden py-1.5 font-semibold px-6 lg:space-x-1.5 xl:space-x-8 rtl:space-x-reverse bg-white border-t border-[#ebedf2] dark:border-[#191e3a] dark:bg-[#0e1726] text-black dark:text-white-dark">
+                <template v-for="(item, index) in menuData" :key="index">
+                    <template v-if="item.route == null">
+                        <li v-can="item.permissions" class="menu nav-item relative">
+                            <a href="javascript:;" class="nav-link">
+                                <div class="flex items-center">
+                                    <font-awesome-icon :icon="item.icom" class="shrink-0" />
+                                    <span class="px-2">{{ item.text }}</span>
+                                </div>
+                                <div class="right_arrow">
                                     <icon-caret-down />
                                 </div>
                             </a>
-                            <ul
-                                class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden"
-                            >
-                                <li>
-                                    <Link href="/apps/invoice/list">{{ $t('list') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/apps/invoice/preview">{{ $t('preview') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/apps/invoice/add">{{ $t('add') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/apps/invoice/edit">{{ $t('edit') }}</Link>
-                                </li>
-                            </ul>
+                            <template v-if="item.items && item.items.length > 0" >
+                                <ul class="sub-menu">
+                                    <li v-for="(subItem, subIndex) in item.items" :key="subIndex">
+                                        <Link :href="subItem.route">{{ subItem.text }}</Link>
+                                    </li>
+                                </ul>
+                            </template>
                         </li>
-                        <li>
-                            <Link href="/apps/calendar">{{ $t('calendar') }}</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu nav-item relative">
-                    <a href="javascript:;" class="nav-link">
-                        <div class="flex items-center">
-                            <icon-menu-components class="shrink-0" />
-                            <span class="px-2">{{ $t('components') }}</span>
-                        </div>
-                        <div class="right_arrow">
-                            <icon-caret-down />
-                        </div>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <Link href="/components/tabs">{{ $t('tabs') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/accordions">{{ $t('accordions') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/modals">{{ $t('modals') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/cards">{{ $t('cards') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/carousel">{{ $t('carousel') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/countdown">{{ $t('countdown') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/counter">{{ $t('counter') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/sweetalert">{{ $t('sweet_alerts') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/timeline">{{ $t('timeline') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/notifications">{{ $t('notifications') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/media-object">{{ $t('media_object') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/list-group">{{ $t('list_group') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/pricing-table">{{ $t('pricing_tables') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/components/lightbox">{{ $t('lightbox') }}</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu nav-item relative">
-                    <a href="javascript:;" class="nav-link">
-                        <div class="flex items-center">
-                            <icon-menu-elements class="shrink-0" />
-                            <span class="px-2">{{ $t('elements') }}</span>
-                        </div>
-                        <div class="right_arrow">
-                            <icon-caret-down />
-                        </div>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <Link href="/elements/alerts">{{ $t('alerts') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/avatar">{{ $t('avatar') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/badges">{{ $t('badges') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/breadcrumbs">{{ $t('breadcrumbs') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/buttons">{{ $t('buttons') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/buttons-group">{{ $t('button_groups') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/color-library">{{ $t('color_library') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/dropdown">{{ $t('dropdown') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/infobox">{{ $t('infobox') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/jumbotron">{{ $t('jumbotron') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/loader">{{ $t('loader') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/pagination">{{ $t('pagination') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/popovers">{{ $t('popovers') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/progress-bar">{{ $t('progress_bar') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/search">{{ $t('search') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/tooltips">{{ $t('tooltips') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/treeview">{{ $t('treeview') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/elements/typography">{{ $t('typography') }}</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu nav-item relative">
-                    <a href="javascript:;" class="nav-link">
-                        <div class="flex items-center">
-                            <icon-menu-datatables class="shrink-0" />
-                            <span class="px-2">{{ $t('tables') }}</span>
-                        </div>
-                        <div class="right_arrow">
-                            <icon-caret-down />
-                        </div>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <Link href="/tables">{{ $t('tables') }}</Link>
-                        </li>
-                        <li class="relative">
-                            <a href="javascript:;"
-                                >{{ $t('datatables') }}
-                                <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-90 -rotate-90">
+                    </template>
+                    <template v-else-if="item.route == 'module'">
+                        <li v-can="item.permissions" class="menu nav-item relative">
+                            <a href="javascript:;" class="nav-link">
+                                <div class="flex items-center">
+                                    <font-awesome-icon :icon="item.icom" class="shrink-0" />
+                                    <span class="px-2">{{ item.text }}</span>
+                                </div>
+                                <div class="right_arrow">
                                     <icon-caret-down />
                                 </div>
                             </a>
-                            <ul
-                                class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden"
-                            >
-                                <li>
-                                    <Link href="/datatables/basic">{{ $t('basic') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/advanced">{{ $t('advanced') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/skin">{{ $t('skin') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/order-sorting">{{ $t('order_sorting') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/columns-filter">{{ $t('columns_filter') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/multi-column">{{ $t('multi_column') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/multiple-tables">{{ $t('multiple_tables') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/alt-pagination">{{ $t('alt_pagination') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/checkbox">{{ $t('checkbox') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/range-search">{{ $t('range_search') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/export">{{ $t('export') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/sticky-header">{{ $t('sticky_header') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/clone-header">{{ $t('clone_header') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/datatables/column-chooser">{{ $t('column_chooser') }}</Link>
-                                </li>
+                            <ul class="sub-menu">
+                                <template v-if="item.items && item.items.length > 0" >
+                                    <template v-for="(subItem, subIndex) in item.items" :key="subIndex">
+                                        <template v-if="subItem.route == null">
+                                            <li class="relative">
+                                                <a href="javascript:;" >
+                                                    {{ subItem.text }}
+                                                    <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-90 -rotate-90">
+                                                        <icon-caret-down />
+                                                    </div>
+                                                </a>
+                                                <ul v-if="subItem.items && subItem.items.length > 0"  class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden">
+                                                    <template v-for="(subSubItem, subSubIndex) in subItem.items" :key="subSubIndex">
+                                                        <li v-can="subSubItem.permissions">
+                                                            <Link :href="subSubItem.route">{{ subSubItem.text }}</Link>
+                                                        </li>
+                                                    </template>
+                                                </ul>
+                                            </li>
+                                        </template>
+                                        <template v-else>
+                                            <li v-can="subItem.permissions">
+                                                <Link :href="subItem.route">{{ subItem.text }}</Link>
+                                            </li>
+                                        </template>
+                                    </template>
+                                </template>
                             </ul>
                         </li>
-                    </ul>
-                </li>
-                <li class="menu nav-item relative">
-                    <a href="javascript:;" class="nav-link">
-                        <div class="flex items-center">
-                            <icon-menu-forms class="shrink-0" />
-                            <span class="px-2">{{ $t('forms') }}</span>
-                        </div>
-                        <div class="right_arrow">
-                            <icon-caret-down />
-                        </div>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <Link href="/forms/basic">{{ $t('basic') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/input-group">{{ $t('input_group') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/layouts">{{ $t('layouts') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/validation">{{ $t('validation') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/input-mask">{{ $t('input_mask') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/select2">{{ $t('select2') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/touchspin">{{ $t('touchspin') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/checkbox-radio">{{ $t('checkbox_and_radio') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/switches">{{ $t('switches') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/wizards">{{ $t('wizards') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/file-upload">{{ $t('file_upload') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/quill-editor">{{ $t('quill_editor') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/markdown-editor">{{ $t('markdown_editor') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/date-picker">{{ $t('date_and_range_picker') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/forms/clipboard">{{ $t('clipboard') }}</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu nav-item relative">
-                    <a href="javascript:;" class="nav-link">
-                        <div class="flex items-center">
-                            <icon-menu-pages class="shrink-0" />
-                            <span class="px-2">{{ $t('pages') }}</span>
-                        </div>
-                        <div class="right_arrow">
-                            <icon-caret-down />
-                        </div>
-                    </a>
-                    <ul class="sub-menu">
-                        <li class="relative">
-                            <a href="javascript:;"
-                                >{{ $t('users') }}
-                                <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-90 -rotate-90">
-                                    <icon-caret-down />
+                    </template>
+                    <template v-else>
+                        <li v-can="item.permissions" class="menu nav-item relative">
+                            <Link :href="item.route" class="nav-link">
+                                <div class="flex items-center">
+                                    <font-awesome-icon :icon="item.icom" class="shrink-0" />
+                                    <span class="px-2">{{ item.text }}</span>
                                 </div>
-                            </a>
-                            <ul
-                                class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden"
-                            >
-                                <li>
-                                    <Link href="/users/profile">{{ $t('profile') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/users/user-account-settings">{{ $t('account_settings') }}</Link>
-                                </li>
-                            </ul>
+                            </Link>
                         </li>
-                        <li>
-                            <Link href="/pages/knowledge-base">{{ $t('knowledge_base') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/pages/contact-us-boxed" target="_blank">{{ $t('contact_us_boxed') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/pages/contact-us-cover" target="_blank">{{ $t('contact_us_cover') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/pages/faq">FAQ</Link>
-                        </li>
-                        <li>
-                            <Link href="/pages/coming-soon-boxed" target="_blank">{{ $t('coming_soon_boxed') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/pages/coming-soon-cover" target="_blank">{{ $t('coming_soon_cover') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/pages/maintenence" target="_blank">{{ $t('maintenence') }}</Link>
-                        </li>
-                        <li class="relative">
-                            <a href="javascript:;"
-                                >{{ $t('error') }}
-                                <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-90 -rotate-90">
-                                    <icon-caret-down />
-                                </div>
-                            </a>
-                            <ul
-                                class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden"
-                            >
-                                <li>
-                                    <Link href="/pages/error404" target="_blank">{{ $t('404') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/pages/error500" target="_blank">{{ $t('500') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/pages/error503" target="_blank">{{ $t('503') }}</Link>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="relative">
-                            <a href="javascript:;"
-                                >{{ $t('login') }}
-                                <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-90 -rotate-90">
-                                    <icon-caret-down />
-                                </div>
-                            </a>
-                            <ul
-                                class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden"
-                            >
-                                <li>
-                                    <Link href="/auth/cover-login" target="_blank">{{ $t('login_cover') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/auth/boxed-signin" target="_blank">{{ $t('login_boxed') }}</Link>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="relative">
-                            <a href="javascript:;"
-                                >{{ $t('register') }}
-                                <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-90 -rotate-90">
-                                    <icon-caret-down />
-                                </div>
-                            </a>
-                            <ul
-                                class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden"
-                            >
-                                <li>
-                                    <Link href="/auth/cover-register" target="_blank">{{ $t('register_cover') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/auth/boxed-signup" target="_blank">{{ $t('register_boxed') }}</Link>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="relative">
-                            <a href="javascript:;"
-                                >{{ $t('password_recovery') }}
-                                <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-90 -rotate-90">
-                                    <icon-caret-down />
-                                </div>
-                            </a>
-                            <ul
-                                class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden"
-                            >
-                                <li>
-                                    <Link href="/auth/cover-password-reset" target="_blank">{{ $t('recover_id_cover') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/auth/boxed-password-reset" target="_blank">{{ $t('recover_id_boxed') }}</Link>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="relative">
-                            <a href="javascript:;"
-                                >{{ $t('lockscreen') }}
-                                <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-90 -rotate-90">
-                                    <icon-caret-down />
-                                </div>
-                            </a>
-                            <ul
-                                class="rounded absolute top-0 ltr:left-[95%] rtl:right-[95%] min-w-[180px] bg-white z-[10] text-dark dark:text-white-dark dark:bg-[#1b2e4b] shadow p-0 py-2 hidden"
-                            >
-                                <li>
-                                    <Link href="/auth/cover-lockscreen" target="_blank">{{ $t('unlock_cover') }}</Link>
-                                </li>
-                                <li>
-                                    <Link href="/auth/boxed-lockscreen" target="_blank">{{ $t('unlock_boxed') }}</Link>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu nav-item relative">
-                    <a href="javascript:;" class="nav-link">
-                        <div class="flex items-center">
-                            <icon-menu-more class="shrink-0" />
-
-                            <span class="px-2">{{ $t('more') }}</span>
-                        </div>
-                        <div class="right_arrow">
-                            <icon-caret-down />
-                        </div>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <Link href="/dragndrop">{{ $t('drag_and_drop') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/charts">{{ $t('charts') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/font-icons">{{ $t('font_icons') }}</Link>
-                        </li>
-                        <li>
-                            <Link href="/widgets">{{ $t('widgets') }}</Link>
-                        </li>
-                        <li>
-                            <a href="https://vristo.sbthemes.com" target="_blank">{{ $t('documentation') }}</a>
-                        </li>
-                    </ul>
-                </li>
+                    </template>
+                </template>
             </ul>
         </div>
     </header>

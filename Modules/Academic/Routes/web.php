@@ -150,4 +150,20 @@ Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('
     Route::middleware(['middleware' => 'permission:aca_miscursos'])
         ->get('course/student/{id}', 'AcaStudentController@courseLessons')
         ->name('aca_mycourses_lessons');
+
+    Route::middleware(['middleware' => 'permission:aca_miscursos'])
+        ->get('course/comments/theme/list/{id}', 'AcaThemeCommentController@list')
+        ->name('aca_lesson_comments');
+
+    Route::middleware(['middleware' => 'permission:aca_miscursos'])
+        ->post('course/comments/theme/store', 'AcaThemeCommentController@store')
+        ->name('aca_lesson_comments_store');
+
+    Route::middleware(['middleware' => 'permission:aca_miscursos'])
+        ->put('course/comments/theme/update/{id}', 'AcaThemeCommentController@update')
+        ->name('aca_lesson_comments_update');
+
+    Route::middleware(['middleware' => 'permission:aca_miscursos'])
+        ->delete('course/comments/theme/destroy/{id}', 'AcaThemeCommentController@destroy')
+        ->name('aca_lesson_comments_destroy');
 });

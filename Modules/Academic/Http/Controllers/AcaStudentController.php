@@ -350,6 +350,7 @@ class AcaStudentController extends Controller
     public function courseLessons($id)
     {
         $course = AcaCourse::with('modules.themes.contents')
+            ->with('questions')
             ->where('id', $id)
             ->first();
         return Inertia::render('Academic::Students/Lessons', [

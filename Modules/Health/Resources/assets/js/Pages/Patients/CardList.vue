@@ -162,7 +162,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="flex items-center w-max">
+                                        <Link :href="route('heal_patients_panel',contact.id)" class="flex items-center w-max hover:text-primary">
                                             <div class="w-max">
                                                 <img v-if="contact.image"
                                                     :src="getImage(contact.image)"
@@ -172,7 +172,7 @@
                                                 <img v-else :src="'https://ui-avatars.com/api/?name='+contact.full_name+'&size=54&rounded=true'" class="h-8 w-8 rounded-full object-cover ltr:mr-2 rtl:ml-2" :alt="contact.full_name"/>
                                             </div>
                                             <div>{{ contact.full_name }}</div>
-                                        </div>
+                                        </Link>
                                     </td>
                                     <td>{{ contact.email }}</td>
                                     <td class="whitespace-nowrap">{{ contact.address }}</td>
@@ -240,17 +240,16 @@
                                             </a>
                                             <tippy target="bottom" placement="bottom">Citas</tippy>
                                         </li>
-                                        <li>
+                                        <!-- <li>
                                             <a href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
                                                 <icon-linkedin />
                                             </a>
                                         </li>
                                         <li>
                                             <a href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
-
-                                            <icon-twitter />
+                                                <icon-twitter />
                                             </a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </div>
                             </div>

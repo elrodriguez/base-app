@@ -31,6 +31,7 @@ return new class extends Migration
             $table->boolean('important')->default(false);
             $table->unsignedBigInteger('created_user_id');
             $table->unsignedBigInteger('updated_user_id');
+            $table->string('sick_time', 500)->nullable();
             $table->timestamps();
         });
     }

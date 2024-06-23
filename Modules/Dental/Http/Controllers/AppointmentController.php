@@ -119,6 +119,7 @@ class AppointmentController extends Controller
             'message'               => $request->get('message'),
             'status'                => 1,
             'created_user_id'       => Auth::id(),
+            'sick_time'             => $request->get('sick_time'),
         ]);
 
         return redirect()->route('odontology_appointments_list')
@@ -184,6 +185,7 @@ class AppointmentController extends Controller
             'details'               => $request->get('details'),
             'message'               => $request->get('message'),
             'updated_user_id'       => Auth::id(),
+            'sick_time'             => $request->get('sick_time'),
         ]);
 
         return redirect()->route('odontology_appointments_list')

@@ -231,6 +231,7 @@ const destroyContent = (index,id) => {
             <div class="px-2">
                 <ol class="space-y-4 w-full" >
                     <li class="mb-2">
+                        
                         <div class="w-full p-2 text-green-700 border border-green-300 rounded-lg bg-green-200 dark:bg-gray-800 dark:border-green-800 dark:text-green-400" >
                             <div class="flex items-center">   
                                 <label for="simple-content" class="sr-only">Content</label>
@@ -250,14 +251,10 @@ const destroyContent = (index,id) => {
                             </div>
                             <textarea v-model="formContents.content" id="contentnew" rows="2" class="mt-1 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                             <div class="mt-1">
-                                <div class="flex items-center mb-1">
-                                    <input v-model="formContents.is_file" id="default-radio-1-new" type="radio" value="1" name="default-radio-new" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="default-radio-1-new" class="ms-2 ml-1 text-sm font-medium text-gray-900 dark:text-gray-300">Link de archivo</label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input v-model="formContents.is_file" id="default-radio-2-new" type="radio" value="0" name="default-radio-new" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="default-radio-2-new" class="ms-2 ml-1 text-sm font-medium text-gray-900 dark:text-gray-300">Iframe de video</label>
-                                </div>
+                                <select v-model="formContents.is_file" class="form-select disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b] text-white-dark">
+                                    <option value="1">Link de archivo</option>
+                                    <option value="0">Iframe de video</option>
+                                </select>
                             </div>
                             <InputError :message="formContents.errors.is_file" class="mt-2" />
                             <InputError :message="formContents.errors.content" class="mt-2" />

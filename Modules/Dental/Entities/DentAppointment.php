@@ -32,7 +32,8 @@ class DentAppointment extends Model
         'status',
         'important',
         'created_user_id',
-        'updated_user_id'
+        'updated_user_id',
+        'sick_time'
     ];
 
     protected static function boot()
