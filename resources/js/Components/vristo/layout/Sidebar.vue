@@ -89,102 +89,102 @@
                     <ul class="relative font-semibold space-y-0.5 p-4 py-0">
 
                         <template v-for="(item, index) in menuData" :key="index">
-                            <div v-can="item.permissions">
-                                <template v-if="item.route == null">
-                                    <li class="menu nav-item">
-                                        <button
-                                            type="button"
-                                            class="nav-link group w-full"
-                                            :class="{ active: activeDropdown === item.text }"
-                                            @click="activeDropdown === item.text ? (activeDropdown = null) : (activeDropdown = item.text)"
-                                        >
-                                            <div class="flex items-center">
-                                                <font-awesome-icon :icon="item.icom" class="group-hover:!text-primary shrink-0" />
-                                                <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
-                                                    {{ item.text }} 
-                                                </span>
-                                            </div>
-                                            <div :class="{ 'rtl:rotate-90 -rotate-90': activeDropdown !== item.text }">
-                                                <icon-caret-down />
-                                            </div>
-                                        </button>
-                                        <HeightTransition v-show="activeDropdown === item.text">
-                                            <template v-if="item.items && item.items.length > 0" >
-                                                <ul class="sub-menu text-gray-500">
-                                                    <li v-for="(subItem, subIndex) in item.items" :key="subIndex">
-                                                        <Link :href="subItem.route" @click="toggleMobileMenu">{{ subItem.text }}</Link>
-                                                    </li>
-                                                </ul>
-                                            </template>
-                                        </HeightTransition>
-                                    </li>
-                                </template>
-                                <template v-else-if="item.route == 'module'" class="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
-                                    <h2 class="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
-                                        <icon-minus class="w-4 h-5 flex-none hidden" />
-                                        <span>{{ item.text }}</span> 
-                                    </h2>
-                                    <template v-if="item.items && item.items.length > 0" >
-                                        <template v-for="(subItem, subIndex) in item.items" :key="subIndex">
-                                            <template v-if="subItem.route == null">
-                                                <li class="menu nav-item">
-                                                    <button
-                                                        type="button"
-                                                        class="nav-link group w-full"
-                                                        :class="{ active: activeDropdown === subItem.text }"
-                                                        @click="activeDropdown === subItem.text ? (activeDropdown = null) : (activeDropdown = subItem.text)"
-                                                    >
-                                                        <div class="flex items-center">
-                                                            <font-awesome-icon :icon="subItem.icom" class="group-hover:!text-primary shrink-0" />
-                                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
-                                                                {{ subItem.text }}
-                                                            </span>
-                                                        </div>
-                                                        <div :class="{ 'rtl:rotate-90 -rotate-90': activeDropdown !== subItem.text }">
-                                                            <icon-caret-down />
-                                                        </div>
-                                                    </button>
-                                                    <HeightTransition v-show="activeDropdown === subItem.text">
-                                                        <ul v-if="subItem.items && subItem.items.length > 0" class="sub-menu text-gray-500">
-                                                            <template v-for="(subSubItem, subSubIndex) in subItem.items" :key="subSubIndex">
-                                                                <li v-can="subSubItem.permissions">
-                                                                    <Link :href="subSubItem.route" @click="toggleMobileMenu">{{ subSubItem.text }}</Link>
-                                                                </li>
-                                                            </template>
-                                                        </ul>
-                                                    </HeightTransition>
+                            <template v-if="item.route == null">
+                                <li v-can="item.permissions" class="menu nav-item">
+                                    <button
+                                        type="button"
+                                        class="nav-link group w-full"
+                                        :class="{ active: activeDropdown === item.text }"
+                                        @click="activeDropdown === item.text ? (activeDropdown = null) : (activeDropdown = item.text)"
+                                    >
+                                        <div class="flex items-center">
+                                            <font-awesome-icon :icon="item.icom" class="group-hover:!text-primary shrink-0" />
+                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                                                {{ item.text }} 
+                                            </span>
+                                        </div>
+                                        <div :class="{ 'rtl:rotate-90 -rotate-90': activeDropdown !== item.text }">
+                                            <icon-caret-down />
+                                        </div>
+                                    </button>
+                                    <HeightTransition v-show="activeDropdown === item.text">
+                                        <template v-if="item.items && item.items.length > 0" >
+                                            <ul class="sub-menu text-gray-500">
+                                                <li v-for="(subItem, subIndex) in item.items" :key="subIndex">
+                                                    <Link :href="subItem.route" @click="toggleMobileMenu">{{ subItem.text }}</Link>
                                                 </li>
-                                            </template>
-                                            <template v-else>
-                                                <li class="menu nav-item">
-                                                    <Link :href="subItem.route" class="nav-link group" @click="toggleMobileMenu">
-                                                        <div class="flex items-center">
-                                                            <font-awesome-icon :icon="subItem.icom" class="group-hover:!text-primary shrink-0" />
+                                            </ul>
+                                        </template>
+                                    </HeightTransition>
+                                </li>
+                                
+                            </template>
+                            <template v-else-if="item.route == 'module'">
+                                <h2 v-can="item.permissions" class="py-3 px-7 flex items-center uppercase font-extrabold bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] -mx-4 mb-1">
+                                    <icon-minus class="w-4 h-5 flex-none hidden" />
+                                    <span>{{ item.text }}</span> 
+                                </h2>
+                                <template v-if="item.items && item.items.length > 0" >
+                                    <template v-for="(subItem, subIndex) in item.items" :key="subIndex">
+                                        <template v-if="subItem.route == null">
+                                            <li v-can="subItem.permissions" class="menu nav-item">
+                                                <button
+                                                    type="button"
+                                                    class="nav-link group w-full"
+                                                    :class="{ active: activeDropdown === subItem.text }"
+                                                    @click="activeDropdown === subItem.text ? (activeDropdown = null) : (activeDropdown = subItem.text)"
+                                                >
+                                                    <div class="flex items-center">
+                                                        <font-awesome-icon :icon="subItem.icom" class="group-hover:!text-primary shrink-0" />
+                                                        <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                                                            {{ subItem.text }}
+                                                        </span>
+                                                    </div>
+                                                    <div :class="{ 'rtl:rotate-90 -rotate-90': activeDropdown !== subItem.text }">
+                                                        <icon-caret-down />
+                                                    </div>
+                                                </button>
+                                                <HeightTransition v-show="activeDropdown === subItem.text">
+                                                    <ul v-if="subItem.items && subItem.items.length > 0" class="sub-menu text-gray-500">
+                                                        <template v-for="(subSubItem, subSubIndex) in subItem.items" :key="subSubIndex">
+                                                            <li v-can="subSubItem.permissions">
+                                                                <Link :href="subSubItem.route" @click="toggleMobileMenu">{{ subSubItem.text }}</Link>
+                                                            </li>
+                                                        </template>
+                                                    </ul>
+                                                </HeightTransition>
+                                            </li>
+                                        </template>
+                                        <template v-else>
+                                            <li v-can="subItem.permissions" class="menu nav-item">
+                                                <Link :href="subItem.route" class="nav-link group" @click="toggleMobileMenu">
+                                                    <div class="flex items-center">
+                                                        <font-awesome-icon :icon="subItem.icom" class="group-hover:!text-primary shrink-0" />
 
-                                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
-                                                                {{ subItem.text }}
-                                                            </span>
-                                                        </div>
-                                                    </Link>
-                                                </li>
-                                            </template>
+                                                        <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                                                            {{ subItem.text }}
+                                                        </span>
+                                                    </div>
+                                                </Link>
+                                            </li>
                                         </template>
                                     </template>
                                 </template>
-                                <template v-else>
-                                    <li class="menu nav-item">
-                                        <Link :href="item.route" class="nav-link group" @click="toggleMobileMenu">
-                                            <div class="flex items-center">
-                                                <!-- <icon-menu-font-icons class="group-hover:!text-primary shrink-0" /> -->
-                                                <font-awesome-icon :icon="item.icom" class="group-hover:!text-primary shrink-0" />
-                                                <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
-                                                    {{ item.text }}
-                                                </span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                </template>
-                            </div>
+                            </template>
+                            <template v-else>
+                                <li v-can="item.permissions" class="menu nav-item">
+                                    <Link :href="item.route" class="nav-link group" @click="toggleMobileMenu">
+                                        <div class="flex items-center">
+                                            <!-- <icon-menu-font-icons class="group-hover:!text-primary shrink-0" /> -->
+                                            <font-awesome-icon :icon="item.icom" class="group-hover:!text-primary shrink-0" />
+                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">
+                                                {{ item.text }}
+                                            </span>
+                                        </div>
+                                    </Link>
+                                </li>
+                            </template>
+                            
                         </template>
                     </ul>
                 </perfect-scrollbar>

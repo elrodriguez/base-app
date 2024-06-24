@@ -27,66 +27,48 @@ const form = useForm({
 function submit() {
   form.post(route('profile.update'))
 }
+const baseUrl = assetUrl;
+const getImage = (path) => {
+    return baseUrl + 'storage/'+ path;
+}
 </script>
 
 <template>
-        <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Profile Information</h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Update your account's profile information and email address.
-            </p>
-        </header>
-  <form @submit.prevent="submit" class="mt-6 space-y-6">
-    <div>
-                <InputLabel for="name" value="Name" />
-
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
-
-                <InputError class="mt-2" :message="form.errors.name" />
+    <form @submit.prevent="submit"  class="border border-[#ebedf2] dark:border-[#191e3a] rounded-md p-4 mb-5 bg-white dark:bg-[#0e1726]">
+        <h6 class="text-lg font-bold mt-1">Información general</h6>
+        <p class="mb-5 text-sm text-gray-600 dark:text-gray-400">
+            Actualice la información del perfil y la dirección de correo electrónico de su cuenta.
+        </p>
+        <div class="flex flex-col sm:flex-row w-full">
+            <div class="ltr:sm:mr-4 rtl:sm:ml-4 w-full sm:w-2/12 mb-5">
+                <img v-if="$page.props.auth.user.avatar" :src="getImage($page.props.auth.user.avatar)" :alt="$page.props.auth.user.name" class="w-20 h-20 md:w-32 md:h-32 rounded-full object-cover mx-auto"/>
+                <img v-else :src="`https://ui-avatars.com/api/?name=${$page.props.auth.user.name}&size=150&rounded=true`" :alt="$page.props.auth.user.name" class="w-20 h-20 md:w-32 md:h-32 rounded-full object-cover mx-auto" />
             </div>
-
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
+            <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label for="name">Nombre de Usuario</label>
+                    <input v-model="form.name" id="name" type="text" class="form-input" />
+                    <InputError class="mt-2" :message="form.errors.name" />
+                </div>
+                <div>
+                    <label for="email">Email</label>
+                    <input v-model="form.email" id="email" type="email" class="form-input" />
+                    <InputError class="mt-2" :message="form.errors.email" />
+                </div>
+                <div>
+                    <label for="information">Información</label>
+                    <input v-model="form.information" id="information" type="text" class="form-input" />
+                    <InputError class="mt-2" :message="form.errors.information" />
+                </div>
+                <div class="sm:col-span-2 mt-3">
+                    <button type="submit" :disabled="form.processing" class="btn btn-primary">Guardar</button>
+                </div>
             </div>
+        </div>
+    </form>
 
-            <div>
-                <InputLabel for="information" value="Information" />
-
-                <TextInput
-                    id="information"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.information"
-                    required
-                    autofocus
-                    name="information"
-                    autocomplete="information"
-                />
-
-                <InputError class="mt-2" :message="form.errors.information" />
-            </div>
-
+  <!-- <form class="mt-6 space-y-6">
             <div>
                 <InputLabel for="avatar" value="Avatar" />
                 <input accept=".png, .jpg, .jpeg"                  
@@ -128,8 +110,8 @@ function submit() {
                 </Transition>
             </div>
     
-  </form>
-</section>
+  </form> -->
+
 </template>
 
 
