@@ -3,6 +3,7 @@
     import DeleteUserForm from './Partials/DeleteUserForm.vue';
     import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
     import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
+    import UpdatePersonInformationForm from './Partials/UpdatePersonInformationForm.vue';
 
     import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
     import { useAppStore } from '@/stores/index';
@@ -25,6 +26,14 @@
         status: {
             type: String,
         },
+        person: {
+            type: Object,
+            default: () => ({}),
+        },
+        document_types: {
+            type: Object,
+            default: () => ({}),
+        }
     });
 </script>
 
@@ -58,8 +67,8 @@
                                 class="flex gap-2 p-4 border-b border-transparent hover:border-primary hover:text-primary !outline-none"
                                 :class="{ '!border-primary text-primary': selected }"
                             >
-                                <icon-dollar-sign-circle />
-                                Payment Details
+                                <icon-user class="w-5 h-5" />
+                                Datos personales
                             </a>
                         </Tab>
                         <Tab as="template" v-slot="{ selected }">
@@ -70,6 +79,16 @@
                             >
                                 <icon-user class="w-5 h-5" />
                                 Preferences
+                            </a>
+                        </Tab>
+                        <Tab as="template" v-slot="{ selected }">
+                            <a
+                                href="javascript:;"
+                                class="flex gap-2 p-4 border-b border-transparent hover:border-primary hover:text-primary !outline-none"
+                                :class="{ '!border-primary text-primary': selected }"
+                            >
+                                <icon-dollar-sign-circle />
+                                Payment Details
                             </a>
                         </Tab>
                         <Tab as="template" v-slot="{ selected }">
@@ -90,7 +109,15 @@
                                     :must-verify-email="mustVerifyEmail"
                                     :status="status"
                                 />
-                                <UpdatePasswordForm />
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <UpdatePasswordForm />
+                                    <DeleteUserForm />
+                                </div>
+                            </div>
+                        </TabPanel>
+                        <TabPanel>
+                            <div>
+                                <UpdatePersonInformationForm :person="person" :document_types="document_types" />
                             </div>
                         </TabPanel>
                         <TabPanel>
@@ -438,7 +465,7 @@
                                             ></span>
                                         </label>
                                     </div>
-                                    <DeleteUserForm class="max-w-xl" />
+                                    
                                 </div>
                             </div>
                         </TabPanel>

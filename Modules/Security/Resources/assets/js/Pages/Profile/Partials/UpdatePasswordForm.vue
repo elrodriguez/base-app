@@ -83,12 +83,11 @@ const updatePassword = () => {
                 <InputError :message="form.errors.password" class="mt-2" />
             </div>
         </div>
-        <div class="mt-2 flex items-center gap-4">
-            <PrimaryButton :disabled="form.processing">Guardar</PrimaryButton>
-
+        <div class="mt-2 flex w-full flex justify-end gap-4">
             <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
                 <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
             </Transition>
+            <PrimaryButton :disabled="form.processing">Guardar</PrimaryButton>
         </div>
 
     </form>

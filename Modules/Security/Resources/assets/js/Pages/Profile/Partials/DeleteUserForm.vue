@@ -46,7 +46,6 @@ const closeModal = () => {
 
     <Modal 
         :show="confirmingUserDeletion" 
-        @close="closeModal" 
         :onClose="closeModal"
         :icon="'/img/64/eliminar.png'"
     >

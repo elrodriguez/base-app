@@ -9,6 +9,8 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+// Configurar un timeout global de 10 segundos (10000 milisegundos)
+window.axios.defaults.timeout = 10000; // 10 segundos
 // Interceptor para capturar respuestas con código de estado 401
 window.axios.interceptors.response.use(
     (response) => {

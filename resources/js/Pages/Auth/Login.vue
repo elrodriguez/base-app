@@ -13,6 +13,7 @@
     import IconGoogle from '@/Components/vristo/icon/icon-google.vue';
     import { Link, router, useForm, Head } from '@inertiajs/vue3';
     import Checkbox from '@/Components/vristo/inputs/Checkbox.vue';
+    import InputError from '@/Components/InputError.vue';
 
     const store = useAppStore();
     // multi language
