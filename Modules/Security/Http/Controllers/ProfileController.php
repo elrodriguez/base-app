@@ -3,6 +3,7 @@
 namespace Modules\Security\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\District;
 use App\Models\Person;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -23,12 +24,20 @@ class ProfileController extends Controller
     {
         $person = Person::find(Auth::user()->person_id);
         $document_types = DB::table('identity_document_type')->get();
+        $ubigeo = District::join('provinces', 'province_id', 'provinces.id')
+            ->join('departments', 'provinces.department_id', 'departments.id')
+            ->select(
+                'districts.id AS district_id',
+                DB::raw("CONCAT(departments.name,'-',provinces.name,'-',districts.name) AS name_city")
+            )
+            ->get();
 
         return Inertia::render('Security::Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'person' => $person,
-            'document_types' => $document_types
+            'document_types' => $document_types,
+            'ubigeo' => $ubigeo
         ]);
     }
 

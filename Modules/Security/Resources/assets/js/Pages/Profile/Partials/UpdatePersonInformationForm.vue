@@ -5,6 +5,13 @@ import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
 import InputError from '@/Components/InputError.vue';
+import Multiselect from '@suadelabs/vue3-multiselect';
+import '@suadelabs/vue3-multiselect/dist/vue3-multiselect.css';
+import IconLinkedin from '@/Components/vristo/icon/icon-linkedin.vue';
+import IconTwitter from '@/Components/vristo/icon/icon-twitter.vue';
+import IconFacebook from '@/Components/vristo/icon/icon-facebook.vue';
+import IconInstagram from '@/Components/vristo/icon/icon-instagram.vue';
+
 
 const props = defineProps({
     person: {
@@ -12,6 +19,10 @@ const props = defineProps({
         default: () => ({})
     },
     document_types: {
+        type: Object,
+        default: () => ({})
+    },
+    ubigeo: {
         type: Object,
         default: () => ({})
     }
@@ -35,7 +46,7 @@ const form = useForm({
     mother_lastname: props.person ? props.person.mother_lastname : null,
     ocupacion: props.person ? props.person.ocupacion : null,
     presentacion: props.person ? props.person.presentacion : null,
-    gender: props.person ? props.person.gender : null,
+    gender: props.person ? props.person.gender : 'M',
     status: props.person ? props.person.status : null,
     social_networks: props.person ? props.person.social_networks : null
 });
@@ -101,10 +112,80 @@ const form = useForm({
                 <input v-model="form.address" class="form-input" />
                 <InputError class="mt-2" :message="form.errors.address" />
             </div>
-            <div>
+            <div class="col-span-3 sm:col-span-2 md:col-span-2">
                 <label for="ubigeo">Ciudad</label>
-                <input v-model="form.ubigeo" class="form-input" />
+                <multiselect
+                    id="ubigeo"
+                    v-model="form.ubigeo"
+                    :options="ubigeo"
+                    class="custom-multiselect"
+                    :searchable="true"
+                    placeholder="Buscar ciudad"
+                    selected-label="seleccionado"
+                    select-label="Elegir"
+                    deselect-label="Quitar"
+                    label="name_city"
+                    track-by="district_id"
+                    ></multiselect>
                 <InputError class="mt-2" :message="form.errors.ubigeo" />
+            </div>
+            <div>
+                <label for="gender">Sexo</label>
+                <select id="gender" v-model="form.gender" class="form-select text-white-dark" required>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.gender" />
+            </div>
+            <div>
+                <label for="description">Descripción Personal</label>
+                <textarea v-model="form.description" id="description" rows="3" class="form-textarea"></textarea>
+                <InputError class="mt-2" :message="form.errors.description" />
+            </div>
+            <div>
+                <label for="ocupacion">Ocupación Profesional</label>
+                <textarea v-model="form.ocupacion" id="ocupacion" rows="3" class="form-textarea"></textarea>
+                <InputError class="mt-2" :message="form.errors.ocupacion" />
+            </div>
+            <div>
+                <label for="presentacion">Presentación Profesional</label>
+                <textarea v-model="form.presentacion" id="presentacion" rows="3" class="form-textarea"></textarea>
+                <InputError class="mt-2" :message="form.errors.presentacion" />
+            </div>
+        </div>
+        <div class="sm:col-span-2 mt-3 w-full flex justify-end">
+            <progress v-if="form.progress" :value="form.progress.percentage" max="100" class="mr-4" style="height: 10px;">
+                {{ form.progress.percentage }}%
+            </progress>
+            <button type="submit" :disabled="form.processing" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+    <form class="border border-[#ebedf2] dark:border-[#191e3a] rounded-md p-4 bg-white dark:bg-[#0e1726]">
+        <h6 class="text-lg font-bold mb-5">Redes Sociales</h6>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="flex">
+                <div class="bg-[#eee] flex justify-center items-center rounded px-3 font-semibold dark:bg-[#1b2e4b] ltr:mr-2 rtl:ml-2">
+                    <icon-linkedin class="w-5 h-5" />
+                </div>
+                <input type="text" class="form-input" />
+            </div>
+            <div class="flex">
+                <div class="bg-[#eee] flex justify-center items-center rounded px-3 font-semibold dark:bg-[#1b2e4b] ltr:mr-2 rtl:ml-2">
+                    <icon-twitter class="w-5 h-5" />
+                </div>
+                <input type="text" class="form-input" />
+            </div>
+            <div class="flex">
+                <div class="bg-[#eee] flex justify-center items-center rounded px-3 font-semibold dark:bg-[#1b2e4b] ltr:mr-2 rtl:ml-2">
+                    <icon-facebook class="w-5 h-5" />
+                </div>
+                <input type="text" class="form-input" />
+            </div>
+            <div class="flex">
+                <div class="bg-[#eee] flex justify-center items-center rounded px-3 font-semibold dark:bg-[#1b2e4b] ltr:mr-2 rtl:ml-2">
+                    <icon-instagram />
+                </div>
+                <input type="text" class="form-input" />
             </div>
         </div>
     </form>

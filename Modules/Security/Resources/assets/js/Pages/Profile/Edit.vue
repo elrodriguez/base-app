@@ -33,6 +33,10 @@
         document_types: {
             type: Object,
             default: () => ({}),
+        },
+        ubigeo: {
+            type: Object,
+            default: () => ({}),
         }
     });
 </script>
@@ -117,7 +121,7 @@
                         </TabPanel>
                         <TabPanel>
                             <div>
-                                <UpdatePersonInformationForm :person="person" :document_types="document_types" />
+                                <UpdatePersonInformationForm :person="person" :document_types="document_types" :ubigeo="ubigeo" />
                             </div>
                         </TabPanel>
                         <TabPanel>
