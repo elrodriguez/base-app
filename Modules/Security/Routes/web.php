@@ -11,7 +11,7 @@
 |
 */
 
-
+use App\Http\Controllers\PersonController;
 use Inertia\Inertia;
 
 Route::middleware('auth')->prefix('security')->group(function () {
@@ -31,4 +31,6 @@ Route::middleware('auth')->prefix('security')->group(function () {
     Route::get('destroy/permissions/{id}', 'PermissionController@destroy')->name('permissions_destroy');
 
     Route::get('table/permissions', 'PermissionController@getDataPermissions')->name('permissions_table');
+
+    Route::post('person/information/update', [PersonController::class, 'createdOrUpdated'])->name('person_information_update');
 });

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
@@ -105,6 +106,7 @@ class PersonController extends Controller
             ->orWhere('short_name', 'like', '%Clientes Varios%')
             ->orderBy('id')
             ->get();
+
         if (count($persons) > 0) {
             $status = true;
             $alert = null;
@@ -210,5 +212,61 @@ class PersonController extends Controller
 
         return redirect()->route('aca_mycourses')
             ->with('updateMessageStudent', __('Informacion del estudiante actualizado con éxito'));
+    }
+
+    public function createdOrUpdated(Request $request)
+    {
+        $person_id = $request->get('id');
+        $user = User::where('person_id', $person_id)->first();
+
+        $this->validate(
+
+            $request,
+            [
+                'document_type_id'  => 'required',
+                'number'            => 'required|max:12',
+                'number'            => 'unique:people,number,' . $person_id . ',id,document_type_id,' . $request->get('document_type_id'),
+                'telephone'         => 'required|max:12',
+                'email'             => 'required|max:255',
+                'email'             => 'unique:people,email,' . $person_id . ',id',
+                'email'             => 'unique:users,email,' . $user->id . ',id',
+                'address'           => 'required|max:255',
+                'ubigeo'            => 'required|max:255',
+                'birthdate'         => 'required|',
+                'names'             => 'required|max:255',
+                'father_lastname'   => 'required|max:255',
+                'mother_lastname'   => 'required|max:255',
+            ]
+        );
+
+        $person = Person::updateOrCreate(
+            [
+                'document_type_id' => $request->get('document_type_id'),
+                'number' => $request->input('number')
+            ], // Buscamos a la persona 
+            [
+                'short_name' => $request->input('names'),
+                'full_name' => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
+                'description' => $request->input('description'),
+                'telephone' => $request->input('telephone'),
+                'email' => $request->input('email'),
+                'address' => $request->input('address'),
+                'ubigeo' => $request->input('ubigeo')['district_id'],
+                'birthdate' => $request->input('birthdate'),
+                'names' => $request->input('names'),
+                'father_lastname' => $request->input('father_lastname'),
+                'mother_lastname' => $request->input('mother_lastname'),
+                'ocupacion' => $request->input('ocupacion'),
+                'presentacion' => $request->input('presentacion'),
+                'gender' => $request->input('gender'),
+                'status' => true,
+                'social_networks' => json_encode($request->input('social_networks')),
+                'ubigeo_description' => $request->input('ubigeo')['name_city']
+            ]
+        );
+
+        User::find(Auth::id())->update([
+            'person_id' => $person->id
+        ]);
     }
 }
