@@ -75,7 +75,7 @@
                                 Datos personales
                             </a>
                         </Tab>
-                        <Tab as="template" v-slot="{ selected }">
+                        <!-- <Tab as="template" v-slot="{ selected }">
                             <a
                                 href="javascript:;"
                                 class="flex gap-2 p-4 border-b border-transparent hover:border-primary hover:text-primary !outline-none"
@@ -94,8 +94,8 @@
                                 <icon-dollar-sign-circle />
                                 Payment Details
                             </a>
-                        </Tab>
-                        <Tab as="template" v-slot="{ selected }">
+                        </Tab> -->
+                        <!-- <Tab as="template" v-slot="{ selected }">
                             <a
                                 href="javascript:;"
                                 class="flex gap-2 p-4 border-b border-transparent hover:border-primary hover:text-primary !outline-none"
@@ -104,7 +104,7 @@
                                 <icon-phone />
                                 Limpiar y dar de baja mi cuenta
                             </a>
-                        </Tab>
+                        </Tab> -->
                     </TabList>
                     <TabPanels>
                         <TabPanel>
