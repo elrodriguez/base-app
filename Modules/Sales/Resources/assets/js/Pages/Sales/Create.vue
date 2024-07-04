@@ -1,5 +1,5 @@
 <script setup>
-    import AppLayout from '@/Layouts/AppLayout.vue';
+    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
     import SearchProducts from './Partials/SearchProducts.vue';
     import SearchClients from './Partials/SearchClients.vue';
     import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";

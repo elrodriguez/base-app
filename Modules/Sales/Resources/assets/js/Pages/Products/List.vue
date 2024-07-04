@@ -1,5 +1,5 @@
 <script setup>
-    import AppLayout from '@/Layouts/AppLayout.vue';
+    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
     import { useForm, router, Link } from '@inertiajs/vue3';
     import { faGears, faPlus } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';

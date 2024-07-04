@@ -99,6 +99,7 @@ Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('
     Route::middleware(['middleware' => 'permission:aca_cursos_nuevo'])
         ->get('courses/create', 'AcaCourseController@create')
         ->name('aca_courses_create');
+
     Route::post('courses/store', 'AcaCourseController@store')->name('aca_courses_store');
 
     Route::middleware(['middleware' => 'permission:aca_cursos_editar'])
@@ -166,4 +167,8 @@ Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('
     Route::middleware(['middleware' => 'permission:aca_miscursos'])
         ->delete('course/comments/theme/destroy/{id}', 'AcaThemeCommentController@destroy')
         ->name('aca_lesson_comments_destroy');
+
+    Route::middleware(['middleware' => 'permission:aca_estudiante_cobrar'])
+        ->get('student/invoice/{id}', 'AcaStudentController@invoice')
+        ->name('aca_student_invoice');
 });

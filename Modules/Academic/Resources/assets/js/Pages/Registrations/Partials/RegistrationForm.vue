@@ -92,6 +92,13 @@ const destroyCertificate = (id) => {
         }
     });
 };
+
+const baseUrl = assetUrl;
+
+const getImage = (path) => {
+    return baseUrl + 'storage/'+ path;
+}
+
 </script>
 <template>
     <div class="grid grid-cols-6 gap-6">
@@ -102,7 +109,7 @@ const destroyCertificate = (id) => {
                 class="relative bg-white border border-gray-200 rounded-lg shadow p-4 mb-2"
             >
                 <div class="flex items-center gap-4">
-                    <img class="w-20 h-20" :src="registration.course.image" alt="">
+                    <img class="w-20 h-20" :src="getImage(registration.course.image)" alt="">
                     <div class="flex-1 font-medium dark:text-white">
                         <div>{{ registration.course.description }}</div>
                         

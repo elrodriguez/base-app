@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { 
     ConfigProvider, Row, Col, Card, List, ListItem, message

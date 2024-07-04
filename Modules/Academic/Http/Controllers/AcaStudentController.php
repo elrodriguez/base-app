@@ -3,7 +3,10 @@
 namespace Modules\Academic\Http\Controllers;
 
 use App\Models\District;
+use App\Models\Parameter;
+use App\Models\PaymentMethod;
 use App\Models\Person;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -19,10 +22,25 @@ use Modules\Academic\Entities\AcaCourse;
 class AcaStudentController extends Controller
 {
     use ValidatesRequests;
+
+    private $ubl;
+    private $igv;
+    private $top;
+    private $icbper;
+
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
+
+    public function __construct()
+    {
+        $this->ubl = Parameter::where('parameter_code', 'P000003')->value('value_default');
+        $this->igv = Parameter::where('parameter_code', 'P000001')->value('value_default');
+        $this->top = Parameter::where('parameter_code', 'P000002')->value('value_default');
+        $this->icbper = Parameter::where('parameter_code', 'P000004')->value('value_default');
+    }
+
     public function index()
     {
         $students = (new AcaStudent())->newQuery();
@@ -84,7 +102,7 @@ class AcaStudentController extends Controller
 
         return Inertia::render('Academic::Students/Create', [
             'identityDocumentTypes' => $identityDocumentTypes,
-            'ubigeo'       => $ubigeo,
+            'ubigeo' => $ubigeo
         ]);
     }
 
@@ -355,6 +373,26 @@ class AcaStudentController extends Controller
             ->first();
         return Inertia::render('Academic::Students/Lessons', [
             'course' => $course
+        ]);
+    }
+
+    public function invoice($id)
+    {
+        $payments = PaymentMethod::all();
+        $saleDocumentTypes = DB::table('sale_document_types')->whereIn('sunat_id', ['01', '03'])->get();
+        $services = Product::where('is_product', false)->get();
+        $courses = AcaCourse::where('status', true)->get();
+
+        return Inertia::render('Academic::Students/Invoice', [
+            'payments' => $payments,
+            'saleDocumentTypes' => $saleDocumentTypes,
+            'student' => AcaStudent::with('person')->where('id', $id)->first(),
+            'services' => $services,
+            'courses' => $courses,
+            'taxes' => array(
+                'igv' => $this->igv,
+                'icbper' => $this->icbper
+            )
         ]);
     }
 }

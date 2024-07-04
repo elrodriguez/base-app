@@ -1,6 +1,6 @@
 import { 
     faPoll, 
-
+    faBolt
 } from "@fortawesome/free-solid-svg-icons";
 import { ref } from 'vue';
 import menuAcademic from 'Modules/Academic/Resources/assets/js/Menu.js';
@@ -24,7 +24,7 @@ const MenuData = ref([
     },
     menuConfig,
     // menuPurchases,
-    // menuSales,
+    menuSales,
     // {
     //     status: false,
     //     text: 'Ventas en línea',
@@ -46,39 +46,39 @@ const MenuData = ref([
     //         },
     //     ]
     // },
-    // {
-    //     status:false,
-    //     text: 'Facturación Electrónica',
-    //     icom: faBolt,
-    //     route: null,
-    //     permissions: 'invo_dashboard',
-    //     items: [
-    //         {
-    //             route: route('saledocuments_create'),
-    //             status: false,
-    //             text: 'Crear Documento',
-    //             permissions: 'invo_documento',
-    //         },
-    //         {
-    //             route: route('saledocuments_list'),
-    //             status: false,
-    //             text: 'Lista de Documentos',
-    //             permissions: 'invo_documento_lista',
-    //         },
-    //         {
-    //             route: route('salesummaries_list'),
-    //             status: false,
-    //             text: 'Resumen',
-    //             permissions: 'invo_resumenes_lista',
-    //         },
-    //         {
-    //             route: route('low_communication_list'),
-    //             status: false,
-    //             text: 'Comunicacion de Baja',
-    //             permissions: 'invo_comunicacion_baja',
-    //         }
-    //     ]
-    // },
+    {
+        status:false,
+        text: 'Facturación Electrónica',
+        icom: faBolt,
+        route: 'module',
+        permissions: 'invo_dashboard',
+        items: [
+            {
+                route: route('saledocuments_create'),
+                status: false,
+                text: 'Crear Documento',
+                permissions: 'invo_documento',
+            },
+            {
+                route: route('saledocuments_list'),
+                status: false,
+                text: 'Lista de Documentos',
+                permissions: 'invo_documento_lista',
+            },
+            {
+                route: route('salesummaries_list'),
+                status: false,
+                text: 'Resumen',
+                permissions: 'invo_resumenes_lista',
+            },
+            {
+                route: route('low_communication_list'),
+                status: false,
+                text: 'Comunicacion de Baja',
+                permissions: 'invo_comunicacion_baja',
+            }
+        ]
+    },
     // menuHelpdesk,
     // menuCMS,
     menuHealth,

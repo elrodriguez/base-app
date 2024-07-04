@@ -1,6 +1,6 @@
 
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 import { useForm, Link } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 import Keypad from '@/Components/Keypad.vue';

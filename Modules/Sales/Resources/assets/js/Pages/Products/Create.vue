@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 import CreateProductForm from './Partials/CreateProductForm.vue';
 import { Link } from '@inertiajs/vue3';
 import { faGears } from "@fortawesome/free-solid-svg-icons";

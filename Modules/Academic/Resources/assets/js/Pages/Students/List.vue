@@ -1,14 +1,16 @@
 <script setup>
     import AppLayout from "@/Layouts/Vristo/AppLayout.vue";
     import { useForm, router, Link  } from '@inertiajs/vue3';
-    import { faTrashAlt, faPencilAlt, faPrint, faCashRegister, faFileExcel, faMoneyBill1Wave} from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import Keypad from '@/Components/Keypad.vue';
     import Swal2 from 'sweetalert2';
-    import { ConfigProvider, Dropdown,Menu,MenuItem,Button } from 'ant-design-vue';
+    import { ConfigProvider, Dropdown, Menu, MenuItem, Button } from 'ant-design-vue';
     import IconBox from '@/Components/vristo/icon/icon-box.vue';
     import IconUserPlus from '@/Components/vristo/icon/icon-user-plus.vue';
     import IconSearch from '@/Components/vristo/icon/icon-search.vue';
+
+    import { useAppStore } from '@/stores/index';
+    const store = useAppStore();
 
     const props = defineProps({
         students: {
@@ -24,6 +26,7 @@
     const form = useForm({
         search: props.filters.search,
     });
+
 
 </script>
 
@@ -71,27 +74,29 @@
                             <div v-for="(student, index) in students.data">
                                 <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                     <div class="flex justify-end px-4 pt-4">
-                                        <Dropdown :placement="'bottomLeft'">
-                                            <button class="dropdown-button inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
-                                                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                                                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                                                </svg>
-                                            </button>
-                                            <template #overlay>
-                                            <Menu>
-                                                <MenuItem>
-                                                    <Link :href="route('aca_students_edit',student.id)" type="Button">
-                                                        Editar
-                                                    </Link>
-                                                </MenuItem>
-                                                <MenuItem>
-                                                    <button>
-                                                        Eliminar
-                                                    </button>
-                                                </MenuItem>
-                                            </Menu>
-                                            </template>
-                                        </Dropdown>
+                                        <div class="dropdown">
+                                            <Popper :placement="store.rtlClass === 'rtl' ? 'top-start' : 'top-end'" offsetDistance="0" class="align-middle">
+                                                <button type="button" class="btn p-0 rounded-none border-0 shadow-none dropdown-toggle text-black dark:text-white-dark hover:text-primary dark:hover:text-primary">
+                                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                                                        <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                                                    </svg>
+                                                </button>
+                                                <template #content="{ close }">
+                                                    <ul @click="close()" class="whitespace-nowrap">
+                                                        <li>
+                                                            <Link :href="route('aca_students_edit',student.id)" type="Button">
+                                                                Editar
+                                                            </Link>
+                                                        </li>
+                                                        <li v-can="'aca_estudiante_cobrar'">
+                                                            <Link :href="route('aca_student_invoice',student.id)" type="Button" class="text-warning">
+                                                                Cobrar
+                                                            </Link>
+                                                        </li>
+                                                    </ul>
+                                                </template>
+                                            </Popper>
+                                        </div>
                                     </div>
                                     <div class="flex flex-col items-center pb-10">
                                         <template v-if="student.people_image">
