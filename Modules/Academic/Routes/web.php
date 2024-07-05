@@ -169,6 +169,10 @@ Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('
         ->name('aca_lesson_comments_destroy');
 
     Route::middleware(['middleware' => 'permission:aca_estudiante_cobrar'])
-        ->get('student/invoice/{id}', 'AcaStudentController@invoice')
+        ->get('student/invoice/create/{id}', 'AcaStudentController@invoice')
         ->name('aca_student_invoice');
+
+    Route::middleware(['middleware' => 'permission:aca_estudiante_cobrar'])
+        ->post('student/sale/store', 'AcaSalesController@store')
+        ->name('aca_student_invoice_store');
 });

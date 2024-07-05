@@ -12,7 +12,7 @@ import menuCMS from 'Modules/CMS/Resources/assets/js/Menu.js';
 import menuSocialevents from 'Modules/Socialevents/Resources/assets/js/Menu.js';
 import menuHelpdesk from 'Modules/Helpdesk/Resources/assets/js/Menu.js';
 import menuHealth from 'Modules/Health/Resources/assets/js/Menu.js';
-
+import menuCRM from 'Modules/CRM/Resources/assets/js/Menu.js';
 
 const MenuData = ref([
     {
@@ -58,24 +58,28 @@ const MenuData = ref([
                 status: false,
                 text: 'Crear Documento',
                 permissions: 'invo_documento',
+                icom: faBolt,
             },
             {
                 route: route('saledocuments_list'),
                 status: false,
                 text: 'Lista de Documentos',
                 permissions: 'invo_documento_lista',
+                icom: faBolt,
             },
             {
                 route: route('salesummaries_list'),
                 status: false,
                 text: 'Resumen',
                 permissions: 'invo_resumenes_lista',
+                icom: faBolt,
             },
             {
                 route: route('low_communication_list'),
                 status: false,
                 text: 'Comunicacion de Baja',
                 permissions: 'invo_comunicacion_baja',
+                icom: faBolt,
             }
         ]
     },
@@ -84,6 +88,7 @@ const MenuData = ref([
     menuHealth,
     menuAcademic,
     // menuRestaurant,
-    // menuSocialevents
+    // menuSocialevents,
+    menuCRM
 ]);
 export default MenuData;

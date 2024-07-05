@@ -12,17 +12,34 @@ use App\Models\Sale;
 use App\Models\SaleDocument;
 use App\Models\SaleDocumentItem;
 use App\Models\SaleDocumentType;
+use App\Models\Serie;
 use Carbon\Carbon;
+use App\Models\Parameter;
+use App\Models\SaleProduct;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Modules\Academic\Entities\AcaCourse;
 
 class AcaSalesController extends Controller
 {
     use ValidatesRequests;
+
+    private $ubl;
+    private $igv;
+    private $top;
+    private $icbper;
+
+    public function __construct()
+    {
+        $this->ubl = Parameter::where('parameter_code', 'P000003')->value('value_default');
+        $this->igv = Parameter::where('parameter_code', 'P000001')->value('value_default');
+        $this->top = Parameter::where('parameter_code', 'P000002')->value('value_default');
+        $this->icbper = Parameter::where('parameter_code', 'P000004')->value('value_default');
+    }
 
     public function store(Request $request)
     {
@@ -38,7 +55,7 @@ class AcaSalesController extends Controller
                 'payments.*.type' => 'required',
                 'payments.*.amount' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
                 'items.*.quantity' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
-                'items.*.unit_price' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
+                'items.*.amount' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
                 'items.*.total' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
                 'client_id' => 'required',
             ],
@@ -130,54 +147,27 @@ class AcaSalesController extends Controller
                 $total = 0;
 
                 foreach ($products as $produc) {
+                    // primero se guarda en la tabla venta detalle para saber que producto es y de que tabla vienen los datos
+                    // para este caso vendra de cursos y de porductos(SERVICIOS)
+                    SaleProduct::create([
+                        'sale_id' => $sale->id,
+                        'product_id' => $produc['id'],
+                        'product' => json_encode($produc),
+                        'price'   => $produc['amount'],
+                        'discount' => $produc['amount'],
+                        'quantity' => $produc['amount'],
+                        'total' => $produc['amount'],
+                        'saleProduct' => json_encode($produc),
+                        'entity_name' => $produc['mode'] == 1 ? Product::class : AcaCourse::class, //esto solo aplica para modulo academico
+                        'entity_name_product' => 'Academic'
+                    ]);
                     /// ahora tenemos que saber si es un producto o servicio ya existente
                     /// o si sera creado para esta venta, verificaremos esto por el id del producto
                     /// si el id es nulo quiere decir que es un producto nuevo y procedemos a crearlo
-                    $product_id = null;
-                    $interne = null;
-                    if ($produc['id']) {
-                        $product_id = $produc['id'];
-                        $interne = $produc['interne'];
-                    } else {
-                        $length = 9; // Longitud del número aleatorio
-                        $randomNumber = random_int(0, 999999999); // Genera un número aleatorio entre 0 y 999999999
 
-                        $randomNumberPadded = str_pad($randomNumber, $length, '0', STR_PAD_LEFT);
+                    $product_id = $produc['id'];
+                    $interne = 'AC0' . $product_id;
 
-                        $path = 'img/imagen-no-disponible.jpeg';
-
-                        // creamos el nuevo producto o servicio
-                        $new_product = Product::create([
-                            'usine'                         => $randomNumberPadded,
-                            'interne'                       => $randomNumberPadded,
-                            'description'                   => $produc['description'],
-                            'image'                         => $path,
-                            'purchase_prices'               => 0,
-                            'sale_prices'                   => json_encode(array('high' => $produc['unit_price'], 'under' => null, 'medium' => null)),
-                            'stock_min'                     => 1,
-                            'stock'                         => $produc['quantity'],
-                            'presentations'                 => false,
-                            'is_product'                    => $produc['is_product'],
-                            'type_sale_affectation_id'      => '10',
-                            'type_purchase_affectation_id'  => '10',
-                            'type_unit_measure_id'          => $produc['is_product'] ? $produc['unit_type'] : 'ZZ',
-                            'status'                        => true
-                        ]);
-                        $product_id = $new_product->id;
-                        $interne = $randomNumberPadded;
-                        // le creamos un kardex en caso de ser un producto
-                        if ($produc['is_product']) {
-                            Kardex::create([
-                                'date_of_issue'     => Carbon::now()->format('Y-m-d'),
-                                'motion'            => 'purchase',
-                                'product_id'        => $new_product->id,
-                                'local_id'          => Auth::user()->local_id,
-                                'quantity'          => $produc['quantity'],
-                                'description'       => 'Stock Inicial',
-                            ]);
-                        }
-                        $item = $new_product;
-                    }
 
                     /// imiciamos las variables para hacer los calculos por item;
                     $percentage_igv = $this->igv;
@@ -235,6 +225,7 @@ class AcaSalesController extends Controller
 
                         $mto_discount = round($descuento_monto, 2);
                     }
+
                     if ($produc['afe_igv'] == '20') { //Exonerated
 
                     }
@@ -257,7 +248,7 @@ class AcaSalesController extends Controller
                         'product_id'            => $product_id,
                         'cod_product'           => $interne,
                         'decription_product'    => $produc['description'],
-                        'unit_type'             => $produc['unit_type'],
+                        'unit_type'             => $produc['unit_type'] ?? 'ZZ',
                         'quantity'              => $produc['quantity'],
                         'mto_base_igv'          => $mto_base_igv,
                         'percentage_igv'        => $this->igv,
@@ -273,7 +264,6 @@ class AcaSalesController extends Controller
                         'mto_total'             => round($total_item, 2),
                         'mto_discount'          => $mto_discount ?? 0,
                         'json_discounts'        => json_encode($array_discounts)
-
                     ]);
 
 

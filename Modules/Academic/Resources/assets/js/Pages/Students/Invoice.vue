@@ -43,6 +43,7 @@
     const series = ref([]);
 
     const form = useForm({
+        client_id: props.student.person.id,
         sale_documenttype_id: 2,
         serie: null,
         number: null,
@@ -103,7 +104,8 @@
             discount: 0,
             m_igv: 0,
             total: 0,
-            v_sale: 0
+            v_sale: 0,
+            afe_igv: 10
         };
 
         if(ttp == 1){
@@ -259,6 +261,88 @@
         form.total_taxed = (parseFloat(form.total_taxed) - parseFloat(form.items[key].v_sale)).toFixed(2);
         form.total_igv = (parseFloat(form.total_igv) - parseFloat(form.items[key].m_igv)).toFixed(2);
         form.payments[0].amount = form.total;
+    }
+    
+    const saveDocument = () => {
+        
+        form.processing = true
+
+        if(form.serie){
+            if(form.client_dti != 6 && form.sale_documenttype_id == 1){
+                Swal2.fire({
+                    title: 'Información Importante',
+                    text: "El cliente debe tener ruc para emitir una factura",
+                    icon: 'error',
+                });
+                form.processing = false
+                return;
+                
+            }
+
+            axios.post(route('aca_student_invoice_store'), form ).then((res) => {
+                form.client_id = props.client.id,
+                form.client_name = props.client.number+"-"+props.client.full_name,
+                form.client_ubigeo = props.client.ubigeo,
+                form.client_dti = props.client.document_type_id,
+                form.client_number = props.client.number,
+                form.client_ubigeo_description = props.company.city,
+                form.client_direction = props.company.fiscal_address,
+                form.client_phone = props.client.telephone,
+                form.client_email = props.client.email,
+                form.sale_documenttype_id = 2,
+                form.type_operation = props.type_operation,
+                form.serie = null
+                form.items = [];
+                form.total_discount = 0;
+                form.total_igv = 0;
+                form.total = 0;
+                form.total_taxed = 0;
+                form.payments = [{
+                    type:1,
+                    reference: null,
+                    amount:0
+                }];
+                getSeriesByDocumentType();
+                form.processing =  false;
+                Swal2.fire({
+                    title: 'Comprobante creado con éxito',
+                    text: "¿deseas enviar a sunat y/o Imprimir?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Enviar Ahora',
+                    cancelButtonText: 'Seguir vendiendo',
+                    showDenyButton: true,
+                    denyButtonText: `Solo Imprimir`,
+                    denyButtonColor: '#5E5A5A'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if(res.data.invoice_type_doc == '01'){
+                            sendSunatDocumentCreated(res.data)
+                        }else{
+                            Swal2.fire({
+                                title: 'Información Importante',
+                                text: "Las boletas se envian mediante un resumen",
+                                icon: 'info',
+                            });
+                        }
+                    } else if (result.isDenied) {
+                        downloadDocument(res.data.id,res.data.invoice_type_doc,'PDF')
+                    }
+                });
+            }).catch(function (error) {
+                console.log(error)
+            });
+        }else{
+            Swal2.fire({
+                title: 'Información Importante',
+                text: "Elejir serie de documento",
+                icon: 'error',
+            });
+            form.processing = false
+            return;
+        }
     }
 </script>
 

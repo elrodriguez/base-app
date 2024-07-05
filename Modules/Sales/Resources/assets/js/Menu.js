@@ -13,6 +13,7 @@ const menuSales = {
             route: null,
             text: "Administración",
             permissions: "productos",
+            icom: faCashRegister,
             items: [
                 {
                     status: false,
@@ -45,24 +46,28 @@ const menuSales = {
             status: false,
             text: "Tiendas",
             permissions: "sale_tienda",
+            icom: faCashRegister,
         },
         {
             route: route("sales.index"),
             status: false,
             text: "Punto de venta (POS)",
             permissions: "punto_ventas",
+            icom: faCashRegister,
         },
         {
             route: route("sale_physical_document_list"),
             status: false,
             text: "Documento Físico",
             permissions: "sale_documento_fisico",
+            icom: faCashRegister,
         },
         {
             route: route("reports"),
             status: false,
             text: "Reportes",
             permissions: "sale_reportes",
+            icom: faCashRegister,
         },
     ],
 };

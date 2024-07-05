@@ -1,5 +1,7 @@
 <script setup>
     import { Link } from '@inertiajs/vue3';
+    import { faAnglesLeft, faAnglesRight, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+
     defineProps({
         data: {
             type: Object,
@@ -45,39 +47,34 @@
                             flex
                             justify-center
                             font-semibold
-                            p-2
+                            p-2.5
                             rounded-full
                             transition
                             bg-white-light
                             text-dark
-                            hover:text-white hover:bg-primary
-                            dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary
-                        "
-                        >
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                            </svg>
+                            dark:text-white-light dark:bg-[#191e3a]
+                        ">
+                            <font-awesome-icon :icon="faAnglesLeft" class="w-4 h-4 text-[#888ea8]" />
                         </button>
                     </li>
-                    <li v-else :href="data.prev_page_url">
-                        <button type="button"
-                        class="
-                            flex
-                            justify-center
-                            font-semibold
-                            p-2
-                            rounded-full
-                            transition
-                            bg-white-light
-                            text-dark
-                            hover:text-white hover:bg-primary
-                            dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary
-                        "
-                        >
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
+                    <li v-else >
+                        <Link :href="data.first_page_url" type="button"
+                            class="
+                                flex
+                                justify-center
+                                font-semibold
+                                px-2.5
+                                py-2.5
+                                rounded-full
+                                transition
+                                bg-white-light
+                                text-dark
+                                hover:text-white hover:bg-primary
+                                dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary
+                            "
+                            >
+                            <font-awesome-icon :icon="faAnglesLeft" class="w-4 h-4" />
+                        </Link>
                     </li>
                     <template v-for="(link, key) in data.links">
                         <template v-if="key > 0 && key < data.last_page + 1">
@@ -97,7 +94,12 @@
                                     dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary
                                 "
                                 >
-                                {{ link.label }}
+                                    <template v-if="link.label.includes('Next')" >
+                                        <font-awesome-icon :icon="faAngleRight"  class="w-2 h-5" />
+                                    </template>
+                                    <template v-else>
+                                        {{ link.label }}
+                                    </template>
                                 </button>
                             </li>
                             <li v-else-if="link.active" :key="`current-${key}`">
@@ -105,45 +107,47 @@
                             </li>
                             <li v-else :key="`link-${key}`">
                                 <Link  :href="link.url" type="button"
-                                    class="
-                                        flex
-                                        justify-center
-                                        font-semibold
-                                        px-3.5
-                                        py-2
-                                        rounded-full
-                                        transition
-                                        bg-white-light
-                                        text-dark
-                                        hover:text-white hover:bg-primary
-                                        dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary
-                                    "
-                                    :aria-label="`ir a la página ${link.label}`"
+                                        class="
+                                            flex
+                                            justify-center
+                                            font-semibold
+                                            px-3.5
+                                            py-2
+                                            rounded-full
+                                            transition
+                                            bg-white-light
+                                            text-dark
+                                            hover:text-white hover:bg-primary
+                                            dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary
+                                        "
+                                        :aria-label="`ir a la página ${link.label}`"
                                     >
-                                    {{ link.label }}
+                                        <template v-if="link.label.includes('Next')" >
+                                            <font-awesome-icon :icon="faAngleRight"  class="w-2 h-5" />
+                                        </template>
+                                        <template v-else>
+                                            {{ link.label }}
+                                        </template>
                                 </Link>
                             </li>
                             
                         </template>
                     </template>
                     <li v-if="data.current_page < data.last_page">
-                        <Link :href="data.next_page_url" type="button"
+                        <Link :href="data.last_page_url" type="button"
                         class="
                             flex
                             justify-center
                             font-semibold
-                            p-2
+                            p-2.5
                             rounded-full
                             transition
                             bg-white-light
                             text-dark
                             hover:text-white hover:bg-primary
                             dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary
-                        "
-                        >
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                            </svg>
+                        ">
+                            <font-awesome-icon :icon="faAnglesRight" class="w-4 h-4" />
                         </Link>
                     </li>
                     <li v-else>
@@ -152,18 +156,14 @@
                             flex
                             justify-center
                             font-semibold
-                            p-2
+                            p-2.5
                             rounded-full
                             transition
                             bg-white-light
                             text-dark
-                            hover:text-white hover:bg-primary
-                            dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary
-                        "
-                        >
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                            </svg>
+                            dark:text-white-light dark:bg-[#191e3a]
+                        ">
+                            <font-awesome-icon :icon="faAnglesRight" class="w-4 h-4 text-[#888ea8]" />
                         </button>
                     </li>
                 </ul>

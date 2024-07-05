@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             EstablishmentSeeder::class,
             SeriesSeeder::class,
-            UserRole::class,
+            UserRole::class
         ]);
     }
 }

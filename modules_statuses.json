@@ -10,5 +10,6 @@
     "Dental": true,
     "Academic": true,
     "Restaurant": true,
-    "Socialevents": true
+    "Socialevents": true,
+    "CRM": true
 }
