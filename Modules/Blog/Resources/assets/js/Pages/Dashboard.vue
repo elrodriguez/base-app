@@ -1,5 +1,5 @@
 <script setup>
-    import AppLayout from '../layouts/master.vue';
+    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 </script>
 
 <template>

@@ -1,6 +1,10 @@
 import { 
     faPoll, 
-    faBolt
+    faBolt,
+    faFileInvoice,
+    faListOl,
+    faListCheck,
+    faFileExport
 } from "@fortawesome/free-solid-svg-icons";
 import { ref } from 'vue';
 import menuAcademic from 'Modules/Academic/Resources/assets/js/Menu.js';
@@ -58,33 +62,33 @@ const MenuData = ref([
                 status: false,
                 text: 'Crear Documento',
                 permissions: 'invo_documento',
-                icom: faBolt,
+                icom: faFileInvoice,
             },
             {
                 route: route('saledocuments_list'),
                 status: false,
                 text: 'Lista de Documentos',
                 permissions: 'invo_documento_lista',
-                icom: faBolt,
+                icom: faListOl,
             },
             {
                 route: route('salesummaries_list'),
                 status: false,
                 text: 'Resumen',
                 permissions: 'invo_resumenes_lista',
-                icom: faBolt,
+                icom: faListCheck,
             },
             {
                 route: route('low_communication_list'),
                 status: false,
                 text: 'Comunicacion de Baja',
                 permissions: 'invo_comunicacion_baja',
-                icom: faBolt,
+                icom: faFileExport,
             }
         ]
     },
     // menuHelpdesk,
-    // menuCMS,
+    menuCMS,
     menuHealth,
     menuAcademic,
     // menuRestaurant,

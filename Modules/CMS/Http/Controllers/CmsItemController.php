@@ -10,10 +10,12 @@ use Modules\CMS\Entities\CmsItem;
 use Modules\CMS\Entities\CmsItemType;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
+use DataTables;
 
 class CmsItemController extends Controller
 {
     use ValidatesRequests;
+
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -209,5 +211,14 @@ class CmsItemController extends Controller
             'success' => $success,
             'message' => $message
         ]);
+    }
+
+
+    public function getData()
+    {
+        $model = CmsItem::query();
+        $model = $model->select('id', 'type_id', 'content', 'description');
+
+        return DataTables::of($model)->toJson();
     }
 }

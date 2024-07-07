@@ -1,4 +1,10 @@
-import { faCashRegister } from "@fortawesome/free-solid-svg-icons";
+import { 
+    faCashRegister,
+    faFileInvoiceDollar,
+    faScrewdriverWrench,
+    faChartLine,
+    faLocationDot
+} from "@fortawesome/free-solid-svg-icons";
 
 const menuSales = {
     status: true,
@@ -13,7 +19,7 @@ const menuSales = {
             route: null,
             text: "Administración",
             permissions: "productos",
-            icom: faCashRegister,
+            icom: faScrewdriverWrench,
             items: [
                 {
                     status: false,
@@ -46,7 +52,7 @@ const menuSales = {
             status: false,
             text: "Tiendas",
             permissions: "sale_tienda",
-            icom: faCashRegister,
+            icom: faLocationDot,
         },
         {
             route: route("sales.index"),
@@ -60,14 +66,14 @@ const menuSales = {
             status: false,
             text: "Documento Físico",
             permissions: "sale_documento_fisico",
-            icom: faCashRegister,
+            icom: faFileInvoiceDollar,
         },
         {
             route: route("reports"),
             status: false,
             text: "Reportes",
             permissions: "sale_reportes",
-            icom: faCashRegister,
+            icom: faChartLine,
         },
     ],
 };

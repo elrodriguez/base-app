@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 import CreatePageForm from './Partials/CreatePageForm.vue';
 import { Link } from '@inertiajs/vue3';
 
