@@ -1,4 +1,4 @@
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faGear, faUserGroup, faComments } from "@fortawesome/free-solid-svg-icons";
 
 const menuCRM = {
     status: false,
@@ -12,14 +12,14 @@ const menuCRM = {
             status: false,
             text: "Contactos",
             permissions: "crm_contactos_listado",
-            icom: faGear,
+            icom: faUserGroup,
         },
         {
             route: route("crm_chat_dashboard"),
             status: false,
             text: "Chat en vivo",
             permissions: "crm_chat_dashboard",
-            icom: faGear,
+            icom: faComments,
         }
     ],
 };

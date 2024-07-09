@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('crm_chats', function (Blueprint $table) {
+        Schema::create('crm_conversations', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('title')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->enum('type_name', ['whatsapp', 'messenger', 'email', 'msgTexto']);
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('crm_chats');
+        Schema::dropIfExists('crm_conversations');
     }
 };

@@ -2,10 +2,12 @@
 
 namespace Modules\CRM\Http\Controllers;
 
+use App\Models\Person;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class CrmChatController extends Controller
@@ -13,60 +15,41 @@ class CrmChatController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = [];
-
-        return Inertia::render('CRM::Chat/Dashboard', [
-            'contacts'   => $contacts
-        ]);
+        return Inertia::render('CRM::Chat/Dashboard');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function getContacts()
     {
-        return view('crm::create');
-    }
+        $persons = Person::where('id', '<>', Auth::user()->person_id)->latest();
+        if (request()->has('search')) {
+            $persons->where('full_name', 'like', '%' . request()->input('search') . '%');
+        }
+        $persons = $persons->paginate(5);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
+        // Modificar cada registro antes de devolverlo
+        $formattedPersons = $persons->getCollection()->map(function ($person) {
+            // // Formatear las fechas
+            // $person->created_at_formatted = $person->created_at->format('Y-m-d H:i:s');
+            // $person->updated_at_formatted = $person->updated_at->format('Y-m-d H:i:s');
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('crm::show');
-    }
+            // Agregar el campo estado basado en alguna condición
+            // Por ejemplo, si hay un campo 'is_active' en la tabla de personas
+            $person->userId = $person->id;
+            $person->time = '2:09 PM';
+            $person->preview = 'Wasup for the third time like is you bling bitch';
+            $person->messages = [];
+            $person->active = true;
+            return $person;
+        });
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('crm::edit');
-    }
+        // Reemplazar la colección de personas en la paginación con la colección formateada
+        $persons->setCollection($formattedPersons);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
+        return response()->json($persons);
     }
 }

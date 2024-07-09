@@ -17,13 +17,21 @@ use Modules\CRM\Http\Controllers\CRMController;
 */
 
 Route::middleware(['auth', 'verified'])->prefix('crm')->group(function () {
-    Route::resource('crm', CRMController::class)->names('crm_dashboard');
+    Route::get('dashboard', [CRMController::class, 'index'])->name('crm_dashboard');
 
     Route::middleware(['middleware' => 'permission:crm_contactos_listado'])
         ->get('contacts/list', [CrmContactsController::class, 'index'])
         ->name('crm_contacts_list');
 
+    Route::middleware(['middleware' => 'permission:crm_contactos_listado'])
+        ->get('contacts/list/data', [CrmContactsController::class, 'getData'])
+        ->name('crm_contacts_list_data');
+
     Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
         ->get('chat/dashboard', [CrmChatController::class, 'index'])
         ->name('crm_chat_dashboard');
+
+    Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
+        ->get('chat/contacts', [CrmChatController::class, 'getContacts'])
+        ->name('crm_chat_contacts_data');
 });

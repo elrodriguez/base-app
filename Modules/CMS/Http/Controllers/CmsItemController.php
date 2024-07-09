@@ -23,28 +23,10 @@ class CmsItemController extends Controller
     public function index()
     {
         $types = CmsItemType::all();
-        $items = (new CmsItem())->newQuery();
-        if (request()->has('search')) {
-            $items->where('description', 'like', '%' . request()->input('search') . '%');
-        }
-        if (request()->query('sort')) {
-            $attribute = request()->query('sort');
-            $sort_order = 'ASC';
-            if (strncmp($attribute, '-', 1) === 0) {
-                $sort_order = 'DESC';
-                $attribute = substr($attribute, 1);
-            }
-            $items->orderBy($attribute, $sort_order);
-        } else {
-            $items->latest();
-        }
-
-        $items = $items->paginate(20)->onEachSide(2);
 
         return Inertia::render('CMS::Items/List', [
             'types' => $types,
-            'items' => $items,
-            'filters' => request()->all('search'),
+
         ]);
     }
 

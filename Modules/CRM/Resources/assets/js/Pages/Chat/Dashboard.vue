@@ -1,8 +1,8 @@
 <script setup>
     import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
-    import { ref, computed } from 'vue';
+    import { onBeforeMount, onMounted, onUnmounted, reactive, ref, computed } from 'vue';
     import { useAppStore } from '@/stores/index';
-
+    import Navigation from '@/Components/vristo/layout/Navigation.vue';
     import IconHorizontalDots from '@/Components/vristo/icon/icon-horizontal-dots.vue';
     import IconSettings from '@/Components/vristo/icon/icon-settings.vue';
     import IconHelpCircle from '@/Components/vristo/icon/icon-help-circle.vue';
@@ -24,162 +24,52 @@
     import IconDownload from '@/Components/vristo/icon/icon-download.vue';
     import IconCamera from '@/Components/vristo/icon/icon-camera.vue';
     import IconMessage from '@/Components/vristo/icon/icon-message.vue';
+    import { useForm, Link } from '@inertiajs/vue3'
+
+    const data = reactive({
+        posts: []
+    });
+
+    const loadingContacts = ref(false);
+
+    const fetchPosts = async () => {
+        try {
+            axios.get(route('crm_chat_contacts_data')).then( (response) => {
+                data.posts = response.data; 
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const fetchNextPosts = async () => {
+        try {
+            axios.get(`${route('crm_chat_contacts_data')}?page=${data.posts.current_page += 1}`).then((response) => {
+                response.data.data.map(item => {
+                    data.posts.data.push(item);
+                });
+            });
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const fetchMorePeople = (e) => {
+        if(data.posts.data.length < data.posts.total){
+            fetchNextPosts();
+        }
+    };
+
+
+    onBeforeMount(() => fetchPosts());
+
 
     const store = useAppStore();
     const isShowUserChat = ref(false);
     const isShowChatMenu = ref(false);
-    const loginUser = ref({
-        id: 0,
-        name: 'Alon Smith',
-        path: 'profile-34.jpeg',
-        designation: 'Software Developer',
-    });
+
     const contactList = ref([
-        {
-            userId: 1,
-            name: 'Nia Hillyer',
-            path: 'profile-16.jpeg',
-            time: '2:09 PM',
-            preview: 'How do you do?',
-            messages: [
-                {
-                    fromUserId: 0,
-                    toUserId: 1,
-                    text: 'Hi, I am back from vacation',
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 1,
-                    text: 'How are you?',
-                },
-                {
-                    fromUserId: 1,
-                    toUserId: 0,
-                    text: 'Welcom Back',
-                },
-                {
-                    fromUserId: 1,
-                    toUserId: 0,
-                    text: 'I am all well',
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 1,
-                    text: 'Coffee?',
-                },
-            ],
-            active: true,
-        },
-        {
-            userId: 2,
-            name: 'Sean Freeman',
-            path: 'profile-1.jpeg',
-            time: '12:09 PM',
-            preview: 'I was wondering...',
-            messages: [
-                {
-                    fromUserId: 0,
-                    toUserId: 2,
-                    text: 'Hello',
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 2,
-                    text: "It's me",
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 2,
-                    text: 'I have a question regarding project.',
-                },
-            ],
-            active: false,
-        },
-        {
-            userId: 3,
-            name: 'Alma Clarke',
-            path: 'profile-2.jpeg',
-            time: '1:44 PM',
-            preview: 'I’ve forgotten how it felt before',
-            messages: [
-                {
-                    fromUserId: 0,
-                    toUserId: 3,
-                    text: 'Hey Buddy.',
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 3,
-                    text: "What's up",
-                },
-                {
-                    fromUserId: 3,
-                    toUserId: 0,
-                    text: 'I am sick',
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 3,
-                    text: 'Not comming to office today.',
-                },
-            ],
-            active: true,
-        },
-        {
-            userId: 4,
-            name: 'Alan Green',
-            path: 'profile-3.jpeg',
-            time: '2:06 PM',
-            preview: 'But we’re probably gonna need a new carpet.',
-            messages: [
-                {
-                    fromUserId: 0,
-                    toUserId: 4,
-                    text: 'Hi, collect your check',
-                },
-                {
-                    fromUserId: 4,
-                    toUserId: 0,
-                    text: 'Ok, I will be there in 10 mins',
-                },
-            ],
-            active: true,
-        },
-        {
-            userId: 5,
-            name: 'Shaun Park',
-            path: 'profile-4.jpeg',
-            time: '2:05 PM',
-            preview: 'It’s not that bad...',
-            messages: [
-                {
-                    fromUserId: 0,
-                    toUserId: 3,
-                    text: 'Hi, I am back from vacation',
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 3,
-                    text: 'How are you?',
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 5,
-                    text: 'Welcom Back',
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 5,
-                    text: 'I am all well',
-                },
-                {
-                    fromUserId: 5,
-                    toUserId: 0,
-                    text: 'Coffee?',
-                },
-            ],
-            active: false,
-        },
         {
             userId: 6,
             name: 'Roxanne',
@@ -200,77 +90,21 @@
             ],
             active: false,
         },
-        {
-            userId: 7,
-            name: 'Ernest Reeves',
-            path: 'profile-6.jpeg',
-            time: '2:09 PM',
-            preview: 'Wasup for the third time like is you bling bitch',
-            messages: [],
-            active: true,
-        },
-        {
-            userId: 8,
-            name: 'Laurie Fox',
-            path: 'profile-7.jpeg',
-            time: '12:09 PM',
-            preview: 'Wasup for the third time like is you bling bitch',
-            messages: [],
-            active: true,
-        },
-        {
-            userId: 9,
-            name: 'Xavier',
-            path: 'profile-8.jpeg',
-            time: '4:09 PM',
-            preview: 'Wasup for the third time like is you bling bitch',
-            messages: [],
-            active: false,
-        },
-        {
-            userId: 10,
-            name: 'Susan Phillips',
-            path: 'profile-9.jpeg',
-            time: '9:00 PM',
-            preview: 'Wasup for the third time like is you bling bitch',
-            messages: [],
-            active: true,
-        },
-        {
-            userId: 11,
-            name: 'Dale Butler',
-            path: 'profile-10.jpeg',
-            time: '5:09 PM',
-            preview: 'Wasup for the third time like is you bling bitch',
-            messages: [],
-            active: false,
-        },
-        {
-            userId: 12,
-            name: 'Grace Roberts',
-            path: 'user-profile.jpeg',
-            time: '8:01 PM',
-            preview: 'Wasup for the third time like is you bling bitch',
-            messages: [],
-            active: true,
-        },
+
+        
     ]);
     const searchUser = ref('');
     const textMessage = ref('');
     const selectedUser = ref(null);
 
-    const searchUsers = computed(() => {
-        setTimeout(() => {
-            const element = document.querySelector('.chat-users');
-            if (element) {
-                element.scrollTop = 0;
-                element.behavior = 'smooth';
-            }
-        });
-        return contactList.value.filter((d) => {
-            return d.name.toLowerCase().includes(searchUser.value);
-        });
-    });
+    const searchUsers = async () => {
+        try {
+            const response = await axios.get(`${route('crm_chat_contacts_data')}?search=${searchUser.value}`);
+            data.posts = response.data; 
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const selectUser = (user) => {
         selectedUser.value = user;
@@ -306,12 +140,17 @@
     const xasset = assetUrl;
 
     const getImage = (path) => {
-        return baseUrl + 'storage/'+ path;
+        return xasset + 'storage/'+ path;
     }
 </script>
 <template>
     <AppLayout title="Chat">
-        <div>
+        <Navigation :routeModule="route('crm_dashboard')" :titleModule="'CRM'">
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Chat en vivo</span>
+            </li>
+        </Navigation>
+        <div class="mt-5">
             <div class="flex gap-5 relative sm:h-[calc(100vh_-_150px)] h-full sm:min-h-0" :class="{ 'min-h-[999px]': isShowChatMenu }">
                 <div
                     class="panel p-4 flex-none max-w-xs w-full absolute xl:relative z-10 space-y-4 h-full hidden xl:block overflow-hidden"
@@ -319,10 +158,10 @@
                 >
                     <div class="flex justify-between items-center">
                         <div class="flex items-center">
-                            <div class="flex-none"><img :src="`${xasset}themes/vristo/images/profile-34.jpeg`" class="rounded-full h-12 w-12 object-cover" /></div>
+                            <div class="flex-none"><img :src="getImage($page.props.auth.user.avatar)" class="rounded-full h-12 w-12 object-cover" /></div>
                             <div class="mx-3">
-                                <p class="mb-1 font-semibold">Alon Smith</p>
-                                <p class="text-xs text-white-dark">Software Developer</p>
+                                <p class="mb-1 font-semibold">{{ $page.props.auth.user.name }}</p>
+                                <p class="text-xs text-white-dark">{{ $page.props.auth.user.email }}</p>
                             </div>
                         </div>
                         <div class="dropdown">
@@ -336,10 +175,10 @@
                                 <template #content="{ close }">
                                     <ul @click="close()" class="whitespace-nowrap">
                                         <li>
-                                            <a href="javascript:;">
+                                            <Link :href="route('profile.edit')">
                                                 <icon-settings class="w-4.5 h-4.5 ltr:mr-1 rtl:ml-1 shrink-0" />
-                                                Settings
-                                            </a>
+                                                Mi perfil
+                                            </Link>
                                         </li>
                                         <li>
                                             <a href="javascript:;">
@@ -360,7 +199,7 @@
                         </div>
                     </div>
                     <div class="relative">
-                        <input type="text" class="form-input peer ltr:pr-9 rtl:pl-9" placeholder="Searching..." v-model="searchUser" />
+                        <input @input="searchUsers" @keyup="searchUsers" type="text" class="form-input peer ltr:pr-9 rtl:pl-9" placeholder="Buscar..." v-model="searchUser" />
                         <div class="absolute ltr:right-2 rtl:left-2 top-1/2 -translate-y-1/2 peer-focus:text-primary">
                             <icon-search />
                         </div>
@@ -393,37 +232,60 @@
                                 swipeEasing: true,
                                 wheelPropagation: false,
                             }"
+                            id="perfect-scrollba-contacts"
+                            @ps-y-reach-end="fetchMorePeople"
                             class="chat-users relative h-full min-h-[100px] sm:h-[calc(100vh_-_357px)] space-y-0.5 ltr:pr-3.5 rtl:pl-3.5 ltr:-mr-3.5 rtl:-ml-3.5"
                         >
-                            <template v-for="person in searchUsers" :key="person.id">
-                                <button
-                                    type="button"
-                                    class="w-full flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-[#050b14] rounded-md dark:hover:text-primary hover:text-primary"
-                                    :class="{
-                                        'bg-gray-100 dark:bg-[#050b14] dark:text-primary text-primary': selectedUser && selectedUser.userId === person.userId,
-                                    }"
-                                    @click="selectUser(person)"
-                                >
-                                    <div class="flex-1">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 relative">
-                                                <img :src="`${xasset}themes/vristo/images/${person.path}`" class="rounded-full h-12 w-12 object-cover" />
-                                                <template v-if="person.active">
-                                                    <div class="absolute bottom-0 ltr:right-0 rtl:left-0">
-                                                        <div class="w-4 h-4 bg-success rounded-full"></div>
-                                                    </div>
-                                                </template>
-                                            </div>
-                                            <div class="mx-3 ltr:text-left rtl:text-right">
-                                                <p class="mb-1 font-semibold">{{ person.name }}</p>
-                                                <p class="text-xs text-white-dark truncate max-w-[185px]">{{ person.preview }}</p>
+                            <template v-if="loadingContacts">
+                                <div v-for="index in 5" :key="index" class="flex items-center p-2">
+                                    <div class="flex-shrink-0 relative">
+                                        <svg class="rounded-full h-12 w-12 object-cover me-3 text-gray-200 dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+                                        <div class="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                                    </div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <template v-for="person in data.posts.data" :key="person.id">
+                                    <button
+                                        type="button"
+                                        class="w-full flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-[#050b14] rounded-md dark:hover:text-primary hover:text-primary"
+                                        :class="{
+                                            'bg-gray-100 dark:bg-[#050b14] dark:text-primary text-primary': selectedUser && selectedUser.userId === person.userId,
+                                        }"
+                                        @click="selectUser(person)"
+                                    >
+                                        <div class="flex-1">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 relative">
+                                                    <img v-if="person.image"
+                                                        :src="getImage(person.image)"
+                                                        class="rounded-full h-12 w-12 object-cover"
+                                                        alt="ava"
+                                                    />
+                                                    <img v-else :src="'https://ui-avatars.com/api/?name='+person.full_name+'&size=54&rounded=true'" :alt="person.full_name" class="rounded-full h-12 w-12 object-cover" />
+                                                    
+                                                    <template v-if="person.active">
+                                                        <div class="absolute bottom-0 ltr:right-0 rtl:left-0">
+                                                            <div class="w-4 h-4 bg-success rounded-full"></div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                                <div class="mx-3 ltr:text-left rtl:text-right">
+                                                    <p class="mb-1 font-semibold">{{ person.full_name }}</p>
+                                                    <p class="text-xs text-white-dark truncate max-w-[185px]">{{ person.preview }}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="font-semibold whitespace-nowrap text-xs">
-                                        <p>{{ person.time }}</p>
-                                    </div>
-                                </button>
+                                        <div class="font-semibold whitespace-nowrap text-xs">
+                                            <p>{{ person.time }}</p>
+                                        </div>
+                                    </button>
+                                </template>
                             </template>
                         </perfect-scrollbar>
                     </div>
@@ -600,13 +462,14 @@
                                         <icon-menu />
                                     </button>
                                     <div class="relative flex-none">
-                                        <img :src="`${xasset}themes/vristo/images/${selectedUser.path}`" class="rounded-full w-10 h-10 sm:h-12 sm:w-12 object-cover" />
+                                        <img v-if="selectedUser.image" :src="getImage(selectedUser.image)" class="rounded-full w-10 h-10 sm:h-12 sm:w-12 object-cover" />
+                                        <img v-else :src="'https://ui-avatars.com/api/?name='+selectedUser.full_name+'&size=54&rounded=true'" :alt="selectedUser.full_name" class="rounded-full w-10 h-10 sm:h-12 sm:w-12 object-cover" />
                                         <div class="absolute bottom-0 ltr:right-0 rtl:left-0">
                                             <div class="w-4 h-4 bg-success rounded-full"></div>
                                         </div>
                                     </div>
                                     <div class="mx-3">
-                                        <p class="font-semibold">{{ selectedUser.name }}</p>
+                                        <p class="font-semibold">{{ selectedUser.full_name }}</p>
                                         <p class="text-white-dark text-xs">
                                             {{ selectedUser.active ? 'Active now' : 'Last seen at ' + selectedUser.time }}
                                         </p>
@@ -684,10 +547,12 @@
                                             <div class="flex items-start gap-3" :class="{ 'justify-end': selectedUser.userId === message.fromUserId }">
                                                 <div class="flex-none" :class="{ 'order-2': selectedUser.userId === message.fromUserId }">
                                                     <template v-if="selectedUser.userId === message.fromUserId">
-                                                        <img :src="`${xasset}themes/vristo/images/${loginUser.path}`" class="rounded-full h-10 w-10 object-cover" />
+                                                        <img v-if="$page.props.auth.user.avatar" :src="getImage($page.props.auth.user.avatar)" class="rounded-full h-10 w-10 object-cover" />
+                                                        <img v-else :src="'https://ui-avatars.com/api/?name='+$page.props.auth.user.full_name+'&size=54&rounded=true'" :alt="$page.props.auth.user.full_name" class="rounded-full h-10 w-10 object-cover" />
                                                     </template>
                                                     <template v-if="selectedUser.userId !== message.fromUserId">
-                                                        <img :src="`${xasset}themes/vristo/images/${selectedUser.path}`" class="rounded-full h-10 w-10 object-cover" />
+                                                        <img v-if="selectedUser.image" :src="getImage(selectedUser.image)" class="rounded-full h-10 w-10 object-cover" />
+                                                        <img v-else :src="'https://ui-avatars.com/api/?name='+selectedUser.full_name+'&size=54&rounded=true'" :alt="selectedUser.full_name" class="rounded-full h-10 w-10 object-cover" />
                                                     </template>
                                                 </div>
                                                 <div class="space-y-2">

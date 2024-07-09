@@ -11,6 +11,9 @@ use Modules\CMS\Entities\CmsSectionItem;
 
 class CMSController extends Controller
 {
+    public function dashboard()
+    {
+    }
     public function apiGetPageData($page_id)
     {
         //$page = CmsPageSection::with('sections.items.item')->where('page_id', $page_id)->get();
