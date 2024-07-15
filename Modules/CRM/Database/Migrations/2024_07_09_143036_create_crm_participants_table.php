@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('crm_participants', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreignId('conversation_id')->constrained('crm_conversations')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('person_id')->constrained('people')->onDelete('cascade');
             $table->timestamps();
         });

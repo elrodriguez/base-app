@@ -1,0 +1,219 @@
+:root{
+    --primary-color-audio: #f28b0c;
+    --before-width: 100%
+}
+.container-player{
+    position:relative;
+    width:500px;
+    border-radius:25px;
+    border:1px solid var(--primary-color, #f28b0c);
+    background:transparent;
+    padding:10px 10px 10px 5px;
+    display:flex
+}
+.container-record{
+    position:relative;
+    width:500px;
+    height:55px;
+    border-radius:25px;
+    border:1px solid var(--primary-color, #f28b0c);
+    background:transparent;
+    padding:20px 10px;
+    display:flex;
+    align-items:center;
+    justify-content:center
+}
+.container-record-dark {
+    border-color: var(--primary-color-dark, #4a4a4a);
+    background-color: var(--background-color-dark, #333);
+    color: var(--text-color-dark, #fff);
+}
+.view-record{
+    position:relative;
+    width:75%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center
+}
+.view-record span.error{
+    position:absolute;
+    top:35px;
+    margin:auto;
+    font-size:.7rem;
+    color:#e8523d;
+    font-weight:600
+}
+.detail-record{
+    height:50px;display:flex;justify-content:space-between;align-items:center;width:100%
+}
+.detail-player>.spectrogram{
+    width:100%;display:flex;justify-content:center;
+    align-items:center;height:max-content
+}
+.detail-player>.spectrogram input#porcentagePlayer{
+    margin-top:4px
+}
+.detail-player{
+    display:flex;justify-content:space-between;
+    flex-direction:column;align-items:center;width:75%
+}
+.container-canvas,.container-canvas-player{
+    height:100%;width:100%;position:relative
+}
+.container-canvas:before{
+    content:"";height:6px;
+    width:var(--before-width);
+    display:block;background:rgb(242 139 12 / 28%);
+    margin:auto;position:absolute;
+    top:45%
+}
+#time{
+    font-family:Roboto,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
+    font-size:1rem;
+    color:gray;
+    display:block;margin:0 5px;width:20%
+}
+#spectrogram-canvas,.spectrogram-canvas-player{
+    width:100%;height:100%
+}
+.buttons-record,.buttons-player{
+    width:25%;height:55px;display:flex
+}
+.control-volume{
+    width:100%;display:flex;justify-content:space-evenly;align-items:center
+}
+.control-volume input{
+    width:70%
+}
+.au-btn-sm{
+    width:30px!important;height:30px!important
+}
+.au-btn-transparent{
+    background-color:transparent;
+    color:var(--primary-color, #f28b0c);
+    border:1px solid var(--primary-color, #f28b0c)!important
+}
+.au-btn-primary{
+    background-color:var(--primary-color, #f28b0c)
+}
+.au-btn-primary:hover,.au-btn-primary:active:focus,.au-btn-primary:hover path{
+    background-color:var(--primary-light-color,#e1993e);
+    fill:#fff;
+    border-color:var(--primary-light-color,#f2a444);
+    outline:3px solid rgba(242,139,12,.3);
+    cursor:pointer
+}
+.au-btn-transparent:hover,.au-btn-primary:active:focus,.au-btn-transparent:hover path{
+    background-color:var(--primary-color, #f28b0c);
+    border-color:var(--primary-color, #f2a444);
+    outline:3px solid rgba(242,139,12,.3);box-shadow:none;
+    fill:#fff;cursor:pointer
+}
+.au-btn{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:0;
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center
+}
+.au-btn-size-icon{
+    width:35px!important;
+    height:35px!important
+}
+.spectrogram input[type=range]{
+    -webkit-appearance:none;
+    appearance:none;
+    height:7px;
+    background:#e6e6e6;
+    border-radius:5px;
+    background-image:linear-gradient(#cccccc,#cccccc);
+    background-size:50% 100%;
+    background-repeat:no-repeat
+}
+.spectrogram input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    height:20px;
+    width:20px;
+    border-radius:50%;
+    background:#e6e6e6;
+    cursor:ew-resize;
+    box-shadow:0 0 2px #555;
+    transition:background .3s ease-in-out
+}
+.spectrogram input[type=range]::-webkit-slider-runnable-track{
+    -webkit-appearance:none;
+    box-shadow:none;
+    border:none;
+    background:transparent
+}
+.spectrogram input.porcentagePlayer{
+    display:inline-block;
+    position:absolute;
+    z-index:1;
+    width:100%;
+    top:46%;
+    -webkit-appearance:none;
+    appearance:none;
+    height:7px;
+    background:rgb(230 230 230 / 40%);
+    border-radius:5px;
+    background-image:linear-gradient(var(--primary-color, #f28b0c),var(--primary-color, #f28b0c));
+    background-size:0% 100%;
+    background-repeat:no-repeat
+}
+.spectrogram input.porcentagePlayer::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    height:12px;
+    width:12px;
+    border-radius:50%;
+    background:var(--primary-color, #f28b0c);
+    cursor:ew-resize;
+    box-shadow:0 0 2px #555;
+    transition:background .3s ease-in-out
+}
+.spectrogram input.porcentagePlayer::-webkit-slider-runnable-track{
+    -webkit-appearance:none;
+    box-shadow:none;
+    border:none;
+    background:transparent
+}
+.upload-button{
+    position:absolute;
+    right:10px;top:5px;
+    border:none;
+    border-radius:50%;
+    width:20px;
+    height:20px;
+    text-align:center;
+    line-height:50px;
+    cursor:pointer;
+    color:#fff;
+    transform:rotate(180deg);
+    transition:transform .5s ease;
+    transform-origin:center
+}
+.upload-button path{
+    stroke:var(--primary-color, #f28b0c);
+    stroke-width:1.5
+}
+.download-button{
+    position:absolute;
+    right:10px;
+    top:5px;
+    border:none;
+    border-radius:50%;
+    width:17px;
+    height:17px;
+    text-align:center;
+    line-height:50px;
+    cursor:pointer;
+    color:#fff
+}
+.download-button path{
+    stroke:var(--primary-color, #f28b0c);
+    stroke-width:1.5
+}

@@ -2,7 +2,6 @@
 
 namespace Modules\CRM\Entities;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\CRM\Database\factories\CrmParticipantFactory;
@@ -32,6 +31,6 @@ class CrmParticipant extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(CrmUser::class);
     }
 }

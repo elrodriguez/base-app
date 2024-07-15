@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\CRM\Http\Controllers\CrmChatController;
 use Modules\CRM\Http\Controllers\CrmContactsController;
 use Modules\CRM\Http\Controllers\CRMController;
+use Modules\CRM\Http\Controllers\CrmMessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,16 @@ Route::middleware(['auth', 'verified'])->prefix('crm')->group(function () {
     Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
         ->get('chat/contacts', [CrmChatController::class, 'getContacts'])
         ->name('crm_chat_contacts_data');
+
+    Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
+        ->post('conversations/messages', [CrmMessagesController::class, 'sendMessage'])
+        ->name('crm_send_message');
+
+    Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
+        ->post('conversations/messages/list', [CrmMessagesController::class, 'getMessages'])
+        ->name('crm_list_message');
+
+    Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
+        ->post('conversations/messages/upload/audio', [CrmMessagesController::class, 'uploadMessagesAudio'])
+        ->name('crm_upload_message_audio');
 });

@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('crm_messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('conversation_id')->constrained('crm_conversations')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('person_id')->constrained('people')->onDelete('cascade');
             $table->text('content');
-            $table->json('server_response');
+            $table->json('server_response')->nullable();
+            $table->enum('type', ['text', 'audio', 'image', 'link', 'video', 'file'])->nullable();
             $table->timestamps();
         });
     }

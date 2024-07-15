@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('crm_conversations', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->enum('type_name', ['whatsapp', 'messenger', 'email', 'msgTexto']);
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

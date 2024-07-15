@@ -22,6 +22,7 @@ export default defineConfig({
     resolve: {
         alias: {
             'Modules': path.resolve(__dirname, './Modules'),
+            '@Public': path.resolve(__dirname, './public'),
         },
     },
     optimizeDeps: {
@@ -32,5 +33,6 @@ export default defineConfig({
     },
     server: {
         sourcemap: true,
+        cors: true
     }
 });

@@ -24,13 +24,18 @@ class CrmConversation extends Model
         //return CrmConversationFactory::new();
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(CrmUser::class, 'crm_participants');
+    }
+
     public function messages()
     {
-        return $this->hasMany(CrmMessages::class, '');
+        return $this->hasMany(CrmMessage::class, 'conversation_id');
     }
 
     public function participants()
     {
-        return $this->hasMany(Participant::class);
+        return $this->hasMany(CrmParticipant::class, 'conversation_id');
     }
 }

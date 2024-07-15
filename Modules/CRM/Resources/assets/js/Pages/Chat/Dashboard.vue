@@ -25,6 +25,8 @@
     import IconCamera from '@/Components/vristo/icon/icon-camera.vue';
     import IconMessage from '@/Components/vristo/icon/icon-message.vue';
     import { useForm, Link } from '@inertiajs/vue3'
+    import AudioRecord from './Partials/AudioRecord.vue';
+    
 
     const data = reactive({
         posts: []
@@ -68,31 +70,9 @@
     const store = useAppStore();
     const isShowUserChat = ref(false);
     const isShowChatMenu = ref(false);
+    const isShowLoadingSend = ref(false);
+    const isShowLoadingMessages = ref(false);
 
-    const contactList = ref([
-        {
-            userId: 6,
-            name: 'Roxanne',
-            path: 'profile-5.jpeg',
-            time: '2:00 PM',
-            preview: 'Wasup for the third time like is you bling bitch',
-            messages: [
-                {
-                    fromUserId: 0,
-                    toUserId: 6,
-                    text: 'Hi',
-                },
-                {
-                    fromUserId: 0,
-                    toUserId: 6,
-                    text: 'Uploaded files to server.',
-                },
-            ],
-            active: false,
-        },
-
-        
-    ]);
     const searchUser = ref('');
     const textMessage = ref('');
     const selectedUser = ref(null);
@@ -107,23 +87,46 @@
     };
 
     const selectUser = (user) => {
-        selectedUser.value = user;
-        isShowUserChat.value = true;
-        scrollToBottom();
-        isShowChatMenu.value = false;
+        isShowLoadingMessages.value = true;
+        try {
+            axios.post(route('crm_list_message'),{
+                conversationId: user.conversationId,
+                personId: user.userId
+            }).then((response) => {
+                return response.data;
+            }).then((res) => {
+                selectedUser.value = user;
+                selectedUser.value.messages = res;
+                isShowLoadingMessages.value = false;
+                isShowUserChat.value = true;
+                scrollToBottom();
+                isShowChatMenu.value = false;
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
     };
 
     const sendMessage = () => {
         if (textMessage.value.trim()) {
-            const user = contactList.value.find((d) => d.userId === selectedUser.value.userId);
-            user.messages.push({
+            isShowLoadingSend.value = true;
+            const user = data.posts.data.find((d) => d.userId === selectedUser.value.userId);
+            const msg = {
                 fromUserId: selectedUser.value.userId,
                 toUserId: 0,
                 text: textMessage.value,
-                time: 'Just now',
+                time: 'En este momento',
+                type: 'text'
+            };
+            axios.post(route('crm_send_message'),msg).then((response) => {
+                return response.data;
+            }).then((res) => {
+                user.messages.push(msg);
+                textMessage.value = '';
+                scrollToBottom();
+                isShowLoadingSend.value = false;
             });
-            textMessage.value = '';
-            scrollToBottom();
         }
     };
 
@@ -297,6 +300,7 @@
                 ></div>
                 <div class="panel p-0 flex-1">
                     <template v-if="!isShowUserChat">
+
                         <div class="flex items-center justify-center h-full relative p-4">
                             <button
                                 type="button"
@@ -449,10 +453,11 @@
                                 <p class="flex justify-center bg-white-dark/20 p-2 font-semibold rounded-md max-w-[190px] mx-auto">
                                     <icon-message class="ltr:mr-2 rtl:ml-2" />
 
-                                    Click User To Chat
+                                    Haga clic en Usuario para chatear
                                 </p>
                             </div>
                         </div>
+
                     </template>
                     <template v-if="isShowUserChat && selectedUser">
                         <div class="relative h-full">
@@ -535,54 +540,63 @@
                                 </div>
                             </div>
                             <div class="h-px w-full border-b border-[#e0e6ed] dark:border-[#1b2e4b]"></div>
-                            <perfect-scrollbar class="relative h-full sm:h-[calc(100vh_-_300px)] chat-conversation-box">
-                                <div class="space-y-5 p-4 sm:pb-0 pb-[68px] sm:min-h-[300px] min-h-[400px]">
-                                    <div class="block m-6 mt-0">
-                                        <h4 class="text-xs text-center border-b border-[#f4f4f4] dark:border-gray-800 relative">
-                                            <span class="relative top-2 px-3 bg-white dark:bg-[#0e1726]">{{ 'Today, ' + selectedUser.time }}</span>
-                                        </h4>
+                            <template v-if="isShowLoadingMessages" >
+                                <div class="flex items-center justify-center h-full relative p-4">
+                                    <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                        <span class="animate-[spin_2s_linear_infinite] border-8 border-[#f1f2f3] border-l-primary border-r-primary rounded-full w-14 h-14 inline-block align-middle m-auto"></span>
                                     </div>
-                                    <template v-if="selectedUser.messages && selectedUser.messages.length">
-                                        <div v-for="(message, index) in selectedUser.messages" :key="index">
-                                            <div class="flex items-start gap-3" :class="{ 'justify-end': selectedUser.userId === message.fromUserId }">
-                                                <div class="flex-none" :class="{ 'order-2': selectedUser.userId === message.fromUserId }">
-                                                    <template v-if="selectedUser.userId === message.fromUserId">
-                                                        <img v-if="$page.props.auth.user.avatar" :src="getImage($page.props.auth.user.avatar)" class="rounded-full h-10 w-10 object-cover" />
-                                                        <img v-else :src="'https://ui-avatars.com/api/?name='+$page.props.auth.user.full_name+'&size=54&rounded=true'" :alt="$page.props.auth.user.full_name" class="rounded-full h-10 w-10 object-cover" />
-                                                    </template>
-                                                    <template v-if="selectedUser.userId !== message.fromUserId">
-                                                        <img v-if="selectedUser.image" :src="getImage(selectedUser.image)" class="rounded-full h-10 w-10 object-cover" />
-                                                        <img v-else :src="'https://ui-avatars.com/api/?name='+selectedUser.full_name+'&size=54&rounded=true'" :alt="selectedUser.full_name" class="rounded-full h-10 w-10 object-cover" />
-                                                    </template>
-                                                </div>
-                                                <div class="space-y-2">
-                                                    <div class="flex items-center gap-3">
-                                                        <div
-                                                            class="dark:bg-gray-800 p-4 py-2 rounded-md bg-black/10"
-                                                            :class="
-                                                                message.fromUserId == selectedUser.userId
-                                                                    ? 'ltr:rounded-br-none rtl:rounded-bl-none !bg-primary text-white'
-                                                                    : 'ltr:rounded-bl-none rtl:rounded-br-none'
-                                                            "
-                                                        >
-                                                            {{ message.text }}
-                                                        </div>
-                                                        <div :class="{ hidden: selectedUser.userId === message.fromUserId }">
-                                                            <icon-mood-smile class="hover:text-primary" />
-                                                        </div>
+                                </div>
+                            </template>
+                            <template v-else >
+                                <perfect-scrollbar class="relative h-full sm:h-[calc(100vh_-_300px)] chat-conversation-box">
+                                    <div class="space-y-5 p-4 sm:pb-0 pb-[68px] sm:min-h-[300px] min-h-[400px]">
+                                        <div class="block m-6 mt-0">
+                                            <h4 class="text-xs text-center border-b border-[#f4f4f4] dark:border-gray-800 relative">
+                                                <span class="relative top-2 px-3 bg-white dark:bg-[#0e1726]">{{ 'Today, ' + selectedUser.time }}</span>
+                                            </h4>
+                                        </div>
+                                        <template v-if="selectedUser.messages && selectedUser.messages.length">
+                                            <div v-for="(message, index) in selectedUser.messages" :key="index">
+                                                <div class="flex items-start gap-3" :class="{ 'justify-end': selectedUser.userId === message.fromUserId }">
+                                                    <div class="flex-none" :class="{ 'order-2': selectedUser.userId === message.fromUserId }">
+                                                        <template v-if="selectedUser.userId === message.fromUserId">
+                                                            <img v-if="$page.props.auth.user.avatar" :src="getImage($page.props.auth.user.avatar)" class="rounded-full h-10 w-10 object-cover" />
+                                                            <img v-else :src="'https://ui-avatars.com/api/?name='+$page.props.auth.user.full_name+'&size=54&rounded=true'" :alt="$page.props.auth.user.full_name" class="rounded-full h-10 w-10 object-cover" />
+                                                        </template>
+                                                        <template v-if="selectedUser.userId !== message.fromUserId">
+                                                            <img v-if="selectedUser.image" :src="getImage(selectedUser.image)" class="rounded-full h-10 w-10 object-cover" />
+                                                            <img v-else :src="'https://ui-avatars.com/api/?name='+selectedUser.full_name+'&size=54&rounded=true'" :alt="selectedUser.full_name" class="rounded-full h-10 w-10 object-cover" />
+                                                        </template>
                                                     </div>
-                                                    <div
-                                                        class="text-xs text-white-dark"
-                                                        :class="{ 'ltr:text-right rtl:text-left': selectedUser.userId === message.fromUserId }"
-                                                    >
-                                                        {{ message.time ? message.time : '5h ago' }}
+                                                    <div class="space-y-2">
+                                                        <div class="flex items-center gap-3">
+                                                            <div
+                                                                class="dark:bg-gray-800 p-4 py-2 rounded-md bg-black/10"
+                                                                :class="
+                                                                    message.fromUserId == selectedUser.userId
+                                                                        ? 'ltr:rounded-br-none rtl:rounded-bl-none !bg-primary text-white'
+                                                                        : 'ltr:rounded-bl-none rtl:rounded-br-none'
+                                                                "
+                                                            >
+                                                                {{ message.text }}
+                                                            </div>
+                                                            <div :class="{ hidden: selectedUser.userId === message.fromUserId }">
+                                                                <icon-mood-smile class="hover:text-primary" />
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="text-xs text-white-dark"
+                                                            :class="{ 'ltr:text-right rtl:text-left': selectedUser.userId === message.fromUserId }"
+                                                        >
+                                                            {{ message.time ? message.time : '5h ago' }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </template>
-                                </div>
-                            </perfect-scrollbar>
+                                        </template>
+                                    </div>
+                                </perfect-scrollbar>
+                            </template>
                             <div class="p-4 absolute bottom-0 left-0 w-full">
                                 <div class="sm:flex w-full space-x-3 rtl:space-x-reverse items-center">
                                     <div class="relative flex-1">
@@ -600,13 +614,12 @@
                                             class="absolute ltr:right-4 rtl:left-4 top-1/2 -translate-y-1/2 hover:text-primary"
                                             @click="sendMessage()"
                                         >
-                                            <icon-send />
+                                            <span v-if="isShowLoadingSend"class="animate-[spin_2s_linear_infinite] border-4 border-[#f1f2f3] border-l-primary border-r-primary rounded-full w-4 h-4 inline-block align-middle m-auto "></span>
+                                            <icon-send v-else />
                                         </button>
                                     </div>
                                     <div class="items-center space-x-3 rtl:space-x-reverse sm:py-0 py-3 hidden sm:block">
-                                        <button type="button" class="bg-[#f4f4f4] dark:bg-[#1b2e4b] hover:bg-primary-light rounded-md p-2 hover:text-primary">
-                                            <icon-microphone-off />
-                                        </button>
+                                        <AudioRecord />
                                         <button type="button" class="bg-[#f4f4f4] dark:bg-[#1b2e4b] hover:bg-primary-light rounded-md p-2 hover:text-primary">
                                             <icon-download />
                                         </button>
