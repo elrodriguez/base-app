@@ -18,8 +18,10 @@ import {
 } from "@headlessui/vue";
 import IconX from "@/Components/vristo/icon/icon-x.vue";
 import IconMicrophoneOff from "@/Components/vristo/icon/icon-microphone-off.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import "@Public/AudioRecord/style.css";
+
+const emit = defineEmits(['sendAudio']);
 
 const saveRecord = (data) => {
     uploadAudio(data);
@@ -28,7 +30,11 @@ const listenEventsRecord = (data) => {
     console.log("listen record", data);
 };
 const listenEventsPlayer = (data) => {
-    console.log("listen player", data);
+    if(fileAudio.value){
+        if(!data.play){
+            deleteAudio();
+        }
+    }
 };
 
 const displayModalAudioRecord = ref(false);
@@ -36,6 +42,7 @@ const btnAudioStop = ref(null);
 const btnRecordStop = ref(null);
 const btnRecordCancel = ref(null);
 const btnPlayCancel = ref(null);
+const fileAudio = ref([]);
 
 const openMocalAudioRecord = () => {
     displayModalAudioRecord.value = true;
@@ -53,24 +60,52 @@ const closeMocalAudioRecord = () => {
     if (btnPlayCancel.value) {
         btnPlayCancel.value.click();
     }
+    fileAudio.value = [];
     displayModalAudioRecord.value = false;
 };
 
-const uploadAudio = (audioBlob) => {
+const btnAudioSend = ref(false);
+
+
+const uploadAudio = async (audioData) => {
+    // Create FormData and append the audio Blob
     const formData = new FormData();
-    const blobAudio = new Blob([audioBlob], { type: 'audio/mp3' },'new-audio.mp3');
-    formData.append("audio", blobAudio);
+    formData.append('audio', audioData.base64);
 
     try {
-        axios.post(route("crm_upload_message_audio"), formData).then((response) => {
-                return response.data;
-        }).then((res) => {
-            console.log(res);
+        const response = await axios.post(route('crm_upload_message_audio'), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         });
+        fileAudio.value = response.data;
+        btnAudioSend.value.disabled = false;
     } catch (error) {
-        console.log(error);
+        console.error("Error uploading audio:", error);
     }
 };
+
+const deleteAudio = async () => {
+    // Create FormData and append the audio Blob
+    const formData = new FormData();
+    formData.append('filename', fileAudio.value.file_name);
+
+    try {
+        const response = await axios.post(route('crm_delete_message_file'), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    } catch (error) {
+        console.error("Error uploading audio:", error);
+    }
+};
+
+const sendAudio = () => {
+    emit('sendAudio',fileAudio.value)
+    displayModalAudioRecord.value = false;
+    fileAudio.value = [];
+}
 </script>
 <template>
     <button @click="openMocalAudioRecord" type="button" class="bg-[#f4f4f4] dark:bg-[#1b2e4b] hover:bg-primary-light rounded-md p-2 hover:text-primary">
@@ -160,7 +195,7 @@ const uploadAudio = (audioBlob) => {
                                     <button type="button" @click="closeMocalAudioRecord" class="btn btn-outline-danger">
                                         Desechar
                                     </button>
-                                    <button type="button" @click="" class="btn btn-primary ltr:ml-4 rtl:mr-4" >
+                                    <button :disabled="true" ref="btnAudioSend" @click="sendAudio" type="button" class="btn btn-primary ltr:ml-4 rtl:mr-4" >
                                         Enviar
                                     </button>
                                 </div>

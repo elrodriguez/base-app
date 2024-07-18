@@ -66,6 +66,7 @@ class CrmMessagesController extends Controller
             'conversation_id' => $conversationId,
             'person_id' => $personId,
             'content' => $request->get('text'),
+            'type' => $request->get('type')
         ]);
 
         // Devolver la conversación con los mensajes
@@ -96,25 +97,46 @@ class CrmMessagesController extends Controller
 
     public function uploadMessagesAudio(Request $request)
     {
-        // dd($request->all());
-        // Validar la solicitud
-        // $this->validate(
-        //     $request,
-        //     [
-        //         'audio' => 'required|file|mimes:wav,mp3,ogg,blog|max:10240', // 10MB máximo
-        //     ]
-        // );
+        $audioData = $request->input('audio');
 
-        // Obtener el archivo subido
-        $file = $request->file('audio');
+        // Eliminar el prefijo "data:audio/mpeg;base64,"
+        $base64Data = substr($audioData, strpos($audioData, ',') + 1);
 
-        // Generar un nombre único para el archivo
-        $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+        // Decodificar los datos base64 a bytes binarios
+        $audioBytes = base64_decode($base64Data);
 
-        // Almacenar el archivo en el disco 'public'
-        $path = $file->storeAs('audios', $fileName, 'public');
+        // Generar un nombre de archivo único
+        $fileName = uniqid() . '.mp3';
+        $filePath = 'audios/' . $fileName;
+
+        // Guardar el archivo en el disco de almacenamiento público de Laravel
+        Storage::disk('public')->put($filePath, $audioBytes);
+
+        // Obtener la ruta pública del archivo
+        $path = Storage::disk('public')->url($filePath);
 
         // Devolver la ruta del archivo almacenado
-        return response()->json(['path' => $path], 200);
+        return response()->json([
+            'path' => $path,
+            'file_name' => $filePath
+        ], 200);
+    }
+
+
+    public function deleteFile(Request $request)
+    {
+        $filename = public_path('storage/' . $request->get('filename'));
+        // Verifica si el archivo existe
+        //dd($filename);
+        if (file_exists($filename)) {
+            // Elimina el archivo
+            unlink($filename);
+
+            // Devuelve una respuesta exitosa
+            return response()->json(['message' => 'Archivo eliminado correctamente.'], 200);
+        } else {
+            // Devuelve una respuesta de error si el archivo no existe
+            return response()->json(['message' => 'El archivo no existe.'], 404);
+        }
     }
 }

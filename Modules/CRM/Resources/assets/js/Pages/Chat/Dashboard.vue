@@ -26,7 +26,7 @@
     import IconMessage from '@/Components/vristo/icon/icon-message.vue';
     import { useForm, Link } from '@inertiajs/vue3'
     import AudioRecord from './Partials/AudioRecord.vue';
-    
+    import AudioPlay from '@/Components/AudioPlay.vue';
 
     const data = reactive({
         posts: []
@@ -145,6 +145,27 @@
     const getImage = (path) => {
         return xasset + 'storage/'+ path;
     }
+
+    const sendAudioMessage = (audio) => {
+        if (audio.file_name.trim()) {
+            isShowLoadingSend.value = true;
+            const user = data.posts.data.find((d) => d.userId === selectedUser.value.userId);
+            const msg = {
+                fromUserId: selectedUser.value.userId,
+                toUserId: 0,
+                text: audio.path,
+                time: 'En este momento',
+                type: 'audio'
+            };
+            axios.post(route('crm_send_message'),msg).then((response) => {
+                return response.data;
+            }).then((res) => {
+                user.messages.push(msg);
+                scrollToBottom();
+                isShowLoadingSend.value = false;
+            });
+        }
+    }
 </script>
 <template>
     <AppLayout title="Chat">
@@ -154,6 +175,7 @@
             </li>
         </Navigation>
         <div class="mt-5">
+            
             <div class="flex gap-5 relative sm:h-[calc(100vh_-_150px)] h-full sm:min-h-0" :class="{ 'min-h-[999px]': isShowChatMenu }">
                 <div
                     class="panel p-4 flex-none max-w-xs w-full absolute xl:relative z-10 space-y-4 h-full hidden xl:block overflow-hidden"
@@ -570,16 +592,19 @@
                                                     </div>
                                                     <div class="space-y-2">
                                                         <div class="flex items-center gap-3">
-                                                            <div
-                                                                class="dark:bg-gray-800 p-4 py-2 rounded-md bg-black/10"
-                                                                :class="
-                                                                    message.fromUserId == selectedUser.userId
-                                                                        ? 'ltr:rounded-br-none rtl:rounded-bl-none !bg-primary text-white'
-                                                                        : 'ltr:rounded-bl-none rtl:rounded-br-none'
-                                                                "
-                                                            >
-                                                                {{ message.text }}
-                                                            </div>
+                                                            <template v-if="message.type == 'text'">
+                                                                <div class="dark:bg-gray-800 p-4 py-2 rounded-md bg-black/10"
+                                                                    :class="message.fromUserId == selectedUser.userId
+                                                                            ? 'ltr:rounded-br-none rtl:rounded-bl-none !bg-primary text-white'
+                                                                            : 'ltr:rounded-bl-none rtl:rounded-br-none'
+                                                                    "
+                                                                >
+                                                                    {{ message.text }}
+                                                                </div>
+                                                            </template>
+                                                            <template v-if="message.type == 'audio'">
+                                                                <AudioPlay :audio="message.text" :stclass="message.fromUserId == selectedUser.userId ? 'right' : 'left'" />
+                                                            </template>
                                                             <div :class="{ hidden: selectedUser.userId === message.fromUserId }">
                                                                 <icon-mood-smile class="hover:text-primary" />
                                                             </div>
@@ -598,6 +623,7 @@
                                 </perfect-scrollbar>
                             </template>
                             <div class="p-4 absolute bottom-0 left-0 w-full">
+                                
                                 <div class="sm:flex w-full space-x-3 rtl:space-x-reverse items-center">
                                     <div class="relative flex-1">
                                         <input
@@ -619,7 +645,7 @@
                                         </button>
                                     </div>
                                     <div class="items-center space-x-3 rtl:space-x-reverse sm:py-0 py-3 hidden sm:block">
-                                        <AudioRecord />
+                                        <AudioRecord @sendAudio="sendAudioMessage" />
                                         <button type="button" class="bg-[#f4f4f4] dark:bg-[#1b2e4b] hover:bg-primary-light rounded-md p-2 hover:text-primary">
                                             <icon-download />
                                         </button>
