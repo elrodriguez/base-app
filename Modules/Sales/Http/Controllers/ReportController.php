@@ -182,7 +182,8 @@ class ReportController extends Controller
                 'products.interne',
                 'products.description as product_description',
                 'products.image',
-                'sale_products.product as product'
+                'sale_products.price as price',
+                'sale_products.quantity as quantity'
             )
             ->where('sales.petty_cash_id', '=', $petty_cash_id)
             ->where('sales.status', '=', 1)
@@ -190,7 +191,7 @@ class ReportController extends Controller
             ->orderBy('id', 'desc')
             ->orderBy('sale_products.id', 'desc')
             ->get();
-
+        //dd($tickets);
         $physicals = Sale::join('local_sales', 'sales.local_id', 'local_sales.id')
             ->join('sale_physical_documents', 'sale_physical_documents.sale_id', 'sales.id')
             ->select(

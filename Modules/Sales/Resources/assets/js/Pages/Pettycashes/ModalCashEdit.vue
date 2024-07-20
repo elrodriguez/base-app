@@ -1,5 +1,5 @@
 <script setup>
-    import DialogModal from '@/Components/DialogModal.vue';
+    import DialogModal from '@/Components/ModalLarge.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import InputError from '@/Components/InputError.vue';
     import DangerButton from '@/Components/DangerButton.vue';
@@ -107,10 +107,7 @@
            </form>
         </template>
 
-        <template #footer>
-            <SecondaryButton @click="closeModalEdit">
-                Cancel
-            </SecondaryButton>
+        <template #buttons>
 
             <DangerButton
                 class="ml-3"

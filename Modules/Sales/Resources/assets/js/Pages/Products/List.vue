@@ -13,6 +13,7 @@
     import swal from 'sweetalert';
     import Keypad from '@/Components/Keypad.vue';
     import ModalLarge from '@/Components/ModalLarge.vue';
+    import ModalLargeX from '@/Components/ModalLargeX.vue';
     import ModalSmall from '@/Components/ModalSmall.vue';
     import VueMagnifier from '@websitebeaver/vue-magnifier'
     import '@websitebeaver/vue-magnifier/styles.css'
@@ -22,6 +23,7 @@
       ConfigProvider, Dropdown, Menu, MenuItem, Button, Select, Image
     } from 'ant-design-vue';
     import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+    import Navigation from '@/Components/vristo/layout/Navigation.vue';
 
     const props = defineProps({
         products: {
@@ -350,38 +352,19 @@
 <template>
     <AppLayout title="Productos">
       <ConfigProvider :locale="esES">
-        <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
-          <!-- Breadcrumb Start -->
-          <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-              <li class="inline-flex items-center">
-                <Link :href="route('dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                  <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                  Inicio
-                </Link>
-              </li>
-              <li>
-                <div class="flex items-center">
-                  <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                  <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                  <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Ventas</span>
-                </div>
-              </li>
-              <li aria-current="page">
-                <div class="flex items-center">
-                  <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                  <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Productos</span>
-                </div>
-              </li>
-            </ol>
-          </nav>
+        <Navigation :routeModule="route('sales_dashboard')" :titleModule="'Ventas'">
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Productos</span>
+            </li>
+        </Navigation>
+        <div class="mt-5">
           <!-- Breadcrumb End -->
 
           <!-- ====== Table Section Start -->
           <div class="flex flex-col gap-10">
             <!-- ====== Table One Start -->
-            <div class="rounded-sm border border-stroke bg-white pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div class="w-full p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
+            <div class="panel p-0">
+              <div class="w-full p-4 ">
                 <div class="grid grid-cols-3">
                   <div class="col-span-3 sm:col-span-1">
                     <form @submit.prevent="form.get(route('products.index'))">
@@ -408,30 +391,30 @@
                   </div>
                 </div>
               </div>
-              <div class="max-w-full overflow-x-auto">
-                <table class="w-full table-auto">
+              <div class="table-responsive">
+                <table class="w-full table-hover">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                      <th class="w-20 py-2 px-2 text-sm font-medium text-black dark:text-white xl:pl-11">
+                      <th class="">
                           Acción
                       </th>
-                      <th v-if="form.displayProduct" class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                      <th v-if="form.displayProduct" class="">
                           Imagen
                       </th>
-                      <th class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                      <th class="">
                           Código
                       </th>
-                      <th class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                      <th class="">
                           Descripción
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(product, index) in products.data" :key="product.id" >
-                        <td class="text-center text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                        <td class="">
                           
                             <Dropdown :placement="'bottomLeft'" arrow>
-                                <button class="border py-1.5 px-2 dropdown-button inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm" type="button" @click="toggle">
+                                <button class="btn btn-outline-info dropdown-toggle inline-flex px-2 py-2" type="button" @click="toggle">
                                     <font-awesome-icon :icon="faGears" />
                                 </button>
                               <template #overlay>
@@ -471,58 +454,51 @@
                             </Dropdown>
                           
                         </td>
-                        <td v-if="form.displayProduct" class="w-32 border-b border-stroke py-4 px-4 dark:border-strokedark">
+                        <td v-if="form.displayProduct" class="w-32">
                           <Image
                             :src="product.image"
                             />
                         </td>
-                        <td class="text-right text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                        <td class="text-right ">
                             {{ product.interne }}
                         </td>
-                        <td class="text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                        <td class="text-sm ">
                             {{ product.description }}
                         </td>
                     </tr>
                   </tbody>
-                  <tfoot>
-                    <tr>
-                      <td colspan="5" class="py-4 px-4 dark:border-strokedark">
-                        <Pagination :data="products" />
-                      </td>
-                    </tr>
-                  </tfoot>
                 </table>
                 
               </div>
-              
+              <Pagination :data="products" />
             </div>
            </div>
         </div>
-        <ModalLarge :show="openModalDetilsProduct"  @close="closeModalDetailsProduct">
+        <ModalLargeX :show="openModalDetilsProduct"  @close="closeModalDetailsProduct">
             <template #title>
               {{ formDetails.interne }} - {{ formDetails.description }}
             </template>
 
             <template #content>
-              <table class="border" style="width: 100%;">
-                    <thead class="bg-white border-b">
-                      <tr class="text-xs text-white bg-blue-700 border-b dark:text-white dark:bg-gray-800">
-                        <th v-if="formDetails.presentations" class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
+              <table style="width: 100%;">
+                    <thead class="">
+                      <tr class="">
+                        <th v-if="formDetails.presentations" class="border-primary/20 bg-primary/20">
                           Presentación
                         </th>
-                        <th :colspan="formDetails.presentations ? 0 : 2" class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
+                        <th :colspan="formDetails.presentations ? 0 : 2" class="border-primary/20 bg-primary/20">
                           Cantidad
                         </th>
-                        <th v-if="formDetails.sale_prices.high" class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
+                        <th v-if="formDetails.sale_prices.high" class="border-primary/20 bg-primary/20">
                           Precio V. Normal
                         </th>
-                        <th v-if="formDetails.sale_prices.medium" class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
+                        <th v-if="formDetails.sale_prices.medium" class="border-primary/20 bg-primary/20">
                           Precio V. Medio
                         </th>
-                        <th v-if="formDetails.sale_prices.under" class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
+                        <th v-if="formDetails.sale_prices.under" class="border-primary/20 bg-primary/20">
                           Precio V. Minimo
                         </th>
-                        <th class="text-lg font-medium  px-6 py-4 text-left italic hover:not-italic dark:text-white dark:bg-gray-800">
+                        <th class="border-primary/20 bg-primary/20">
                           Precio de Compra
                         </th>
                       </tr>
@@ -616,7 +592,7 @@
                     Cancel
                 </SecondaryButton>
             </template>
-        </ModalLarge>
+        </ModalLargeX>
 
         <DialogModal
           :show="openModalEntrada"

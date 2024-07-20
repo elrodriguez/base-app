@@ -7,7 +7,7 @@ import Keypad from '@/Components/Keypad.vue';
 import * as XLSX from 'xlsx/dist/xlsx.full.min';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';  
-import InputLabel from '@/Components/InputLabel.vue';
+import Navigation from '@/Components/vristo/layout/Navigation.vue';
 
 const props = defineProps({
     locals: {
@@ -68,7 +68,7 @@ const getTotalQuantities = () => {
     let quantities=0;
     let arreglo = props.tickets;
     arreglo.forEach(sale => {
-        quantities+=JSON.parse(sale.product).quantity;
+        quantities+=sale.quantity;
     });
     return quantities;
 }
@@ -140,50 +140,28 @@ onMounted(()=>{
 
 <template>
     <AppLayout title="Ventas en caja">
-        <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
-            <!-- Breadcrumb Start -->
-            <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <Link :href="route('dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                        <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                        Inicio
-                        </Link>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Ventas</span>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <Link :href="route('pettycash.index')" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Caja Chica</Link>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Reporte</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
+        <Navigation :routeModule="route('sales_dashboard')" :titleModule="'Ventas'">
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <Link :href="route('pettycash.index')">Caja Chica</Link>
+            </li>
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Reporte</span>
+            </li>
+        </Navigation>
+        <div class="mt-5">
             <!-- Breadcrumb End -->
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
-                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
+                <div class="panel p-0">
+                    <div class="w-full p-4">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
                                 <form @submit.prevent="form.get(route('pettycash.index'))">
                                     <select v-model="form.local_id" v-on:change="getReport()"
                                         id="stablishment"
                                         disabled
-                                        class="w-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        class="form-select text-white-dark">
                                         <option value="0">Todos los Locales</option>
                                         <template v-for="(local, index) in props.locals" :key="index">
                                             <option :value="local.id">{{ local.description }}</option>
@@ -210,134 +188,138 @@ onMounted(()=>{
                             </div>
                         </div>
                     </div>
-                    <div class="relative overflow-x-auto">
-                        <table id="table_export" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th colspan="2" class="py-1 px-4 text-left font-medium text-black dark:text-white"><strong>LOCAL:</strong> </th>
-                                    <th colspan="4" class="py-1 px-4 text-left font-medium text-black dark:text-white">{{ local_name }}</th>
+                    <div class="table-responsive">
+                        <table id="table_export">
+                            <thead class="text-xs text-gray-700 uppercase">
+                                <tr class="bg-gray-50 text-left">
+                                    <th colspan="2" class=""><strong>LOCAL:</strong> </th>
+                                    <th colspan="4" class="">{{ local_name }}</th>
                                 </tr>
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th colspan="2" class="py-1 px-4 text-left font-medium text-black dark:text-white">
+                                <tr class="text-left">
+                                    <th colspan="2" class="">
                                         <strong>Desde: </strong> 
                                     </th>
-                                    <th colspan="4" class="py-1 px-4 text-left font-medium text-black dark:text-white">
+                                    <th colspan="4" class="text-left font-medium">
                                         <span v-if="petty_cash.state == 0">
                                             {{ petty_cash.date_opening +" "+ petty_cash.time_opening.slice(0, -3) }}
                                         </span>
                                     </th>
                                 </tr>
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th colspan="2" class="py-1 px-4 text-left font-medium text-black dark:text-white">
+                                <tr class="text-left">
+                                    <th colspan="2" class="text-left font-medium">
                                         <strong>HASTA: </strong> 
                                     </th>
-                                    <th colspan="4" class="py-1 px-4 text-left font-medium text-black dark:text-white">
+                                    <th colspan="4" class="text-left font-medium">
                                         <span v-if="petty_cash.state == 0">
                                             {{ petty_cash.date_closed +" "+ petty_cash.time_closed }}
                                         </span>
                                     </th>
                                 </tr>
-                                <tr class="bg-gray-50 border-b border-stroke text-left dark:bg-meta-4">
-                                    <th colspan="2"  class="py-1 px-4 text-left font-medium text-black dark:text-white"><strong>Monto final en Caja:</strong></th>
-                                    <th colspan="4"  class="py-1 px-4 text-left font-medium text-black dark:text-white">{{ petty_cash.final_balance }}</th>
+                                <tr class="">
+                                    <th colspan="2"  class="text-left font-medium"><strong>Monto final en Caja:</strong></th>
+                                    <th colspan="4"  class="text-left font-medium ">{{ petty_cash.final_balance }}</th>
                                 </tr>
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th class="text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark" colspan="6">Ventas</th>
+                                <tr>
+                                    <th class="text-left text-sm" colspan="6">Ventas</th>
                                 </tr>
                                 <tr class="border border-stroke">
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col">
                                         Fecha
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th>
                                         Tienda
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th>
                                         Producto / Servicio
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th>
                                         Precio Vendido
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th>
                                         Cantidad
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th>
                                         Total
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(ticket, index) in tickets" :key="ticket.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <tr v-for="(ticket, index) in tickets" :key="ticket.id">
+                                    <th class="font-medium whitespace-nowrap">
                                         {{ ticket.sale_date }}
                                     </th>
-                                    <td class="px-2 py-2">
+                                    <td>
                                         {{ getLocal(ticket.local_id) }}
                                     </td>
-                                    <td class="px-2 py-2">
+                                    <td>
                                         {{ ticket.interne + " - " + ticket.product_description }}
                                     </td>
-                                    <td class="px-2 py-2">
-                                        {{ JSON.parse(ticket.product).price }}
+                                    <td class="text-right">
+                                        {{ ticket.price }}
                                     </td>
-                                    <td class="px-2 py-2">
-                                        {{ JSON.parse(ticket.product).quantity }}
+                                    <td class="text-right">
+                                        {{ ticket.quantity }}
                                     </td>
-                                    <td class="px-2 py-2">
-                                        {{ JSON.parse(ticket.product).quantity * JSON.parse(ticket.product).price }}
+                                    <td class="text-right">
+                                        {{ (ticket.quantity * ticket.price).toFixed(2) }}
                                     </td>
                                 </tr>
                                 <template v-for="(physical, key) in physicals">
-                                    <tr v-for="(pro, k) in JSON.parse(physical.products)"  :key="pro.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <tr v-for="(pro, k) in JSON.parse(physical.products)"  :key="pro.id">
+                                        <th class="font-medium whitespace-nowrap">
                                             {{ physical.sale_date }}
                                         </th>
-                                        <td class="px-2 py-2">
+                                        <td>
                                             {{ physical.description }}
                                         </td>
-                                        <td class="px-2 py-2">
+                                        <td>
                                             {{ pro.interne + " - " + pro.description }}
                                         </td>
-                                        <td class="px-2 py-2 text-right">
+                                        <td class="text-right" style="text-align: right;">
                                             {{ pro.unit_price }}
                                         </td>
-                                        <td class="px-2 py-2 text-right">
+                                        <td class="text-right" style="text-align: right;">
                                             {{ pro.quantity }}
                                         </td>
-                                        <td class="px-2 py-2 text-right">
+                                        <td class="text-right" style="text-align: right;">
                                             {{ pro.total }}
                                         </td>
                                     </tr>
                                 </template>
-                                <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th colspan="5" class="text-right  px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Totales En Ventas</th>
-                                    <th class="px-2 py-2 text-right ">S/ {{ total }}</th>
+                                <tr class="">
+                                    <td colspan="5" class="text-right font-medium whitespace-nowrap" style="text-align: right;">
+                                        <strong>Totales En Ventas</strong>
+                                    </td>
+                                    <td class="text-right" style="text-align: right;">
+                                        <strong>S/ {{ total }}</strong>
+                                    </td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <template v-if="expenses.length > 0">
-                                    <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                        <th class="border border-stroke text-left text-sm py-2 px-4 text-black dark:text-white dark:border-strokedark" colspan="6">GASTOS</th>
+                                    <tr class="text-left">
+                                        <th class="text-left text-sm" colspan="6">GASTOS</th>
                                     </tr>
-                                    <tr class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr class="text-xs uppercase">
                                         
-                                        <th scope="col" class="px-6 py-3">N° Documento</th>
-                                        <th scope="col" colspan="4" class="px-6 py-3">Motivo o Descripción</th>
-                                        <th scope="col" class="px-6 py-3">Monto</th>
+                                        <th scope="col" >N° Documento</th>
+                                        <th scope="col" colspan="4" >Motivo o Descripción</th>
+                                        <th scope="col" >Monto</th>
                                     </tr>
-                                    <tr v-for="(expense, index) in expenses" :key="expense.id" class="border border-stroke">  
-                                        <td class="border border-stroke text-left text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">
+                                    <tr v-for="(expense, index) in expenses" :key="expense.id">  
+                                        <td class="text-left">
                                             {{ expense.document }}
                                         </td>
-                                        <td colspan="4" class="border border-stroke text-left text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">
+                                        <td colspan="4" class="text-left">
                                             {{ expense.description }}
                                         </td>      
-                                        <td class="border border-stroke text-right text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">
+                                        <td class="text-right" style="text-align: right;">
                                             {{ expense.amount }}
                                         </td>                          
                                     </tr>
-                                    <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                        <th colspan="5" class="border border-stroke text-right text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">Total en Gastos:</th>
-                                        <th class="border border-stroke text-right text-sm py-2 px-2 text-black dark:text-white dark:border-strokedark">S/ {{ getTotalExpenses() }}</th>
+                                    <tr class="text-right">
+                                        <th colspan="5" class="text-right" style="text-align: right;">Total en Gastos:</th>
+                                        <th class="text-right" style="text-align: right;">S/ {{ getTotalExpenses() }}</th>
                                     </tr>
                                 </template>
                             </tfoot>

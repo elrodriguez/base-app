@@ -23,11 +23,13 @@ use Modules\Sales\Http\Controllers\SaleLowCommunicationController;
 use Modules\Sales\Http\Controllers\SalePhysicalDocumentController;
 use Modules\Sales\Http\Controllers\SaleProductBrandController;
 use Modules\Sales\Http\Controllers\SaleProductCategoryController;
+use Modules\Sales\Http\Controllers\SalesController;
 use Modules\Sales\Http\Controllers\SaleSummaryController;
 use Modules\Sales\Http\Controllers\SerieController;
 use Modules\Sales\Http\Controllers\ServicesController;
 
 Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
+    route::get('dashboard', [SalesController::class, 'index'])->name('sales_dashboard');
     Route::resource('products', ProductController::class);
     Route::resource('pettycash', PettyCashController::class);
     Route::resource('providers', ProviderController::class);

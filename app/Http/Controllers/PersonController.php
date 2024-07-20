@@ -36,18 +36,26 @@ class PersonController extends Controller
             ->leftJoin('departments', 'provinces.department_id', 'departments.id')
             ->select(
                 'people.*',
+                'districts.id AS district_id',
                 DB::raw('CONCAT(departments.name,"-",provinces.name,"-",districts.name) AS city')
             )
             ->where('people.document_type_id', $document_type)
             ->where('people.number', $number)
             ->first();
 
+        $ubigeo = [];
+
         if ($person) {
             $status = true;
             $alert = null;
+            $ubigeo = array(
+                'district_id' => $person->district_id,
+                'city_name' => $person->city
+            );
         } else {
             $status = false;
             $alert = 'No existen datos para la busqueda';
+            $ubigeo = [];
         }
 
         return response()->json([
@@ -55,7 +63,8 @@ class PersonController extends Controller
             'person'        => $person,
             'document_type' => $msg1,
             'number'        => $msg2,
-            'alert'         => $alert
+            'alert'         => $alert,
+            'ubigeo' => $ubigeo
         ]);
     }
 
@@ -69,6 +78,8 @@ class PersonController extends Controller
             'ubigeo'   => 'required'
         ]);
 
+        $ubigeo = $request->input('ubigeo');
+
         $person = Person::updateOrCreate(
             [
                 'document_type_id' => $request->input('document_type'),
@@ -81,7 +92,7 @@ class PersonController extends Controller
                 'address' => $request->input('address'),
                 'is_client' => $request->input('is_client') ? true : false,
                 'is_provider' => $request->input('is_provider') ? true : false,
-                'ubigeo' => $request->input('ubigeo')
+                'ubigeo' => is_array($ubigeo) ? $ubigeo['district_id'] : $ubigeo
                 // otros campos que quieras actualizar o crear
             ]
         );

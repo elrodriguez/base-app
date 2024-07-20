@@ -1,6 +1,6 @@
 <script setup>
     import { useForm } from '@inertiajs/vue3';
-    import ModalLarge from '@/Components/ModalLarge.vue';
+    import ModalLargeX from '@/Components/ModalLargeX.vue';
     import { ref, watch } from 'vue';
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
@@ -10,6 +10,8 @@
     import TextInput from '@/Components/TextInput.vue';
     import { faShareFromSquare } from "@fortawesome/free-solid-svg-icons";
     import Swal2 from 'sweetalert2';
+    import Multiselect from "@suadelabs/vue3-multiselect";
+    import "@suadelabs/vue3-multiselect/dist/vue3-multiselect.css";
 
     const props = defineProps({
         clientDefault: {
@@ -63,7 +65,7 @@
                 form.email = res.data.person.email;
                 form.address = res.data.person.address;
                 form.ubigeo_description = res.data.person.city
-                form.ubigeo = res.data.person.ubigeo
+                form.ubigeo = res.data.ubigeo
                 disabledBtnSelect.value = false;
                 person.value = res.data.person;
             } else {
@@ -121,7 +123,7 @@
 
 <template>
     <div>
-        <ModalLarge :show="display" :onClose="closeModalClient" :icon="'/img/comunidad.png'">
+        <ModalLargeX :show="display" :onClose="closeModalClient" :icon="'/img/comunidad.png'">
             <template #title>
                 Cliente
             </template>
@@ -131,9 +133,9 @@
             <template #content>
                 <div class="grid grid-cols-4 gap-4">
                     <div class="col-span-6 sm:col-span-1">
-                        <InputLabel value="Tipo de Documento" class="mb-1" />
+                        <InputLabel value="Tipo de Documento" />
                         <select :disabled="saleDocumentTypes==1 ? true : false" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            class="form-select text-white-dark"
                             v-model="form.document_type">
                             <option value="">Seleccionar</option>
                             <template v-for="(documentType, index) in documentTypes">
@@ -144,63 +146,60 @@
                     </div>
                     <div class="col-span-6 sm:col-span-1">
                         <InputLabel for="number" value="Número de Doc." />
-                        <TextInput id="number" v-model="form.number" type="number" class="block w-full mt-1"
+                        <TextInput id="number" v-model="form.number" type="number"
                             autofocus />
                         <InputError :message="form.errors.number" class="mt-2" />
                     </div>
                     <div class="col-span-6 sm:col-span-2">
                         <InputLabel v-if="form.document_type == 6" for="full_name" value="Razón Social" />
                         <InputLabel v-else for="full_name" value="Nombres" />
-                        <TextInput id="full_name" v-model="form.full_name" type="text" class="block w-full mt-1"
-                             />
+                        <TextInput id="full_name" v-model="form.full_name" type="text" />
                         <InputError :message="form.errors.full_name" class="mt-2" />
                     </div>
                     <div class="col-span-6 sm:col-span-1">
                         <InputLabel for="telephone" value="Teléfono" />
-                        <TextInput id="telephone" v-model="form.telephone" type="text" class="block w-full mt-1"
-                             />
+                        <TextInput id="telephone" v-model="form.telephone" type="text" />
                         <InputError :message="form.errors.telephone" class="mt-2" />
                     </div>
                     
                     <div class="col-span-6 sm:col-span-1">
                         <InputLabel for="email" value="Email" />
-                        <TextInput id="email" v-model="form.email" type="email" class="block w-full mt-1" autofocus />
+                        <TextInput id="email" v-model="form.email" type="email" />
                         <InputError :message="form.errors.email" class="mt-2" />
                     </div>
+                    
                     <div class="col-span-6 sm:col-span-2">
-                        <InputLabel for="address" value="Dirección" />
-                        <TextInput id="address" v-model="form.address" type="text" class="block w-full mt-1" />
-                        <InputError :message="form.errors.address" class="mt-2" />
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                        <InputLabel for="address" value="Ciudad" />
-                        
-                        <div class="relative">
-                            <TextInput 
-                            v-model="form.ubigeo_description" 
-                            @input="filterCities"
-                            placeholder="Buscar Distrito"
-                            type="text" 
-                            class="block w-full mt-1" />
-                            <ul v-if="searchUbigeos && searchUbigeos.length > 0" class="list-disc list-inside absolute z-50 w-full bg-white border border-gray-300 rounded-md mt-1">
-                                <li v-for="item in searchUbigeos" :key="item.id" class="px-4 cursor-pointer hover:bg-gray-100" @click="selectCity(item)">
-                                    {{ item.department_name+'-'+item.province_name+'-'+item.district_name }}
-                                </li>
-                            </ul>
-                        </div>
+                        <InputLabel for="city" value="Ciudad" />
+                        <multiselect
+                            id="city"
+                            v-model="form.ubigeo"
+                            :options="ubigeo"
+                            class="custom-multiselect"
+                            :searchable="true"
+                            placeholder="Buscar ciudad"
+                            selected-label="seleccionado"
+                            select-label="Elegir"
+                            deselect-label="Quitar"
+                            label="city_name"
+                            track-by="district_id"
+                        ></multiselect>
                         <div>
                             <InputError :message="form.errors.ubigeo" class="mt-2" />
                         </div>
                     </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <InputLabel for="address" value="Dirección" />
+                        <TextInput id="address" v-model="form.address" type="text" />
+                        <InputError :message="form.errors.address" class="mt-2" />
+                    </div>
                 </div>
             </template>
             <template #buttons>
-                <RedButton @click="modalNewSearchClient()" class="mr-2">Buscar</RedButton>
-                <PrimaryButton @click="saveNewSearchClient()" class="mr-2">
+                <RedButton @click="modalNewSearchClient()" >Buscar</RedButton>
+                <PrimaryButton @click="saveNewSearchClient()" >
                     Guardar
                 </PrimaryButton>
                 <GreenButton 
-                    class="mr-2"
                     :disabled="disabledBtnSelect"
                     @click="selectPersonNew"
                 >
@@ -208,6 +207,6 @@
                     Seleccionar
                 </GreenButton>
             </template>
-        </ModalLarge>
+        </ModalLargeX>
     </div>
 </template>

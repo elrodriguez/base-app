@@ -152,7 +152,8 @@ class SaleDocumentController extends Controller
                 'districts.id AS district_id',
                 'districts.name AS district_name',
                 'provinces.name AS province_name',
-                'departments.name AS department_name'
+                'departments.name AS department_name',
+                DB::raw("CONCAT(departments.name,'-',provinces.name,'-',districts.name) AS city_name")
             )
             ->get();
 

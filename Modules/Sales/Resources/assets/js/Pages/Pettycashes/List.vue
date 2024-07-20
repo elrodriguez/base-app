@@ -1,14 +1,14 @@
 <script setup>
-    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
+import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import { faGears } from "@fortawesome/free-solid-svg-icons";
 import Pagination from '@/Components/Pagination.vue';
 import ModalCashCreate from './ModalCashCreate.vue';
 import Keypad from '@/Components/Keypad.vue';
 import swal from 'sweetalert2';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import DialogModal from '@/Components/DialogModal.vue';
+import ModalLarge from '@/Components/ModalLarge.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import DangerButton from '@/Components/DangerButton.vue';
@@ -19,6 +19,7 @@ import {
     Textarea, Input, Dropdown, Menu, MenuItem, Button, Select
 } from 'ant-design-vue';
 import Swal2 from 'sweetalert2';
+import Navigation from '@/Components/vristo/layout/Navigation.vue';
 
     const props = defineProps({
         pettycashes: {
@@ -58,26 +59,34 @@ import Swal2 from 'sweetalert2';
     }
 
     function closePettyCash(id, state){
-        if(state == 0){
-            swal.fire({
-                title: '¿Estás seguro de que quieres Cerrar la Caja?',
-                confirmButtonText: 'SI',
-            });
-        }else{
-            swal.fire({
-                title: '¿Estás seguro de que quieres Cerrar la Caja?',
-                showCancelButton: true,
-                confirmButtonText: 'SI',
-                cancelButtonText: `NO`,
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    axios.post(route('close_petty_cash', {id})).then(response => {
-                        location.reload();
-                    }).catch(error => console.log(error));
-                } 
-            })
-        }
+
+        swal.fire({
+            icon: 'warning',
+            title: '¿Esta seguro de cerrar caja?',
+            text: 'Este proceso es irreversible.',
+            showCancelButton: true,
+            confirmButtonText: 'SI',
+            cancelButtonText: `NO`,
+            padding: '2em',
+            customClass: 'sweet-alerts',
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                axios.post(route('close_petty_cash', {id})).then(response => {
+                    router.visit(route('pettycash.index'), {
+                        method: 'get',
+                        data: form,
+                        replace: false,
+                        preserveState: true,
+                        preserveScroll: true,
+                        onSuccess: page => {
+                            showMessage('La caja fue cerrada exitosamente')
+                        }
+                    })
+                }).catch(error => console.log(error));
+            } 
+        });
+        
     }
 
 
@@ -143,8 +152,7 @@ const openModalEdit = (cash) => {
     formEdit.id = cash.id
     formEdit.local_id = cash.local_sale_id
     formEdit.starting_amount = cash.beginning_balance
-    formEdit.seller_name = cash.seller_name
-    
+    formEdit.seller_name = cash.seller_name ?? cash.name_user
     displayModalEdit.value = true;
 };
 
@@ -167,49 +175,45 @@ const editCash = () => {
         },
     });
 };
+
+const showMessage = (msg = '', type = 'success') => {
+    const toast = Swal2.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000,
+        customClass: { container: 'toast' },
+    });
+    toast.fire({
+        icon: type,
+        title: msg,
+        padding: '10px 20px',
+    });
+};
 </script>
 
 <template>
     <AppLayout title="Cajas Chicas">
-        <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
-            <!-- Breadcrumb Start -->
-            <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <Link :href="route('dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                        <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                        Inicio
-                        </Link>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Ventas</span>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Caja Chica</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
+        <Navigation :routeModule="route('sales_dashboard')" :titleModule="'Ventas'">
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Caja Chica</span>
+            </li>
+        </Navigation>
+        <div class="mt-5">
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
-                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
+                <div class="panel p-0">
+                    <div class="w-full p-4">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
                                 <form @submit.prevent="form.get(route('pettycash.index'))">
                                     <div class="grid grid-cols-3">
                                         <div class="col-span-3 sm:col-span-1 mr-2">
-                                            <input v-mask="'##/##/####'" type="text" id="f1" aria-label="f1" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <input v-mask="'##/##/####'" placeholder="##/##/####" type="text" id="f1" aria-label="f1" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="col-span-3 sm:col-span-1">
-                                            <input v-mask="'##/##/####'" type="text" id="f2" aria-label="d2" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <input v-mask="'##/##/####'" placeholder="##/##/####" type="text" id="f2" aria-label="d2" class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="col-span-3 sm:col-span-1">
                                             <button type="submit" class="p-2 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -229,39 +233,39 @@ const editCash = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="max-w-full overflow-x-auto">
-                        <table class="w-full table-auto">
-                            <thead class="border-b border-stroke">
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th class="py-2 px-2 text-sm font-medium text-black dark:text-white xl:pl-11">
+                    <div class="table-responsive">
+                        <table class="">
+                            <thead class="">
+                                <tr class="">
+                                    <th class="">
                                         Acción
                                     </th>
-                                    <th class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                                    <th class="">
                                         Usuario
                                     </th>
-                                    <th class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                                    <th class="">
                                         Tienda
                                     </th>
-                                    <th class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                                    <th class="">
                                         Fecha Apertura
                                     </th>
-                                    <th class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                                    <th class="">
                                         Fecha Cerrado
                                     </th>
-                                    <th class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                                    <th class="">
                                         Ingreso por ventas
                                     </th>
-                                    <th class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                                    <th class="">
                                         Monto en Caja
                                     </th>
-                                    <th class="py-2 px-2 text-sm font-medium text-black dark:text-white">
+                                    <th class="">
                                         Gastos
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(pettycash, index) in pettycashes.data" :key="pettycash.id" :class="  pettycash.state==1? '' : 'bg-gray-100 hover:bg-gray-200'">
-                                    <td class="text-center text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td class="">
                                         <Dropdown :placement="'bottomLeft'" arrow>
                                             <button class="border py-1.5 px-2 dropdown-button inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm" type="button">
                                                 <font-awesome-icon :icon="faGears" />
@@ -296,16 +300,16 @@ const editCash = () => {
                                         </Dropdown>
 
                                     </td>
-                                    <td class="text-center text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td class="">
                                         {{ pettycash.name_user }}
                                     </td>
-                                    <td class="text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td class="">
                                         {{ getLocal(pettycash.local_sale_id) }}
                                     </td>
-                                    <td class="text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td class="">
                                         {{ pettycash.date_opening }}<p class="text-sm">{{ pettycash.time_opening.slice(0, -3) }} hrs</p>
                                     </td>
-                                    <td class="text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td class="">
                                         <span v-if="pettycash.state==1"  class="bg-blue-800 text-white text-xs font-medium mr-2 px-2 py-1 rounded dark:bg-blue-900 dark:text-blue-300">
                                             Abierto
                                         </span>
@@ -313,13 +317,13 @@ const editCash = () => {
                                             {{ pettycash.date_closed}} {{ pettycash.time_closed.slice(0, -3)+" hrs"  }}
                                         </span>
                                     </td>
-                                    <td class="text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td class="">
                                         {{ pettycash.income }}
                                     </td>
-                                    <td class="text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td class="">
                                         {{ pettycash.final_balance }}
                                     </td>
-                                    <td class="text-sm border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td class="">
                                         {{ pettycash.expenses }}
                                     </td>
                                 </tr>
@@ -330,7 +334,7 @@ const editCash = () => {
                 </div>
             </div>
         </div>
-        <DialogModal :show="displayModalExpense" @close="closeModalExpense">
+        <ModalLarge :show="displayModalExpense" @close="closeModalExpense">
             <template #title>
                 Registrar Gasto en CAJA
             </template>
@@ -373,11 +377,7 @@ const editCash = () => {
                 </form>
             </template>
 
-            <template #footer>
-                <SecondaryButton @click="closeModalExpense">
-                    Cancel
-                </SecondaryButton>
-
+            <template #buttons>
                 <DangerButton
                     class="ml-3"
                     :class="{ 'opacity-25': formExpense.processing }"
@@ -387,8 +387,8 @@ const editCash = () => {
                     Guardar
                 </DangerButton>
             </template>
-        </DialogModal>
-        <DialogModal :show="displayModalEdit" @close="closeModalEdit">
+        </ModalLarge>
+        <ModalLarge :show="displayModalEdit" @close="closeModalEdit">
             <template #title>
                 Editar Caja Chica
             </template>
@@ -423,10 +423,7 @@ const editCash = () => {
 
             </template>
 
-            <template #footer>
-                <SecondaryButton @click="closeModalEdit">
-                    Cancel
-                </SecondaryButton>
+            <template #buttons>
 
                 <DangerButton
                     class="ml-3"
@@ -437,6 +434,6 @@ const editCash = () => {
                     Guardar
                 </DangerButton>
             </template>
-        </DialogModal>
+        </ModalLarge>
     </AppLayout>
 </template>

@@ -1,5 +1,5 @@
 <script setup>
-    import AppLayout from '@/Layouts/AppLayout.vue';
+import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
     import Keypad from '@/Components/Keypad.vue';
     import ModalSmall from '@/Components/ModalSmall.vue';
     import Swal2 from "sweetalert2";

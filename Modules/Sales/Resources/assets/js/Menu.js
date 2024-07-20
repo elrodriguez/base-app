@@ -3,7 +3,8 @@ import {
     faFileInvoiceDollar,
     faScrewdriverWrench,
     faChartLine,
-    faLocationDot
+    faLocationDot,
+    faMoneyBillTrendUp
 } from "@fortawesome/free-solid-svg-icons";
 
 const menuSales = {
@@ -53,6 +54,13 @@ const menuSales = {
             text: "Tiendas",
             permissions: "sale_tienda",
             icom: faLocationDot,
+        },
+        {
+            route: route("pettycash.index"),
+            status: false,
+            text: "Caja Chica",
+            permissions: "caja_chica",
+            icom: faMoneyBillTrendUp
         },
         {
             route: route("sales.index"),

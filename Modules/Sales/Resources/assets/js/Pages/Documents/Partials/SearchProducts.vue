@@ -1,5 +1,5 @@
 <script setup>
-    import DialogModal from '@/Components/DialogModal.vue';
+    import ModalLargeX from '@/Components/ModalLargeX.vue';
     import DangerButton from '@/Components/DangerButton.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     import { ref } from 'vue';
@@ -8,13 +8,9 @@
     import NumberInput from '@/Components/NumberInput.vue';
 
     const props = defineProps({
-        displaySearch: {
-            type: Boolean,
-            default: false
-        },
-        close: {
-            type: Function,
-            default: false
+        iconSearch: {
+            type: Object,
+            default: null
         }
     });
 
@@ -164,84 +160,70 @@
     }
 
     const astUrl = assetUrl;
+
+    const displaySearch = ref(false);
 </script>
 
 
 <template>
+    <div class="dropdown shrink-0">
+        <Popper :placement="'bottom-start'" offsetDistance="8" class="z-50">
+            <button type="button" title="Abrir Buscar" class="btn btn-sm btn-outline-primary dropdown-toggle">
+                <font-awesome-icon :icon="iconSearch" />
+            </button>
+            <template #content="{ close }">
+                <ul id="result" class="!py-0 text-dark dark:text-white-dark w-[300px] sm:w-[350px] divide-y dark:divide-white/10">
+                    <li class="items-center px-4 py-2 justify-between font-semibold">
+                        <form @submit.prevent="searchProducts()" class="mx-auto w-full mb-5">
+                            <div class="relative">
+                                <input v-model="form.search" type="text" placeholder="Buscar... " class="form-input shadow-[0_0_4px_2px_rgb(31_45_61_/_10%)] bg-white rounded-full h-11 placeholder:tracking-wider" autofocus />
+                                <button type="submit" class="btn btn-primary absolute ltr:right-1 rtl:left-1 inset-y-0 m-auto rounded-full w-9 h-9 p-0 flex items-center justify-center">
+                                    <font-awesome-icon :icon="iconSearch" /> 
+                                </button>
+                            </div>
+                        </form>
+                    </li>
+                    <li v-for="(product, index) in form.products" class="group flex items-center px-4 py-2">
+                        <div @click="openModalSelectProduct(product),close()" style="cursor: pointer;" class="flex items-center space-x-4">
+                            <div class="flex-shrink-0">
+                                <img v-if="product.image=='img/imagen-no-disponible.jpg'"
+                                :src="astUrl+product.image"
+                                class="w-8 h-8 rounded-full"
+                                :alt="product.interne"
+                                />
 
-    <div v-show="displaySearch" style="min-width: 50em;max-width: 50em;" class="absolute z-99 mt-1 bg-white border border-gray-400 shadow dark:bg-gray-700">
-        <div class="p-4">
-            <form @submit.prevent="searchProducts()">
-                <!-- <div class="flex">
-                    <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                    <div class="flex items-center mr-4">
-                        <input v-model="formScaner.scaner" id="scaner" type="checkbox" value="" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                        <label for="scaner" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scaner</label>
-                    </div>
-                    <div class="relative w-full">
-                        <input v-model="form.search" autocomplete="off" type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Buscar por código o descripción..." required>
-                        <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                            <span class="sr-only">Search</span>
-                        </button>
-                    </div>
-                </div> -->
-                <label for="input-group-search" class="sr-only">Search</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                        </svg>
-                    </div>
-                    <input v-model="form.search" type="text" id="input-group-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search user">
-                </div>
-            </form>
-            
-        </div>
-        <ul v-show="displayResultSearch" id="result" class="h-48 px-4 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
-            <li v-for="(product, index) in form.products">
-                <div @click="openModalSelectProduct(product)" style="cursor: pointer;" class="flex items-center space-x-4">
-                    <div class="flex-shrink-0">
-                        <img v-if="product.image=='img/imagen-no-disponible.jpg'"
-                        :src="astUrl+product.image"
-                        class="w-8 h-8 rounded-full"
-                        :alt="product.interne"
-                        />
-
-                        <img v-else
-                        :src="astUrl+'storage/'+product.image"
-                        class="w-8 h-8 rounded-full"
-                        :alt="product.interne"
-                        />
-                    </div>
-                    <div class="text-left flex-1 min-w-0 ml-2">
-                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            {{ product.interne }}
-                        </p>
-                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                            {{ product.description }}
-                        </p>
-                    </div>
-                    <div v-if="product.is_product" class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        Stock {{ product.stock }}
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <a @click="close" href="#" type="button" class="flex items-center p-2.5 text-sm font-medium text-red-600 border-t border-gray-200 rounded-b-lg bg-gray-50 dark:border-gray-600 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-red-500 hover:underline">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                fill-rule="evenodd"
-                d="M5.293 4.293a1 1 0 011.414 0L10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-                ></path>
-            </svg>
-            Cancelar
-        </a>
+                                <img v-else
+                                :src="astUrl+'storage/'+product.image"
+                                class="w-8 h-8 rounded-full"
+                                :alt="product.interne"
+                                />
+                            </div>
+                            <div class="text-left flex-1 min-w-0 ml-2">
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                    {{ product.interne }}
+                                </p>
+                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                    {{ product.description }}
+                                </p>
+                            </div>
+                            <div v-if="product.is_product" class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                Stock {{ product.stock }}
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="p-4">
+                            <button class="btn btn-primary block w-full btn-small" @click="close" >
+                                Cerrar
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </template>
+        </Popper>
     </div>
-
     
-    <DialogModal 
+    <ModalLargeX
         :show="displayModal" 
         @close="closeModalSelectProduct"
     >
@@ -252,12 +234,14 @@
             <template v-else>
                 Detalles del Servicio
             </template>
-            
+        </template>
+        <template #message>
+            {{ form.product.interne }} - {{ form.product.description }}
         </template>
         <template #content>
-            <div class="grid grid-cols-3">
+            <div class="grid grid-cols-3 gap-4">
                 <div class="col-span-1">
-                    <div class="flex flex-wrap justify-center p-4">
+                    <div class="flex flex-wrap justify-center">
                         <img v-if="form.product.image=='img/imagen-no-disponible.jpg'"
                         :src="astUrl+form.product.image"
                         class="p-1 bg-white border rounded max-w-sm"
@@ -272,10 +256,10 @@
                         style="width: 100%;"
                         />
                     </div>
+                    <p class="my-4 text-center">Stock Actual : {{ form.data.stock  }}</p>
                 </div>
-                <div class="col-span-2">
-                    <h4>{{ form.product.interne  }} - {{ form.product.description  }}</h4>
-                    <p class="my-4">Stock Actual : {{ form.data.stock  }}</p>
+                <div class="col-span-1">
+                    
                     <div class="mb-4">
                         <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Precios Disponibles
@@ -350,13 +334,15 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-span-1">
                     <div class="mb-4">
                         <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Cantidad a vender
                         </label>
                         <input v-model="form.data.quantity" type="number" id="quantity" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
-                    <div class="mb-4">
+                    <div v-can="'sale_aplicar_descuento'" class="mb-4">
                         <label for="discount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Descuento
                         </label>
@@ -368,16 +354,13 @@
                 </div>
             </div>
         </template>
-        <template #footer>
+        <template #buttons>
             <DangerButton
                 class="mr-3"
                 @click="addProduct(form.product.presentations)"
             >
                 Agregar
             </DangerButton>
-            <SecondaryButton @click="closeModalSelectProduct">
-                Cancel
-            </SecondaryButton>
         </template>
-    </DialogModal>
+    </ModalLargeX>
 </template>
