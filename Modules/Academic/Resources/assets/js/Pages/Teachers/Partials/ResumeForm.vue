@@ -78,6 +78,8 @@ const destroyExperience = (id, index) => {
         confirmButtonText: '¡Sí, Eliminar!',
         cancelButtonText: 'Cancelar',
         showLoaderOnConfirm: true,
+        padding: '2em',
+        customClass: 'sweet-alerts',
         preConfirm: () => {
             return axios.delete(route('aca_teachers_work_experience_destroy', id)).then((res) => {
                 if (!res.data.success) {
@@ -93,6 +95,8 @@ const destroyExperience = (id, index) => {
                 title: 'Enhorabuena',
                 text: 'Se Eliminó correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             if(index>0){
                 formResume.experiences.splice(index,1);

@@ -15,7 +15,7 @@ use App\Http\Controllers\PersonController;
 use Inertia\Inertia;
 
 Route::middleware('auth')->prefix('security')->group(function () {
-    // Route::get('/', 'SecurityController@index');
+    Route::get('dashboard', 'SecurityController@index')->name('security_dashboard');
 
     Route::get('profile', 'ProfileController@edit')->name('profile.edit');
     Route::post('profile', 'ProfileController@update')->name('profile.update');

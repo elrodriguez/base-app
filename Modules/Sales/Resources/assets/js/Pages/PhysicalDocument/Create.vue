@@ -11,6 +11,7 @@
     import Swal2 from 'sweetalert2';
     import { Link, router } from '@inertiajs/vue3';
     import { ConfigProvider, Dropdown,Menu,Tooltip, Button, message } from 'ant-design-vue';
+    import Navigation from '@/Components/vristo/layout/Navigation.vue';
 
     const props = defineProps({
         payments: {
@@ -426,46 +427,31 @@
             }
         });
     }
+    const asetUrl = assetUrl;
 </script>
 <template>
     <AppLayout title="Punto de Ventas">
         <ConfigProvider>
-        <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
-            <!-- Breadcrumb Start -->
-            <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <Link :href="route('dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                            <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                            Inicio
-                        </Link>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <Link :href="route('sale_physical_document_list')" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Documento Físico</Link>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Registrar Documentos</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
-
+        <Navigation :routeModule="route('sales_dashboard')" :titleModule="'Ventas'">
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <Link :href="route('sale_physical_document_list')" >Documento Físico</Link>
+            </li>
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Registrar Documento</span>
+            </li>
+        </Navigation>
+        <div class="mt-5">
             <div class="flex-shrink max-w-full w-full mb-6">
-                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+                <div class="panel">
                     <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700 mb-3">
                         <div class="flex flex-col">
                             <div class="text-3xl font-bold mb-1">
-                                <img style="width: 242px;height: 53.2333px;" class="inline-block h-auto ltr:mr-2 rtl:ml-2" :src="company.logo">
+                                <img style="width: 242px;height: 53.2333px;" class="inline-block h-auto ltr:mr-2 rtl:ml-2" :src="asetUrl+'storage/'+company.logo">
                             </div>
                             <p class="text-sm">Ancash, Chimbote<br>{{ company.fiscal_address }}</p>
                         </div>
                         <div style="width: 180px;" class="text-4xl uppercase font-bold">
-                            <select v-model="formDocument.sale_documenttype_id" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select v-model="formDocument.sale_documenttype_id" class="form-select text-white-dark">
                                 <option v-for="(type, index) in saleDocumentTypes" :value="type.id"> {{  type.description  }}</option>
                             </select>
                         </div>
@@ -483,7 +469,7 @@
                                     </Tooltip> 
                                 </div>
                                 <div class="col-span-3 sm:col-span-2 ltr:text-right rtl:text-left">
-                                    <input v-model="formDocument.client_name" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                    <input v-model="formDocument.client_name" class="form-input form-input-sm" disabled type="text" />
                                     <SearchClients 
                                         :display="displayModalClientSearch" 
                                         :closeModalClient="closeModalClientSearch"
@@ -493,26 +479,29 @@
                                         :saleDocumentTypes="saleDocumentTypesId"
                                         :ubigeo="departments"
                                     />
-                                   <div><InputError :message="formDocument.errors.client_id" class="mt-2" /></div> 
-                                   <InputError :message="formDocument.errors.client_name" class="mt-2" />
+                                    <div>
+                                        <InputError :message="formDocument.errors.client_id" class="mt-2" />
+                                        <InputError :message="formDocument.errors.client_name" class="mt-2" />
+                                    </div> 
+                                    
                                 </div>
                             </div>
                             <div class="grid grid-cols-3 gap-4 justify-between mb-1">
                                 <div style="font-size: 14px;" class="col-span-3 sm:col-span-1 uppercase">Ciudad:</div>
                                 <div class="col-span-3 sm:col-span-2 ltr:text-right rtl:text-left">
-                                    <input v-model="formDocument.client_ubigeo_description" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                    <input v-model="formDocument.client_ubigeo_description" class="form-input form-input-sm" type="text" />
                                 </div>
                             </div>
                             <div class="grid grid-cols-3 gap-4 justify-between mb-1">
                                 <div style="font-size: 14px;" class="col-span-3 sm:col-span-1 uppercase">Dirección:</div>
                                 <div class="col-span-3 sm:col-span-2 ltr:text-right rtl:text-left">
-                                    <input v-model="formDocument.client_direction" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                    <input v-model="formDocument.client_direction" class="form-input form-input-sm" type="text" />
                                 </div>
                             </div>
                             <div class="grid grid-cols-3 gap-4 justify-between mb-1">
                                 <div style="font-size: 14px;" class="col-span-3 sm:col-span-1 uppercase">Email:</div>
                                 <div class="col-span-3 sm:col-span-2 ltr:text-right rtl:text-left">
-                                    <input v-model="formDocument.client_email" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                    <input v-model="formDocument.client_email" class="form-input form-input-sm" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -520,28 +509,28 @@
                             <div class="flex justify-between mb-1">
                                 <div style="font-size: 14px;" class="flex-1 uppercase">Serie:</div>
                                 <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input v-model="formDocument.serie" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                    <input v-model="formDocument.serie" class="form-input form-input-sm" type="text" />
                                     <InputError :message="formDocument.errors.serie" class="mt-2" />
                                 </div>
                             </div>
                             <div class="flex justify-between mb-1">
                                 <div style="font-size: 14px;" class="flex-1 uppercase">Numero:</div>
                                 <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input v-model="formDocument.corelative" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                    <input v-model="formDocument.corelative" class="form-input form-input-sm" type="text" />
                                     <InputError :message="formDocument.errors.corelative" class="mt-2" />
                                 </div>
                             </div>
                             <div class="flex justify-between mb-1">
                                 <div style="font-size: 14px;" class="flex-1 uppercase">Fecha de Emisión:</div>
                                 <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input v-model="formDocument.date_issue" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="date" />
+                                    <input v-model="formDocument.date_issue" class="form-input form-input-sm" type="date" />
                                     <InputError :message="formDocument.errors.date_issue" class="mt-2" />
                                 </div>
                             </div>
                             <div class="flex justify-between mb-1">
                                 <div style="font-size: 14px;" class="flex-1 uppercase">Fecha de vencimiento:</div>
                                 <div class="flex-1 ltr:text-right rtl:text-left">
-                                    <input v-model="formDocument.date_end" class="invoice-imput dark:text-gray-400 dark:bg-gray-700" type="date" />
+                                    <input v-model="formDocument.date_end" class="form-input form-input-sm" type="date" />
                                     <InputError :message="formDocument.errors.date_end" class="mt-2" />
                                 </div>
                             </div>
@@ -552,13 +541,15 @@
                             <thead class="border-b border-t border-gray-400 dark:border-gray-700">
                                 <tr class="bg-gray-100 dark:bg-gray-900 dark:bg-opacity-20">
                                     <th style="width: 70px;" class="text-right py-1">
-                                        <button @click="newItems" type="button" style="width: 28px;" title="Agregar Nuevo" class="mr-1 text-center  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-xs p-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            <font-awesome-icon :icon="faPlus" />
-                                        </button>
-                                        <button @click="displaySearchProducts = !displaySearchProducts" type="button" style="width: 28px;" title="Abrir Buscar" class="text-center  text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium text-xs p-2 text-center inline-flex items-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                                            <font-awesome-icon :icon="faMagnifyingGlass" />
-                                        </button>
-                                        <SearchProducts @eventdata="getDataTable" :displaySearch="displaySearchProducts" :close="closeSearchProducus" />
+                                        <div class="flex items-center justify-center gap-2">
+                                            <button v-can="'sale_registar_producto_alvender'" @click="newItems" type="button" style="width: 28px;" title="Agregar Nuevo" class="btn btn-sm btn-outline-success">
+                                                <font-awesome-icon :icon="faPlus" />
+                                            </button>
+                                            <SearchProducts 
+                                                @eventdata="getDataTable" 
+                                                :iconSearch="faMagnifyingGlass" 
+                                             />
+                                        </div>
                                     </th>                                    
                                     <th class="text-left text-xs uppercase px-2 py-1">Item</th>
                                     <th class="text-center text-xs uppercase px-2 py-1">Producto</th>
@@ -574,14 +565,14 @@
                                     <template v-for="(row, key) in formDocument.items">
                                         <tr>
                                             <td class="text-right" >
-                                                <button @click="removeItem(key)" type="button" style="width: 28px;" class="text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-xs p-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                <button @click="removeItem(key)" type="button" style="width: 28px;" class="btn btn-sm btn-outline-danger">
                                                     <font-awesome-icon :icon="faXmark"  />
                                                 </button>
                                             </td>
                                             <td class="">
                                                 <input v-model="row.description" 
                                                 :ref="'item-description-' + key" 
-                                                 class="invoice-imput text-left dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                                 class="form-input form-input-sm" type="text" />
                                             </td>
                                             <td style="width: 80px;" class="text-center">
                                                 <input v-model="row.is_product" 
@@ -589,7 +580,7 @@
                                             </td>
                                             <td style="width: 110px;">
                                                 <select v-model="row.unit_type" 
-                                                class="invoice-select dark:text-gray-400 dark:bg-gray-700">
+                                                class="form-select form-select-sm text-white-dark">
                                                     <template v-for="(unitType) in unitTypes">
                                                         <option :value="unitType.id" >{{ unitType.description }}</option>
                                                     </template>
@@ -598,22 +589,22 @@
                                             <td style="width: 70px;" class="text-center">
                                                 <input v-model="row.quantity" 
                                                 @input="calculateTotals(key)" 
-                                                class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                                class="form-input form-input-sm" type="text" />
                                                 <InputError :message="formDocument.errors[`items.${key}.quantity`]" class="mt-2" />
                                             </td>
                                             <td style="width: 120px;" class="text-right">
                                                 <input v-model="row.unit_price" 
                                                 @input="calculateTotals(key)" 
-                                                class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                                class="form-input form-input-sm text-right" type="text" />
                                             </td>
                                             <td style="width: 90px;" class="text-right">
                                                 <input v-model="row.discount" @input="calculateTotals(key)" 
-                                                class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" type="text" />
+                                                class="form-input form-input-sm text-right" type="text" />
                                             </td>
                                             <td style="width: 110px;" class="text-right ">
                                                 <input v-model="row.total" 
                                                 style="cursor: not-allowed"
-                                                class="invoice-imput text-right bg-gray-100 dark:text-gray-400 dark:bg-gray-700" disabled type="text" />
+                                                class="form-input form-input-sm text-right" disabled type="text" />
                                                 <InputError :message="formDocument.errors[`items.${key}.total`]" class="mt-2" />
                                             </td>
                                         </tr>
@@ -627,8 +618,11 @@
                                                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                                                 </svg>
                                                 <span class="sr-only">Info</span>
-                                                <div>
+                                                <div v-can="'sale_registar_producto_alvender'">
                                                     Click en <span class="p-1 bg-blue-700 text-white"><font-awesome-icon @click="newItems" :icon="faPlus" /></span> para agregar o click en <span class="p-1 bg-gray-700 text-white"><font-awesome-icon @click="displaySearchProducts = true" :icon="faMagnifyingGlass" /></span> para buscar producto o servicio
+                                                </div>
+                                                <div v-can-else>
+                                                    Click en <span class="p-1 bg-gray-700 text-white"><font-awesome-icon @click="displaySearchProducts = true" :icon="faMagnifyingGlass" /></span> para buscar producto o servicio
                                                 </div>
                                             </div>
                                         </td>
@@ -668,12 +662,12 @@
                             <tbody>
                                 <tr v-for="(row, index) in formDocument.payments" v-bind:key="index">
                                     <td style="width: 70px;" class="text-right">
-                                        <button @click="removePayment(index)" type="button" style="width: 28px;" class="text-xs p-1.5 inline-block bg-red-700 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                        <button @click="removePayment(index)" type="button" style="width: 28px;" class="btn btn-sm btn-outline-danger">
                                             <font-awesome-icon :icon="faXmark" />
                                         </button>
                                     </td>
                                     <td >
-                                        <select v-model="row.type" class="invoice-select dark:text-gray-400 dark:bg-gray-700">
+                                        <select v-model="row.type" class="form-select form-select-sm text-white-dark">
                                             <template v-for="(payment) in payments">
                                                 <option :value="payment.id">{{ payment.description }}</option>
                                             </template>
@@ -681,11 +675,11 @@
                                         <InputError :message="formDocument.errors[`payments.${index}.id`]" class="mt-2" />
                                     </td>
                                     <td>
-                                        <input v-model="row.reference" type="text" id="first_name" class="invoice-imput text-left dark:text-gray-400 dark:bg-gray-700" placeholder="Referencia">
+                                        <input v-model="row.reference" type="text" id="first_name" class="form-input form-input-sm" placeholder="Referencia">
                                         <InputError :message="formDocument.errors[`payments.${index}.reference`]" class="mt-2" />
                                     </td>
                                     <td style="width: 110px;">
-                                        <input v-model="row.amount" type="text" id="first_name" class="invoice-imput text-right dark:text-gray-400 dark:bg-gray-700" placeholder="Monto" required>
+                                        <input v-model="row.amount" type="text" id="first_name" class="form-input form-input-sm" placeholder="Monto" required>
                                         <InputError :message="formDocument.errors[`payments.${index}.amount`]" class="mt-2" />
                                     </td>
                                     

@@ -17,6 +17,7 @@ import menuSocialevents from 'Modules/Socialevents/Resources/assets/js/Menu.js';
 import menuHelpdesk from 'Modules/Helpdesk/Resources/assets/js/Menu.js';
 import menuHealth from 'Modules/Health/Resources/assets/js/Menu.js';
 import menuCRM from 'Modules/CRM/Resources/assets/js/Menu.js';
+import menuOnlineshop from 'Modules/Onlineshop/Resources/assets/js/Menu.js';
 
 const MenuData = ref([
     {
@@ -29,27 +30,7 @@ const MenuData = ref([
     menuConfig,
     // menuPurchases,
     menuSales,
-    // {
-    //     status: false,
-    //     text: 'Ventas en línea',
-    //     icom: faGlobe,
-    //     route: 'module',
-    //     permissions: 'onli_dashboard',
-    //     items: [
-    //         {
-    //             route: route('onlineshop_items'),
-    //             status: false,
-    //             text: 'Productos & servicios',
-    //             permissions: 'onli_items',
-    //         },
-    //         {
-    //             route: route('onlineshop_sales'),
-    //             status: false,
-    //             text: 'Pedidos',
-    //             permissions: 'onli_pedidos',
-    //         },
-    //     ]
-    // },
+    menuOnlineshop,
     {
         status:false,
         text: 'Facturación Electrónica',

@@ -42,7 +42,8 @@
             "Modules\\": "Modules/"
         },
 		"files": [
-            "app/Helpers/formatDates.php"
+            "app/Helpers/formatDates.php",
+            "app/Helpers/enums.php"
         ]
     },
     "autoload-dev": {

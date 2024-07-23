@@ -84,6 +84,8 @@ const saveModuleNew = () => {
             title: 'Enhorabuena',
             text: 'Se Actualizó correctamente',
             icon: 'success',
+            padding: '2em',
+            customClass: 'sweet-alerts',
         });
         form.processing = false;
         form.position = null;
@@ -123,6 +125,8 @@ const saveModuleUpdate = (index, module) => {
             title: 'Enhorabuena',
             text: 'Se registró correctamente',
             icon: 'success',
+            padding: '2em',
+            customClass: 'sweet-alerts',
         });
         modulesLoading.value[index].loading = false;
         form.modules.sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10));
@@ -157,6 +161,8 @@ const destroyModule = (index,id) => {
         confirmButtonText: '¡Sí, Eliminar!',
         cancelButtonText: 'Cancelar',
         showLoaderOnConfirm: true,
+        padding: '2em',
+        customClass: 'sweet-alerts',
         preConfirm: () => {
             return axios.delete(route('aca_courses_module_destroy', id)).then((res) => {
                 if (!res.data.success) {
@@ -172,6 +178,8 @@ const destroyModule = (index,id) => {
                 title: 'Enhorabuena',
                 text: 'Se Eliminó correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             form.modules.splice(index, 1);
             form.modules.sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10));
@@ -214,6 +222,8 @@ const saveThemeNew = () => {
             title: 'Enhorabuena',
             text: 'Se Actualizó correctamente',
             icon: 'success',
+            padding: '2em',
+            customClass: 'sweet-alerts',
         });
         formTheme.processing = false;
         formTheme.position = null;
@@ -254,6 +264,8 @@ const saveThemeUpdate = (index, theme) => {
             title: 'Enhorabuena',
             text: 'Se registró correctamente',
             icon: 'success',
+            padding: '2em',
+            customClass: 'sweet-alerts',
         });
         themesLoading.value[index].loading = false;
         formTheme.themes.sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10));
@@ -290,6 +302,8 @@ const destroyTheme = (index,id) => {
         confirmButtonText: '¡Sí, Eliminar!',
         cancelButtonText: 'Cancelar',
         showLoaderOnConfirm: true,
+        padding: '2em',
+        customClass: 'sweet-alerts',
         preConfirm: () => {
             return axios.delete(route('aca_courses_module_themes_destroy', id)).then((res) => {
                 if (!res.data.success) {
@@ -305,6 +319,8 @@ const destroyTheme = (index,id) => {
                 title: 'Enhorabuena',
                 text: 'Se Eliminó correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             formTheme.themes.splice(index, 1);
             formTheme.themes.sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10));
@@ -351,10 +367,10 @@ const closeModalModules = () =>{
                                         <div class="flex items-center">   
                                             <label for="simple-module" class="sr-only">Clase</label>
                                             <div class="relative w-20 mr-1">
-                                                <input v-model="form.position" type="text" id="simple-module" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
+                                                <input v-model="form.position" type="text" id="simple-module" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
                                             </div>
                                             <div class="relative w-full">
-                                                <input v-model="form.description" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <input v-model="form.description" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                             </div>
                                             <button @click="saveModuleNew" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="button" class="ml-1 inline-flex items-center px-3 py-2.5 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                                                 <svg v-if="form.processing" aria-hidden="true" role="status" class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -379,10 +395,10 @@ const closeModalModules = () =>{
                                             <div class="flex items-center">   
                                                 <label :for="'position'+index" class="sr-only">Modulo</label>
                                                 <div class="relative w-20 mr-1">
-                                                    <input v-model="module.position" type="text" :id="'position'+index" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
+                                                    <input v-model="module.position" type="text" :id="'position'+index" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
                                                 </div>
                                                 <div class="relative w-full">
-                                                    <input v-model="module.description"  type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                    <input v-model="module.description"  type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                                 </div>
                                                 <template v-if="modulesLoading.length > 0">
                                                     <button @click="saveModuleUpdate(index,module)" :class="{ 'opacity-25': modulesLoading[index].loading }" :disabled="modulesLoading[index].loading" type="button" title="Actualizar"  class="ml-1 inline-flex items-center px-3 py-2.5 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
@@ -416,10 +432,10 @@ const closeModalModules = () =>{
                                         <div class="flex items-center">   
                                             <label for="simple-module" class="sr-only">tema</label>
                                             <div class="relative w-20 mr-1">
-                                                <input v-model="formTheme.position" type="text" id="simple-module" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
+                                                <input v-model="formTheme.position" type="text" id="simple-module" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
                                             </div>
                                             <div class="relative w-full">
-                                                <input v-model="formTheme.description" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <input v-model="formTheme.description" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                             </div>
                                             <button @click="saveThemeNew" :class="{ 'opacity-25': formTheme.processing }" :disabled="formTheme.processing" type="button" class="ml-1 inline-flex items-center px-3 py-2.5 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                                                 <svg v-if="formTheme.processing" aria-hidden="true" role="status" class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -436,11 +452,14 @@ const closeModalModules = () =>{
                             </ol>
                         </div>
                         <div style="max-height: 350px; overflow-y: auto;" class="px-2">
-                            <div v-if="loadingThemes" class="flex items-center justify-center w-56 h-56 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                                <div role="status">
-                                    <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
-                                    <span class="sr-only">Loading...</span>
-                                </div>
+                            <div v-if="loadingThemes" role="status" class="w-full animate-pulse">
+                                <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[530px] mb-4"></div>
+                                <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                                <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[530px] mb-2.5"></div>
+                                <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[330px] mb-2.5"></div>
+                                <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[300px] mb-2.5"></div>
+                                <div class="h-4 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
+                                <span class="sr-only">Loading...</span>
                             </div>
                             <Timeline v-else>
                                 <TimelineItem v-for="(theme, key) in formTheme.themes" class="mb-2">
@@ -450,10 +469,10 @@ const closeModalModules = () =>{
                                             <div class="flex items-center">   
                                                 <label :for="'theme-titble'+key" class="sr-only">title</label>
                                                 <div class="relative w-20 mr-1">
-                                                    <input v-model="theme.position" type="text" :id="'theme-titble'+key" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                                    <input v-model="theme.position" type="text" :id="'theme-titble'+key" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                                                 </div>
                                                 <div class="relative w-full">
-                                                    <input v-model="theme.description" type="text" :id="'theme-titble'+key" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                                    <input v-model="theme.description" type="text" :id="'theme-titble'+key" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                                                 </div>
                                                 <template v-if="themesLoading.length > 0">
                                                     <button @click="saveThemeUpdate(key, theme)" type="button" title="Actualizar"  class="ml-1 inline-flex items-center px-3 py-2.5 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">

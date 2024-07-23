@@ -42,6 +42,8 @@ const updateInstitution = () => {
                 title: 'Enhorabuena',
                 text: 'Se Actualizó correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
         },
     });

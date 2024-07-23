@@ -42,7 +42,7 @@ class PersonController extends Controller
             ->where('people.document_type_id', $document_type)
             ->where('people.number', $number)
             ->first();
-
+        //dd($person);
         $ubigeo = [];
 
         if ($person) {

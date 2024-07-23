@@ -43,7 +43,8 @@
             cancelButtonText: "Cancelar",
             showLoaderOnConfirm: true,
             reverseButtons: true,
-            padding: "2em",
+            padding: '2em',
+            customClass: 'sweet-alerts',
             preConfirm: () => {
                 return axios.delete(route("aca_institutions_destroy",id)).then((res) => {
                     if (!res.data.success) {

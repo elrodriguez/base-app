@@ -15,6 +15,14 @@ const props = defineProps({
     categories: {
         type: Object,
         default: () => ({}),
+    },
+    types: {
+        type: Object,
+        default: () => ({}),
+    },
+    sectors: {
+        type: Object,
+        default: () => ({}),
     }
 });
 
@@ -34,7 +42,7 @@ const props = defineProps({
             </li>
         </ul>
         <div class="pt-5">
-            <EditForm :course="course" :modalities="modalities" :categories="categories" /> 
+            <EditForm :course="course" :modalities="modalities" :categories="categories" :types="types" :sectors="sectors" /> 
         </div>
     </AppLayout>
 </template>

@@ -1,6 +1,6 @@
 <script setup>
     import { useForm } from '@inertiajs/vue3';
-    import ModalLarge from '@/Components/ModalLarge.vue';
+    import ModalLarge from '@/Components/ModalLargeX.vue';
     import { ref, watch } from 'vue';
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
@@ -202,8 +202,7 @@
                         </div>
                         <div class="col-span-6 sm:col-span-3 md:col-span-3">
                             <InputLabel for="address" value="Dirección" />
-                            <TextInput id="address" v-model="form.address" type="text" class="block w-full mt-1"
-                                autofocus />
+                            <TextInput id="address" v-model="form.address" type="text" class="block w-full mt-1"/>
                             <InputError :message="form.errors.address" class="mt-2" />
                         </div>
 

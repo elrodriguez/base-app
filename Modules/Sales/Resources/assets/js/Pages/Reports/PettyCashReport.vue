@@ -79,7 +79,7 @@ const getTotalExpenses = () => {
     props.expenses.forEach(expense=> {
         expenses+=parseFloat(expense.amount);
     });
-    return expenses;
+    return expenses.toFixed(2);
 }
 
 const downloadExcel = () => {
@@ -142,7 +142,7 @@ onMounted(()=>{
     <AppLayout title="Ventas en caja">
         <Navigation :routeModule="route('sales_dashboard')" :titleModule="'Ventas'">
             <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
-                <Link :href="route('pettycash.index')">Caja Chica</Link>
+                <Link :href="route('pettycash.index')" class="text-primary hover:underline">Caja Chica</Link>
             </li>
             <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                 <span>Reporte</span>
@@ -190,12 +190,12 @@ onMounted(()=>{
                     </div>
                     <div class="table-responsive">
                         <table id="table_export">
-                            <thead class="text-xs text-gray-700 uppercase">
-                                <tr class="bg-gray-50 text-left">
+                            <thead class="text-xs uppercase">
+                                <tr class="bg-primary/20 border-primary/20">
                                     <th colspan="2" class=""><strong>LOCAL:</strong> </th>
                                     <th colspan="4" class="">{{ local_name }}</th>
                                 </tr>
-                                <tr class="text-left">
+                                <tr class="bg-primary/20 border-primary/20">
                                     <th colspan="2" class="">
                                         <strong>Desde: </strong> 
                                     </th>
@@ -205,7 +205,7 @@ onMounted(()=>{
                                         </span>
                                     </th>
                                 </tr>
-                                <tr class="text-left">
+                                <tr class="bg-primary/20 border-primary/20">
                                     <th colspan="2" class="text-left font-medium">
                                         <strong>HASTA: </strong> 
                                     </th>
@@ -215,14 +215,14 @@ onMounted(()=>{
                                         </span>
                                     </th>
                                 </tr>
-                                <tr class="">
+                                <tr class="bg-primary/20 border-primary/20">
                                     <th colspan="2"  class="text-left font-medium"><strong>Monto final en Caja:</strong></th>
                                     <th colspan="4"  class="text-left font-medium ">{{ petty_cash.final_balance }}</th>
                                 </tr>
-                                <tr>
-                                    <th class="text-left text-sm" colspan="6">Ventas</th>
+                                <tr class="bg-primary/20 border-primary/20">
+                                    <td class="text-center text-sm" colspan="6"><b>Ventas</b></td>
                                 </tr>
-                                <tr class="border border-stroke">
+                                <tr>
                                     <th scope="col">
                                         Fecha
                                     </th>
@@ -294,19 +294,17 @@ onMounted(()=>{
                                         <strong>S/ {{ total }}</strong>
                                     </td>
                                 </tr>
-                            </tbody>
-                            <tfoot>
                                 <template v-if="expenses.length > 0">
-                                    <tr class="text-left">
-                                        <th class="text-left text-sm" colspan="6">GASTOS</th>
+                                    <tr class="bg-danger/20 border-danger/20 uppercase">
+                                        <td class="text-center text-sm" colspan="6"><b>GASTOS</b></td>
                                     </tr>
-                                    <tr class="text-xs uppercase">
+                                    <tr class="bg-danger/20 border-danger/20 uppercase">
                                         
-                                        <th scope="col" >N° Documento</th>
-                                        <th scope="col" colspan="4" >Motivo o Descripción</th>
-                                        <th scope="col" >Monto</th>
+                                        <td scope="col" ><b>N° Documento</b></td>
+                                        <td scope="col" colspan="4"><b>Motivo o Descripción</b></td>
+                                        <td scope="col" ><b>Monto</b></td>
                                     </tr>
-                                    <tr v-for="(expense, index) in expenses" :key="expense.id">  
+                                    <tr v-for="(expense, index) in expenses" :key="expense.id" class="bg-danger/20 border-danger/20">  
                                         <td class="text-left">
                                             {{ expense.document }}
                                         </td>
@@ -317,12 +315,12 @@ onMounted(()=>{
                                             {{ expense.amount }}
                                         </td>                          
                                     </tr>
-                                    <tr class="text-right">
-                                        <th colspan="5" class="text-right" style="text-align: right;">Total en Gastos:</th>
-                                        <th class="text-right" style="text-align: right;">S/ {{ getTotalExpenses() }}</th>
+                                    <tr class="bg-danger/20 border-danger/20">
+                                        <td colspan="5" class="text-right" style="text-align: right;">Total en Gastos:</td>
+                                        <td class="text-right" style="text-align: right;">S/ {{ getTotalExpenses() }}</td>
                                     </tr>
                                 </template>
-                            </tfoot>
+                            </tbody>
 
                         </table>
                     </div>

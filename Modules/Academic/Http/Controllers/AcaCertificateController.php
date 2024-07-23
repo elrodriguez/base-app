@@ -13,6 +13,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 use Modules\Academic\Entities\AcaCapRegistration;
 use Modules\Academic\Entities\AcaCertificate;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class AcaCertificateController extends Controller
 {
@@ -61,41 +63,53 @@ class AcaCertificateController extends Controller
             [
                 'student_id'  => ['required', new AcaRegistrationExists($course_id)],
                 'course_id'   => 'required',
-                'image'       => 'required|max:255'
+                'image'       => 'required'
             ]
         );
 
-
-
-        $path = null;
-
-        $destination = 'uploads/certificate';
-        $file = $request->file('image');
-
-        if ($file) {
-            $original_name = strtolower(trim($file->getClientOriginalName()));
-            $original_name = str_replace(" ", "_", $original_name);
-            $extension = $file->getClientOriginalExtension();
-            $file_name = $student_id . 'X' . $course_id . '.' . $extension;
-            $img = $request->file('image')->storeAs(
-                $destination,
-                $file_name,
-                'public'
-            );
-
-            $path = asset('storage/' . $img);
-        }
         $true = AcaCertificate::where('student_id', $student_id)->where('course_id', $course_id)->doesntExist();
 
         if ($true) {
-            AcaCertificate::create([
+            $certificate = AcaCertificate::create([
                 'student_id'        => $student_id,
                 'registration_id'   => AcaCapRegistration::where('student_id', $student_id)->where('course_id', $course_id)->value('id'),
                 'course_id'         => $course_id,
-                'image'             => $path,
                 'content'           => null
             ]);
+
+            $destination = 'uploads/certificate';
+            $base64Image = $request->get('image');
+            $path = null;
+
+            if ($base64Image) {
+                $fileData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+                if (PHP_OS == 'WINNT') {
+                    $tempFile = tempnam(sys_get_temp_dir(), 'img');
+                } else {
+                    $tempFile = tempnam('/var/www/html/img_temp', 'img');
+                }
+                file_put_contents($tempFile, $fileData);
+                $mime = mime_content_type($tempFile);
+
+                $name = uniqid('', true) . '.' . str_replace('image/', '', $mime);
+                $file = new UploadedFile(realpath($tempFile), $name, $mime, null, true);
+
+                if ($file) {
+                    // $original_name = strtolower(trim($file->getClientOriginalName()));
+                    // $file_name = time() . rand(100, 999) . $original_name;
+                    $original_name = strtolower(trim($file->getClientOriginalName()));
+                    $original_name = str_replace(" ", "_", $original_name);
+                    $extension = $file->getClientOriginalExtension();
+                    $file_name = $student_id . 'X' . $course_id . '.' . $extension;
+                    $path = Storage::disk('public')->putFileAs($destination, $file, $file_name);
+                    $certificate->image = $path;
+                    $certificate->save();
+                }
+            }
         }
+
+
+
 
         return redirect()->route('aca_students_certificates_create', $student_id);
     }

@@ -24,6 +24,11 @@ const props = defineProps({
     }
 });
 
+const baseUrl = assetUrl;
+
+const getImage = (path) => {
+    return baseUrl + 'storage/'+ path;
+}
 
 const form = useForm({
     id: props.student.id,
@@ -33,7 +38,7 @@ const form = useForm({
     telephone: props.student.telephone,
     email: props.student.email,
     image: props.student.image,
-    image_preview: props.student.image_preview,
+    image_preview: props.student.image ? getImage(props.student.image) : null,
     address: props.student.address,
     ubigeo: props.student.ubigeo,
     birthdate: props.student.birthdate,
@@ -53,6 +58,8 @@ const createPatient = () => {
                 title: 'Enhorabuena',
                 text: 'Se Actualizó correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
         },
     });
@@ -95,11 +102,7 @@ const loadFile = (event) => {
     }
 };
 
-const baseUrl = assetUrl;
 
-const getImage = (path) => {
-    return baseUrl + 'storage/'+ path;
-}
 </script>
 
 <template>

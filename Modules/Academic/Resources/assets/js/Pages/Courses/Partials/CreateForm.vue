@@ -8,6 +8,7 @@ import TextInput from '@/Components/TextInput.vue';
 import Keypad from '@/Components/Keypad.vue';
 import Swal2 from 'sweetalert2';
 import { ref, watch } from 'vue';
+import ImageCompressorjs from '@/Components/ImageCompressorjs.vue';
 
 const props = defineProps({
     modalities: {
@@ -15,6 +16,14 @@ const props = defineProps({
         default: () => ({}),
     },
     categories: {
+        type: Object,
+        default: () => ({}),
+    },
+    types: {
+        type: Object,
+        default: () => ({}),
+    },
+    sectors: {
         type: Object,
         default: () => ({}),
     }
@@ -42,24 +51,32 @@ const createCourse = () => {
                 title: 'Enhorabuena',
                 text: 'Se registró correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             form.reset()
         },
     });
 }
 
-watch(() => form.image, (newValue) => {
-    if (newValue instanceof File) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            form.image_preview = e.target.result;
-        };
-        reader.readAsDataURL(newValue);
-    } else {
-        // Puedes manejar el caso en el que newValue no sea un objeto File válido
-        console.error("El objeto no es un archivo válido.");
-    }
-});
+// watch(() => form.image, (newValue) => {
+//     if (newValue instanceof File) {
+//         const reader = new FileReader();
+//         reader.onload = (e) => {
+//             form.image_preview = e.target.result;
+//         };
+//         reader.readAsDataURL(newValue);
+//     } else {
+//         Puedes manejar el caso en el que newValue no sea un objeto File válido
+//         console.error("El objeto no es un archivo válido.");
+//     }
+// });
+
+const handleImageCompressed = (file) => {
+    form.image = file;
+    form.image_preview = file;
+};
+
 </script>
 
 <template>
@@ -74,11 +91,18 @@ watch(() => form.image, (newValue) => {
 
         <template #form>
             <div class="col-span-6 sm:col-span-2 ">
+                <InputLabel for="category_id" value="Categoría *" />
+                <select v-model="form.category_id" id="category_id" class="form-select text-white-dark">
+                    <option value="" selected>Seleccionar</option>
+                    <option v-for="(category) in categories" :value="category.id">{{ category.description=="Publico" ? "Público" : category.description }}</option>
+                </select>
+                <InputError :message="form.errors.category_id" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-2 ">
                 <InputLabel for="type_description" value="Tipo *" />
                 <select v-model="form.type_description" id="type_description" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="" selected>Seleccionar</option>
-                    <option value="Diplomado" selected>Diplomado</option>
-                    <option value="Curso" selected>Curso</option>
+                    <option v-for="(type) in types" :value="type" > {{ type }}</option>
                 </select>
                 <InputError :message="form.errors.type_description" class="mt-2" />
             </div>
@@ -91,12 +115,12 @@ watch(() => form.image, (newValue) => {
                 <InputError :message="form.errors.modality_id" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-2 ">
-                <InputLabel for="category_id" value="Sector *" />
-                <select v-model="form.category_id" id="category_id" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <InputLabel for="sector_description" value="Sector *" />
+                <select v-model="form.sector_description" id="sector_description" class="form-select text-white-dark">
                     <option value="" selected>Seleccionar</option>
-                    <option v-for="(category) in categories" :value="category.id">{{ category.description=="Publico" ? "Público" : category.description }}</option>
+                    <option v-for="(sector) in sectors" :value="sector" >{{ sector }}</option>
                 </select>
-                <InputError :message="form.errors.category_id" class="mt-2" />
+                <InputError :message="form.errors.sector_description" class="mt-2" />
             </div>
             <div class="col-span-6">
                 <InputLabel for="file_input" value="Imagen *" />
@@ -106,7 +130,8 @@ watch(() => form.image, (newValue) => {
                         <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                     </figure>
                 </div>
-                <input @input="form.image = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                <ImageCompressorjs :onImageCompressed="handleImageCompressed" /> 
+                <!-- <input @input="form.image = $event.target.files[0]" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file"> -->
                 <InputError :message="form.errors.image" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-3 ">

@@ -60,7 +60,12 @@
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
                 });
-                router.visit(route('aca_courses_list'), { replace: true, method: 'get' });
+                router.visit(route('aca_courses_list'), {
+                    replace: false, 
+                    method: 'get',
+                    preserveState: true,
+                    preserveScroll: true,
+                });
             }
         });
     }

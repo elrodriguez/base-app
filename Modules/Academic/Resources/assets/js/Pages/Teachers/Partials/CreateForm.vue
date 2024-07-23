@@ -50,6 +50,8 @@ const createTeacher = () => {
                 title: 'Enhorabuena',
                 text: 'Se registró correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             form.reset()
         },
@@ -95,76 +97,44 @@ const loadFile = (event) => {
 
 const createFormSearch = () => {
 
-    const formHTML = document.createElement('form');
+    let formHTML = document.createElement('form');
     formHTML.classList.add('max-w-sm', 'mx-auto');
 
-    const selectLabel = document.createElement('label');
+    let selectLabel = document.createElement('label');
     selectLabel.setAttribute('for', 'identityDocument');
-    selectLabel.classList.add('block', 'mb-2', 'text-sm', 'font-medium', 'text-gray-900', 'dark:text-white');
+    selectLabel.classList.add('text-left','text-sm');
     selectLabel.textContent = 'Tipo de documento de identidad';
 
-    const typeSelect = document.createElement('select');
+    let typeSelect = document.createElement('select');
     typeSelect.id = 'identityDocument';
     typeSelect.classList.add(
-        'mb-2',
-        'bg-gray-50',
-        'border',
-        'border-gray-300',
-        'text-gray-900',
-        'text-sm',
-        'rounded-lg',
-        'focus:ring-blue-500',
-        'focus:border-blue-500',
-        'block',
-        'w-full',
-        'p-2.5',
-        'dark:bg-gray-700',
-        'dark:border-gray-600',
-        'dark:placeholder-gray-400',
-        'dark:text-white',
-        'dark:focus:ring-blue-500',
-        'dark:focus:border-blue-500'
+        'form-select',
+        'text-white-dark',
     );
 
-    const defaultOption = document.createElement('option');
+    let defaultOption = document.createElement('option');
     defaultOption.value = '';
     defaultOption.textContent = 'Seleccionar tipo de documento';
     typeSelect.appendChild(defaultOption);
 
     // Crear opciones dinámicamente
     for (const [key, value] of Object.entries(props.identityDocumentTypes)) {
-        const option = document.createElement('option');
+        let option = document.createElement('option');
         option.value = value.id;
         option.textContent = value.description;
         typeSelect.appendChild(option);
     }
 
-    const dniLabel = document.createElement('label');
+    let dniLabel = document.createElement('label');
     dniLabel.setAttribute('for', 'txtdni');
-    dniLabel.classList.add('block', 'mb-2', 'text-sm', 'font-medium', 'text-gray-900', 'dark:text-white');
+    dniLabel.classList.add('text-left','text-sm','mt-4');
     dniLabel.textContent = 'Número de DNI';
 
-    const dnilInput = document.createElement('input');
+    let dnilInput = document.createElement('input');
     dnilInput.type = 'text';
     dnilInput.id = 'txtdni';
     dnilInput.classList.add(
-        'bg-gray-50',
-        'border',
-        'border-gray-300',
-        'text-gray-900',
-        'text-sm',
-        'rounded-lg',
-        'focus:ring-blue-500',
-        'focus:border-blue-500',
-        'block',
-        'w-full',
-        'p-2.5',
-        'dark:bg-gray-700',
-        'dark:border-gray-600',
-        'dark:placeholder-gray-400',
-        'dark:text-white',
-        'dark:focus:ring-blue-500',
-        'dark:focus:border-blue-500'
+        'form-input'
     );
 
     dnilInput.placeholder = 'Escribir número de identificación';
@@ -176,7 +146,6 @@ const createFormSearch = () => {
     formHTML.appendChild(dnilInput);
 
     return formHTML;
-
 }
 
 onMounted(() => {

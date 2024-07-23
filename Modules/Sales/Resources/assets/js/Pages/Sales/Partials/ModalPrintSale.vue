@@ -1,5 +1,5 @@
 <script setup>
-    import Modal from '@/Components/Modal.vue';
+    import Modal from '@/Components/ModalLarge.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     const emit = defineEmits(['close']);
 

@@ -17,6 +17,8 @@ use Modules\Academic\Entities\AcaTeacher;
 use Modules\Academic\Entities\AcaTeacherCourse;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class AcaCourseController extends Controller
 {
@@ -63,10 +65,14 @@ class AcaCourseController extends Controller
     {
         $categories = AcaCategoryCourse::all();
         $modalities = AcaModality::all();
+        $types = getEnumValues('aca_courses', 'type_description');
+        $sectors = getEnumValues('aca_courses', 'sector_description');
 
         return Inertia::render('Academic::Courses/Create', [
             'modalities'    => $modalities,
-            'categories'    => $categories
+            'categories'    => $categories,
+            'types'    => $types,
+            'sectors'    => $sectors,
         ]);
     }
 
@@ -89,25 +95,6 @@ class AcaCourseController extends Controller
             ]
         );
 
-
-        $path = null;
-
-        $destination = 'uploads/courses';
-        $file = $request->file('image');
-        if ($file) {
-            $original_name = strtolower(trim($file->getClientOriginalName()));
-            $original_name = str_replace(" ", "_", $original_name);
-            $extension = $file->getClientOriginalExtension();
-            $file_name = date('YmdHis') . '.' . $extension;
-            $img = $request->file('image')->storeAs(
-                $destination,
-                $file_name,
-                'public'
-            );
-
-            //$path = asset('storage/' . $img);
-            $path = $img;
-        }
         $timestamp = strtotime($request->get('course_date'));
 
         $courseNew = AcaCourse::create([
@@ -117,11 +104,42 @@ class AcaCourseController extends Controller
             'course_month'      => date("m", $timestamp),
             'course_year'       => date("Y", $timestamp),
             'category_id'       => $request->get('category_id'),
-            'image'             => $path,
             'modality_id'       => $request->get('modality_id'),
             'type_description'  => $request->get('type_description'),
-            'sector_description' => AcaCategoryCourse::find($request->get('category_id'))->description
+            'sector_description' => $request->get('sector_description')
         ]);
+
+        $path = null;
+
+        $destination = 'uploads/courses';
+        $base64Image = $request->get('image');
+
+        if ($base64Image) {
+            $fileData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+            if (PHP_OS == 'WINNT') {
+                $tempFile = tempnam(sys_get_temp_dir(), 'img');
+            } else {
+                $tempFile = tempnam('/var/www/html/img_temp', 'img');
+            }
+            file_put_contents($tempFile, $fileData);
+            $mime = mime_content_type($tempFile);
+
+            $name = uniqid('', true) . '.' . str_replace('image/', '', $mime);
+            $file = new UploadedFile(realpath($tempFile), $name, $mime, null, true);
+
+            if ($file) {
+                // $original_name = strtolower(trim($file->getClientOriginalName()));
+                // $file_name = time() . rand(100, 999) . $original_name;
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $original_name = str_replace(" ", "_", $original_name);
+                $extension = $file->getClientOriginalExtension();
+                $file_name = time() . rand(100, 999) . '.' . $extension;
+                $path = Storage::disk('public')->putFileAs($destination, $file, $file_name);
+                $courseNew->image = $path;
+                $courseNew->save();
+            }
+        }
+
 
         return redirect()->route('aca_courses_information', $courseNew->id)
             ->with('message', 'Curso creado con éxito, registrar informacion del curso');
@@ -163,11 +181,15 @@ class AcaCourseController extends Controller
     {
         $categories = AcaCategoryCourse::all();
         $modalities = AcaModality::all();
+        $types = getEnumValues('aca_courses', 'type_description');
+        $sectors = getEnumValues('aca_courses', 'sector_description');
 
         return Inertia::render('Academic::Courses/Edit', [
             'course'        => AcaCourse::find($id),
             'modalities'    => $modalities,
-            'categories'    => $categories
+            'categories'    => $categories,
+            'types'    => $types,
+            'sectors'    => $sectors,
         ]);
     }
 
@@ -195,7 +217,7 @@ class AcaCourseController extends Controller
         $course = AcaCourse::find($id);
         $timestamp = strtotime($request->get('course_date'));
 
-
+        //dd($request->get('category_id'));
         $course->status           = $request->get('status') ? true : false;
         $course->description      = $request->get('description');
         $course->course_day       = date("d", $timestamp);
@@ -204,23 +226,34 @@ class AcaCourseController extends Controller
         $course->category_id      = $request->get('category_id');
         $course->modality_id       = $request->get('modality_id');
         $course->type_description  = $request->get('type_description');
-        $course->sector_description = AcaCategoryCourse::find($request->get('category_id'))->description;
+        $course->sector_description = $request->get('sector_description');
 
         $destination = 'uploads/courses';
-        $file = $request->file('image');
-        if ($file) {
-            $original_name = strtolower(trim($file->getClientOriginalName()));
-            $original_name = str_replace(" ", "_", $original_name);
-            $extension = $file->getClientOriginalExtension();
-            $file_name = date('YmdHis') . '.' . $extension;
-            $img = $request->file('image')->storeAs(
-                $destination,
-                $file_name,
-                'public'
-            );
+        $base64Image = $request->get('image');
 
-            //$course->image  = asset('storage/' . $img);
-            $course->image  = $img;
+        if ($base64Image) {
+            $fileData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+            if (PHP_OS == 'WINNT') {
+                $tempFile = tempnam(sys_get_temp_dir(), 'img');
+            } else {
+                $tempFile = tempnam('/var/www/html/img_temp', 'img');
+            }
+            file_put_contents($tempFile, $fileData);
+            $mime = mime_content_type($tempFile);
+
+            $name = uniqid('', true) . '.' . str_replace('image/', '', $mime);
+            $file = new UploadedFile(realpath($tempFile), $name, $mime, null, true);
+
+            if ($file) {
+                // $original_name = strtolower(trim($file->getClientOriginalName()));
+                // $file_name = time() . rand(100, 999) . $original_name;
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $original_name = str_replace(" ", "_", $original_name);
+                $extension = $file->getClientOriginalExtension();
+                $file_name = time() . rand(100, 999) . '.' . $extension;
+                $path = Storage::disk('public')->putFileAs($destination, $file, $file_name);
+                $course->image = $path;
+            }
         }
 
         $course->save();

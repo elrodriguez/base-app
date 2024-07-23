@@ -80,6 +80,8 @@
                     showCancelButton: false,
                     confirmButtonText: 'Ok',
                     denyButtonText: `Crear serie`,
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 }).then((result) => {
                     if (result.isDenied) {
                         router.visit(route('establishments.index'),{

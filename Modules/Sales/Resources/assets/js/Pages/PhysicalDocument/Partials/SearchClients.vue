@@ -1,6 +1,6 @@
 <script setup>
     import { useForm } from '@inertiajs/vue3';
-    import ModalLarge from '@/Components/ModalLarge.vue';
+    import ModalLarge from '@/Components/ModalLargeX.vue';
     import { ref, watch } from 'vue';
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
@@ -167,12 +167,8 @@
                         <TextInput id="email" v-model="form.email" type="email" class="block w-full mt-1" autofocus />
                         <InputError :message="form.errors.email" class="mt-2" />
                     </div>
+                    
                     <div class="col-span-6 sm:col-span-2">
-                        <InputLabel for="address" value="Dirección" />
-                        <TextInput id="address" v-model="form.address" type="text" class="block w-full mt-1" />
-                        <InputError :message="form.errors.address" class="mt-2" />
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
                         <InputLabel for="address" value="Ciudad" />
                         
                         <div class="relative">
@@ -182,7 +178,7 @@
                             placeholder="Buscar Distrito"
                             type="text" 
                             class="block w-full mt-1" />
-                            <ul v-if="searchUbigeos && searchUbigeos.length > 0" class="list-disc list-inside absolute z-50 w-full bg-white border border-gray-300 rounded-md mt-1">
+                            <ul v-if="searchUbigeos && searchUbigeos.length > 0" class="list-disc list-inside absolute z-100 w-full bg-white border border-gray-300 rounded-md mt-1">
                                 <li v-for="item in searchUbigeos" :key="item.id" class="px-4 cursor-pointer hover:bg-gray-100" @click="selectCity(item)">
                                     {{ item.department_name+'-'+item.province_name+'-'+item.district_name }}
                                 </li>
@@ -191,6 +187,11 @@
                         <div>
                             <InputError :message="form.errors.ubigeo" class="mt-2" />
                         </div>
+                    </div>
+                    <div class="col-span-6 sm:col-span-2">
+                        <InputLabel for="address" value="Dirección" />
+                        <TextInput id="address" v-model="form.address" type="text" class="block w-full mt-1" />
+                        <InputError :message="form.errors.address" class="mt-2" />
                     </div>
                 </div>
             </template>

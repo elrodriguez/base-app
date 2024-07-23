@@ -1,5 +1,5 @@
 <script setup>
-import ModalLarge from '@/Components/ModalLarge.vue';
+import ModalLarge from '@/Components/ModalLargeX.vue';
 import { Timeline, TimelineItem, TimelinePoint, TimelineContent,TimelineTime, TimelineTitle, TimelineBody } from 'flowbite-vue'
 import { useForm } from '@inertiajs/vue3';
 import { watch, ref, onMounted } from 'vue';
@@ -101,6 +101,8 @@ const contentUpdate = (index) => {
                 title: 'Enhorabuena',
                 text: 'Se actualizó correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             contentsLoading.value[index].loading = false;
         }).catch((error) => {
@@ -144,6 +146,8 @@ const createContentNew = () => {
             title: 'Enhorabuena',
             text: 'Se registro correctamente',
             icon: 'success',
+            padding: '2em',
+            customClass: 'sweet-alerts',
         });
         formContents.processing = false;
         formContents.position = null;
@@ -193,6 +197,8 @@ const destroyContent = (index,id) => {
         confirmButtonText: '¡Sí, Eliminar!',
         cancelButtonText: 'Cancelar',
         showLoaderOnConfirm: true,
+        padding: '2em',
+        customClass: 'sweet-alerts',
         preConfirm: () => {
             return axios.delete(route('aca_courses_module_themes_content_destroy', id)).then((res) => {
                 if (!res.data.success) {
@@ -208,6 +214,8 @@ const destroyContent = (index,id) => {
                 title: 'Enhorabuena',
                 text: 'Se Eliminó correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             formContents.contents.splice(index, 1);
             formContents.contents.sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10));
@@ -236,10 +244,10 @@ const destroyContent = (index,id) => {
                             <div class="flex items-center">   
                                 <label for="simple-content" class="sr-only">Content</label>
                                 <div class="relative w-20 mr-1">
-                                    <input v-model="formContents.position" type="text" id="simple-content" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
+                                    <input v-model="formContents.position" type="text" id="simple-content" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
                                 </div>
                                 <div class="relative w-full">
-                                    <input v-model="formContents.description" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                    <input v-model="formContents.description" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                 </div>
                                 <button @click="createContentNew" :class="{ 'opacity-25': formContents.processing }" :disabled="formContents.processing" type="button" class="ml-1 inline-flex items-center px-3 py-2.5 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                                     <svg v-if="formContents.processing" aria-hidden="true" role="status" class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -277,10 +285,10 @@ const destroyContent = (index,id) => {
                                     <div v-if="contentsLoading[index].editable" class="flex items-center">   
                                         <label :for="'theme-description'+index" class="sr-only">title</label>
                                         <div class="relative w-20 mr-1">
-                                            <input v-model="content.position" type="text" :id="'position'+index" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
+                                            <input v-model="content.position" type="text" :id="'position'+index" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Posición" required>
                                         </div>
                                         <div class="relative w-full">
-                                            <input v-model="content.description" type="text" :id="'theme-description'+index" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                                            <input v-model="content.description" type="text" :id="'theme-description'+index" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                                         </div>
                                         <button @click="contentUpdate(index)" type="button" title="Actualizar"  class="ml-1 inline-flex items-center px-3 py-2.5 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                                             <svg v-if="contentsLoading[index].loading" aria-hidden="true" role="status" class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

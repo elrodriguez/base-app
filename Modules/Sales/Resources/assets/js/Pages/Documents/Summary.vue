@@ -5,10 +5,12 @@
     import Keypad from '@/Components/Keypad.vue';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import { ref, onMounted } from 'vue';
-    import ModalLarge from '@/Components/ModalLarge.vue';
+    import ModalLarge from '@/Components/ModalLargeX.vue';
     import Swal from "sweetalert2";
     import { Link, router } from '@inertiajs/vue3';
-    import { faQuestion } from "@fortawesome/free-solid-svg-icons";
+    import IconBell from "@/Components/vristo/icon/icon-bell.vue";
+    import IconX from "@/Components/vristo/icon/icon-x.vue";
+    import Navigation from '@/Components/vristo/layout/Navigation.vue';
 
     const props = defineProps({
         summaries: {
@@ -49,7 +51,6 @@
 
     onMounted(() => {
         getCurrentDate();
-        activeMessage();
     });
     const displaySearchLoading = ref(false);
     const displaySaveLoading = ref(false);
@@ -62,7 +63,9 @@
                 Swal.fire({
                     title: 'Información Importante',
                     text: 'No existen documentos pendientes para la fecha indicada',
-                    icon: 'info'
+                    icon: 'info',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
             }
             displaySearchLoading.value = false;
@@ -79,14 +82,18 @@
                 Swal.fire({
                     title: 'Información Importante',
                     text: 'El resumen se creó y envió correctamente',
-                    icon: 'success'
+                    icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
                 router.visit(route('salesummaries_list'), { replace: true });
             }else{
                 Swal.fire({
                     title: 'Error',
                     text: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
-                    icon: 'error'
+                    icon: 'error',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
             }
             displaySaveLoading.value = false;
@@ -107,14 +114,18 @@
                 Swal.fire({
                     title: 'Información Importante',
                     text: res.data.message,
-                    icon: 'success'
+                    icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
                 router.visit(route('salesummaries_list'), { replace: true });
             }else{
                 Swal.fire({
                     title: 'Error',
                     text: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
-                    icon: 'error'
+                    icon: 'error',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
                 router.visit(route('salesummaries_list'), { replace: true });
             }
@@ -133,7 +144,9 @@
                 Swal.fire({
                     title: 'Información Importante',
                     text: 'Se elimino correctamente',
-                    icon: 'success'
+                    icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
                 router.visit(route('salesummaries_list'), { replace: true });
             }
@@ -144,6 +157,7 @@
         toast: true,
         position: 'top-end',
         showConfirmButton: true,
+        customClass: { container: 'toast' },
         didOpen: (toast) => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -154,44 +168,34 @@
         Toast.fire({
             icon: 'info',
             title: 'Resumen diario',
-            text: 'Para comunicar las boletas de ventas emitidas o anuladas, así como las notas de crédito/débito releacionadas, necesita hacerlo mediante un resumen diario. A diferencia del envío de una factura, donde la respuesta es inmediata, en este documento debemos hacer un consulta adicional para conocer su estado utilizando el numero de ticket.'
+            text: 'Para comunicar las boletas de ventas emitidas o anuladas, así como las notas de crédito/débito releacionadas, necesita hacerlo mediante un resumen diario. A diferencia del envío de una factura, donde la respuesta es inmediata, en este documento debemos hacer un consulta adicional para conocer su estado utilizando el numero de ticket.',
+            padding: '10px 20px',
         });
     }
 </script>
 
 <template>
     <AppLayout title="Resumen">
-        <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
-            <!-- Breadcrumb Start -->
-            <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <Link :href="route('dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                        <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                        Inicio
-                        </Link>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Facturación Electrónica</span>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Resumen</span>
-                            <font-awesome-icon @click="activeMessage" :icon="faQuestion" class="ml-1" />
-                        </div>
-                    </li>
-                </ol>
-            </nav>
+        <Navigation :routeModule="route('sales_dashboard')" :titleModule="'Facturación Electrónica'">
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Resumen </span>
+            </li>
+        </Navigation>
+        <div class="mt-5 space-y-8">
+            <div class="relative flex items-center border p-3.5 rounded text-success bg-success-light border-success ltr:border-l-[64px] rtl:border-r-[64px] dark:bg-success-dark-light">
+                <span class="absolute ltr:-left-11 rtl:-right-11 inset-y-0 text-white w-6 h-6 m-auto">
+                    <icon-bell class="w-6 h-6"/>
+                </span>
+                <span class="ltr:pr-2 rtl:pl-2"><strong class="ltr:mr-1 rtl:ml-1">Resumen diario:</strong>Para comunicar las boletas de ventas emitidas o anuladas, así como las notas de crédito/débito releacionadas, necesita hacerlo mediante un resumen diario. A diferencia del envío de una factura, donde la respuesta es inmediata, en este documento debemos hacer un consulta adicional para conocer su estado utilizando el numero de ticket.</span>
+                <button type="button" class="ltr:ml-auto rtl:mr-auto hover:opacity-80">
+                    <icon-x />
+                </button>
+            </div>
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
-                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
+                <div class="panel p-0">
+                    <div class="w-full p-4">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
                                 <form @submit.prevent="form.get(route('salesummaries_list'))">
@@ -328,55 +332,55 @@
                         </form>
                     </div>
                 </div>
-                <div class="relative overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div class="table-responsive">
+                    <table class="w-full">
+                        <thead class="uppercase text-sm">
                             <tr>
-                                <th scope="col" class="px-2 py-3">
+                                <th ">
                                     
                                 </th>
-                                <th scope="col" class="px-2 py-3">
+                                <th scope="col">
                                     Tipo documento
                                 </th>
-                                <th style="width: 70px;" class="px-2 py-3 text-center">
+                                <th class="text-center">
                                     Serie y numero
                                 </th>
-                                <th scope="col" class="px-2 py-3">
+                                <th scope="col" >
                                     Fecha de emisión
                                 </th>
-                                <th scope="col" class="px-2 py-3">
+                                <th >
                                     Cliente
                                 </th>
-                                <th scope="col" class="px-2 py-3">
+                                <th>
                                     total
                                 </th>
-                                <th scope="col" class="px-2 py-3">
+                                <th>
                                     estado
                                 </th>
                               </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item,ko) in documents" class="bg-white border-b border-stroke dark:bg-gray-900 dark:border-gray-700">
-                                <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <tr v-for="(item,ko) in documents" class="text-sm">
+                                <th scope="row">
                                     
                                 </th>
-                                <td class="px-2 py-2">
+                                <td>
                                    {{ item.type_description }}
                                 </td>
-                                <td class="px-2 py-2 text-center">
+                                <td class="text-center">
                                     {{ item.invoice_serie }}-{{ item.number }}
                                 </td>
 
-                                <td class="px-2 py-2 text-center">
+                                <td class="text-center">
                                     {{ item.invoice_broadcast_date }}
                                 </td>
-                                <td class="px-2 py-2 text-left">
+                                <td class="text-left">
                                     {{ item.client_number }}-{{ item.client_rzn_social }}
                                 </td>
-                                <td class="px-2 py-2 text-right">
+                                <td class="text-right">
                                     {{ item.invoice_mto_imp_sale }}
                                 </td>
-                                <td class="px-2 py-2 text-center">
+                                <td class="text-center">
                                     <span v-if="item.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Registrado</span>
                                     <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
                                 </td>

@@ -1,5 +1,5 @@
 <script setup>
-    import DialogModal from '@/Components/DialogModal.vue';
+    import DialogModal from '@/Components/ModalLargeX.vue';
     import DangerButton from '@/Components/DangerButton.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     import { ref } from 'vue';
@@ -144,20 +144,6 @@
 <template>
     <div style="position: relative;">
         <form @submit.prevent="searchProducts()">
-            <!-- <div class="flex">
-                <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                <div class="flex items-center mr-4">
-                    <input v-model="formScaner.scaner" id="scaner" type="checkbox" value="" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    <label for="scaner" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scaner</label>
-                </div>
-                <div class="relative w-full">
-                    <input v-model="form.search" autocomplete="off" type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Buscar por código o descripción..." required>
-                    <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <span class="sr-only">Search</span>
-                    </button>
-                </div>
-            </div> -->
             <div class="flex">
                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">Scaner</div>
                 <div class="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
@@ -222,6 +208,9 @@
         <template #title>
             Detalles del Producto
         </template>
+        <template #message>
+            {{ form.product.interne  }} - {{ form.product.description  }}
+        </template>
         <template #content>
             <div class="grid grid-cols-6">
                 <div class="col-span-6 sm:col-span-2 md:col-span-2">
@@ -240,10 +229,9 @@
                         style="width: 100%;"
                         />
                     </div>
+                    <p v-if="form.product.is_product" class="my-4 text-center">Stock Actual : {{ form.data.stock  }}</p>
                 </div>
-                <div class="col-span-6 sm:col-span-4 md:col-span-4">
-                    <h4>{{ form.product.interne  }} - {{ form.product.description  }}</h4>
-                    <p v-if="form.product.is_product" class="my-4">Stock Actual : {{ form.data.stock  }}</p>
+                <div class="col-span-6 sm:col-span-2 md:col-span-2">
                     <div class="mb-4">
                         <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Precios Disponibles
@@ -318,13 +306,15 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-span-6 sm:col-span-2 md:col-span-2">
                     <div class="mb-4">
                         <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Cantidad a vender
                         </label>
                         <input v-model="form.data.quantity" type="number" id="quantity" class="block p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
-                    <div class="mb-4">
+                    <div v-can="'sale_aplicar_descuento'" class="mb-4">
                         <label for="discount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Descuento
                         </label>
@@ -336,16 +326,10 @@
                 </div>
             </div>
         </template>
-        <template #footer>
-            <DangerButton
-                class="mr-3"
-                @click="addProduct(form.product.presentations)"
-            >
+        <template #buttons>
+            <DangerButton @click="addProduct(form.product.presentations)" >
                 Agregar
             </DangerButton>
-            <SecondaryButton @click="closeModalSelectProduct">
-                Cancel
-            </SecondaryButton>
         </template>
     </DialogModal>
 </template>

@@ -91,14 +91,16 @@
             axios.post(route('sales.store'), form ).then((res) => {
                 form.reset();
                 Swal2.fire({
-                    title: 'Ticket',
+                    title: 'Venta registrada',
                     text: "¿Desea imprimir el ticket?",
                     icon: 'info',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Imprimir',
-                    cancelButtonText: 'Cancelar'
+                    cancelButtonText: 'Cancelar',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 }).then((result) => {
                     if (result.isConfirmed) {
                         printPdf(res.data.id);
@@ -228,7 +230,7 @@
                         <InputError :message="form.errors[`client.id`]" class="mt-2" />
                         <div class="flex items-center me-4 mt-4 justify-between">
                             <label for="sale_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de venta: </label>
-                            <input v-model="form.sale_date" id="sale_date" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                            <input v-model="form.sale_date" id="sale_date" type="date" class="form-input" placeholder="Select date">
                         </div>
 
                         <div class="mt-4">
@@ -237,7 +239,7 @@
                                 <tbody>
                                     <tr v-for="(row, index) in form.payments" v-bind:key="index">
                                         <td>
-                                            <select v-model="row.type" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <select v-model="row.type" id="countries" class="form-select text-white-dark">
                                                 <template v-for="(payment) in payments">
                                                     <option :value="payment.id">{{ payment.description }}</option>
                                                 </template>
@@ -245,15 +247,15 @@
                                             <InputError :message="form.errors[`payments.${index}.id`]" class="mt-2" />
                                         </td>
                                         <td>
-                                            <input v-model="row.reference" type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Referencia" required>
+                                            <input v-model="row.reference" type="text" id="first_name" class="form-input" placeholder="Referencia" required>
                                             <InputError :message="form.errors[`payments.${index}.reference`]" class="mt-2" />
                                         </td>
                                         <td>
-                                            <input v-model="row.amount" type="text" id="first_name" class="text-right bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Monto" required>
+                                            <input v-model="row.amount" type="text" id="first_name" class="form-input" placeholder="Monto" required>
                                             <InputError :message="form.errors[`payments.${index}.amount`]" class="mt-2" />
                                         </td>
                                         <td>
-                                            <button @click="removePayment(index)" type="button" class="px-2 py-1 inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                            <button @click="removePayment(index)" type="button" class="btn btn-danger">
                                                 <font-awesome-icon :icon="faTrashAlt" />
                                             </button>
                                         </td>

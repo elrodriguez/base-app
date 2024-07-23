@@ -27,7 +27,11 @@
         search: props.filters.search,
     });
 
+    const baseUrl = assetUrl;
 
+    const getImage = (path) => {
+        return baseUrl + 'storage/'+ path;
+    }
 </script>
 
 <template>
@@ -100,7 +104,7 @@
                                     </div>
                                     <div class="flex flex-col items-center pb-10">
                                         <template v-if="student.people_image">
-                                            <img :src="student.people_image" style="width: 96px; height: 96px;" class="mb-3 rounded-full shadow-lg" :alt="student.full_name"/>
+                                            <img :src="getImage(student.people_image)" style="width: 96px; height: 96px;" class="mb-3 rounded-full shadow-lg" :alt="student.full_name"/>
                                         </template>
                                         <template v-else>
                                             <img :src="'https://ui-avatars.com/api/?name='+student.full_name+'&size=96&rounded=true'" class="w-24 h-24 mb-3 rounded-full shadow-lg" :alt="student.full_name"/>
@@ -123,9 +127,36 @@
             </template>
 
             <template v-else>
-                <div class="flex items-center p-4 mb-4 text-gray-800 border-t-2 border-gray-300 bg-white dark:text-blue-400 dark:bg-gray-800 dark:border-blue-800" role="alert">
-                    <span class="font-medium">Aun la tabla esta vacía</span> puede registrar datos.
-                </div>
+                <div class="mt-5">
+                        <div
+                            class="
+                                h-16
+                                relative
+                                flex
+                                items-center
+                                border
+                                p-3.5
+                                rounded
+                                before:inline-block before:absolute before:top-1/2
+                                ltr:before:right-0
+                                rtl:before:left-0 rtl:before:rotate-180
+                                before:-mt-2 before:border-r-8 before:border-t-8 before:border-b-8 before:border-t-transparent before:border-b-transparent before:border-r-inherit
+                                text-danger
+                                bg-danger-light
+                                border-danger
+                                ltr:border-r-[64px]
+                                rtl:border-l-[64px]
+                                dark:bg-danger-dark-light
+                            "
+                            >
+                            <span class="absolute ltr:-right-11 rtl:-left-11 inset-y-0 text-white w-6 h-6 m-auto">
+                                <icon-box />
+                            </span>
+                            <span class="ltr:pr-2 rtl:pl-2">
+                                <strong class="ltr:mr-1 rtl:ml-1">Tabla vacía!</strong>No existen registros para mostrar.
+                            </span>
+                        </div>
+                    </div>
             </template>
         </div>
         

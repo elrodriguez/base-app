@@ -36,6 +36,8 @@ import AppLayout from "@/Layouts/Vristo/AppLayout.vue";
             confirmButtonText: '¡Sí, Eliminar!',
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
+            padding: '2em',
+            customClass: 'sweet-alerts',
             preConfirm: () => {
                 return axios.delete(route('aca_teachers_destroy', id)).then((res) => {
                     if (!res.data.success) {
@@ -51,10 +53,23 @@ import AppLayout from "@/Layouts/Vristo/AppLayout.vue";
                     title: 'Enhorabuena',
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
-                router.visit(route('aca_teachers_list'), { replace: true, method: 'get' });
+                router.visit(route('aca_teachers_list'), {
+                    replace: false, 
+                    method: 'get',
+                    preserveState: true,
+                    preserveScroll: true,
+                });
             }
         });
+    }
+
+    const baseUrl = assetUrl;
+
+    const getImage = (path) => {
+        return baseUrl + 'storage/'+ path;
     }
 </script>
 
@@ -126,7 +141,7 @@ import AppLayout from "@/Layouts/Vristo/AppLayout.vue";
                                     
                                     <div class="flex flex-col items-center pb-10">
                                         <template v-if="teacher.people_image">
-                                            <img :src="teacher.people_image" style="width: 96px; height: 96px;" class="mb-3 rounded-full shadow-lg" :alt="teacher.full_name"/>
+                                            <img :src="getImage(teacher.people_image)" style="width: 96px; height: 96px;" class="w-24 h-24 mb-3 rounded-full shadow-lg" :alt="teacher.full_name"/>
                                         </template>
                                         <template v-else>
                                             <img :src="'https://ui-avatars.com/api/?name='+teacher.full_name+'&size=96&rounded=true'" class="w-24 h-24 mb-3 rounded-full shadow-lg" :alt="teacher.full_name"/>

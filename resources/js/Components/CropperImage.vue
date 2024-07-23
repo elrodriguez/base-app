@@ -7,7 +7,7 @@
                 <img v-else :src="imgDefault" class="h-auto max-w-full rounded-lg" >
                 <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Captura de imagen</figcaption>
             </figure>
-            <input type="file" ref="input" @change="onChange" class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+            <input type="file" ref="input" @change="onChange" class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-success/90 ltr:file:mr-5 rtl:file:ml-5 file:text-white file:hover:bg-success">
         </div>
     </div>
 </template>

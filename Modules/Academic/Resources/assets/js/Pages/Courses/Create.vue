@@ -11,6 +11,14 @@ const props = defineProps({
     categories: {
         type: Object,
         default: () => ({}),
+    },
+    types: {
+        type: Object,
+        default: () => ({}),
+    },
+    sectors: {
+        type: Object,
+        default: () => ({}),
     }
 });
 
@@ -30,7 +38,7 @@ const props = defineProps({
             </li>
         </ul>
         <div class="pt-5">
-            <CreateForm :modalities="modalities" :categories="categories" /> 
+            <CreateForm :modalities="modalities" :categories="categories" :types="types" :sectors="sectors" /> 
         </div>
     </AppLayout>  
 </template>

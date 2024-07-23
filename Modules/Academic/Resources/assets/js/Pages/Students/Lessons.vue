@@ -5,12 +5,13 @@
     import { Link, useForm, router } from '@inertiajs/vue3';
     import { faFolderOpen, faNoteSticky, faLink, faVideo, faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
     import IconSend from '@/Components/vristo/icon/icon-send.vue';
-    import IconX from '@/Components/vristo/icon/icon-x.vue';
+
     import IconEdit from '@/Components/vristo/icon/icon-edit.vue';
     import IconTrash from '@/Components/vristo/icon/icon-trash.vue';
     import IconMessage from '@/Components/vristo/icon/icon-message.vue';
     import InputError from '@/Components/InputError.vue';
     import Swal2 from 'sweetalert2';
+    import DraggableDiv from '@/Components/DraggableDiv.vue';
 
     const props = defineProps({
         course: {
@@ -138,6 +139,8 @@
             confirmButtonText: '¡Sí, Eliminar!',
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
+            padding: '2em',
+            customClass: 'sweet-alerts',
             preConfirm: () => {
                 return axios.delete(route('aca_lesson_comments_destroy', comment.id)).then((res) => {
                     if (!res.data.success) {
@@ -154,6 +157,8 @@
                     title: 'Enhorabuena',
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
                 getComment(formComment.theme_id);
             }
@@ -322,16 +327,11 @@
             </div> 
             
         </div>
-        <div v-show="displayModalVideo" style="z-index: 10000000 !important;" class="fixed bottom-0 left-4 w-full max-w-md bg-white shadow-lg rounded-t-lg p-4 bg-[#0e1726]/90">
-            <div class="flex justify-between items-center">
-                <h2 class="text-lg font-semibold text-gray-100">VIDEO</h2>
-                <button class="text-gray-100 hover:text-gray-50" @click="closeSelectedVideo()">
-                    <icon-x />
-                </button>
-            </div>
-            <div class="mt-4">
+        <DraggableDiv :isVisible="displayModalVideo" :onClose="closeSelectedVideo">
+            <template #title>VIDEO</template>
+            <template #content>
                 <div id="div-video-content" v-html="videoSelected" class="m-0"></div>
-            </div>
-        </div>
+            </template>
+        </DraggableDiv>
     </AppLayout>
 </template>
