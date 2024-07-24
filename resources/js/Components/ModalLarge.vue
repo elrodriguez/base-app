@@ -40,7 +40,7 @@
             </TransitionChild>
             <div class="fixed inset-0 overflow-y-auto">
               <div class="flex min-h-full items-start justify-center px-4 py-8">
-                <DialogPanel class="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-xl text-black dark:text-white-dark animate__animated animate__zoomInUp">
+                <DialogPanel class="panel border-0 p-0 rounded-lg overflow-hidden sm:max-w-2xl sm:w-full text-black dark:text-white-dark animate__animated animate__zoomInUp">
                   <button type="button" class="absolute top-4 ltr:right-4 rtl:left-4 text-gray-400 hover:text-gray-800 dark:hover:text-gray-600 outline-none" @click="onClose">
                     <icon-x />
                   </button>

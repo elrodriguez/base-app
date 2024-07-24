@@ -158,7 +158,6 @@ class AcaTeacherController extends Controller
             );
 
             //$path = asset("storage/" . $path); //guardar la ruta COMPLETA
-            $path =  $path;
             $per->image = $path;
             $per->save();
         }
@@ -179,10 +178,15 @@ class AcaTeacherController extends Controller
 
         $user->assignRole('Docente');
 
-        AcaTeacher::create([
-            'person_id'     => $per->id,
-            'teacher_code'  => $request->get('number'),
-        ]);
+        AcaTeacher::updateOrCreate(
+            [
+                'person_id'     => $per->id
+            ],
+            [
+                'teacher_code'  => $request->get('number'),
+            ]
+        );
+
         return redirect()->route('aca_teachers_list')
             ->with('message', __('Docente creado con éxito'));
     }
@@ -236,7 +240,7 @@ class AcaTeacherController extends Controller
     public function update(Request $request)
     {
         $person_id = $request->get('id');
-        $student_id = $request->get('teacher_id');
+        $teacher_id = $request->get('teacher_id');
         $user = User::where('person_id', $request->get('id'))->first();
 
         $this->validate(
@@ -259,26 +263,26 @@ class AcaTeacherController extends Controller
             ]
         );
 
-        $path = $request->get('image_preview');
+        $person = Person::find($person_id);
+        $path = null;
         $destination = 'uploads/teachers';
         $file = $request->file('image');
-
+        //dd($file);
         if ($file) {
             $original_name = strtolower(trim($file->getClientOriginalName()));
             $original_name = str_replace(" ", "_", $original_name);
             $extension = $file->getClientOriginalExtension();
-            $file_name = $person_id . '.' . $extension;
+            $file_name = $person_id . time() . '.' . $extension;
             $path = $request->file('image')->storeAs(
                 $destination,
                 $file_name,
                 'public'
             );
-
-            // $path = asset("storage/" . $path); //RUTA COMPLETA
-            $path =  $path;
+            $person->image = $path;
+            $person->save();
         }
 
-        Person::find($person_id)->update([
+        $person->update([
             'document_type_id'      => $request->get('document_type_id'),
             'short_name'            => $request->get('names'),
             'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
@@ -286,7 +290,6 @@ class AcaTeacherController extends Controller
             'number'                => $request->get('number'),
             'telephone'             => $request->get('telephone'),
             'email'                 => $request->get('email'),
-            'image'                 => $path,
             'address'               => $request->get('address'),
             'is_provider'           => false,
             'is_client'             => true,
@@ -306,12 +309,12 @@ class AcaTeacherController extends Controller
             'avatar'        => $path
         ]);
         //dd($request->get('presentacion'));
-        AcaTeacher::find($student_id)->update([
+        AcaTeacher::where('person_id', $person_id)->update([
             'teacher_code'  => $request->get('number'),
         ]);
 
-        // return redirect()->route('aca_teachers_edit', $student_id)
-        //     ->with('message', __('Estudiante creado con éxito'));
+        return redirect()->route('aca_teachers_edit', $teacher_id)
+            ->with('message', __('Docente creado con éxito'));
     }
 
     /**

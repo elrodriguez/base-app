@@ -77,6 +77,8 @@ const createItem = () => {
                 title: 'Enhorabuena',
                 text: 'Se registró correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             form.reset()
         },
@@ -119,8 +121,14 @@ const setItemsData = (data,type) => {
 
 
     form.name = data.description;
-    form.image_view = data.image;
+    form.image_view = data.image ? (data.image.includes("imagen-no-disponible.jpg") ? data.image :  getImage(data.image)) : null ;
 
+}
+
+const baseUrl = assetUrl;
+
+const getImage = (path) => {
+    return baseUrl + 'storage/'+ path;
 }
 
 const loadFile = (event) => {
@@ -165,9 +173,9 @@ const removeSpecifications= (key) => {
 
 <template>
     <div class="grid grid-cols-6 md:grid-cols-6 gap-4">
-        <div class="col-span-6 sm:col-span-2">
+        <div class="col-span-6 sm:col-span-2 space-y-4">
             <div v-if="courses.length > 0" class="w-full rounded-lg font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                <div class="block w-full px-4 py-2 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-600">Cursos</div>
+                <div class="block w-full px-4 py-2 border-b border-gray-200 bg-gray-200 dark:bg-gray-800 dark:border-gray-600">Cursos</div>
                 <div style="max-height: 530px; overflow-y: auto;">
                     <button @click="setItemsData(course,1)" v-for="(course, key) in courses" type="button" class="w-full text-sm px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
                         {{ course.description }}
@@ -175,9 +183,9 @@ const removeSpecifications= (key) => {
                 </div>
             </div>
             <div v-if="products.length > 0" class="w-full rounded-lg font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                <div class="block w-full px-4 py-2 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-600">Productos</div>
+                <div class="block w-full px-4 py-2 border-b border-gray-200 bg-gray-200 dark:bg-gray-800 dark:border-gray-600">Productos</div>
                 <div style="max-height: 530px; overflow-y: auto;">
-                    <button @click="setItemsData(product,type)" v-for="(product, key) in products" type="button" class="w-full text-sm px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
+                    <button @click="setItemsData(product,2)" v-for="(product, key) in products" type="button" class="w-full text-sm px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
                         {{ product.description }}
                     </button>
                 </div>
@@ -221,7 +229,7 @@ const removeSpecifications= (key) => {
                     <!-- para cursos -->
                     <div v-if="form.type == 1" class="mt-2">
                         <InputLabel for="category_description" value="Sector" />                       
-                        <select id="category_description" v-model="form.category_description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select id="category_description" v-model="form.category_description" class="form-select text-white-dark">
                             <option selected value="">Seleccionar Sector</option>
                             <option value="Derecho">Derecho</option>
                             <option value="Empresarial">Empresarial</option>
@@ -244,7 +252,7 @@ const removeSpecifications= (key) => {
 
                     <div v-if="form.type == 1" class="mt-2">
                         <InputLabel for="additional1" :value="titles.additional1+'*'" />
-                        <select id="additional1" v-model="form.additional1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select id="additional1" v-model="form.additional1" class="form-select text-white-dark">
                             <option value="">Seleccionar modalidad</option>
                             <option value="En Vivo">En Vivo</option>
                             <option value="Presencial">Presencial</option>
@@ -261,7 +269,7 @@ const removeSpecifications= (key) => {
                     </div>
                     <div v-if="form.type == 1" class="mt-2">
                         <InputLabel for="additional" :value="titles.additional+'*'" />
-                        <select id="additional" v-model="form.additional" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select id="additional" v-model="form.additional" class="form-select text-white-dark">
                             <option value="">Seleccionar tipo</option>
                             <option value="Curso">Curso</option>
                             <option value="Diplomado">Diplomado</option>
@@ -283,21 +291,21 @@ const removeSpecifications= (key) => {
                     </div>
                     <div class="mt-2">
                         <InputLabel for="image" value="Imagen *" />
-                        <div class="flex justify-center space-x-2">
+                        <div v-if="form.image_view" class="flex justify-center space-x-2">
                             <figure class="max-w-lg">
                                 <img style="width: 200px;" id="preview_img" class="h-auto rounded-lg" :src="form.image_view">
                                 <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>
                             </figure>
                         </div>
 
-                        <input @change="loadFile" accept=".svg, .png, .jpg, .jpeg, .gif" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
+                        <input @change="loadFile" accept=".svg, .png, .jpg, .jpeg, .gif" class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 rtl:file:ml-5 file:text-white file:hover:bg-primary" aria-describedby="file_input_help" id="file_input" type="file">
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG or GIF (RECOMENDADO. 800x400px).</p>
                         <InputError :message="form.errors.image" class="mt-2" />
                     </div>
                     <!-- agregado para celmovil -->
                     <div v-if="form.type == 3" class="mt-2">
                         <InputLabel for="additional2" :value="titles.additional2+'*'" />
-                        <input @change="handleFileChange" accept=".pdf, image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+                        <input @change="handleFileChange" accept=".pdf, image/*" class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 rtl:file:ml-5 file:text-white file:hover:bg-primary" id="file_input" type="file">
                         <InputError :message="form.errors.additional2" class="mt-2" />
                     </div>
 
@@ -321,7 +329,7 @@ const removeSpecifications= (key) => {
                     </div>
                     <div v-if="form.type == 3" class="mt-2">
                         <InputLabel for="additional5" :value="titles.additional5+'*'" />
-                        <select v-model="form.additional5" id="additional5" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select v-model="form.additional5" id="additional5" class="form-select text-white-dark">
                             <option value="NO">Venta Normal</option>
                             <option value="PR">En Promoción</option>
                             <option value="DE">Con Descuento</option>

@@ -163,6 +163,7 @@ class PersonController extends Controller
         $path = null;
         $destination = 'uploads/students';
         $base64Image = $request->get('image');
+        $person = Person::find($person_id);
 
         if ($base64Image) {
             $fileData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
@@ -186,10 +187,12 @@ class PersonController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $file_name = trim($request->get('number')) . '.' . $extension;
                 $path = Storage::disk('public')->putFileAs($destination, $file, $file_name);
+                $person->image = $path;
+                $person->save();
             }
         }
 
-        Person::find($person_id)->update([
+        $person->update([
             'document_type_id'      => $request->get('document_type_id'),
             'short_name'            => $request->get('names'),
             'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),

@@ -24,6 +24,11 @@ const props = defineProps({
     }
 });
 
+const baseUrl = assetUrl;
+
+const getImage = (path) => {
+    return baseUrl + 'storage/'+ path;
+}
 
 const form = useForm({
     id: props.teacher.id,
@@ -33,7 +38,7 @@ const form = useForm({
     telephone: props.teacher.telephone,
     email: props.teacher.email,
     image: null,
-    image_preview: props.teacher.image_preview,
+    image_preview: props.teacher.image ? getImage(props.teacher.image) : null,
     address: props.teacher.address,
     ubigeo: props.teacher.ubigeo,
     birthdate: props.teacher.birthdate,

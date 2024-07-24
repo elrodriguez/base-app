@@ -17,6 +17,7 @@ use Modules\Academic\Entities\AcaStudent;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\Academic\Entities\AcaCapRegistration;
 use Modules\Academic\Entities\AcaCourse;
 
 class AcaStudentController extends Controller
@@ -113,7 +114,8 @@ class AcaStudentController extends Controller
      */
     public function store(Request $request)
     {
-        $update_id = null;
+        $update_id = $request->get('if');
+        $user = User::where('person_id', $request->get('id'))->first();
 
         $this->validate(
             $request,
@@ -123,6 +125,8 @@ class AcaStudentController extends Controller
                 'number'            => 'unique:people,number,' . $update_id . ',id,document_type_id,' . $request->get('document_type_id'),
                 'telephone'         => 'required|max:12',
                 'email'             => 'required|max:255',
+                'email'             => 'unique:people,email,' . $update_id . ',id',
+                'email'             => 'unique:users,email,' . $user->id . ',id',
                 'address'           => 'required|max:255',
                 'ubigeo'            => 'required|max:255',
                 'birthdate'         => 'required|',
@@ -137,6 +141,30 @@ class AcaStudentController extends Controller
         $path = null;
         $destination = 'uploads/students';
         $file = $request->file('image');
+
+        $per = Person::updateOrCreate(
+            [
+                'document_type_id'      => $request->get('document_type_id'),
+                'number'                => $request->get('number'),
+            ],
+            [
+                'short_name'            => $request->get('names'),
+                'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
+                'description'           => $request->get('description'),
+                'telephone'             => $request->get('telephone'),
+                'email'                 => $request->get('email'),
+                'image'                 => $path,
+                'address'               => $request->get('address'),
+                'is_provider'           => false,
+                'is_client'             => true,
+                'ubigeo'                => $request->get('ubigeo'),
+                'birthdate'             => $request->get('birthdate'),
+                'names'                 => $request->get('names'),
+                'father_lastname'       => $request->get('father_lastname'),
+                'mother_lastname'       => $request->get('mother_lastname')
+            ]
+        );
+
         if ($file) {
             $original_name = strtolower(trim($file->getClientOriginalName()));
             $original_name = str_replace(" ", "_", $original_name);
@@ -148,44 +176,34 @@ class AcaStudentController extends Controller
                 'public'
             );
 
-            // $path = asset('storage/' . $path);
-            $path =  $path;
+            $per->image = $path;
+            $per->save();
         }
 
-        $per = Person::create([
-            'document_type_id'      => $request->get('document_type_id'),
-            'short_name'            => $request->get('names'),
-            'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
-            'description'           => $request->get('description'),
-            'number'                => $request->get('number'),
-            'telephone'             => $request->get('telephone'),
-            'email'                 => $request->get('email'),
-            'image'                 => $path,
-            'address'               => $request->get('address'),
-            'is_provider'           => false,
-            'is_client'             => true,
-            'ubigeo'                => $request->get('ubigeo'),
-            'birthdate'             => $request->get('birthdate'),
-            'names'                 => $request->get('names'),
-            'father_lastname'       => $request->get('father_lastname'),
-            'mother_lastname'       => $request->get('mother_lastname')
-        ]);
 
-        $user = User::create([
-            'name'          => $request->get('names'),
-            'email'         => $request->get('email'),
-            'password'      => Hash::make($request->get('number')),
-            'information'   => $request->get('description'),
-            'avatar'        => $path,
-            'person_id'     => $per->id
-        ]);
+        $user = User::updateOrCreate(
+            [
+                'email'         => $request->get('email'),
+                'person_id'     => $per->id
+            ],
+            [
+                'password'      => Hash::make($request->get('number')),
+                'information'   => $request->get('description'),
+                'avatar'        => $path,
+                'person_id'     => $per->id
+            ]
+        );
 
         $user->assignRole('Alumno');
 
-        AcaStudent::create([
-            'person_id'     => $per->id,
-            'student_code'  => $request->get('number'),
-        ]);
+        AcaStudent::updateOrCreate(
+            [
+                'person_id'     => $per->id
+            ],
+            [
+                'student_code'  => $request->get('number'),
+            ]
+        );
 
         return redirect()->route('aca_students_list')
             ->with('message', __('Estudiante creado con éxito'));
@@ -319,7 +337,7 @@ class AcaStudentController extends Controller
             'avatar'        => $path
         ]);
 
-        AcaStudent::find($student_id)->update([
+        AcaStudent::where('person_id', $person_id)->update([
             'student_code'  => $request->get('number'),
         ]);
 
@@ -393,6 +411,34 @@ class AcaStudentController extends Controller
                 'igv' => $this->igv,
                 'icbper' => $this->icbper
             )
+        ]);
+    }
+
+    public function getCourses(Request $request)
+    {
+        $student = AcaStudent::where('person_id', $request->id)->first();
+        $mycourses = $student->registrations()
+            ->with(['course.modality', 'course.teachers.teacher.person'])
+            ->get();
+
+        $allcourses = [];
+
+        if (empty($mycourses)) {
+            $allcourses = AcaCourse::with('teachers.teacher.person')
+                ->with('modality')
+                ->get();
+        } else {
+            $ids = $mycourses->pluck('course_id')->toArray();
+            $allcourses = AcaCourse::with('teachers.teacher.person')
+                ->with('modality')
+                ->whereNotIn('id', $ids)
+                ->get();
+        }
+
+
+        return response()->json([
+            'mycourses' => $mycourses,
+            'allcourses' => $allcourses
         ]);
     }
 }

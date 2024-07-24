@@ -17,4 +17,14 @@ class AcaRegistration extends Model
     {
         return \Modules\Academic\Database\factories\AcaRegistrationFactory::new();
     }
+
+    public function student()
+    {
+        return $this->belongsTo(AcaStudent::class, 'student_id');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(AcaCourse::class, 'course_id');
+    }
 }

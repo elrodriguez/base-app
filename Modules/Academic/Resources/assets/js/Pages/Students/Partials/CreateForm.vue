@@ -23,6 +23,7 @@ const props = defineProps({
 
 
 const form = useForm({
+    id: null,
     document_type_id: 1,
     number: null,
     telephone: null,
@@ -216,7 +217,7 @@ const getPersonData = (newValues) => {
     form.telephone = newValues.telephone,
     form.email = newValues.email,
     form.image = null,
-    form.image_preview = newValues.image,
+    form.image_preview = newValues.image ? getImage(newValues.image) : null,
     form.address = newValues.address,
     form.ubigeo = newValues.ubigeo,
     form.birthdate = newValues.birthdate,

@@ -108,7 +108,7 @@ const getImage = (path) => {
         </ul>
         <div class="pt-5">
             <div class="grid xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-                <div v-for="(course, index) in courses" class="relative group rounded-md bg-white border-b-4 border-transparent hover:border-sky-500 overflow-hidden">
+                <div v-for="(course, index) in courses" class="relative group rounded-md bg-white border-b-4 border-transparent hover:border-sky-500 overflow-hidden dark:bg-gray-700 dark:text-gray-50">
                     <div class="relative">
                         <div class="overflow-hidden h-full">
                             <img :src="getImage(course.image)" class="h-full w-full scale-100 group-hover:scale-105 transition-all duration-500" :alt="course.description">
@@ -118,7 +118,7 @@ const getImage = (path) => {
                         </div>
                     </div>
 
-                    <div class="p-6 -mb-20 group-hover:-translate-y-20 bg-white transition-all duration-500">
+                    <div class="p-6 -mb-20 group-hover:-translate-y-20 bg-white transition-all duration-500 dark:bg-gray-700 dark:text-gray-50">
                         <span class="py-0.5 px-2 text-sm rounded font-semibold text-sky-500 bg-sky-500/10">{{ course.type_description }}</span>
                         <h2 class="my-4">
                             <a href="#" class="text-xl font-bold hover:text-sky-500 transition-all duration-500">

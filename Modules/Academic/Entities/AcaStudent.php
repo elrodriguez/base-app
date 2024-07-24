@@ -24,4 +24,8 @@ class AcaStudent extends Model
     {
         return $this->hasOne(Person::class, 'id', 'person_id');
     }
+    public function registrations()
+    {
+        return $this->hasMany(AcaCapRegistration::class, 'student_id');
+    }
 }

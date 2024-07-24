@@ -58,10 +58,10 @@ const form = useForm({
   });
 
   const socialData = ref({
-    facebook: props.person ? JSON.parse(props.person.social_networks).facebook : null,
-    instagram: props.person ? JSON.parse(props.person.social_networks).instagram : null,
-    linkedin: props.person ? JSON.parse(props.person.social_networks).linkedin : null,
-    twitter: props.person ? JSON.parse(props.person.social_networks).twitter : null,
+    facebook: props.person.social_networks ? JSON.parse(props.person.social_networks).facebook : null,
+    instagram: props.person.social_networks ? JSON.parse(props.person.social_networks).instagram : null,
+    linkedin: props.person.social_networks ? JSON.parse(props.person.social_networks).linkedin : null,
+    twitter: props.person.social_networks ? JSON.parse(props.person.social_networks).twitter : null,
   });
 
   const savePerson = () => {

@@ -60,7 +60,10 @@ Route::get('/email', function () {
 
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $person = Person::where('id', Auth::user()->person_id)->with('district')->first();
+    return Inertia::render('Dashboard', [
+        'authPerson' => $person
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

@@ -4,7 +4,7 @@
     import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
     import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
     import UpdatePersonInformationForm from './Partials/UpdatePersonInformationForm.vue';
-
+    import { Link } from '@inertiajs/vue3';
     import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
     import { useAppStore } from '@/stores/index';
 
@@ -42,11 +42,11 @@
 </script>
 
 <template>
-    <AppLayout title="Profile">
+    <AppLayout title="Perfil">
         <div>
             <ul class="flex space-x-2 rtl:space-x-reverse">
                 <li>
-                    <a href="javascript:;" class="text-primary hover:underline">Usuario</a>
+                    <Link :href="route('dashboard')" class="text-primary hover:underline">Dashboard</Link>
                 </li>
                 <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                     <span>Perfil</span>

@@ -69,7 +69,8 @@ class OnliItemController extends Controller
             ->with('modality')
             ->whereNotIn('id', function ($query) {
                 $query->select('item_id')
-                    ->from('onli_items');
+                    ->from('onli_items')
+                    ->where('onli_items.entitie', 'Modules-Academic-Entities-AcaCourse');
             })
             ->orderBy('id', 'DESC')
             ->get();
@@ -81,7 +82,7 @@ class OnliItemController extends Controller
                     ->where('onli_items.entitie', 'App-Models-Product');
             })->orderBy('id', 'DESC')->get();
 
-        //dd($products);
+
         return Inertia::render('Onlineshop::Items/Create', [
             'courses'   => $courses,
             'products'  => $products,

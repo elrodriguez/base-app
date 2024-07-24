@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->morphMany(PersonalAccessToken::class, 'tokenable');
     }
+
+    public function person(): HasOne
+    {
+        return $this->hasOne(Person::class, 'person_id', 'id');
+    }
 }

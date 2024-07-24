@@ -175,4 +175,8 @@ Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('
     Route::middleware(['middleware' => 'permission:aca_estudiante_cobrar'])
         ->post('student/sale/store', 'AcaSalesController@store')
         ->name('aca_student_invoice_store');
+
+    Route::middleware(['middleware' => 'permission:aca_miscursos'])
+        ->post('student/dashboard/courses', 'AcaStudentController@getCourses')
+        ->name('aca_student_dashboard_courses');
 });
