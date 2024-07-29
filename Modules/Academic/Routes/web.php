@@ -11,6 +11,7 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
 use Modules\Academic\Http\Controllers\AcaModuleController;
 
 Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('academic')->group(function () {
@@ -183,4 +184,9 @@ Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('
     Route::middleware(['middleware' => 'permission:aca_miscursos'])
         ->post('student/dashboard/courses', 'AcaStudentController@getCourses')
         ->name('aca_student_dashboard_courses');
+
+
+    Route::middleware(['middleware' => 'permission:aca_dashboard'])
+        ->get('dashboard/total/registration/student', 'AcademicController@studentsEnrolledMonth')
+        ->name('aca_student_registration_total');
 });

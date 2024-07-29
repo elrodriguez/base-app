@@ -114,7 +114,7 @@ class AcaStudentController extends Controller
      */
     public function store(Request $request)
     {
-        $update_id = $request->get('if');
+        $update_id = $request->get('id');
         $user = User::where('person_id', $request->get('id'))->first();
 
         $this->validate(
@@ -126,7 +126,7 @@ class AcaStudentController extends Controller
                 'telephone'         => 'required|max:12',
                 'email'             => 'required|max:255',
                 'email'             => 'unique:people,email,' . $update_id . ',id',
-                'email'             => 'unique:users,email,' . $user->id . ',id',
+                'email'             => 'unique:users,email,' . ($user ? $user->id  : null) . ',id',
                 'address'           => 'required|max:255',
                 'ubigeo'            => 'required|max:255',
                 'birthdate'         => 'required|',
@@ -187,6 +187,7 @@ class AcaStudentController extends Controller
                 'person_id'     => $per->id
             ],
             [
+                'name'          => $request->get('names'),
                 'password'      => Hash::make($request->get('number')),
                 'information'   => $request->get('description'),
                 'avatar'        => $path,

@@ -27,7 +27,7 @@
         </div>
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
-                <p class="text-sm text-gray-700 leading-5 dark:text-white">
+                <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
                     Mostrando
                     <span class="font-medium">
                         {{ data.from }}

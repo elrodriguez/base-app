@@ -1,18 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 use App\Http\Controllers\PersonController;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Modules\Security\Http\Controllers\PermissionController;
+use Modules\Security\Http\Controllers\RolesController;
 
 Route::middleware('auth')->prefix('security')->group(function () {
     Route::get('dashboard', 'SecurityController@index')->name('security_dashboard');
@@ -33,4 +25,6 @@ Route::middleware('auth')->prefix('security')->group(function () {
     Route::get('table/permissions', 'PermissionController@getDataPermissions')->name('permissions_table');
 
     Route::post('person/information/update', [PersonController::class, 'createdOrUpdated'])->name('person_information_update');
+
+    Route::get('dashboard/storage/indicator', 'SecurityController@storageIndicador')->name('security_storage_indicator');
 });

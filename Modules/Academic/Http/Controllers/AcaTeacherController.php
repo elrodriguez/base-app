@@ -96,7 +96,7 @@ class AcaTeacherController extends Controller
     {
         $update_id = $request->get('id');
         $user = User::where('person_id', $request->get('id'))->first();
-        // dd($user);
+
         $this->validate(
             $request,
             [
@@ -106,7 +106,7 @@ class AcaTeacherController extends Controller
                 'telephone'         => 'required|max:12',
                 'email'             => 'required|max:255',
                 'email'             => 'unique:people,email,' . $update_id . ',id',
-                'email'             => 'unique:users,email,' . $user->id . ',id',
+                'email'             => 'unique:users,email,' . ($user ? $user->id : null) . ',id',
                 'address'           => 'required|max:255',
                 'ubigeo'            => 'required|max:255',
                 'birthdate'         => 'required|',
