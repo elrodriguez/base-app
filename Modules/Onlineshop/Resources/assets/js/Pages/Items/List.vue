@@ -207,40 +207,40 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="max-w-full overflow-x-auto">
-                            <table class="w-full table-auto">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <div class="table-responsive">
+                            <table >
+                                <thead >
                                     <tr>
-                                        <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
+                                        <th>
                                             Acciones
                                         </th>
-                                        <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
+                                        <th>
                                             Imagen Principal
                                         </th>
-                                        <th v-if="type == 1" class="py-2 px-4 font-medium text-black dark:text-white">
+                                        <th v-if="type == 1">
                                             Categoría
                                         </th>
-                                        <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                        <th>
                                             Nombre
                                         </th>
-                                        <th v-if="type == 1" class="py-2 px-4 font-medium text-black dark:text-white">
+                                        <th v-if="type == 1">
                                             Descripción
                                         </th>
-                                        <th v-if="type == 1" class="py-2 px-4 font-medium text-black dark:text-white">
+                                        <th v-if="type == 1">
                                             Tipo
                                         </th>
-                                        <th v-if="type == 1" class="py-2 px-4 font-medium text-black dark:text-white">
+                                        <th v-if="type == 1">
                                             Precio
                                         </th>
-                                        <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                        <th>
                                             Estado
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <template v-for="(item, index) in items.data" :key="item.id">
-                                        <tr class="border-b border-stroke dark:border-strokedark">
-                                            <td class="text-center py-2 dark:border-strokedark">
+                                        <tr>
+                                            <td class="text-center">
                                                 <Link v-can="'onli_items_editar'" :href="route('onlineshop_items_edit',item.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                     <font-awesome-icon :icon="faPencilAlt" />
                                                 </Link>
@@ -255,25 +255,25 @@
                                                     <font-awesome-icon :icon="faTrashAlt" />
                                                 </button>
                                             </td>
-                                            <td class="p-4">
+                                            <td >
                                                 <Image :src="item.image" :alt="item.name" style="width: 70px;" />
                                             </td>
-                                            <td v-if="type == 1" class="py-2 px-2 dark:border-strokedark">
+                                            <td v-if="type == 1" >
                                                 {{ item.category_description }}
                                             </td>
-                                            <td class="py-2 px-2 dark:border-strokedark">
+                                            <td>
                                                 {{ item.name }}
                                             </td>
-                                            <td v-if="type == 1" class="py-2 px-2 dark:border-strokedark">
+                                            <td v-if="type == 1" >
                                                 {{ item.description }}
                                             </td>
-                                            <td v-if="type == 1" class="py-2 px-2 dark:border-strokedark">
+                                            <td v-if="type == 1" >
                                                 {{ item.additional }}
                                             </td>
-                                            <td v-if="type == 1" class="py-2 px-2 text-right dark:border-strokedark">
+                                            <td v-if="type == 1" class="text-right">
                                                 {{ item.price }}
                                             </td>
-                                            <td class="text-center py-2 px-2 dark:border-strokedark">
+                                            <td class="text-center">
                                                 <span v-if="item.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
                                                 <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Inactivo</span>
                                             </td>

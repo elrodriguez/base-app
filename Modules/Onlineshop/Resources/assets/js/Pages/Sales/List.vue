@@ -8,6 +8,7 @@
     import { Link, router } from '@inertiajs/vue3';
     import { faMagnifyingGlass, faRotate } from "@fortawesome/free-solid-svg-icons";
     import { ref } from "vue";
+    import Navigation from '@/Components/vristo/layout/Navigation.vue';
 
     const props = defineProps({
         sales: {
@@ -36,36 +37,17 @@
 
 <template>
     <AppLayout title="Resumen">
-        <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
-            <!-- Breadcrumb Start -->
-            <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <Link :href="route('dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                        <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                        Inicio
-                        </Link>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Ventas en línea</span>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Pedidos</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
+        <Navigation :routeModule="route('onlineshop_dashboard')" :titleModule="'Ventas en línea'">
+                <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                    <span>Pedidos</span>
+                </li>
+            </Navigation>
+            <div class="mt-5">
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
-                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
+                <div class="panel p-0">
+                    <div class="w-full p-4">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
                                 <form id="form-search-items" @submit.prevent="form.get(route('cms_items_list'))">
@@ -89,34 +71,34 @@
                             </div>
                         </div>
                     </div>
-                    <div class="max-w-full overflow-x-auto">
+                    <div class="table-responsive">
                         <table class="w-full table-auto">
-                            <thead class="border-b border-stroke">
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
+                            <thead >
+                                <tr >
+                                    <th >
                                         Acciones
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th >
                                         Nombre Completo
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th >
                                         Teléfono
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th >
                                         Email
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th >
                                         Total
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th >
                                         Estado
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <template v-for="(item, index) in sales.data" :key="item.id">
-                                    <tr class="border-b border-stroke">
-                                        <td class="text-center py-2 dark:border-strokedark">
+                                    <tr >
+                                        <td class="text-center">
                                             <button @click="openModalDetails(item)" type="button" title="ver detalles" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <font-awesome-icon :icon="faMagnifyingGlass" />
                                             </button>
@@ -124,19 +106,19 @@
                                                 <font-awesome-icon :icon="faRotate" />
                                             </button>
                                         </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
+                                        <td >
                                             {{ item.clie_full_name }}
                                         </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
+                                        <td >
                                             {{ item.person.telephone }}
                                         </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
+                                        <td >
                                             {{ item.email }}
                                         </td>
-                                        <td class="py-2 px-2 dark:border-strokedark">
+                                        <td >
                                             {{ item.total }}
                                         </td>
-                                        <td class="text-center py-2 px-2 dark:border-strokedark">
+                                        <td class="text-center">
                                            <span v-if="item.response_status == 'pendiente'"  class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">No completó el pago</span>
                                            <span v-else-if="item.response_status == 'approved'" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Pago aprobado</span>
                                            <span v-else class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Error en la transacción</span>

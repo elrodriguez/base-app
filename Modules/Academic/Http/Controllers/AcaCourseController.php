@@ -46,7 +46,6 @@ class AcaCourseController extends Controller
         $courses->orderBy('id', 'DESC');
         $courses->with('category');
         $courses->with('modality');
-        $courses->with('modules');
         $courses = $courses->paginate($this->RPTABLE)->onEachSide(2);
 
         $institutions = AcaInstitution::where('status', true)->get();

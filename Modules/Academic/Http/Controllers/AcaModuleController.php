@@ -7,12 +7,22 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Modules\Academic\Entities\AcaCourse;
 use Modules\Academic\Entities\AcaModule;
 use Modules\Academic\Entities\AcaTheme;
 
 class AcaModuleController extends Controller
 {
     use ValidatesRequests;
+
+    public function index($id)
+    {
+        $course = AcaCourse::where('id', $id)->with('modules.themes.contents')->first();
+        return Inertia::render('Academic::Courses/Modules', [
+            'course' => $course
+        ]);
+    }
 
     public function store(Request $request)
     {

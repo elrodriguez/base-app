@@ -10,7 +10,6 @@
     import DangerButton from '@/Components/DangerButton.vue';
     import InputError from '@/Components/InputError.vue';
     import { ConfigProvider, Dropdown,Menu,MenuItem,Button } from 'ant-design-vue';
-    import ModuleForm from './Partials/ModuleForm.vue';
     import IconPlus from '@/Components/vristo/icon/icon-plus.vue';
     import IconSearch from '@/Components/vristo/icon/icon-search.vue';
 
@@ -81,6 +80,8 @@
             confirmButtonText: '¡Sí, Eliminar!',
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
+            padding: '2em',
+            customClass: 'sweet-alerts',
             preConfirm: () => {
                 return axios.delete(route('aca_agreements_destroy', id)).then((res) => {
                     if (!res.data.success) {
@@ -96,6 +97,8 @@
                     title: 'Enhorabuena',
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
                 getAgreements(formAgreement.course_id);
             }
@@ -138,6 +141,8 @@
                 title: 'Enhorabuena',
                 text: 'Se registró correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             getAgreements(formAgreement.course_id);
             formAgreement.reset('institution_id', 'start_date','end_date')
@@ -175,6 +180,11 @@ const baseUrl = assetUrl;
 
 const getImage = (path) => {
     return baseUrl + 'storage/'+ path;
+}
+
+const dataModalContent = ref(null);
+const selectTheme = (data) => {
+    dataModalContent.value = data;
 }
 </script>
 
@@ -261,7 +271,7 @@ const getImage = (path) => {
                                                         <a @click="openModalAgreements(course)" href="#" class="dark:text-gray-200 dark:hover:text-white">Convenios</a>
                                                     </MenuItem>
                                                     <MenuItem>
-                                                        <a @click="openModalModules(course)" href="#" >Módulos</a>
+                                                        <Link :href="route('aca_courses_module_panel',course.id)" class="dark:text-gray-200 dark:hover:text-white">Módulos</Link>
                                                     </MenuItem>
                                                     <MenuItem>
                                                         <a @click="destroyCourse(course.id)" href="#" class="text-red-700 dark:text-gray-200 dark:hover:text-white">Eliminar</a>
@@ -355,16 +365,5 @@ const getImage = (path) => {
             </DangerButton>
             </template>
         </ModalLarge>
-        <ModuleForm 
-            :faXmark="faXmark"
-            :faFilm="faFilm"
-            :faFile="faFile"
-            :faPlay="faPlay"
-            :faDownload="faDownload"
-            :faSpellCheck="faSpellCheck" 
-            :faCheck="faCheck" 
-            :faTrashAlt="faTrashAlt" 
-            :course="dataModule" 
-        />
     </AppLayout>
 </template>
