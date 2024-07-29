@@ -33,7 +33,6 @@
         }
     });
 
-    const store = useAppStore();
     const dataModules = ref([]);
     const dataThemes = ref([]);
     const dataContents = ref([]);
@@ -81,7 +80,11 @@
         description: null,
     });
 
-    
+    const baseUrl = assetUrl;
+
+    const getPath = (path) => {
+        return baseUrl + 'storage/'+ path;
+    }
 
     onMounted(() => {
         dataModules.value = props.course.modules;
@@ -130,10 +133,18 @@
 
     const saveContent = () => {
         btnContentLoading.value = true;
-        axios.post(route('aca_courses_module_themes_content_store'), contentForm).then((response) => {
-            let newContent = response.data.content;
-
-            return newContent;
+        axios.post(route('aca_courses_module_themes_content_store'), contentForm,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((response) => {
+            if(response.data.success){
+                let newContent = response.data.content;
+                return newContent;
+            }else{
+                contentForm.setError('content', response.data.errorPdf);
+                throw new Error('Error en el contenido PDF');
+            }
         }).then((result) => {
             dataContents.value.push(result);
             contentForm.reset(
@@ -146,8 +157,29 @@
             setTimeout(() => {
                 btnContentLoading.value = false;
             });
-        }).catch(function (error) {
-            console.log(error)
+        }).catch(error => {
+            let validationErrors = error.response.data.errors;
+            if (validationErrors && validationErrors.content) {
+                const contentErrors = validationErrors.content;
+
+                for (let i = 0; i < contentErrors.length; i++) {
+                    contentForm.setError('content', contentErrors[i]);
+                }
+            }
+            if (validationErrors && validationErrors.description) {
+                const descriptionErrors = validationErrors.description;
+
+                for (let i = 0; i < descriptionErrors.length; i++) {
+                    contentForm.setError('description', descriptionErrors[i]);
+                }
+            }
+            if (validationErrors && validationErrors.position) {
+                const positionErrors = validationErrors.position;
+
+                for (let i = 0; i < positionErrors.length; i++) {
+                    contentForm.setError('position', positionErrors[i]);
+                }
+            }
             btnContentLoading.value = false;
         });
     }
@@ -398,6 +430,19 @@
                 replaceModuleById(id);
             }
         });
+    }
+
+    const handleFileChangeContent = (event) => {
+      const file = event.target.files[0];
+      if (file && file.type === 'application/pdf') {
+        contentForm.content = file;
+        contentForm.clearErrors();
+      } else {
+        contentForm.setError({
+            content: 'Solo se permiten archivos PDF.',
+        });
+        event.target.value = null; // Resetea el campo de entrada si el archivo no es válido
+      }
     }
 </script>
 
@@ -701,6 +746,7 @@
                                                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                                                         <div class="sm:col-span-1">
                                                             <input v-model="contentForm.position" id="conposition" type="text" class="form-input" placeholder="Posición" />
+                                                            <div class="text-danger mt-1" v-if="contentForm.errors.position">{{ contentForm.errors.position }}</div>
                                                         </div>
                                                         <div class="sm:col-span-1">
                                                             <select v-model="contentForm.is_file" id="ctnSelect2" class="form-select text-white-dark" required>
@@ -709,16 +755,20 @@
                                                                 <option value="0">frame de vídeo</option>
                                                                 <option value="2">Subir Archivo</option>
                                                             </select>
+                                                            <div class="text-danger mt-1" v-if="contentForm.errors.is_file">{{ contentForm.errors.is_file }}</div>
                                                         </div>
                                                         <div class="sm:col-span-2">
                                                             <input v-model="contentForm.description" id="condescription" type="text" class="form-input" placeholder="Descripción" />
+                                                            <div class="text-danger mt-1" v-if="contentForm.errors.description">{{ contentForm.errors.description }}</div>
                                                         </div>
                                                         <div v-if="contentForm.is_file == 2" class="sm:col-span-4">
                                                             <label for="ctnFile">Archivo</label>
-                                                            <input @change="contentForm.content = $event.target.files[0]" id="ctnFile" type="file" class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 rtl:file:ml-5 file:text-white file:hover:bg-primary" required />
+                                                            <input @change="handleFileChangeContent" id="ctnFile" type="file" class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 rtl:file:ml-5 file:text-white file:hover:bg-primary" required />
+                                                            <div class="text-danger mt-1" v-if="contentForm.errors.content">{{ contentForm.errors.content }}</div>
                                                         </div>
                                                         <div v-else class="sm:col-span-4">
                                                             <textarea v-model="contentForm.content" id="concontent" rows="3" class="form-textarea" placeholder="Contenido" quired></textarea>
+                                                            <div class="text-danger mt-1" v-if="contentForm.errors.content">{{ contentForm.errors.content }}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -742,7 +792,13 @@
                                                                 <template v-if="conte.is_file == 0" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">
                                                                     <div v-html="modifiedContent(conte.content)" class="m-0"></div>
                                                                 </template>
-                                                                <a v-else :href="conte.content" target="_blank" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+                                                                <a v-else-if="conte.is_file == 1" :href="conte.content" target="_blank" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+                                                                    <svg class="w-3.5 h-3.5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
+                                                                        <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+                                                                    </svg> Descargar Archivo
+                                                                </a>
+                                                                <a v-else :href="getPath(conte.content)" target="_blank" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">
                                                                     <svg class="w-3.5 h-3.5 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                                                         <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
                                                                         <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>

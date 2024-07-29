@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 use Modules\Academic\Entities\AcaContent;
+use Illuminate\Support\Facades\Storage;
 
 class AcaContentController extends Controller
 {
@@ -29,11 +30,32 @@ class AcaContentController extends Controller
             'theme_id'      => $request->get('theme_id'),
             'position'      => $request->get('position'),
             'description'   => $request->get('description'),
-            'content'       => htmlentities($request->get('content'), ENT_QUOTES, "UTF-8"),
             'is_file'       => $request->get('is_file')
         ]);
 
-        return response()->json(['success' => true, 'content' => $content]);
+        $success = true;
+        $errorPdf = null;
+
+        if ($request->get('is_file') == 2) {
+            $pdfFile = $request->file('content');
+            if ($pdfFile && $pdfFile->extension() == 'pdf') {
+                $destination = 'uploads/courses/content';
+                $filename = time() . '.' . $pdfFile->extension();
+                $path = Storage::disk('public')->putFileAs($destination, $pdfFile, $filename);
+                $content->content = $path;
+                $content->save();
+            } else {
+                $errorPdf = 'Solo se permiten archivos PDF.';
+                $success = false;
+            }
+        } else {
+            $content->content = htmlentities($request->get('content'), ENT_QUOTES, "UTF-8");
+            $content->save();
+        }
+
+
+
+        return response()->json(['success' => $success, 'content' => $content, 'errorPdf' => $errorPdf]);
     }
 
 

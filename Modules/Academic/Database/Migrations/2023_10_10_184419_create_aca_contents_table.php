@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('position', 4);
             $table->string('description', 300);
-            $table->text('content');
+            $table->text('content')->nullable();
             $table->unsignedBigInteger('theme_id');
             $table->timestamps();
             $table->tinyInteger('is_file')->default(1);
