@@ -127,35 +127,35 @@
                     </div>
                     <div class="table-responsive">
                         <ConfigProvider>
-                        <table class="w-full table-auto">
-                            <thead class="border-b border-stroke">
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th class="py-2 px-2 text-center font-medium text-black dark:text-white">
+                        <table >
+                            <thead >
+                                <tr >
+                                    <th>
                                         Acciones
                                     </th>
-                                    <th class="text-center py-2 px-2 font-medium text-black dark:text-white xl:pl-11">
+                                    <th >
                                         Documento 
                                     </th>
-                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
+                                    <th >
                                         Nmr. Ticket
                                     </th>
-                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
+                                    <th >
                                         Fecha
                                     </th>
-                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
+                                    <th >
                                         Cliente
                                     </th>
-                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
+                                    <th >
                                         Total
                                     </th>
-                                    <th class="py-2 px-2 font-medium text-black dark:text-white">
+                                    <th >
                                         Estado
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(sale, index) in sales.data" :key="sale.id" >
-                                    <td class="text-center border-b border-stroke py-2 px-2 pl-9 dark:border-strokedark xl:pl-11">
+                                    <td >
                                         <Dropdown :placement="'bottomLeft'">
                                             <button class="border py-1.5 px-2 dropdown-button inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm" type="button">
                                                 <font-awesome-icon :icon="faGears" />
@@ -181,22 +181,22 @@
                                             </template>
                                         </Dropdown>
                                     </td>
-                                    <td class="text-center border-b border-stroke py-2 px-2 pl-9 dark:border-strokedark xl:pl-11">
+                                    <td >
                                         {{ sale.name_document }}  
                                     </td>
-                                    <td class="w-32 border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td >
                                         {{ sale.serie }}-{{ sale.number }}
                                     </td>
-                                    <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td >
                                         {{ sale.fecha }}
                                     </td>
-                                    <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td >
                                         {{ sale.full_name }}
                                     </td>
-                                    <td class="text-right border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td >
                                         {{ sale.total }}
                                     </td>
-                                    <td class="border-b border-stroke py-2 px-2 dark:border-strokedark">
+                                    <td >
                                         <template v-if="sale.have_document <= 1">
                                             <Badge v-if="sale.status == 1" type="yellow">Registrado</Badge>
                                             <Badge v-else type="red">Anulado</Badge>

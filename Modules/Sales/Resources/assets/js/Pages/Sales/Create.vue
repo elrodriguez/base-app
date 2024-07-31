@@ -9,6 +9,7 @@
     import Swal2 from 'sweetalert2';
     import { onMounted } from 'vue';
     import Navigation from '@/Components/vristo/layout/Navigation.vue';
+    import iconTrash from '@/Components/vristo/icon/icon-trash-lines.vue'
 
     const props = defineProps({
         payments: {
@@ -151,58 +152,57 @@
                 <div class="mb-2 col-span-2 sm:col-span-1 md:col-span-1">
                     <div class="panel">
                         <SearchProducts @eventdata="getDataTable" />
-                        <div class="mt-4 relative overflow-x-auto">
-                            <table class="border border-stroke w-full">
-                                <thead class="border-b bg-gray-100 border-stroke dark:bg-gray-700">
+                        <div class="table-responsive mt-4">
+                            <table >
+                                <thead class="">
                                     <tr>
-                                        <th class="text-sm font-medium  px-2 py-2"></th>
-                                        <th scope="col" class="text-sm font-medium px-6 py-2">
+                                        <th class=""></th>
+                                        <th  >
                                             Código & Descripción
                                         </th>
-                                        <th class="text-sm font-medium px-2 py-2">
+                                        <th >
                                             Cantidad
                                         </th>
-                                        <th class="text-sm font-medium  px-2 py-2">
+                                        <th >
                                             Precio
                                         </th>
-                                        <th class="text-sm font-medium px-2 py-2">
+                                        <th >
                                             Descuento
                                         </th>
-                                        <th class="text-sm font-medium px-2 py-2">
+                                        <th >
                                             Importe
                                         </th>
                                     </tr>
                                 </thead >
                                 <tbody style="max-height: 250px;overflow-y: auto;overflow-x: hidden;">
                                    <template v-if="form.products.length > 0">
-                                    <tr v-for="(product, key) in form.products" class="border-b bg-gray-500 border-stroke">
-                                        <td class="text-center text-sm text-white font-medium px-2 py-2">
-                                            <div class="relative">
-                                                <button @click="removeProduct(key)" type="button" class="inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out px-3 py-2">
-                                                    <font-awesome-icon :icon="faTrashAlt" />
-                                                </button>
-                                            </div>
+                                    <tr v-for="(product, key) in form.products" >
+                                        <td class="text-center">
+                                            <button @click="removeProduct(key)" type="button" v-tippy:delete>
+                                                <icon-trash />
+                                            </button>
+                                            <tippy target="delete">Eliminar</tippy>
                                         </td>
-                                        <td class="text-sm text-white font-medium px-2 py-2">
+                                        <td >
                                             {{ product.interne  }} - {{ product.description  }}  {{ product.size ? '/' + product.size : ''  }}
                                         </td>
-                                        <td class="text-right text-sm text-white font-medium px-2 py-2">
+                                        <td >
                                             {{ product.quantity  }}
                                         </td>
-                                        <td class="text-right text-sm text-white font-medium px-2 py-2">
+                                        <td >
                                             {{ product.price  }}
                                         </td>
-                                        <td class="text-right text-sm text-white font-medium px-2 py-2">
+                                        <td >
                                             {{ product.discount  }}
                                         </td>
-                                        <td class="text-right text-sm text-white font-medium px-2 py-2">
+                                        <td >
                                             {{ product.total  }}
                                         </td>
                                     </tr>
                                    </template>
                                    <template v-else>
-                                        <tr class="border-b border-stroke">
-                                           <td colspan="6" class="text-center text-sm font-medium px-6 py-2">
+                                        <tr >
+                                           <td colspan="6" >
                                                 <div class="flex p-4 text-sm border border-gray-300 bg-gray-50 dark:bg-gray-800 dark:text-white dark:border-yellow-800" role="alert">
                                                     <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
                                                     <span class="sr-only">Info</span>
@@ -215,9 +215,9 @@
                                    </template>
                                 </tbody>
                                 <tfoot>
-                                    <tr class="border-b bg-gray-100 border-stroke dark:bg-gray-700">
-                                        <th colspan="5" class="text-right text-sm  font-medium px-2 py-2 whitespace-nowrap dark:text-white "><strong>Total a Cobrar</strong></th>
-                                        <td class="text-right text-sm font-medium px-2 py-2 whitespace-nowrap dark:text-white "><strong>S/. {{ form.total }}</strong></td>
+                                    <tr >
+                                        <th colspan="5" ><strong>Total a Cobrar</strong></th>
+                                        <td ><strong>S/. {{ form.total }}</strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -255,9 +255,10 @@
                                             <InputError :message="form.errors[`payments.${index}.amount`]" class="mt-2" />
                                         </td>
                                         <td>
-                                            <button @click="removePayment(index)" type="button" class="btn btn-danger">
-                                                <font-awesome-icon :icon="faTrashAlt" />
+                                            <button @click="removePayment(index)" type="button" v-tippy:delete>
+                                                <icon-trash />
                                             </button>
+                                            <tippy target="delete">Eliminar</tippy>
                                         </td>
                                     </tr>
                                 </tbody>

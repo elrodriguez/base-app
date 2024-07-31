@@ -14,6 +14,7 @@ use Modules\CRM\Entities\CrmUser;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CrmMessagesController extends Controller
 {
@@ -91,7 +92,7 @@ class CrmMessagesController extends Controller
             $message->time = timeElapsed($message->created_at);
             return $message;
         });
-
+        //dd($formattedMessages);
         return response()->json($formattedMessages);
     }
 
@@ -138,5 +139,48 @@ class CrmMessagesController extends Controller
             // Devuelve una respuesta de error si el archivo no existe
             return response()->json(['message' => 'El archivo no existe.'], 404);
         }
+    }
+
+    public function uploadMessagesFile(Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'file' => 'required',
+            ]
+        );
+
+        $success = true;
+        $errorPdf = null;
+        $path = null;
+
+        $pdfFile = $request->file('file');
+        if ($pdfFile && $pdfFile->extension() == 'pdf') {
+            $fileSizeInMB = $pdfFile->getSize() / (1024 * 1024);
+            $destination = 'chat/pdf';
+            $filename = time() . '.' . $pdfFile->extension();
+            $path = Storage::disk('public')->putFileAs($destination, $pdfFile, $filename);
+        } else {
+            $errorPdf = 'Solo se permiten archivos PDF.';
+            $success = false;
+        }
+
+        return response()->json([
+            'success' => $success,
+            'filePath' => $path,
+            'errorPdf' => $errorPdf,
+            'size' => round($fileSizeInMB, 2)
+        ]);
+    }
+
+    public function downloadMessageFile($message_id)
+    {
+
+        // Buscar la ruta del archivo en la base de datos
+        $file = CrmMessage::findOrFail($message_id);
+        $filePath = explode('@', $file->content);
+
+        // Descargar el archivo
+        return Storage::download($filePath[1]);
     }
 }

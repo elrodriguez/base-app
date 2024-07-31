@@ -17,7 +17,7 @@ import {
     DialogOverlay,
 } from "@headlessui/vue";
 import IconX from "@/Components/vristo/icon/icon-x.vue";
-import IconMicrophoneOff from "@/Components/vristo/icon/icon-microphone-off.vue";
+import IconMicrophone from "@/Components/vristo/icon/icon-microphone.vue";
 import { ref, onMounted } from "vue";
 import "@Public/AudioRecord/style.css";
 
@@ -109,7 +109,7 @@ const sendAudio = () => {
 </script>
 <template>
     <button @click="openMocalAudioRecord" type="button" class="bg-[#f4f4f4] dark:bg-[#1b2e4b] hover:bg-primary-light rounded-md p-2 hover:text-primary">
-        <icon-microphone-off />
+        <icon-microphone />
     </button>
 
     <TransitionRoot appear :show="displayModalAudioRecord" as="template">

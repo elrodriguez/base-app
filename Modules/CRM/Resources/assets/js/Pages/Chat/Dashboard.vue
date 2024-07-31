@@ -20,13 +20,13 @@
     import IconShare from '@/Components/vristo/icon/icon-share.vue';
     import IconMoodSmile from '@/Components/vristo/icon/icon-mood-smile.vue';
     import IconSend from '@/Components/vristo/icon/icon-send.vue';
-    import IconMicrophoneOff from '@/Components/vristo/icon/icon-microphone-off.vue';
-    import IconDownload from '@/Components/vristo/icon/icon-download.vue';
     import IconCamera from '@/Components/vristo/icon/icon-camera.vue';
     import IconMessage from '@/Components/vristo/icon/icon-message.vue';
     import { useForm, Link } from '@inertiajs/vue3'
     import AudioRecord from './Partials/AudioRecord.vue';
+    import UploadFile from './Partials/UploadFile.vue';
     import AudioPlay from '@/Components/AudioPlay.vue';
+    import FileDownload from './Partials/FileDownload.vue';
 
     const data = reactive({
         posts: []
@@ -117,7 +117,8 @@
                 toUserId: 0,
                 text: textMessage.value,
                 time: 'En este momento',
-                type: 'text'
+                type: 'text',
+                id: null
             };
             axios.post(route('crm_send_message'),msg).then((response) => {
                 return response.data;
@@ -155,7 +156,30 @@
                 toUserId: 0,
                 text: audio.path,
                 time: 'En este momento',
-                type: 'audio'
+                type: 'audio',
+                id: null
+            };
+            axios.post(route('crm_send_message'),msg).then((response) => {
+                return response.data;
+            }).then((res) => {
+                user.messages.push(msg);
+                scrollToBottom();
+                isShowLoadingSend.value = false;
+            });
+        }
+    }
+
+    const sendFileMessage = (file) => {
+        if (file.name.trim()) {
+            isShowLoadingSend.value = true;
+            const user = data.posts.data.find((d) => d.userId === selectedUser.value.userId);
+            const msg = {
+                fromUserId: selectedUser.value.userId,
+                toUserId: 0,
+                text: file.name+'@'+file.path+'@'+file.size,
+                time: 'En este momento',
+                type: 'file',
+                id: null
             };
             axios.post(route('crm_send_message'),msg).then((response) => {
                 return response.data;
@@ -595,7 +619,7 @@
                                                             <template v-if="message.type == 'text'">
                                                                 <div class="dark:bg-gray-800 p-4 py-2 rounded-md bg-black/10"
                                                                     :class="message.fromUserId == selectedUser.userId
-                                                                            ? 'ltr:rounded-br-none rtl:rounded-bl-none !bg-primary text-white'
+                                                                            ? 'ltr:rounded-br-none rtl:rounded-bl-none '
                                                                             : 'ltr:rounded-bl-none rtl:rounded-br-none'
                                                                     "
                                                                 >
@@ -604,6 +628,15 @@
                                                             </template>
                                                             <template v-if="message.type == 'audio'">
                                                                 <AudioPlay :audio="message.text" :stclass="message.fromUserId == selectedUser.userId ? 'right' : 'left'" />
+                                                            </template>
+                                                            <template v-if="message.type == 'file'">
+                                                                <FileDownload 
+                                                                    :fileDate="message.text" 
+                                                                    :class="message.fromUserId == selectedUser.userId
+                                                                            ? 'ltr:rounded-br-none rtl:rounded-bl-none'
+                                                                            : 'ltr:rounded-bl-none rtl:rounded-br-none'
+                                                                    "
+                                                                />
                                                             </template>
                                                             <div :class="{ hidden: selectedUser.userId === message.fromUserId }">
                                                                 <icon-mood-smile class="hover:text-primary" />
@@ -646,9 +679,7 @@
                                     </div>
                                     <div class="items-center space-x-3 rtl:space-x-reverse sm:py-0 py-3 hidden sm:block">
                                         <AudioRecord @sendAudio="sendAudioMessage" />
-                                        <button type="button" class="bg-[#f4f4f4] dark:bg-[#1b2e4b] hover:bg-primary-light rounded-md p-2 hover:text-primary">
-                                            <icon-download />
-                                        </button>
+                                        <UploadFile @sendFile="sendFileMessage" />
                                         <button type="button" class="bg-[#f4f4f4] dark:bg-[#1b2e4b] hover:bg-primary-light rounded-md p-2 hover:text-primary">
                                             <icon-camera />
                                         </button>

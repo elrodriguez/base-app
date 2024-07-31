@@ -51,4 +51,10 @@ Route::middleware(['auth', 'verified'])->prefix('crm')->group(function () {
     Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
         ->post('conversations/messages/delete/file', [CrmMessagesController::class, 'deleteFile'])
         ->name('crm_delete_message_file');
+
+    Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
+        ->post('conversations/messages/upload/file', [CrmMessagesController::class, 'uploadMessagesFile'])
+        ->name('crm_upload_message_file');
+
+    Route::get('download-file/{message_id}', [CrmMessagesController::class, 'downloadMessageFile'])->name('crm_download_message_file');
 });

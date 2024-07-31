@@ -50,7 +50,6 @@
             },
             allowOutsideClick: () => !Swal2.isLoading()
         }).then((result) => {
-            console.log(result)
             if (result.isConfirmed) {
                 Swal2.fire({
                     title: 'Enhorabuena',

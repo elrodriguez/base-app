@@ -112,15 +112,14 @@
                     <button type="submit" class="btn btn-secondary ltr:rounded-l-none rtl:rounded-r-none">
                         <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </button>
-
                 </div>
             </form>
             <div v-show="displayResultSearchClient" style="position: absolute;width: 100%;z-index: 999;">
-                <div class="mt-1 border border-stroke" style="max-height: 250px;overflow-y: auto;">
-                    <ul class="max-w-md divide-y bg-white">
-                        <li  v-for="(client, index) in form.clients" class="p-4 border-b border-stroke bg-gray-100 pb-3 sm:pb-4 dark:border-strokedark dark:bg-boxdark" >
+                <div class="mt-1 p-0 border border-white dark:border-gray-600 dark:bg-gray-800" style="max-height: 250px;overflow-y: auto;">
+                    <ul class="w-full divide-y">
+                        <li  v-for="(client, index) in form.clients" class="border-b border-white dark:border-gray-600 w-full p-4 bg-gray-100 sm:pb-2 dark:bg-gray-800" >
                             <div @click="selectClient(client)" style="cursor: pointer;">
-                                <p :class="[client.number == '99999999' ? 'text-gray-500' : 'text-gray-900']" class="text-sm font-medium truncate dark:text-white">
+                                <p :class="[client.number == '99999999' ? 'text-gray-500' : 'text-gray-900']" class="w-full text-sm font-medium truncate dark:text-white">
                                     {{ client.number }} - {{ client.full_name }}
                                 </p>
                             </div>
@@ -141,22 +140,7 @@
                     <div class="grid grid-cols-6 gap-4">
                         <div class="col-span-6 sm:col-span-2 md:col-span-2">
                             <InputLabel value="Tipo de Documento" class="mb-1" />
-                            <select class="form-select appearance-none
-                                    block
-                                    w-full
-                                    text-base
-                                    font-normal
-                                    text-gray-700
-                                    bg-white bg-clip-padding bg-no-repeat
-                                    border border-solid border-gray-300
-                                    rounded
-                                    transition
-                                    ease-in-out
-                                    m-0
-                                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                                    dark:text-white
-                                    dark:bg-gray-700
-                                    dark:border-gray-600"
+                            <select class="form-select text-white-dark"
                                 v-model="form.document_type">
                                 <option value="" selected>Seleccionar</option>
                                 <template v-for="(documentType, index) in documentTypes">
