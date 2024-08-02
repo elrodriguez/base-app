@@ -95,8 +95,6 @@ class UserController extends Controller
             $this->validate($request, [
                 'local_id' => 'required'
             ]);
-
-            $user->local_id = $request->get('local_id');
         }
 
         $this->validate($request, [
@@ -106,7 +104,7 @@ class UserController extends Controller
 
 
         $user->syncRoles([]);
-
+        $user->local_id = $request->get('local_id');
         $user->name = $request->get('name');
         $user->email = $request->get('email');
 

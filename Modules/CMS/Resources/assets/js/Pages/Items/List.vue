@@ -7,6 +7,7 @@ import DataTablesCore from 'datatables.net';
 import 'datatables.net-responsive';
 import '@/Components/vristo/datatables/datatables.css'
 import '@/Components/vristo/datatables/style.css'
+import es_PE from '@/Components/vristo/datatables/datatables-es.js'
 
 DataTable.use(DataTablesCore);
 
@@ -37,6 +38,8 @@ DataTable.use(DataTablesCore);
             confirmButtonText: '¡Sí, Eliminar!',
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
+            padding: '2em',
+            customClass: 'sweet-alerts',
             preConfirm: () => {
                 return axios.delete(route('cms_items_destroy', id)).then((res) => {
                     if (!res.data.success) {
@@ -67,7 +70,7 @@ DataTable.use(DataTablesCore);
         { data: 'description', title: 'Descripción' },
         { data: 'content', title: 'Contenido' },
     ];
-
+    const options = { language: es_PE }
 </script>
 
 <template>
@@ -93,7 +96,7 @@ DataTable.use(DataTablesCore);
                 </div>
             </div>
             <div class="panel pb-1.5 mt-6">
-                <DataTable :ajax="route('cms_items_data')" :columns="columns">
+                <DataTable :options="options" :ajax="route('cms_items_data')" :columns="columns">
                     <template #action="props">
                         <div class="flex gap-1 items-center justify-center">
                             <Link v-tippy:bottom :href="route('cms_items_edit',props.rowData.id)" type="button" class="btn btn-sm btn-outline-primary">

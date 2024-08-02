@@ -26,7 +26,8 @@ class SecurityController extends Controller
      */
     public function storageIndicador()
     {
-        $folderPath = 'D:\laragon\www\base-app\public\storage';
+        //dd(public_path());
+        $folderPath = public_path();
 
         $sizes = $this->getFolderSizeAndTypes($folderPath);
 

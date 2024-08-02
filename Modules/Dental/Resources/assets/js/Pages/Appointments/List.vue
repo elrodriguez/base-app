@@ -28,6 +28,7 @@ import InputError from "@/Components/InputError.vue";
 import { useForm, Link, router } from "@inertiajs/vue3";
 import Multiselect from "@suadelabs/vue3-multiselect";
 import "@suadelabs/vue3-multiselect/dist/vue3-multiselect.css";
+import IconCaretDown from '@/Components/vristo/icon/icon-caret-down.vue';
 
 const store = useAppStore();
 
@@ -107,7 +108,15 @@ const formSearch = useForm({
 
 const tabChanged = (type) => {
     formSearch.tag = type;
-    formSearch.get(route("odontology_appointments_list"));
+    selectedTab.value = type;
+    //formSearch.get(route("odontology_appointments_list"));
+    router.visit(route("odontology_appointments_list"), {
+        method: 'get',
+        data: formSearch,
+        replace: false,
+        preserveState: true,
+        preserveScroll: true
+    });
 };
 
 const setFav = (note) => {
@@ -444,35 +453,65 @@ const sendMessageWhatsapp = () => {
                     </div>
                 </div>
 
-                <div class="panel flex-1 overflow-auto h-full">
-                    <div class="pb-5">
-                        <button
-                            type="button"
-                            class="xl:hidden hover:text-primary"
-                            @click="isShowNoteMenu = !isShowNoteMenu"
-                        >
-                            <icon-menu />
-                        </button>
+                <div class="panel p-0 flex-1 overflow-auto h-full">
+                    <div class="flex flex-col h-full">
+                    <div class="p-4 flex sm:flex-row flex-col w-full sm:items-center gap-4">
+                        <div class="ltr:mr-3 rtl:ml-3 flex items-center">
+                            <button type="button" class="xl:hidden hover:text-primary block ltr:mr-3 rtl:ml-3" @click="isShowTaskMenu = !isShowTaskMenu">
+                                <icon-menu />
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-center sm:justify-end sm:flex-auto flex-1">
+                            <p class="ltr:mr-3 rtl:ml-3">
+                                {{ appointments.from }} - {{ appointments.to }} of {{ appointments.total }}
+                            </p>
+                            <button
+                                disabled
+                                type="button"
+                                v-if="appointments.current_page <= 1" 
+                                class="bg-[#f4f4f4] rounded-md p-1 enabled:hover:bg-primary-light dark:bg-white-dark/20 enabled:dark:hover:bg-white-dark/30 ltr:mr-3 rtl:ml-3 disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                                <icon-caret-down class="w-5 h-5 rtl:-rotate-90 rotate-90" />
+                            </button>
+                            <Link v-else :href="appointments.prev_page_url"
+                                type="button"
+                                class="bg-[#f4f4f4] rounded-md p-1 enabled:hover:bg-primary-light dark:bg-white-dark/20 enabled:dark:hover:bg-white-dark/30 disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                                <icon-caret-down class="w-5 h-5 rtl:rotate-90 -rotate-90" />
+                            </Link>
+                            <Link
+                                v-if="appointments.current_page < appointments.last_page" :href="appointments.next_page_url"
+                                type="button"
+                                class="bg-[#f4f4f4] rounded-md p-1 enabled:hover:bg-primary-light dark:bg-white-dark/20 enabled:dark:hover:bg-white-dark/30 ltr:mr-3 rtl:ml-3 disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                                <icon-caret-down class="w-5 h-5 rtl:-rotate-90 rotate-90" />
+                            </Link>
+                            <button
+                                type="button"
+                                disabled
+                                class="bg-[#f4f4f4] rounded-md p-1 enabled:hover:bg-primary-light dark:bg-white-dark/20 enabled:dark:hover:bg-white-dark/30 disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                                <icon-caret-down class="w-5 h-5 rtl:rotate-90 -rotate-90" />
+                            </button>
+                        </div>
                     </div>
+                    <div class="h-px w-full border-b border-[#e0e6ed] dark:border-[#1b2e4b]"></div>
                     <template v-if="!appointments.data.length">
                         <div class="flex justify-center items-center sm:min-h-[300px] min-h-[400px] font-semibold text-lg h-full">
                             Datos no disponibles
                         </div>
                     </template>
                     <template v-if="appointments.data.length">
-                        <div class="table-responsive grow overflow-y-auto sm:min-h-[300px] min-h-[400px]">
+                        <div class="p-5 grow overflow-y-auto sm:min-h-[300px] min-h-[400px]">
                             <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
                                 <template v-for="note in appointments.data" :key="note.id" >
                                     <div class="panel pb-12"
                                         :class="{
-                                            // 'bg-primary-light shadow-primary': note.status === '1',
-                                            'bg-warning-light shadow-warning':
-                                                note.status === '1',
-                                            'bg-info-light shadow-info':
-                                                note.status === '2',
-                                            'bg-danger-light shadow-danger':
-                                                note.status === '0',
-                                            // 'dark:shadow-dark': !note.tag,
+                                            'bg-primary-light shadow-primary': note.status === '3',
+                                            'bg-warning-light shadow-warning': note.status === '1',
+                                            'bg-info-light shadow-info': note.status === '2',
+                                            'bg-danger-light shadow-danger': note.status === '0',
+                                            'dark:shadow-dark': !note.status,
                                         }"
                                     >
                                         <div class="min-h-[142px]">
@@ -640,7 +679,7 @@ const sendMessageWhatsapp = () => {
                             </div>
                         </div>
                     </template>
-
+                    </div>
                     <TransitionRoot appear :show="isAddNoteModal" as="template">
                         <Dialog
                             as="div"
@@ -773,37 +812,17 @@ const sendMessageWhatsapp = () => {
                                                                 class="mt-1"
                                                             />
                                                         </div>
-                                                        <div
-                                                            :class="[
-                                                                form.time_appointmen
-                                                                    ? form
-                                                                          .errors
-                                                                          .time_appointmen
-                                                                        ? 'has-success'
-                                                                        : 'has-error'
-                                                                    : '',
-                                                            ]"
+                                                        <div :class="[form.time_appointmen ? form.errors.time_appointmen ? 'has-success' : 'has-error' : '', ]"
                                                             class=""
                                                         >
-                                                            <label
-                                                                for="time_appointmen"
-                                                                >Hora</label
-                                                            >
+                                                            <label for="time_appointmen" >Hora</label >
                                                             <input
                                                                 id="time_appointmen"
                                                                 type="time"
                                                                 class="form-input"
-                                                                v-model="
-                                                                    form.time_appointmen
-                                                                "
+                                                                v-model="form.time_appointmen" 
                                                             />
-                                                            <InputError
-                                                                :message="
-                                                                    form.errors
-                                                                        .time_appointmen
-                                                                "
-                                                                class="mt-1"
-                                                            />
+                                                            <InputError :message="form.errors.time_appointmen" class="mt-1" />
                                                         </div>
                                                     </div>
                                                     <div class="grid grid-cols-1 gap-5 md:grid-cols-2" >
@@ -927,9 +946,7 @@ const sendMessageWhatsapp = () => {
                     </TransitionRoot>
                 </div>
             </div>
-            <div class="pr-4">
-                <Pagination :data="appointments" />
-            </div>
+
         </div>
         <TransitionRoot appear :show="modalSendMessage" as="template">
             <Dialog as="div" @close="modalSendMessage = false" class="relative z-50">

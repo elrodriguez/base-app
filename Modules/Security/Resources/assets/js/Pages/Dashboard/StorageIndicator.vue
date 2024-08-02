@@ -20,12 +20,12 @@ const getData = () => {
   }).then((result) => {
     diskBusy.value = {
       freeGB: result.disc_space,
-      busyGB: result.totalSize.GB,
-      busyPercentage: ((parseFloat(result.totalSize.GB) / parseFloat(result.disc_space)) * 100),
+      busyGB: result.totalSize.GB ?? 0,
+      busyPercentage: ((parseFloat(result.totalSize.GB ?? 0) / parseFloat(result.disc_space ?? 0)) * 100),
       series: [
-        parseFloat(result.imageSize.GB),
-        parseFloat(result.pdfSize.GB),
-        parseFloat(result.otherSize.GB)
+        parseFloat(result.imageSize.GB ?? 0),
+        parseFloat(result.pdfSize.GB ?? 0),
+        parseFloat(result.otherSize.GB ?? 0)
       ]
     };
     //displayDiskBusy.value = false;

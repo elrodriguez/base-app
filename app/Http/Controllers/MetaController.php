@@ -9,12 +9,12 @@ class MetaController extends Controller
 {
     public function sendMessageWhatsapp(Request $request)
     {
-        $url = "https://graph.facebook.com/v19.0/347133948480424/messages";
-        $token = "EAAUfk2ptXbIBO40bbaDXEYMIBmvxeoguwZBBv7iBms6F2eEbeCvSNltzzSPdicLTuoKZCqNchbNTPuU5alHLyDCyxuyLZA6iJAxuQFYfVysfZA14Tn3nOjuayXTkWrpW5cHbk0j9qYSqZCSJLqIJ0ZBgsrBW1JlLeLhy2T8LurSCoNReSd8OZA2ZAjGuvRvTyfT1HOioL6dXvFXUj1LXvawZD";
+        $url = "https://graph.facebook.com/v20.0/347133948480424/messages";
+        $token = "EAAUfk2ptXbIBOy7t7THZB6PCyamd9HZB6RO3iAt1gRTQFATXZA1UqdnfwZB3ZCxbbycJpSX7KTpRpvg3GTYBDa29mNoJdgSYP3orGFMZBaS4qEzBrTV6GB7izGSYZCG6pm11wvh4eJydAQXbYkzQlrZB8ij6VGqLgtXqqyuekejbsV5WjZAyHaxjdQCPgrfqF5sTuauT98C0mlkW5EbKzlvQZD";
 
         // Obtener los parámetros de la solicitud
         // $number = $request->input('number');
-        $number = '+51921008708';
+        $number = '51921008708';
         $message = $request->input('message');
 
         // Asegúrate de que las variables estén definidas correctamente
@@ -29,12 +29,10 @@ class MetaController extends Controller
             "messaging_product" => "whatsapp",
             "recipient_type" => "individual",
             "to" => $number,
-            "type" => "template",
-            "template" => [
-                "name" => "prueba_dos",
-                "language" => [
-                    "code" => "es-ARG"
-                ],
+            "type" => "text",
+            "text" => [
+                "preview_url" => true,
+                "body" => $message
             ],
         ];
 

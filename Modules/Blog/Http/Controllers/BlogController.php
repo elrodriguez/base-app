@@ -2,6 +2,7 @@
 
 namespace Modules\Blog\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -77,12 +78,14 @@ class BlogController extends Controller
             ->take(4) // Limita el resultado a 4 registros
             ->get();
 
+        $company = Company::first();
         $article->increment('views');
 
-        return view('blog::kentha.article', [
+        return view('pages.blog-articulo', [
             'categories'        => $categories,
             'article'           => $article,
-            'latest_articles'   => $latest_articles
+            'latest_articles'   => $latest_articles,
+            'company'           => $company
         ]);
     }
 

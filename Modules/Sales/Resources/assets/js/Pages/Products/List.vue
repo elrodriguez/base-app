@@ -113,10 +113,44 @@
     });
 
     function destroy(id) {
-        if (confirm("¿Estás seguro de que quieres eliminar?")) {
-            formDelete.delete(route('products.destroy', id));
-        }
-
+        Swal2.fire({
+            title: '¿Estas seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Sí, Eliminar!',
+            cancelButtonText: 'Cancelar',
+            showLoaderOnConfirm: true,
+            padding: '2em',
+            customClass: 'sweet-alerts',
+            preConfirm: () => {
+                return axios.delete(route('products.destroy', id)).then((res) => {
+                    if (!res.data.success) {
+                        Swal2.showValidationMessage(res.data.message)
+                    }
+                    return res
+                });
+            },
+            allowOutsideClick: () => !Swal2.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal2.fire({
+                    title: 'Enhorabuena',
+                    text: 'Se Eliminó correctamente',
+                    icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
+                });
+                router.visit(route('products.index'), { 
+                  replace: false,
+                  preserveState: true,
+                  preserveScroll: true,
+                  method: 'get' 
+                });
+            }
+        });
     }
     const closeModalDetailsProduct = () => {
       openModalDetilsProduct.value = false;
@@ -244,7 +278,7 @@
           errorBag: 'saveProductPrices',
           preserveScroll: true,
           onSuccess: () => {
-            swal('Precios registrados correctamente');
+            showMessage('Precios registrados correctamente');
           },
       });
     }
@@ -289,7 +323,7 @@
           errorBag: 'saveRelocate',
           preserveScroll: true,
           onSuccess: () => {
-            swal('Traslado registrados correctamente');
+            showMessage('Traslado registrados correctamente');
             formReLocate.reset();
             openModalTraslado.value = false;
           },
@@ -317,7 +351,9 @@
           imageHeight: 120,
           imageAlt: 'Cargando',
           showConfirmButton: false,
-          allowOutsideClick: false
+          allowOutsideClick: false,
+          padding: '2em',
+          customClass: 'sweet-alerts',
         });
 
         displayModalImport.value = false;
@@ -344,10 +380,20 @@
       }
     }
 
-    const getProductsServices = (val) => {
-      form.displayProduct = val;
-      form.get(route('products.index'));
-    }
+    const showMessage = (msg = '', type = 'success') => {
+      const toast = Swal2.mixin({
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 3000,
+          customClass: { container: 'toast' },
+      });
+      toast.fire({
+          icon: type,
+          title: msg,
+          padding: '10px 20px',
+      });
+  };
 </script>
 <template>
     <AppLayout title="Productos">
@@ -395,10 +441,10 @@
                 <table class="w-full table-hover">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                      <th class="">
+                      <th class="text-center">
                           Acción
                       </th>
-                      <th v-if="form.displayProduct" class="">
+                      <th v-if="form.displayProduct" class="text-center">
                           Imagen
                       </th>
                       <th class="">
@@ -411,7 +457,7 @@
                   </thead>
                   <tbody>
                     <tr v-for="(product, index) in products.data" :key="product.id" >
-                        <td class="">
+                        <td class="text-center">
                           
                             <Dropdown :placement="'bottomLeft'" arrow>
                                 <button class="btn btn-outline-info dropdown-toggle inline-flex px-2 py-2" type="button" @click="toggle">
@@ -454,12 +500,13 @@
                             </Dropdown>
                           
                         </td>
-                        <td v-if="form.displayProduct" class="w-32">
+                        <td v-if="form.displayProduct" class="text-center">
                           <Image
                             :src="product.image"
+                            style="width: 54px;height: 54px;"
                             />
                         </td>
-                        <td class="text-right ">
+                        <td class="text-center ">
                             {{ product.interne }}
                         </td>
                         <td class="text-sm ">

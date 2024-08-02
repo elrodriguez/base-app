@@ -95,7 +95,13 @@
     const themesChanged = (module = null) => {
         themeForm.module_id = module.id;
         themeForm.module_name = module.description;
-        dataThemes.value = module.themes;
+
+        if(module.themes){
+            dataThemes.value = module.themes;
+        }else{
+            dataThemes.value = [];
+        }
+        
         isShowTaskMenu.value = false;
         selectedTab.value = module.id;
     };
@@ -236,7 +242,12 @@
     }
 
     const viewContents = (item = null) => {
-        dataContents.value = item.contents;
+        if(item.contents){
+            dataContents.value = item.contents;
+        }else{
+            dataContents.value = [];
+        }
+        
         contentForm.theme_name = item.description;
         contentForm.theme_id = item.id;
         setTimeout(() => {
@@ -485,8 +496,7 @@
                             >
                                 <div class="space-y-1">
                                     <div v-for="(module, index) in dataModules"
-                                        type="button"
-                                        class="w-full flex justify-between items-center h-10 p-1 hover:bg-white-dark/10 rounded-md dark:hover:bg-[#181F32] font-medium ltr:hover:pl-3 rtl:hover:pr-3 duration-300"
+                                        class="w-full flex justify-between items-center p-1 hover:bg-white-dark/10 rounded-md dark:hover:bg-[#181F32] font-medium ltr:hover:pl-3 rtl:hover:pr-3 duration-300"
                                         :class="selectedTab === module.id ? 'ltr:pl-3 rtl:pr-3 bg-gray-100 dark:bg-[#181F32] text-primary' : 'text-success'"
                                     >
                                         <div  @click="themesChanged(module)" class="flex items-center" style="cursor: pointer;">
@@ -577,13 +587,13 @@
                                         <tbody>
                                             <template v-for="(theme, key) in dataThemes" :key="theme.id">
                                                 <tr class="group cursor-pointer" :class="{ 'bg-white-light/30 dark:bg-[#1a2941]': theme.status === 'complete' }">
-                                                    <td class="w-1 text-center text-danger" :class="{ 'text-warning': theme.contents.length > 0 }">
+                                                    <td class="w-1 text-center text-danger" :class="{ 'text-warning': (theme.contents ? theme.contents.length : 0) > 0 }">
                                                         {{ theme.position }}
                                                     </td>
                                                     <td>
                                                         <div @click="viewContents(theme)"
                                                                 class="group-hover:text-primary font-semibold text-sm text-danger"
-                                                                :class="{ 'text-warning': theme.contents.length > 0 }"
+                                                                :class="{ 'text-warning': (theme.contents ? theme.contents.length : 0) > 0 }"
                                                             >
                                                                 {{ theme.description }}
                                                         </div>

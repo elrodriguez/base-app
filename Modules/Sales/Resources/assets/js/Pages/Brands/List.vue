@@ -40,6 +40,8 @@
             confirmButtonText: '¡Sí, Eliminar!',
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
+            padding: '2em',
+            customClass: 'sweet-alerts',
             preConfirm: () => {
                 return axios.delete(route('sale_brand_product_destroy', id)).then((res) => {
                     if (!res.data.success) {
@@ -55,8 +57,15 @@
                     title: 'Enhorabuena',
                     text: result.value.data.message,
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
-                router.visit(route('sale_brands_product_list'), { replace: true, method: 'get' });
+                router.visit(route('sale_brands_product_list'), { 
+                  replace: false,
+                  preserveState: true,
+                  preserveScroll: true,
+                  method: 'get' 
+                });
             }
         });
     }
@@ -75,8 +84,8 @@
                 <!-- ====== Table Section Start -->
                 <div class="flex flex-col gap-10">
                     <!-- ====== Table One Start -->
-                    <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ">
-                        <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
+                    <div class="panel p-0">
+                        <div class="w-full p-4">
                             <div class="grid grid-cols-3">
                                 <div class="col-span-3 sm:col-span-1">
                                     <form id="form-search-items" @submit.prevent="form.get(route('onlineshop_items'))">
@@ -100,43 +109,46 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="max-w-full overflow-x-auto">
-                            <table class="w-full table-auto">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <div class="table-responsive">
+                            <table >
+                                <thead>
                                     <tr>
-                                        <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
+                                        <th class="text-center">
                                             Acciones
                                         </th>
-                                        <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
+                                        <th>
                                             Imagen Principal
                                         </th>
-                                        <th class="py-2 px-2 text-left font-medium text-black dark:text-white">
+                                        <th>
                                             Descripción
                                         </th>
-                                        <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                        <th>
                                             Estado
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <template v-for="(item, index) in brands.data" :key="item.id">
-                                        <tr class="border-b">
-                                            <td class="text-center py-2 dark:border-strokedark">
-                                                <Link v-can="'sale_marcas_editar'" :href="route('sale_brands_product_edit',item.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                    <font-awesome-icon :icon="faPencilAlt" />
-                                                </Link>
-                                                                   
-                                                <button v-can="'sale_marcas_eliminar'" @click="destroyBrand(item.id)" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                                    <font-awesome-icon :icon="faTrashAlt" />
-                                                </button>
+                                        <tr>
+                                            <td>
+                                                <div class="flex gap-4 items-center justify-center">
+                                                
+                                                    <Link v-can="'sale_marcas_editar'" :href="route('sale_brands_product_edit',item.id)" class="btn btn-sm btn-outline-primary">
+                                                        <font-awesome-icon :icon="faPencilAlt" />
+                                                    </Link>
+                                                                    
+                                                    <button v-can="'sale_marcas_eliminar'" @click="destroyBrand(item.id)" type="button" class="btn btn-sm btn-outline-danger">
+                                                        <font-awesome-icon :icon="faTrashAlt" />
+                                                    </button>
+                                                </div>
                                             </td>
-                                            <td class="p-4 text-center">
+                                            <td>
                                                 <Image v-if="item.image" :src="aurl+'storage/'+item.image" :alt="item.name" style="width: 70px;" />
                                             </td>
-                                            <td class="py-2 px-2 dark:border-strokedark">
+                                            <td>
                                                <span>{{ item.description }}</span>
                                             </td>
-                                            <td class="text-center py-2 px-2 dark:border-strokedark">
+                                            <td>
                                                 <span v-if="item.status" class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Activo</span>
                                                 <span v-else class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Inactivo</span>
                                             </td>

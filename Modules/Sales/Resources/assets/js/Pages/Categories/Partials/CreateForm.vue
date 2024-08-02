@@ -48,6 +48,8 @@ const createCategory = () => {
                 title: 'Enhorabuena',
                 text: 'Se registró correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             form.reset()
         },
@@ -94,6 +96,7 @@ const cropImageAndSave = (res) => {
                     placeholder="Seleccionar Categoría"
                     style="width: 100%"
                     :options="categoriesData"
+                    class=" dark:bg-gray-600"
                 >
                 </Select>
                 <InputError :message="form.errors.category_id" class="mt-2" />

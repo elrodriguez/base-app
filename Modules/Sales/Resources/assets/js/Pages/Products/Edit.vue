@@ -2,6 +2,8 @@
     import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
     import EditProductForm from './Partials/EditProductForm.vue';
     import { Link } from '@inertiajs/vue3';
+    import Navigation from '@/Components/vristo/layout/Navigation.vue';
+    
     defineProps({
         product: {
             type: Object,

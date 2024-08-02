@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Modules\Academic\Entities\AcaCourse;
 
 class OnliItem extends Model
 {
@@ -53,5 +54,10 @@ class OnliItem extends Model
     public function specifications(): HasMany
     {
         return $this->hasMany(OnliItemSpecification::class, 'onli_item_id');
+    }
+
+    public function course(): HasOne
+    {
+        return $this->hasOne(AcaCourse::class, 'id', 'item_id');
     }
 }

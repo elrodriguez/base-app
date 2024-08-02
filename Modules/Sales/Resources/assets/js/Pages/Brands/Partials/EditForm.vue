@@ -39,6 +39,8 @@ const updateBrand = () => {
                 title: 'Enhorabuena',
                 text: 'Se Actualizado correctamente',
                 icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
         },
     });

@@ -4,7 +4,7 @@
     import { faTrashAlt, faPencilAlt, faTicketAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import { ref } from 'vue';
-    import DialogModal from '@/Components/DialogModal.vue';
+    import DialogModal from '@/Components/ModalLarge.vue';
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
@@ -13,6 +13,7 @@
     import swal from 'sweetalert';
     import Swal2 from 'sweetalert2';
     import Keypad from '@/Components/Keypad.vue';
+    import Navigation from '@/Components/vristo/layout/Navigation.vue';
 
     const props = defineProps({
         locals: {
@@ -127,36 +128,20 @@
 </script>
 <template>
     <AppLayout title="Tiendas">
-        <div class="max-w-screen-2xl  mx-auto p-4 md:p-6 2xl:p-10">
-            <!-- Breadcrumb Start -->
-            <nav class="flex px-4 py-3 border border-stroke text-gray-700 mb-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <Link :href="route('dashboard')" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                        <svg aria-hidden="true" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                        Inicio
-                        </Link>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <!-- <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white">Productos</a> -->
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">configuraciónes</span>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">Centros de distribución</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
+        <Navigation :routeModule="route('sales_dashboard')" :titleModule="'Ventas'">
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Administracion</span>
+            </li>
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Centros de distribución</span>
+            </li>
+        </Navigation>
+        <div class="mt-5">
             <!-- ====== Table Section Start -->
             <div class="flex flex-col gap-10">
                 <!-- ====== Table One Start -->
-                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <div class="w-full p-4 border-b border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
+                <div class="panel p-0">
+                    <div class="w-full p-4">
                         <div class="grid grid-cols-3">
                             <div class="col-span-3 sm:col-span-1">
                                 <form id="form-search-items" @submit.prevent="form.get(route('establishments.index'))">
@@ -180,46 +165,48 @@
                             </div>
                         </div>
                     </div>
-                    <div class="max-w-full overflow-x-auto">
-                        <table class="w-full table-auto">
-                            <thead class="border-b border-stroke">
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th  class="py-2 px-4 text-center font-medium text-black dark:text-white">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">
                                         Acciones
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th>
                                         Nombre
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th >
                                         Dirección
                                     </th>
-                                    <th class="py-2 px-4 font-medium text-black dark:text-white">
+                                    <th >
                                         Teléfono
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(local, index) in locals.data" :key="index" class="border-b border-stroke">
-                                    <td class="text-center py-2 dark:border-strokedark">
-                                        <a v-can="'sale_tienda_editar'" data-bs-toggle="tooltip" title="Editar" :href="route('establishments.edit', local.id)" class="mr-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            <font-awesome-icon :icon="faPencilAlt" />
-                                        </a>
-                                        <button v-can="'sale_tienda_series'" @click="openModalSeries(local)" data-bs-toggle="tooltip" title="Series" type="button" class="mr-1 text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                                            <font-awesome-icon :icon="faTicketAlt" />
-                                        </button>
-                                        <button v-can="'sale_tienda_eliminar'" data-bs-toggle="tooltip" title="Eliminar" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                                            @click="destroyEstablishment(local.id)"
-                                            >
-                                            <font-awesome-icon :icon="faTrashAlt" />
-                                        </button>
+                                <tr v-for="(local, index) in locals.data" :key="index">
+                                    <td class="text-center">
+                                        <div class="flex gap-4 items-center justify-center">
+                                            <Link v-can="'sale_tienda_editar'" data-bs-toggle="tooltip" title="Editar" :href="route('establishments.edit', local.id)" class="btn btn-sm btn-outline-primary">
+                                                <font-awesome-icon :icon="faPencilAlt" />
+                                            </Link>
+                                            <button v-can="'sale_tienda_series'" @click="openModalSeries(local)" data-bs-toggle="tooltip" title="Series" type="button" class="btn btn-sm btn-outline-success">
+                                                <font-awesome-icon :icon="faTicketAlt" />
+                                            </button>
+                                            <button v-can="'sale_tienda_eliminar'" data-bs-toggle="tooltip" title="Eliminar" type="button" class="btn btn-sm btn-outline-danger"
+                                                @click="destroyEstablishment(local.id)"
+                                                >
+                                                <font-awesome-icon :icon="faTrashAlt" />
+                                            </button>
+                                        </div>
                                     </td>
-                                    <td class="py-2 dark:border-strokedark">
+                                    <td>
                                         {{ local.description }}
                                     </td>
-                                    <td class="py-2 dark:border-strokedark">
+                                    <td>
                                         {{ local.address }}
                                     </td>
-                                    <td class="py-2 dark:border-strokedark">
+                                    <td>
                                         {{ local.phone }}
                                     </td>
                                 </tr>
@@ -231,7 +218,7 @@
             </div>
         </div>
 
-        <DialogModal :show="showModalSeries" @close="closeModalSeries">
+        <DialogModal :show="showModalSeries" :onClose="closeModalSeries">
             <template #title>
                 Series {{ formSeries.local_name }}
             </template>
@@ -240,7 +227,7 @@
                 <div class="grid grid-cols-4 gap-4">
                     <div class="col-span-4 sm:col-span-2">
                         <InputLabel value="Tipo de Documento" />
-                        <select v-model="formSeries.document_type_id" id="stablishment" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select v-model="formSeries.document_type_id" id="stablishment" class="form-select text-white-dark">
                             <option value="">Seleccionar</option>
                             <template v-for="(document_type, index) in props.document_types" :key="index">
                                 <option :value="document_type.id">{{ document_type.description }}</option>
@@ -269,38 +256,37 @@
                         <InputError :message="formSeries.errors.number" class="mt-2" />
                     </div>
                 </div>
-                <div>
-                    <table class="mt-2 w-full border-separate border-spacing-2 border border-slate-400 ...">
+                <div class="mt-5 table-responsive">
+                    <table>
                         <thead>
-                            <tr class="bg-green-700 text-white">
-                                <th class="border border-slate-300 p-2">Accion</th>
-                                <th class="border border-slate-300 p-2">Tipo</th>
-                                <th class="border border-slate-300 p-2">Serie</th>
-                                <th class="border border-slate-300 p-2">Número</th>
+                            <tr>
+                                <th class="text-center">Accion</th>
+                                <th>Tipo</th>
+                                <th class="text-center">Serie</th>
+                                <th class="text-center">Número</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(serie, index) in formSeries.series">
                                 <td class="text-center">
-                                    <button data-bs-toggle="tooltip" title="Eliminar" type="button" class="mr-1 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                                        @click="destroySerie(serie.id)"
-                                        >
-                                        <font-awesome-icon :icon="faTimes" />
-                                    </button>
+                                    <div class="flex gap-4 items-center justify-center">
+                                        <button data-bs-toggle="tooltip" title="Eliminar" type="button" class="btn btn-sm btn-outline-danger"
+                                            @click="destroySerie(serie.id)"
+                                            >
+                                            <font-awesome-icon :icon="faTimes" />
+                                        </button>
+                                    </div>
                                 </td>
-                                <td class="text-left border border-slate-300 p-2">{{ serie.type_name }}</td>
-                                <td class="text-center border border-slate-300 p-2">{{ serie.description }}</td>
-                                <td class="text-right border border-slate-300 p-2">{{ serie.number }}</td>
+                                <td >{{ serie.type_name }}</td>
+                                <td >{{ serie.description }}</td>
+                                <td class="text-center">{{ serie.number }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </template>
 
-            <template #footer>
-                <SecondaryButton @click="closeModalSeries">
-                    Cancel
-                </SecondaryButton>
+            <template #buttons>
 
                 <DangerButton
                     class="ml-3"

@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use DataTables;
 
 class PermissionController extends Controller
 {
@@ -20,35 +21,17 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = (new Permission())->newQuery();
-
-        if (request()->has('search')) {
-            $permissions->where('name', 'Like', '%' . request()->input('search') . '%');
-        }
-
-        if (request()->query('sort')) {
-            $attribute = request()->query('sort');
-            $sort_order = 'ASC';
-            if (strncmp($attribute, '-', 1) === 0) {
-                $sort_order = 'DESC';
-                $attribute = substr($attribute, 1);
-            }
-            $permissions->orderBy($attribute, $sort_order);
-        } else {
-            $permissions->latest();
-        }
-
-        $permissions = $permissions->paginate(10)->onEachSide(2)->appends(request()->query());
-
-        return Inertia::render('Security::Permissions/List', [
-            'permissions' => $permissions,
-            'filters' => request()->all('search')
-        ]);
+        return Inertia::render('Security::Permissions/List');
     }
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
+
+    public function getData()
+    {
+        $model = Permission::query();
+        $model = $model->select('id', 'name', 'guard_name', 'created_at', 'updated_at');
+
+        return DataTables::of($model)->toJson();
+    }
+
     public function create()
     {
         $roles = Role::all();

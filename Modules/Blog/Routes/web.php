@@ -11,6 +11,8 @@
 |
 */
 
+use Modules\Blog\Http\Controllers\BlogArticlesController;
+use Modules\Blog\Http\Controllers\BlogCategoriesController;
 
 Route::prefix('blog')->group(function () {
     Route::get('/', 'BlogController@index');
