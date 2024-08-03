@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('person_id')->constrained('people')->onDelete('cascade');
             $table->text('content');
             $table->json('server_response')->nullable();
-            $table->enum('type', ['text', 'audio', 'image', 'link', 'video', 'file', 'audio'])->nullable();
+            $table->enum('type', ['text', 'audio', 'image', 'link', 'video', 'file'])->nullable();
             $table->timestamps();
         });
     }
