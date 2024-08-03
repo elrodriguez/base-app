@@ -1,4 +1,11 @@
-import { faBook, faUserGraduate, faLandmarkFlag, faUserTie, faBookOpen } from "@fortawesome/free-solid-svg-icons";
+import { 
+    faBook, 
+    faUserGraduate, 
+    faLandmarkFlag, 
+    faUserTie, 
+    faBookOpen,
+    faRocket
+} from "@fortawesome/free-solid-svg-icons";
 
 const menuAcademic = {
     status: false,
@@ -7,6 +14,13 @@ const menuAcademic = {
     route: 'module',
     permissions: "aca_dashboard",
     items: [
+        {
+            route: route("aca_subscriptions_list"),
+            status: false,
+            text: "Tipo de suscripcion",
+            icom: faRocket,
+            permissions: "aca_suscripciones",
+        },
         {
             route: route("aca_institutions_list"),
             status: false,

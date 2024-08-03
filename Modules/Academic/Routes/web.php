@@ -189,4 +189,9 @@ Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('
     Route::middleware(['middleware' => 'permission:aca_dashboard'])
         ->get('dashboard/total/registration/student', 'AcademicController@studentsEnrolledMonth')
         ->name('aca_student_registration_total');
+
+    ////subscriptions/////
+    Route::middleware(['middleware' => 'permission:aca_suscripciones'])
+        ->get('subscriptions/list', 'AcaSubscriptionTypeController@index')
+        ->name('aca_subscriptions_list');
 });
