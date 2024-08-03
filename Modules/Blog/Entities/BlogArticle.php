@@ -42,6 +42,11 @@ class BlogArticle extends Model
         return ($value != 'img/imagen-no-disponible.jpg' ? asset('storage/' . $value) : asset($value));
     }
 
+    public function getKeywordsAttribute($value)
+    {
+        return ($value ? json_decode($value) : null);
+    }
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

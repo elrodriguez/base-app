@@ -103,6 +103,9 @@ class BlogArticlesController extends Controller
         $content = $request->get('content_text');
         // Reemplazar las rutas de imágenes en el contenido
         $contentWithAbsoluteImagePaths = preg_replace('/src="\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '/storage/articles/$1"', $content);
+        $contentWithAbsoluteImagePaths = preg_replace('/src="..\/..\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '/storage/articles/$1"', $contentWithAbsoluteImagePaths);
+        $contentWithAbsoluteImagePaths = preg_replace('/src="..\/..\/..\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '/storage/articles/$1"', $contentWithAbsoluteImagePaths);
+
 
         BlogArticle::create([
             'title'         => $request->get('title'),
@@ -112,7 +115,8 @@ class BlogArticlesController extends Controller
             'status'        => $request->get('status'),
             'category_id'   => $request->get('category_id'),
             'imagen'        => $path,
-            'user_id'       => Auth::id()
+            'user_id'       => Auth::id(),
+            'keywords'      => $request->get('keywords') ? json_encode($request->get('keywords')) : null
         ]);
 
         return redirect()->route('blog-article.index')
@@ -174,7 +178,8 @@ class BlogArticlesController extends Controller
             'status'        => $request->get('status'),
             'category_id'   => $request->get('category_id'),
             'imagen'        => $path,
-            'user_id'       => Auth::id()
+            'user_id'       => Auth::id(),
+            'keywords'      => $request->get('keywords') ? json_encode($request->get('keywords')) : null
         ]);
 
         return redirect()->route('blog-article.edit', $blogArticle->id)
@@ -206,6 +211,8 @@ class BlogArticlesController extends Controller
         $content = $request->get('content_text');
         // Reemplazar las rutas de imágenes en el contenido
         $contentWithAbsoluteImagePaths = preg_replace('/src="\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '/storage/articles/$1"', $content);
+        $contentWithAbsoluteImagePaths = preg_replace('/src="..\/..\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '/storage/articles/$1"', $contentWithAbsoluteImagePaths);
+        $contentWithAbsoluteImagePaths = preg_replace('/src="..\/..\/..\/storage\/articles\/([^"]+)"/', 'src="' . $baseUrl . '/storage/articles/$1"', $contentWithAbsoluteImagePaths);
 
 
         $blogArticle->title = $request->get('title');
@@ -213,7 +220,8 @@ class BlogArticlesController extends Controller
         $blogArticle->url = Str::slug($request->get('title'));
         $blogArticle->short_description = $request->get('description');
         $blogArticle->status = $request->get('status');
-        $blogArticle->category_id   = $request->get('category_id');
+        $blogArticle->category_id = $request->get('category_id');
+        $blogArticle->keywords = $request->get('keywords') ? json_encode($request->get('keywords')) : null;
 
         $path = 'img/imagen-no-disponible.jpeg';
         $destination = 'uploads/blog/articles';

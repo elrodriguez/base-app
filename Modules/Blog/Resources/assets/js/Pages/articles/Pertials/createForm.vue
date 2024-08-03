@@ -1,14 +1,15 @@
 <script setup>
-    import { useForm } from '@inertiajs/vue3';
-    import FormSection from '@/Components/FormSection.vue';
-    import InputError from '@/Components/InputError.vue';
-    import InputLabel from '@/Components/InputLabel.vue';
-    import PrimaryButton from '@/Components/PrimaryButton.vue';
-    import Keypad from '@/Components/Keypad.vue';
-    import { ref, onMounted } from 'vue';
-    import Editor from '@tinymce/tinymce-vue'
-    import TextInput from '@/Components/TextInput.vue';
-    import SecondaryButton from '@/Components/SecondaryButton.vue';
+import { useForm } from '@inertiajs/vue3';
+import FormSection from '@/Components/FormSection.vue';
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Keypad from '@/Components/Keypad.vue';
+import { ref, onMounted, reactive, nextTick  } from 'vue';
+import Editor from '@tinymce/tinymce-vue'
+import TextInput from '@/Components/TextInput.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+
 
     const props = defineProps({
         categories: {
@@ -27,7 +28,8 @@
         content_text: '',
         description:'',
         status: true,
-        file: ''
+        file: '',
+        keywords: []
     });
 
     const photoPreview = ref(null);
@@ -36,6 +38,10 @@
     const createArticle = () => {
         if (photoInput.value) {
             form.file = photoInput.value.files[0];
+        }
+
+        if (inputKeyword.value) {
+            form.keywords = keywords.value;
         }
 
         form.post(route('blog-article.store'), {
@@ -97,6 +103,15 @@
         reader.readAsDataURL(photo);
     };
 
+    const inputKeyword = ref(null);
+    const addkeyword = () => {
+        form.keywords.push(inputKeyword.value)
+        inputKeyword.value = null;
+    }
+
+    const removekeyword = (index) => {
+        form.keywords.splice(index,1);
+    }
 </script>
 
 <template>
@@ -125,7 +140,7 @@
             </div>
             <div class="col-span-6 sm:col-span-6">
                 <InputLabel for="description" value="description *" />
-                <textarea v-model="form.description" rows="2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                <textarea v-model="form.description" rows="2" class="form-textarea"></textarea>
                 <InputError :message="form.errors.description" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-6">
@@ -182,11 +197,28 @@
             </div>
             <div class="col-span-6 sm:col-span-3">
                 <InputLabel for="category_id" value="Categoría *" />
-                <select v-model="form.category_id" id="category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select v-model="form.category_id" id="category_id" class="form-select">
                     <option value="" selected>Seleccionar</option>
                     <option v-for="(category) in categories" :value="category.id">{{ category.description }}</option>
                 </select>
                 <InputError :message="form.errors.category_id" class="mt-2" />
+            </div>
+            <div class="col-span-6">
+                <InputLabel for="category_id" value="Palabras clave" />
+                <div class="grid grid-cols-3 gap-2">
+                    <template v-for="(keyword, index) in form.keywords">
+                        <span class="badge h-10 m-0 bg-primary p-0 rounded-md flex items-center justify-between text-base">
+                            <span class="pl-4">{{ keyword }}</span>
+                            <span @click="removekeyword(index)" class="pr-4 cursor-pointer hover:opacity-90">x</span>
+                        </span>
+                    </template>
+                    <input @keydown.enter.stop.prevent="addkeyword" 
+                        v-model="inputKeyword" 
+                        class="form-input"
+                        :maxlength="22" placeholder="Máximo 22 caracteres"
+                    />
+                </div>
+                <InputError :message="form.errors.keywords" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-6">
                 <div class="flex items-center mb-6">
@@ -196,6 +228,7 @@
                     </label>
                 </div>
             </div>
+
         </template>
 
         <template #actions>

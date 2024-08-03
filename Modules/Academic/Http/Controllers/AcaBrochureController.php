@@ -73,10 +73,21 @@ class AcaBrochureController extends Controller
         $benefits = $request->get('benefits');
         $frequent_questions = $request->get('frequent_questions');
         // Reemplazar las rutas de imágenes en el contenido
+        $resolution = preg_replace('/src="..\/..\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $resolution);
+        $resolution = preg_replace('/src="..\/..\/..\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $resolution);
         $resolution = preg_replace('/src="\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $resolution);
+
         $presentation = preg_replace('/src="\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $presentation);
+        $presentation = preg_replace('/src="..\/..\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $presentation);
+        $presentation = preg_replace('/src="..\/..\/..\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $presentation);
+
         $benefits = preg_replace('/src="\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $benefits);
+        $benefits = preg_replace('/src="..\/..\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $benefits);
+        $benefits = preg_replace('/src="..\/..\/..\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $benefits);
+
         $frequent_questions = preg_replace('/src="\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $frequent_questions);
+        $frequent_questions = preg_replace('/src="..\/..\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $frequent_questions);
+        $frequent_questions = preg_replace('/src="..\/..\/..\/storage\/brochures\/([^"]+)"/', 'src="' . $baseUrl . '/storage/brochures/$1"', $frequent_questions);
 
 
         AcaBrochure::updateOrCreate(

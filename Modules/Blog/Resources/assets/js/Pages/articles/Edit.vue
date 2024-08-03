@@ -21,7 +21,7 @@ import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 </script>
 
 <template>
-    <AppLayout title="Blog Nueva Articulo">
+    <AppLayout title="Nuevo Articulo">
         <Navigation :routeModule="route('blog_dashboard')" :titleModule="'Blog'">
             <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                 <Link :href="route('blog-article.index')" class="text-primary hover:underline">Artículos</Link>

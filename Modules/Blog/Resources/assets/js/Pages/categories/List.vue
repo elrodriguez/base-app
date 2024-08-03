@@ -44,7 +44,7 @@
 </script>
 
 <template>
-    <AppLayout title="Blog Categorias">
+    <AppLayout title="Categorias">
         <Navigation :routeModule="route('blog_dashboard')" :titleModule="'Blog'">
             <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                 <span>Categorías</span>

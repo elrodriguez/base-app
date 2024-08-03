@@ -1,5 +1,5 @@
 <script setup>
-    import { useForm } from '@inertiajs/vue3';
+    import { useForm, Link } from '@inertiajs/vue3';
     import FormSection from '@/Components/FormSection.vue';
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
@@ -34,7 +34,8 @@
         file_view: props.article.imagen,
         file: '',
         description: props.article.short_description,
-        category_id: props.article.category_id
+        category_id: props.article.category_id,
+        keywords: props.article.keywords ?? []
     });
 
     const photoPreview = ref(null);
@@ -117,6 +118,16 @@
             });
         });
     };
+
+    const inputKeyword = ref(null);
+    const addkeyword = () => {
+        form.keywords.push(inputKeyword.value);
+        inputKeyword.value = null;
+    }
+
+    const removekeyword = (index) => {
+        form.keywords.splice(index,1);
+    }
 </script>
 
 
@@ -207,6 +218,23 @@
                 </select>
                 <InputError :message="form.errors.category_id" class="mt-2" />
             </div>
+            <div class="col-span-6">
+                <InputLabel for="category_id" value="Palabras clave" />
+                <div class="grid grid-cols-3 gap-2">
+                    <template v-for="(keyword, index) in form.keywords">
+                        <span class="badge h-10 m-0 bg-primary p-0 rounded-md flex items-center justify-between text-base">
+                            <span class="pl-4">{{ keyword }}</span>
+                            <span @click="removekeyword(index)" class="pr-4 cursor-pointer hover:opacity-90">x</span>
+                        </span>
+                    </template>
+                    <input @keydown.enter.stop.prevent="addkeyword" 
+                        v-model="inputKeyword" 
+                        class="form-input"
+                        :maxlength="22" placeholder="Máximo 22 caracteres"
+                    />
+                </div>
+                <InputError :message="form.errors.keywords" class="mt-2" />
+            </div>
             <div class="col-span-6 sm:col-span-6">
                 <div class="flex items-center mb-6">
                     <input v-model="form.status" id="checkboxStatus" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -224,7 +252,7 @@
                         :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                         Guardar
                     </PrimaryButton>
-                    <a :href="route('blog-article.index')"  class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out ml-2">Ir al Listado</a>
+                    <Link :href="route('blog-article.index')"  class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out ml-2">Ir al Listado</Link>
                 </template>
             </Keypad>
         </template>
