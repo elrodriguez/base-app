@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('blog_articles', function (Blueprint $table) {
             $table->id();
             $table->string('title', 300)->unique();
-            $table->binary('content_text', 16777215);
+            $table->binary('content_text')->nullable();
             $table->string('imagen')->nullable();
             $table->integer('views')->default(0);
             $table->integer('likes')->default(0);
