@@ -245,7 +245,7 @@
                             </thead>
                             <tbody>
                                 <template v-for="(summary, index) in summaries.data" :key="summary.id">
-                                    <tr :style="summary.status ==='registrado' ? '' : summary.status ==='Rechazado' ? 'color: #CF1504': summary.status ==='Enviado'? 'color: #03C73F' :'color: #051BC6'" :class="summary.invoice_status ==='registrado' ? 'border-b border-stroke' : ''">
+                                    <tr :style="summary.status ==='registrado' ? '' : summary.status ==='Rechazado' ? 'color: #CF1504': summary.status ==='Enviado'? 'color: #03C73F' :'color: #051BC6'" :class="summary.invoice_status ==='registrado' ? '' : ''">
                                         <td :rowspan="summary.status ==='registrado' || summary.status ==='Enviado' ? 1 : 2" class="text-center py-2 px-2 dark:border-strokedark">
                                             <div class="flex gap-4 items-center justify-center">
                                                 <button :id="'btn-check-summary'+index" @click="statusTicket(summary.id,summary.ticket,index)" v-if="summary.status ==='Enviado'" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -265,7 +265,18 @@
                                             </div>
                                         </td>
                                         <td>
-                                            {{ summary.summary_name }}
+                                            <h6 class="font-semibold">
+                                                {{ summary.summary_name }}
+                                                 <span v-if="summary.status == 'Rechazado' || summary.status == 'Aceptado'" class="block text-xs">
+                                                    <code v-if="summary.response_code != 0">
+                                                    Código: {{ summary.response_code }}
+                                                    </code>
+                                                    <code>
+                                                        Descripción: {{ summary.response_description }}
+                                                    </code>
+                                                 </span>
+                                            </h6>
+                                            <p v-if="summary.notes" class="text-xs">{{ summary.notes }}</p>
                                         </td>
                                         <td>
                                             {{ summary.summary_date }}
@@ -275,23 +286,6 @@
                                             {{ summary.status }}
                                         </td>
                                     </tr>
-                                    <template v-if="summary.status == 'Rechazado' || summary.status == 'Aceptado'" >
-                                        <tr :style="summary.status ==='Rechazado' ? 'color: #CF1504': 'color: #051BC6'" class="border-b border-stroke" >
-                                            <td colspan="2" class="text-xs">
-                                                <code v-if="summary.response_code != 0">
-                                                    Código: {{ summary.response_code }}
-                                                </code>
-                                                <code>
-                                                    Descripción: {{ summary.response_description }}
-                                                </code>
-                                            </td>
-                                            <td class="text-center text-xs">
-                                               <template v-if="summary.notes">
-                                                    {{ summary.notes }}
-                                               </template> 
-                                            </td>
-                                        </tr>
-                                    </template>
                                 </template>
                             </tbody>
                         </table>
