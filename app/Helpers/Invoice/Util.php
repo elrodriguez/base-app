@@ -59,12 +59,12 @@ final class Util
     protected function setCredentials($company)
     {
         if ($this->mode == 'prod') {
-            $this->certificate = __DIR__ . DIRECTORY_SEPARATOR . 'certificates' . DIRECTORY_SEPARATOR . $company->certificate_sunat;
+            $this->certificate = __DIR__ . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . $company->certificate_sunat;
             $this->ruc = $company->ruc;
             $this->user = $company->user_sunat;
             $this->password = $company->key_sunat;
         } else if ($this->mode == 'demo') {
-            $this->certificate = __DIR__ . DIRECTORY_SEPARATOR . 'certificates' . DIRECTORY_SEPARATOR . 'certificate.pem';
+            $this->certificate = __DIR__ . DIRECTORY_SEPARATOR . 'Certificates' . DIRECTORY_SEPARATOR . 'certificate.pem';
             $this->ruc = '20000000001';
             $this->user = 'MODDATOS';
             $this->password = 'moddatos';
