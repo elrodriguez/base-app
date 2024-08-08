@@ -53,6 +53,7 @@
     onMounted(() => {
         getCurrentDate();
     });
+    
     const displaySearchLoading = ref(false);
     const displaySaveLoading = ref(false);
     const searchDocumentEarring = () => {
@@ -156,25 +157,7 @@
         });
     }
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: true,
-        customClass: { container: 'toast' },
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
-    
-    const activeMessage = () => {
-        Toast.fire({
-            icon: 'info',
-            title: 'Resumen diario',
-            text: 'Para comunicar las boletas de ventas emitidas o anuladas, así como las notas de crédito/débito releacionadas, necesita hacerlo mediante un resumen diario. A diferencia del envío de una factura, donde la respuesta es inmediata, en este documento debemos hacer un consulta adicional para conocer su estado utilizando el numero de ticket.',
-            padding: '10px 20px',
-        });
-    }
+   
 </script>
 
 <template>
@@ -245,8 +228,8 @@
                             </thead>
                             <tbody>
                                 <template v-for="(summary, index) in summaries.data" :key="summary.id">
-                                    <tr :style="summary.status ==='registrado' ? '' : summary.status ==='Rechazado' ? 'color: #CF1504': summary.status ==='Enviado'? 'color: #03C73F' :'color: #051BC6'" :class="summary.invoice_status ==='registrado' ? '' : ''">
-                                        <td :rowspan="summary.status ==='registrado' || summary.status ==='Enviado' ? 1 : 2" class="text-center py-2 px-2 dark:border-strokedark">
+                                    <tr :class="summary.status ==='registrado' ? '' : summary.status ==='Rechazado' ? 'text-danger': summary.status ==='Enviado'? 'text-success' : 'text-primary'">
+                                        <td class="text-center">
                                             <div class="flex gap-4 items-center justify-center">
                                                 <button :id="'btn-check-summary'+index" @click="statusTicket(summary.id,summary.ticket,index)" v-if="summary.status ==='Enviado'" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                     <svg :id="'sp-check-summary'+index" style="display: none;" aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

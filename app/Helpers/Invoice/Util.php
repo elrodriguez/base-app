@@ -81,6 +81,7 @@ final class Util
         $see = new See();
 
         $certificate = file_get_contents($this->certificate);
+
         if ($certificate === false) {
             throw new Exception('No se pudo cargar el certificado');
         }
@@ -98,7 +99,9 @@ final class Util
             'auth' => 'https://gre-test.nubefact.com/v1',
             'cpe' => 'https://gre-test.nubefact.com/v1',
         ]);
-        $certificate = file_get_contents(__DIR__ . '/../resources/cert.pem');
+        //$certificate = file_get_contents(__DIR__ . '/../resources/cert.pem');
+        $certificate = file_get_contents($this->certificate);
+
         if ($certificate === false) {
             throw new Exception('No se pudo cargar el certificado');
         }
