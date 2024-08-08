@@ -59,7 +59,7 @@ final class Util
     protected function setCredentials($company)
     {
         if ($this->mode == 'prod') {
-            $this->certificate = public_path($company->certificate_sunat);
+            $this->certificate = __DIR__ . DIRECTORY_SEPARATOR . 'certificates' . DIRECTORY_SEPARATOR . $company->certificate_sunat;
             $this->ruc = $company->ruc;
             $this->user = $company->user_sunat;
             $this->password = $company->key_sunat;

@@ -55,40 +55,47 @@ class SaleSummaryController extends Controller
     {
         $documents = $request->get('documents');
         $generation_date = $request->get('generation_date');
-        $result = array();
 
-        $summary = SaleSummary::create([
-            'generation_date'   => $generation_date . ' ' . Carbon::now()->format('H:i:s'),
-            'summary_date'      => Carbon::now()->format('Y-m-d H:i:s'),
-            'status'            => 'registrado'
-        ]);
+        try {
+            $res = DB::transaction(function () use ($documents, $generation_date) {
 
-        foreach ($documents as $document) {
-            SaleSummaryDetail::create([
-                'document_id'               => $document['id'],
-                'summary_id'                => $summary->id,
-                'model_name'                => SaleDocument::class,
-                'invoice_type_doc'          => $document['invoice_type_doc'],
-                'invoice_serie'             => $document['invoice_serie'],
-                'invoice_document_name'     => $document['invoice_serie'] . '-' . $document['number'],
-                'invoice_correlative'       => $document['invoice_correlative'],
-                'status'                    => $document['status'],
-                'total'                     => $document['invoice_mto_imp_sale']
-            ]);
-            SaleDocument::where('id', $document['id'])
-                ->update(['invoice_status' => 'Enviada']);
+                $summary = SaleSummary::create([
+                    'generation_date'   => $generation_date . ' ' . Carbon::now()->format('H:i:s'),
+                    'summary_date'      => Carbon::now()->format('Y-m-d H:i:s'),
+                    'status'            => 'registrado'
+                ]);
+
+                foreach ($documents as $document) {
+                    SaleSummaryDetail::create([
+                        'document_id'               => $document['id'],
+                        'summary_id'                => $summary->id,
+                        'model_name'                => SaleDocument::class,
+                        'invoice_type_doc'          => $document['invoice_type_doc'],
+                        'invoice_serie'             => $document['invoice_serie'],
+                        'invoice_document_name'     => $document['invoice_serie'] . '-' . $document['number'],
+                        'invoice_correlative'       => $document['invoice_correlative'],
+                        'status'                    => $document['status'],
+                        'total'                     => $document['invoice_mto_imp_sale']
+                    ]);
+                    SaleDocument::where('id', $document['id'])
+                        ->update(['invoice_status' => 'Enviada']);
+                }
+
+                $factura = new Resumen();
+                $result = $factura->create($summary, $documents);
+
+                return [
+                    'success' => $result['success'],
+                    'code'  => $result['code'],
+                    'message'   => $result['message'],
+                    'notes'   => $result['notes']
+                ];
+            });
+
+            return response()->json($res);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
         }
-
-        $factura = new Resumen();
-        $result = $factura->create($summary, $documents);
-
-
-        return response()->json([
-            'success' => $result['success'],
-            'code'  => $result['code'],
-            'message'   => $result['message'],
-            'notes'   => $result['notes']
-        ]);
     }
 
     /**

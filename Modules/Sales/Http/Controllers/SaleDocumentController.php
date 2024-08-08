@@ -517,6 +517,7 @@ class SaleDocumentController extends Controller
             return response()->json($res);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
+            // Devuelve una respuesta de error
         }
     }
 

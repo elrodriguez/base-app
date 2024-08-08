@@ -16,8 +16,7 @@ class Convert
             $certificate = new X509Certificate($pfx, $password);
             $pem = $certificate->export(X509ContentType::PEM);
             $filename = $ruc . '.pem';
-            $path = public_path($filename);
-            file_put_contents($path, $pem);
+            file_put_contents($filename, $pem);
             return [
                 'success' => true,
                 'file_name' => $filename,
@@ -39,8 +38,7 @@ class Convert
             $certificate = new X509Certificate($pfx, $password);
             $pem = $certificate->export(X509ContentType::CER);
             $filename = $ruc . '.cer';
-            $path = public_path($filename);
-            file_put_contents($path, $pem);
+            file_put_contents($filename, $pem);
             return [
                 'success' => true,
                 'file_name' => $filename,
