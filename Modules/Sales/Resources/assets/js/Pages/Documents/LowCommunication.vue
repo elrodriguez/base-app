@@ -164,7 +164,7 @@
             }else{
                 Swal.fire({
                     title: 'Error',
-                    text: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
+                    html: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
                     icon: 'error',
                     padding: '2em',
                     customClass: 'sweet-alerts',

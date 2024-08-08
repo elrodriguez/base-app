@@ -53,7 +53,7 @@
     onMounted(() => {
         getCurrentDate();
     });
-    
+
     const displaySearchLoading = ref(false);
     const displaySaveLoading = ref(false);
     const searchDocumentEarring = () => {
@@ -126,7 +126,7 @@
             }else{
                 Swal.fire({
                     title: 'Error',
-                    text: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
+                    html: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
                     icon: 'error',
                     padding: '2em',
                     customClass: 'sweet-alerts',

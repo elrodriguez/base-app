@@ -258,6 +258,15 @@
             }
         });
     }
+
+const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
+}
+
+const cancelDocument = () => {
+    alert('anular')
+}
 </script>
 
 <template>
@@ -313,35 +322,38 @@
                             </div>
                         </div>
                     </div>
-                    <div class="max-w-full overflow-x-auto">
+                    <div class="table-responsive">
                         <ConfigProvider>
-                        <table class="w-full table-auto">
-                            <thead class="border-b border-stroke">
-                                <tr class="bg-gray-50 text-left dark:bg-meta-4">
-                                    <th style="width: 75px;" class="py-1 px-4 text-center font-medium text-black dark:text-white">
+                        <table>
+                            <thead >
+                                <tr >
+                                    <th class="text-center">
                                         Acciones
                                     </th>
-                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
+                                    <th>
                                         Nmr. Documento
                                     </th>
-                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
-                                        Fecha
+                                    <th>
+                                        Fecha Registrado
                                     </th>
-                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
+                                    <th>
+                                        Fecha Emitido
+                                    </th>
+                                    <th>
                                         Cliente
                                     </th>
-                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
+                                    <th>
                                         Total
                                     </th>
-                                    <th class="py-1 px-4 font-medium text-black dark:text-white">
+                                    <th>
                                         Estado
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <template v-for="(document, index) in documents.data" :key="document.id">
-                                    <tr :style="document.invoice_status ==='registrado' || document.invoice_status ==='Pendiente' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" :class="document.invoice_status ==='registrado' || document.invoice_status ==='Pendiente' ? 'border-b border-stroke' : ''">
-                                        <td :rowspan="document.invoice_status ==='registrado' || document.invoice_status ==='Pendiente' ? 1 : 2" class="text-center py-1 px-4 dark:border-strokedark">
+                                    <tr :class="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'text-danger': document.invoice_status ==='Pendiente' ? 'text-warning': 'text-primary'">
+                                        <td>
                                             <Dropdown :placement="'bottomLeft'">
                                                 <button class="border py-1.5 px-2 dropdown-button inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm" type="button">
                                                     <font-awesome-icon :icon="faGears" />
@@ -358,7 +370,7 @@
                                                             <Button @click="opemModalDetails(document)" type="button" >Detalles</Button>
                                                         </MenuItem>
                                                         <MenuItem v-if="document.invoice_status != 'Aceptada'">
-                                                            <Button @click="deletePanel(index,board.id)" type="button" >Eliminar</Button>
+                                                            <Button @click="cancelDocument(index, document.id)" type="button" >Anular</Button>
                                                         </MenuItem>
                                                         <MenuItem v-if="document.invoice_status === 'Aceptada'">
                                                             <Button @click="downloadDocument(document.document_id,document.invoice_type_doc,'PDF')"
@@ -375,39 +387,42 @@
                                                 </template>
                                             </Dropdown>
                                         </td>
-                                        <td class="w-32 py-1 dark:border-strokedark">
-                                            {{ document.serie }}-{{ document.number }}
+                                        <td>
+                                            <h6 class="font-semibold">
+                                                {{ document.serie }}-{{ document.number }}
+                                                <span v-if="document.invoice_status =='Rechazada' || document.invoice_status === 'Aceptada' || document.invoice_status === 'Anulada'" class="block text-xs">
+                                                    <code v-if="document.invoice_response_code != 0">
+                                                        Código: {{ document.invoice_response_code }}
+                                                    </code>
+                                                    <code>
+                                                        Descripción: {{ document.invoice_response_description }}
+                                                    </code>
+                                                 </span>
+                                            </h6>
                                         </td>
-                                        <td class="py-1 px-4 dark:border-strokedark">
-                                            {{ document.created_at }}
+                                        <td>
+                                            {{ formatDate(document.created_at) }}
                                         </td>
-                                        <td class="py-1 px-4 dark:border-strokedark">
+                                        <td>
+                                            {{ document.invoice_broadcast_date }}
+                                        </td>
+                                        <td>
                                             {{ document.full_name }}
                                         </td>
-                                        <td class="text-right py-1 px-4 dark:border-strokedark">
+                                        <td>
                                             {{ document.total }}
                                         </td>
-                                        <td  class="text-center py-1 px-4 dark:border-strokedark">
-                                            <span v-if="document.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Activa</span>
-                                            <span v-else class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
-                                        </td>
-                                    </tr>
-                                    <template v-if="document.invoice_status =='Rechazada' || document.invoice_status === 'Aceptada' || document.invoice_status === 'Anulada'" >
-                                        <tr :style="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'color: #CF1504': 'color: #051BC6'" class="border-b border-stroke" >
-                                            <td colspan="4" class="text-xs">
-                                                <code v-if="document.invoice_response_code != 0">
-                                                    Código: {{ document.invoice_response_code }}
-                                                </code>
-                                                <code>
-                                                    Descripción: {{ document.invoice_response_description }}
-                                                </code>
-                                            </td>
-                                            <td class="text-center text-xs">
+                                        <td>
+                                            <div>
+                                                <span v-if="document.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Activa</span>
+                                                <span v-else-if="document.status == 3" class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
+                                            </div>
+                                            <span v-if="document.invoice_status">
                                                 <small>Estado Sunat:</small>
                                                 {{ document.invoice_status }}
-                                            </td>
-                                        </tr>
-                                    </template>
+                                            </span>
+                                        </td>
+                                    </tr>
                                 </template>
                             </tbody>
                         </table>
