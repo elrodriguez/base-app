@@ -194,4 +194,8 @@ Route::middleware(['auth', 'verified', 'invalid_updated_information'])->prefix('
     Route::middleware(['middleware' => 'permission:aca_suscripciones'])
         ->get('subscriptions/list', 'AcaSubscriptionTypeController@index')
         ->name('aca_subscriptions_list');
+
+    Route::middleware(['middleware' => 'permission:aca_suscripciones_nuevo'])
+        ->get('subscriptions/create', 'AcaSubscriptionTypeController@create')
+        ->name('aca_subscriptions_create');
 });

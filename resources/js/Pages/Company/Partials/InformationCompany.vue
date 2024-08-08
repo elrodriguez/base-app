@@ -68,7 +68,8 @@ const form = useForm({
     isotipo_negative_old: (props.company.isotipo_negative == '/img/isotipo_negativo.png' ? props.company.isotipo_negative : getBasePath(props.company.isotipo_negative)),
     isotipo_dark: null,
     isotipo_dark_old:(props.company.isotipo_dark == '/img/isotipo_azul.jpeg' ? props.company.isotipo_dark : getBasePath(props.company.isotipo_dark)),
-    social_networks: props.company.social_networks ? JSON.parse(props.company.social_networks) : null
+    social_networks: props.company.social_networks ? JSON.parse(props.company.social_networks) : null,
+    mode: props.company.mode
 });
 
 const createOrUpdateCompany = () => {
@@ -331,9 +332,7 @@ const uploadImages = () => {
         <TabPanels>
             <TabPanel>
                 <div>
-                    <div
-                        class="border border-[#ebedf2] dark:border-[#191e3a] rounded-md p-4 mb-5 bg-white dark:bg-[#0e1726]"
-                    >
+                    <div class="border border-[#ebedf2] dark:border-[#191e3a] rounded-md p-4 mb-5 bg-white dark:bg-[#0e1726]">
                         <h6 class="text-lg font-bold mb-5">
                             Información general
                         </h6>
@@ -441,6 +440,20 @@ const uploadImages = () => {
                                         class="block w-full mt-1"
                                     />
                                     <InputError :message="form.errors.phone" class="mt-2" />
+                                </div>
+                                <div>
+                                    <label for="phone">Servidor</label>
+                                    <div class="flex items-center space-x-5">
+                                        <label class="inline-flex">
+                                            <input v-model="form.mode" value="demo" type="radio" name="square_radio" class="form-radio text-success rounded-none" />
+                                            <span>Demo</span>
+                                        </label>
+                                        <label class="inline-flex">
+                                            <input v-model="form.mode" value="prod" type="radio" name="square_radio" class="form-radio rounded-none" checked />
+                                            <span>Producción</span>
+                                        </label>
+                                    </div>
+                                    <InputError :message="form.errors.modo" class="mt-2" />
                                 </div>
                                 <div class="sm:col-span-2 mt-3">
                                     <button @click="createOrUpdateCompany" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" type="button" class="btn btn-primary" >

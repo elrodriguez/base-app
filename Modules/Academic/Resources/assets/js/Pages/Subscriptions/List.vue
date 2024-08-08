@@ -14,7 +14,7 @@
             <div class="panel">
                 <div class="flex items-center justify-between mb-5">
                     <h5 class="font-semibold text-lg dark:text-white-light">Basic</h5>
-
+                    <Link :href="route('aca_subscriptions_create')" class="btn btn-primary">Nuevo</Link>
                 </div>
                 <div class="mb-5">
                     <div class="max-w-[320px] md:max-w-[990px] mx-auto">
