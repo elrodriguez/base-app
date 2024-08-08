@@ -97,6 +97,8 @@
                     showCancelButton: false,
                     confirmButtonText: 'Ok',
                     denyButtonText: `Crear serie`,
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 }).then((result) => {
                     if (result.isDenied) {
                         router.visit(route('establishments.index'),{
@@ -167,6 +169,8 @@
                     title: 'Información Importante',
                     text: "El cliente no cuenta con ruc para emitir una factura",
                     icon: 'info',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
             }
         }
@@ -274,6 +278,8 @@
                     title: 'Información Importante',
                     text: "El cliente debe tener ruc para emitir una factura",
                     icon: 'error',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
                 formDocument.processing = false
                 return;
@@ -316,7 +322,9 @@
                     cancelButtonText: 'Seguir vendiendo',
                     showDenyButton: true,
                     denyButtonText: `Solo Imprimir`,
-                    denyButtonColor: '#5E5A5A'
+                    denyButtonColor: '#5E5A5A',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 }).then((result) => {
                     if (result.isConfirmed) {
                         if(res.data.invoice_type_doc == '01'){
@@ -326,6 +334,8 @@
                                 title: 'Información Importante',
                                 text: "Las boletas se envian mediante un resumen",
                                 icon: 'info',
+                                padding: '2em',
+                                customClass: 'sweet-alerts',
                             });
                         }
                     } else if (result.isDenied) {
@@ -340,6 +350,8 @@
                 title: 'Información Importante',
                 text: "Elejir serie de documento",
                 icon: 'error',
+                padding: '2em',
+                customClass: 'sweet-alerts',
             });
             formDocument.processing = false
             return;
@@ -417,6 +429,8 @@
             confirmButtonText: 'Enviar',
             showLoaderOnConfirm: true,
             clickOutside: false,
+            padding: '2em',
+            customClass: 'sweet-alerts',
             preConfirm: () => {
                 return axios.get(route('saledocuments_send', [document.id,document.invoice_type_doc])).then((res) => {
                     if (!res.data.success) {
@@ -444,6 +458,8 @@
                     title: `${result.value.data.message}`,
                     html: `${cadena}`,
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 }).then(() => {
                     router.visit(route('saledocuments_list'),{
                         method: 'get'

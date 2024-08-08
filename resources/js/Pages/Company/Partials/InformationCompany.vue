@@ -445,11 +445,11 @@ const uploadImages = () => {
                                     <label for="phone">Servidor</label>
                                     <div class="flex items-center space-x-5">
                                         <label class="inline-flex">
-                                            <input v-model="form.mode" value="demo" type="radio" name="square_radio" class="form-radio text-success rounded-none" />
+                                            <input v-model="form.mode" :value="'demo'" type="radio" name="square_radio" class="form-radio text-success rounded-none" />
                                             <span>Demo</span>
                                         </label>
                                         <label class="inline-flex">
-                                            <input v-model="form.mode" value="prod" type="radio" name="square_radio" class="form-radio rounded-none" checked />
+                                            <input v-model="form.mode" :value="'prod'" type="radio" name="square_radio" class="form-radio rounded-none" />
                                             <span>Producción</span>
                                         </label>
                                     </div>

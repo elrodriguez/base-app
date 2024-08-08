@@ -35,7 +35,7 @@ class CompanyController extends Controller
             'mode'  => 'required'
         ]);
 
-
+        //dd($request->get('mode'));
 
         Company::updateOrCreate(
             ['ruc' =>  $request->get('ruc')],

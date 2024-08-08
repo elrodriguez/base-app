@@ -7,6 +7,7 @@
         DialogPanel,
         DialogOverlay,
     } from "@headlessui/vue";  
+    
     import IconX from "@/Components/vristo/icon/icon-x.vue";
 
     const props = defineProps({
