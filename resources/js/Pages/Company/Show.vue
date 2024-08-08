@@ -1,7 +1,7 @@
 <script setup>
-import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
-import InformationForm from './Partials/InformationForm.vue';
-import Navigation from '@/Components/vristo/layout/Navigation.vue';
+import AppLayout from "@/Layouts/Vristo/AppLayout.vue";
+import InformationCompany from "./Partials/InformationCompany.vue";
+import Navigation from "@/Components/vristo/layout/Navigation.vue";
 
 const props = defineProps({
     company: {
@@ -10,7 +10,7 @@ const props = defineProps({
     },
     ubigeo: {
         type: Object,
-        default: () => ({})
+        default: () => ({}),
     },
 });
 </script>
@@ -26,7 +26,10 @@ const props = defineProps({
             </li>
         </Navigation>
         <div class="mt-5">
-            <InformationForm :company="company" :ubigeo="ubigeo"></InformationForm>
+            <InformationCompany
+                :company="company"
+                :ubigeo="ubigeo"
+            ></InformationCompany>
         </div>
     </AppLayout>
 </template>

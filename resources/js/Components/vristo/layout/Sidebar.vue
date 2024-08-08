@@ -3,38 +3,17 @@
 
     import { useAppStore } from '@/stores/index';
     import IconCaretsDown from '@/Components/vristo/icon/icon-carets-down.vue';
-    import IconMenuDashboard from '@/Components/vristo/icon/menu/icon-menu-dashboard.vue';
+
     import IconMinus from '@/Components/vristo/icon/icon-minus.vue';
-    import IconMenuChat from '@/Components/vristo/icon/menu/icon-menu-chat.vue';
-    import IconMenuMailbox from '@/Components/vristo/icon/menu/icon-menu-mailbox.vue';
-    import IconMenuTodo from '@/Components/vristo/icon/menu/icon-menu-todo.vue';
-    import IconMenuNotes from '@/Components/vristo/icon/menu/icon-menu-notes.vue';
-    import IconMenuScrumboard from '@/Components/vristo/icon/menu/icon-menu-scrumboard.vue';
-    import IconMenuContacts from '@/Components/vristo/icon/menu/icon-menu-contacts.vue';
-    import IconMenuInvoice from '@/Components/vristo/icon/menu/icon-menu-invoice.vue';
+
     import IconCaretDown from '@/Components/vristo/icon/icon-caret-down.vue';
-    import IconMenuCalendar from '@/Components/vristo/icon/menu/icon-menu-calendar.vue';
-    import IconMenuComponents from '@/Components/vristo/icon/menu/icon-menu-components.vue';
-    import IconMenuElements from '@/Components/vristo/icon/menu/icon-menu-elements.vue';
-    import IconMenuCharts from '@/Components/vristo/icon/menu/icon-menu-charts.vue';
-    import IconMenuWidgets from '@/Components/vristo/icon/menu/icon-menu-widgets.vue';
-    import IconMenuFontIcons from '@/Components/vristo/icon/menu/icon-menu-font-icons.vue';
-    import IconMenuDragAndDrop from '@/Components/vristo/icon/menu/icon-menu-drag-and-drop.vue';
-    import IconMenuTables from '@/Components/vristo/icon/menu/icon-menu-tables.vue';
-    import IconMenuDatatables from '@/Components/vristo/icon/menu/icon-menu-datatables.vue';
-    import IconMenuForms from '@/Components/vristo/icon/menu/icon-menu-forms.vue';
-    import IconMenuUsers from '@/Components/vristo/icon/menu/icon-menu-users.vue';
-    import IconMenuPages from '@/Components/vristo/icon/menu/icon-menu-pages.vue';
-    import IconMenuAuthentication from '@/Components/vristo/icon/menu/icon-menu-authentication.vue';
-    import IconMenuDocumentation from '@/Components/vristo/icon/menu/icon-menu-documentation.vue';
+
     
     import { Link } from '@inertiajs/vue3';
     import menuData from './MenuData.js'
 
     const store = useAppStore();
     const activeDropdown = ref('');
-    const subActive  = ref('');
-    const baseUrl = assetUrl;
 
     onMounted(() => {
         const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');

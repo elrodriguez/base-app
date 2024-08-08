@@ -121,6 +121,26 @@ Route::middleware('auth')->group(function () {
         [CompanyController::class, 'getdata']
     )->middleware(['auth', 'verified'])->name('datosempresa');
 
+    Route::post(
+        'company/convert_upload_certificate',
+        [CompanyController::class, 'convertUploadCertificate']
+    )->name('company_convert_upload_certificate');
+
+    Route::post(
+        'company/sunat/credentials',
+        [CompanyController::class, 'saveSunatCredentials']
+    )->name('company_save_sunat_credentials');
+
+    Route::post(
+        'company/social/networks',
+        [CompanyController::class, 'saveSocialNetworks']
+    )->name('company_save_social_networks');
+
+    Route::post(
+        'company/upload/images',
+        [CompanyController::class, 'uploadImages']
+    )->name('company_upload_images');
+
     Route::get('parameters/list', [ParametersController::class, 'index'])->name('parameters');
     Route::get('parameters/create', [ParametersController::class, 'create'])->name('parameters_create');
     Route::post('parameters/store', [ParametersController::class, 'store'])->name('parameters_store');

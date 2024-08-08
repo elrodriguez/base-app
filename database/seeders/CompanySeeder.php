@@ -30,10 +30,10 @@ class CompanySeeder extends Seeder
             'mode'              => 'demo',
             'ubigeo'            => '021801',
             'logo_negative'     => '/img/logo176x32_negativo.png',
-            'logo_dark'         => '/img/logo176x32_negativo.png',
+            'logo_dark'         => '/img/logo176x32Dark.jpeg',
             'isotipo'           => '/img/isotipo.png',
             'isotipo_negative'  => '/img/isotipo_negativo.png',
-            'isotipo_dark'      => '/img/isotipo_dark.png'
+            'isotipo_dark'      => '/img/isotipo_azul.jpeg'
         ]);
     }
 }
