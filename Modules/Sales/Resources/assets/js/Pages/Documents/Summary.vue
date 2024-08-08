@@ -88,17 +88,27 @@
                     padding: '2em',
                     customClass: 'sweet-alerts',
                 });
-                router.visit(route('salesummaries_list'), { replace: true });
+                router.visit(route('salesummaries_list'), { 
+                    replace: false,
+                    preserveState: true,
+                    preserveScroll: true, 
+                });
             }else{
                 Swal.fire({
                     title: 'Error',
-                    text: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
+                    html: 'Codigo: '+ res.data.code + '<br> Descripcion: ' + res.data.message ,
                     icon: 'error',
                     padding: '2em',
                     customClass: 'sweet-alerts',
                 });
             }
             displaySaveLoading.value = false;
+        }).then(() => {
+            router.visit(route('salesummaries_list'), { 
+                replace: false,
+                preserveState: true,
+                preserveScroll: true, 
+            });
         });
     }
 
@@ -122,7 +132,11 @@
                     padding: '2em',
                     customClass: 'sweet-alerts',
                 });
-                router.visit(route('salesummaries_list'), { replace: true });
+                router.visit(route('salesummaries_list'), { 
+                    replace: false,
+                    preserveState: true,
+                    preserveScroll: true, 
+                });
             }else{
                 Swal.fire({
                     title: 'Error',
@@ -131,7 +145,11 @@
                     padding: '2em',
                     customClass: 'sweet-alerts',
                 });
-                router.visit(route('salesummaries_list'), { replace: true });
+                router.visit(route('salesummaries_list'), { 
+                    replace: false,
+                    preserveState: true,
+                    preserveScroll: true, 
+                });
             }
         });
     }
@@ -152,7 +170,11 @@
                     padding: '2em',
                     customClass: 'sweet-alerts',
                 });
-                router.visit(route('salesummaries_list'), { replace: true });
+                router.visit(route('salesummaries_list'), { 
+                    replace: false,
+                    preserveState: true,
+                    preserveScroll: true, 
+                });
             }
         });
     }
