@@ -234,7 +234,6 @@ const openSwal2Certificate = () => {
                 }
             }).then((res) => {
                 if (!res.data.certificate.success) {
-                    form.certificate_sunat = res.data.certificate.file_name;
                     Swal.showValidationMessage(res.data.certificate.error);
                 }
                 return res
@@ -243,6 +242,7 @@ const openSwal2Certificate = () => {
         allowOutsideClick: () => !Swal.isLoading()
     }).then((result) => {
         if (result.isConfirmed) {
+            form.certificate_sunat = res.data.certificate.file_name;
             showMessage('El archivo .pem se genero correctamente');
         }
     });
