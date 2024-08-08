@@ -595,7 +595,7 @@ const uploadImages = () => {
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                                 <div>
                                     <label for="user_sunat">SOAP Usuario *</label>
-                                    <input v-model="form.user_sunat" id="user_sunat" type="text"  placeholder="RUC + Usuario" class="form-input" />
+                                    <input v-model="form.user_sunat" id="user_sunat" type="text"  placeholder="Usuario" class="form-input" />
                                     <InputError :message="form.errors.user_sunat" class="mt-2" />
                                 </div>
                                 <div>
