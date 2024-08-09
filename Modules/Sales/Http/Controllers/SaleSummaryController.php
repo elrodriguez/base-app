@@ -77,6 +77,7 @@ class SaleSummaryController extends Controller
                         'status'                    => $document['status'],
                         'total'                     => $document['invoice_mto_imp_sale']
                     ]);
+
                     SaleDocument::where('id', $document['id'])
                         ->update(['invoice_status' => 'Enviada']);
                 }

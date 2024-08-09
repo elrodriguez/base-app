@@ -164,8 +164,11 @@ class Boleta
     {
         try {
             $document = SaleDocument::find($id);
+
             $invoice = $this->setDocument($document);
+
             $pdf = $this->util->getPdf($invoice);
+
             $filePath = $this->util->showPdf($pdf, $invoice->getName() . '.pdf');
             $document->invoice_pdf = $filePath;
             $document->save();

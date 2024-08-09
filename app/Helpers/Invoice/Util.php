@@ -162,14 +162,18 @@ final class Util
 
     public function getPdf(DocumentInterface $document): ?string
     {
+
         $fileDir = $this->folder . DIRECTORY_SEPARATOR . 'cache';
+
         $html = new HtmlReport('', [
             'cache' => $fileDir,
             'strict_variables' => true,
         ]);
 
         $resolver = new DefaultTemplateResolver();
+
         $template = $resolver->getTemplate($document);
+
         $html->setTemplate($template);
 
         $render = new PdfReport($html);
@@ -187,7 +191,9 @@ final class Util
             $render->setBinPath($binPath);
         }
 
+
         $hash = $this->getHash($document);
+
         $params = self::getParametersPdf($this->company);
 
         $params['system']['hash'] = $hash;
@@ -262,9 +268,11 @@ final class Util
     private function getHash(DocumentInterface $document): ?string
     {
         $see = $this->getSee('');
+
         $xml = $see->getXmlSigned($document);
 
         return (new XmlUtils())->getHashSign($xml);
+        //return null;
     }
 
     /**
@@ -272,7 +280,12 @@ final class Util
      */
     private static function getParametersPdf($company): array
     {
-        $img = public_path($company->logo);
+        $img = null;
+        if ($company->logo == '/img/logo176x32.png') {
+            $img = public_path($company->logo);
+        } else {
+            $img = public_path('storage/' . $company->logo);
+        }
 
         $logo = file_get_contents($img);
 

@@ -28,6 +28,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use App\Helpers\Invoice\Documents\Factura;
+use Modules\Sales\Entities\SaleSummary;
+use Modules\Sales\Entities\SaleSummaryDetail;
+use App\Helpers\Invoice\Documents\Resumen;
 
 class SaleDocumentController extends Controller
 {
@@ -776,6 +779,7 @@ class SaleDocumentController extends Controller
 
     public function printDocument($id, $type, $file)
     {
+
         $res = array();
         $content_type = null;
         switch ($type) {
@@ -1131,6 +1135,68 @@ class SaleDocumentController extends Controller
             return response()->json($res);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function cancelDocument(Request $request)
+    {
+        $type = $request->get('type');
+        $document = SaleDocument::find($request->get('id'));
+
+        $res = [];
+
+        if ($type == '03') {
+            $document->status = 3;
+            $document->reason_cancellation = $request->get('reason');
+            $document->invoice_status = 'Enviada';
+            $document->save();
+            $res = $this->createSumamry($document);
+        }
+
+        return response()->json($res);
+    }
+
+    public function createSumamry($document)
+    {
+
+        $generation_date = $document->invoice_broadcast_date;
+
+        try {
+            $res = DB::transaction(function () use ($document, $generation_date) {
+
+                $summary = SaleSummary::create([
+                    'generation_date'   => $generation_date . ' ' . Carbon::parse($document->created_at)->format('H:i:s'),
+                    'summary_date'      => Carbon::now()->format('Y-m-d H:i:s'),
+                    'status'            => 'registrado',
+                    'reason'            => $document->reason_cancellation
+                ]);
+
+                SaleSummaryDetail::create([
+                    'document_id'               => $document->id,
+                    'summary_id'                => $summary->id,
+                    'model_name'                => SaleDocument::class,
+                    'invoice_type_doc'          => $document->invoice_type_doc,
+                    'invoice_serie'             => $document->invoice_serie,
+                    'invoice_document_name'     => $document->invoice_serie . '-' . $document->number,
+                    'invoice_correlative'       => $document->invoice_correlative,
+                    'status'                    => $document->status,
+                    'total'                     => $document->invoice_mto_imp_sale
+                ]);
+
+                $factura = new Resumen();
+                $result = $factura->create($summary, [$document]);
+
+                return [
+                    'success' => $result['success'],
+                    'code'  => $result['code'],
+                    'message'   => $result['message'],
+                    'notes'   => $result['notes']
+                ];
+            });
+
+            return $res;
+        } catch (\Exception $e) {
+            return ['message' => $e->getMessage()];
         }
     }
 }

@@ -8,7 +8,7 @@
         "php": "^8.1",
         "barryvdh/laravel-dompdf": "^2.0",
         "biscolab/laravel-recaptcha": "^6.0",
-        "greenter/greenter": "^5.0",
+        "greenter/greenter": "^5.1.0",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^1.2",
         "intervention/image": "^2.7",

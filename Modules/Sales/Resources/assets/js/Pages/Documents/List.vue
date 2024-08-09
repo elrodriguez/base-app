@@ -60,27 +60,6 @@
         showteButtonSave.value = false;
     }
 
-    const formDelete= useForm({});
-
-    const deleteSale = (id) => {
-        swal({
-            title: "Estas seguro",
-            text: "No podrás revertir esto!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                formDelete.delete(route('sales.destroy',id),{
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        swal('Venta Anulada correctamente');
-                    }
-                });
-            } 
-        });
-    }
-
     const sendSunatDocument = (document) => {
         initializeDropdownItems();
         Swal.fire({
@@ -98,7 +77,12 @@
                             cadena += `<br>Nota: ${notes}`;
                         }
                         Swal.showValidationMessage(cadena)
-                        router.visit(route('saledocuments_list'), { replace: true });
+                        router.visit(route('saledocuments_list'),{
+                            method: 'get',
+                            replace: false,
+                            preserveState: true,
+                            preserveScroll: true,
+                        });
                     }
                     return res
                 });
@@ -116,9 +100,14 @@
                     title: `${result.value.data.message}`,
                     html: `${cadena}`,
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 }).then(() => {
                     router.visit(route('saledocuments_list'),{
-                        method: 'get'
+                        method: 'get',
+                        replace: false,
+                        preserveState: true,
+                        preserveScroll: true,
                     });
                 });
 
@@ -171,9 +160,14 @@
                     title: `Enhorabuena`,
                     html: `${response.data.message}`,
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 }).then(() => {
                     router.visit(route('saledocuments_list'),{
-                        method: 'get'
+                        method: 'get',
+                        replace: false,
+                        preserveState: true,
+                        preserveScroll: true,
                     });
                 });
             }else{
@@ -181,6 +175,8 @@
                     title: `Error`,
                     html: `${response.data.message}`,
                     icon: 'error',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
             }
         });
@@ -250,10 +246,15 @@
                     title: `Enhorabuena`,
                     html: `Documento Actualizado correctamente`,
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
                 formHead.reset();
                 router.visit(route('saledocuments_list'),{
-                    method: 'get'
+                    method: 'get',
+                    replace: false,
+                    preserveState: true,
+                    preserveScroll: true,
                 });
             }
         });
@@ -264,9 +265,105 @@ const formatDate = (dateString) => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
 }
 
-const cancelDocument = () => {
-    alert('anular')
+const createFormReason = () => {
+
+    let formHTML = document.createElement('form');
+    formHTML.classList.add('max-w-sm', 'mx-auto');
+
+
+    let rLabel = document.createElement('label');
+    rLabel.setAttribute('for', 'ctnTextareaReason');
+    rLabel.classList.add('text-left','text-sm','mt-4');
+    rLabel.textContent = 'Ingresar motivo de anulacion';
+
+    let rInput = document.createElement('textarea');
+    rInput.id = 'ctnTextareaReason';
+    rInput.classList.add(
+        'form-textarea'
+    );
+
+    rInput.required = true;
+    rInput.rows = 3;
+
+    formHTML.appendChild(rLabel);
+    formHTML.appendChild(rInput);
+
+    return formHTML;
+
 }
+
+const cancelDocument = (index, item) => {
+    Swal.fire({
+        icon: 'question',
+        title: '¿Estas seguro?',
+        text: "¡No podrás revertir esto!",
+        showCancelButton: true,
+        confirmButtonText: '¡Sí, Anularlo!',
+        cancelButtonText: '¡No, cancelar!',
+        padding: '2em',
+        customClass: 'sweet-alerts',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
+                html: createFormReason(),
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                padding: '2em',
+                customClass: 'sweet-alerts',
+                showLoaderOnConfirm: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                preConfirm: async (input) => {
+                    let textarea = document.getElementById("ctnTextareaReason").value;
+                    if(textarea){
+                        return axios.post(route('saledocuments_cancel_document'), {
+                            reason: textarea,
+                            id: item.id,
+                            type: item.invoice_type_doc
+                        }).then((res) => {
+                            if (!res.data.status) {
+                                Swal.showValidationMessage(res.data.alert)
+                            }
+                            return res
+                        });
+                    }else{
+                        Swal.showValidationMessage('El motivo es obligatorio')
+                    }
+                    
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    showMessage('El documento fue anulado correctamente');
+                    router.visit(route('saledocuments_list'),{
+                        method: 'get',
+                        replace: false,
+                        preserveState: true,
+                        preserveScroll: true,
+                    });
+                }
+            });
+        }
+    });
+}
+
+const showMessage = (msg = '', type = 'success') => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            customClass: { container: 'toast' },
+        });
+        toast.fire({
+            icon: type,
+            title: msg,
+            padding: '10px 20px',
+        });
+    };
 </script>
 
 <template>
@@ -369,10 +466,10 @@ const cancelDocument = () => {
                                                         <MenuItem>
                                                             <Button @click="opemModalDetails(document)" type="button" >Detalles</Button>
                                                         </MenuItem>
-                                                        <MenuItem v-if="document.invoice_status != 'Aceptada'">
-                                                            <Button @click="cancelDocument(index, document.id)" type="button" >Anular</Button>
+                                                        <MenuItem v-if="document.status == 1">
+                                                            <Button @click="cancelDocument(index, document)" type="button" >Anular</Button>
                                                         </MenuItem>
-                                                        <MenuItem v-if="document.invoice_status === 'Aceptada'">
+                                                        <MenuItem>
                                                             <Button @click="downloadDocument(document.document_id,document.invoice_type_doc,'PDF')"
                                                                 type="button"
                                                                 >Imprimir PDF</Button>

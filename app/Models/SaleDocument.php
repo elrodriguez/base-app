@@ -54,6 +54,7 @@ class SaleDocument extends Model
         'invoice_status',
         'invoice_mto_discount',
         'invoice_json_discounts',
+        'reason_cancellation'
     ];
 
     public function items(): HasMany

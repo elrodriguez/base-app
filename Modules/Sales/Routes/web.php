@@ -104,6 +104,8 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::get('saledocuments/download/{id}/{type}/{file}', [SaleDocumentController::class, 'printDocument'])->name('saledocuments_download');
     Route::post('saledocuments/update/head', [SaleDocumentController::class, 'updateHead'])->name('saledocuments_update_head');
 
+    Route::post('saledocuments/cancellation/send', [SaleDocumentController::class, 'cancelDocument'])->name('saledocuments_cancel_document');
+
     ////rutas de resumen diario
     Route::get('salesummary/list', [SaleSummaryController::class, 'index'])->name('salesummaries_list');
     Route::get('salesummary/search/{date}', [SaleSummaryController::class, 'searchDocuments'])->name('salesummaries_search_date');

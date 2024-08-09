@@ -24,7 +24,8 @@ class SaleSummary extends Model
         'notes',
         'status',
         'user_id',
-        'anio'
+        'anio',
+        'reason'
     ];
 
     protected static function newFactory()
