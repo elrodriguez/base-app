@@ -197,7 +197,7 @@ final class Util
         $params = self::getParametersPdf($this->company);
 
         $params['system']['hash'] = $hash;
-        $params['user']['footer'] = '<div>consulte en <a href="https://github.com/giansalex/sufel">sufel.com</a></div>';
+        $params['user']['footer'] = '<div>Para consultar el comprobante ingresar a <a href="' . route('find_electronic_invoice') . '">' . route('find_electronic_invoice') . '</a></div>';
 
         $pdf = $render->render($document, $params);
 
@@ -252,9 +252,11 @@ final class Util
 
     public static function getPathBin(): string
     {
-        $path = __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'wkhtmltopdf';
+        $path = __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR;
         if (self::isWindows()) {
-            $path .= '.exe';
+            $path .= 'wkhtmltopdf.exe';
+        } else {
+            $path .= 'wkhtmltox.deb';
         }
 
         return $path;

@@ -27,6 +27,8 @@ Route::get('/computer/store', [LandingController::class, 'computerStore'])->name
 //////mensajes de whatsapp///////
 Route::get('/ask/product/{id}', [LandingController::class, 'redirectToWhatsApp'])->name('whatsapp_send');
 
+/////cunsulta comprobante electronico ///////////
+Route::get('/find/invoice', [LandingController::class, 'findInvoice'])->name('find_electronic_invoice');
 
 Route::get('/blog/home', [BlogController::class, 'index'])->name('blog_principal');
 Route::get('/article/{url}', [BlogController::class, 'article'])->name('blog_article_by_url');
