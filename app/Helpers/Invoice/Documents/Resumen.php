@@ -104,7 +104,7 @@ class Resumen
                         ->update([
                             'invoice_status' => 'Aceptada',
                             'invoice_response_code' => 0,
-                            'invoice_response_description' => 'Emviado en resumen ' . $summary->summary_name . ' Número ticket: ' . $ticket
+                            'invoice_response_description' => 'Enviado en resumen ' . $summary->summary_name . ' Número ticket: ' . $ticket
                         ]);
                 }
                 $status = $cdr->getCode() == 0 ? 'Aceptado' : null;
@@ -147,8 +147,8 @@ class Resumen
             $detiail = new SummaryDetail();
             if ($document['invoice_type_doc'] == '03') {
                 $serie_number = $document['invoice_serie'] . '-' . $document['invoice_correlative'];
-                ///estados de boleta 
-                ///1= Se esta informando por primera vez. 
+                ///estados de boleta
+                ///1= Se esta informando por primera vez.
                 ///2= Se informó previamente y se quiere editar sus valores.
                 ///3= Se quiere anular el comprobante
                 $detiail->setTipoDoc($document['invoice_type_doc'])
