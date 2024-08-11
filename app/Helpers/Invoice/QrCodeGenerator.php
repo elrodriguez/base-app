@@ -6,31 +6,25 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'Vendor' . DIRECTORY_SEPARATOR . 'phpqrc
 
 class QrCodeGenerator
 {
-    private $size;
 
-    public function __construct($size = 200)
+    public function generateQR($text, $directory = false, $file_name = null, $size = 3, $margin = 4, $saveandprint = false)
     {
-        $this->size = $size;
-    }
-    public function generateQR($text, $outfile = false, $size = 3, $margin = 4, $saveandprint = false)
-    {
-        // Verifica si la clase QRcode está disponible
-        // s = pequeño
-        // m = mediano
-        // l = pequeño
-        // xl = pequeño
 
-        if ($outfile) {
-            if (!file_exists($outfile)) {
-                mkdir($outfile, 0777, true);
+        if ($directory) {
+            if (!file_exists($directory)) {
+                mkdir($directory, 0777, true);
             }
         } else {
             $filePath = false;
         }
 
+        if ($file_name) {
+            $filePath = $directory . DIRECTORY_SEPARATOR . $file_name;
+        } else {
+            $randomFileName = $this->generateRandomFileName();
+            $filePath = $directory . DIRECTORY_SEPARATOR . $randomFileName;
+        }
 
-        $randomFileName = $this->generateRandomFileName();
-        $filePath = $outfile . DIRECTORY_SEPARATOR . $randomFileName;
 
         if (class_exists('QRcode')) {
             \QRcode::png($text, $filePath, QR_ECLEVEL_M, $size, $margin);

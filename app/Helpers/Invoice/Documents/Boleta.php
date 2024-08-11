@@ -167,14 +167,15 @@ class Boleta
     {
         try {
             $document = SaleDocument::find($id);
+            $invoice = $this->setDocument($document);
 
             $generator = new QrCodeGenerator(300);
             $dir = public_path() . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'tmp_qr';
             $cadenaqr = $this->stringQr($document);
 
-            $qr_path = $generator->generateQR($cadenaqr, $dir, 8, 2);
+            $qr_path = $generator->generateQR($cadenaqr, $dir, $invoice->getName() . '.png', 8, 2);
 
-            $invoice = $this->setDocument($document);
+
             $seller = User::find($document->user_id);
             $pdf = $this->util->generatePdf($invoice, $seller, $qr_path);
             $document->invoice_pdf = $pdf;
