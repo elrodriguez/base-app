@@ -47,6 +47,7 @@
         "datatables.net-vue3": "^3.0.1",
         "easymde": "^2.18.0",
         "file-upload-with-preview": "^6.0.2",
+        "flatpickr": "^4.6.13",
         "flowbite": "^1.8.1",
         "flowbite-vue": "^0.0.17",
         "fullcalendar": "^6.1.14",

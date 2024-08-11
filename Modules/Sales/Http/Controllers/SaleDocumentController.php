@@ -32,6 +32,7 @@ use Modules\Sales\Entities\SaleSummary;
 use Modules\Sales\Entities\SaleSummaryDetail;
 use App\Helpers\Invoice\Documents\Resumen;
 
+
 class SaleDocumentController extends Controller
 {
     use ValidatesRequests;
@@ -280,7 +281,8 @@ class SaleDocumentController extends Controller
                     'invoice_send_date'             => Carbon::now()->format('Y-m-d'),
                     'invoice_legend_code'           => '1000',
                     'invoice_legend_description'    => $numberletters->convertToLetter($request->get('total')),
-                    'invoice_status'                => 'registrado'
+                    'invoice_status'                => 'registrado',
+                    'user_id'                       => Auth::id()
                 ]);
 
                 ///obtenemos los productos o servicios para insertar en los 
@@ -786,7 +788,7 @@ class SaleDocumentController extends Controller
             case '01':
                 $factura = new Factura();
                 if ($file == 'PDF') {
-                    $res = $factura->getFacturaPdf($id);
+                    $res = $factura->getFacturaDomPdf($id);
                     $content_type = 'application/pdf';
                 } else if ($file == 'XML') {
                     $content_type =  'application/xml';
@@ -801,7 +803,7 @@ class SaleDocumentController extends Controller
                 $boleta = new Boleta();
                 if ($file == 'PDF') {
                     $content_type = 'application/pdf';
-                    $res = $boleta->getBoletatPdf($id);
+                    $res = $boleta->getBoletatDomPdf($id);
                 } else if ($file == 'XML') {
                     $content_type =  'application/xml';
                     $res = $boleta->getBoletaXML($id);
@@ -815,6 +817,7 @@ class SaleDocumentController extends Controller
                 echo "i es igual a 2";
                 break;
         }
+        //dd($res);
         //return response()->file($res['filePath'], ['content-type' => 'application/pdf']);
         return response()->download($res['filePath'], $res['fileName'], ['content-type' => $content_type]);
     }
@@ -1168,7 +1171,8 @@ class SaleDocumentController extends Controller
                     'generation_date'   => $generation_date . ' ' . Carbon::parse($document->created_at)->format('H:i:s'),
                     'summary_date'      => Carbon::now()->format('Y-m-d H:i:s'),
                     'status'            => 'registrado',
-                    'reason'            => $document->reason_cancellation
+                    'reason'            => $document->reason_cancellation,
+                    'user_id'           => Auth::id()
                 ]);
 
                 SaleSummaryDetail::create([

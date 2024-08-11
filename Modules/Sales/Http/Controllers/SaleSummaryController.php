@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Modules\Sales\Entities\SaleSummary;
@@ -62,7 +63,8 @@ class SaleSummaryController extends Controller
                 $summary = SaleSummary::create([
                     'generation_date'   => $generation_date . ' ' . Carbon::now()->format('H:i:s'),
                     'summary_date'      => Carbon::now()->format('Y-m-d H:i:s'),
-                    'status'            => 'registrado'
+                    'status'            => 'registrado',
+                    'user_id'           => Auth::id()
                 ]);
 
                 foreach ($documents as $document) {

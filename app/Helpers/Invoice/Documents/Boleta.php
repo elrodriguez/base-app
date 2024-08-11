@@ -12,9 +12,11 @@ use Greenter\Model\Company\Company;
 use Carbon\Carbon;
 use DateTime;
 use App\Models\Company as MyCompany;
+use App\Models\User;
 use Exception;
 use Greenter\Model\Company\Address;
 use Greenter\Model\Sale\Charge;
+use App\Helpers\Invoice\QrCodeGenerator;
 
 class Boleta
 {
@@ -160,15 +162,41 @@ class Boleta
 
         return $invoice;
     }
+
+    public function getBoletatDomPdf($id)
+    {
+        try {
+            $document = SaleDocument::find($id);
+
+            $generator = new QrCodeGenerator(300);
+            $dir = public_path() . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'tmp_qr';
+            $cadenaqr = $this->stringQr($document);
+
+            $qr_path = $generator->generateQR($cadenaqr, $dir, 8, 2);
+
+            $invoice = $this->setDocument($document);
+            $seller = User::find($document->user_id);
+            $pdf = $this->util->generatePdf($invoice, $seller, $qr_path);
+            $document->invoice_pdf = $pdf;
+            $document->save();
+
+            return array(
+                'fileName' => $invoice->getName() . '.pdf',
+                'filePath' => $document->invoice_pdf
+            );
+        } catch (Exception $e) {
+            var_dump($e);
+        }
+    }
+
     public function getBoletatPdf($id)
     {
         try {
             $document = SaleDocument::find($id);
 
             $invoice = $this->setDocument($document);
-
-            $pdf = $this->util->getPdf($invoice);
-
+            $seller = User::find($document->user_id);
+            $pdf = $this->util->getPdf($invoice, $seller);
             $filePath = $this->util->showPdf($pdf, $invoice->getName() . '.pdf');
             $document->invoice_pdf = $filePath;
             $document->save();
@@ -206,5 +234,10 @@ class Boleta
         } catch (Exception $e) {
             var_dump($e);
         }
+    }
+
+    public function stringQr($document)
+    {
+        return $this->mycompany->ruc . '|' . $document->invoice_type_doc . '|' . $document->invoice_serie . '|' . $document->invoice_correlative . '|' . $document->invoice_mto_imp_sale . '|' . $document->invoice_broadcast_date . '|' . $document->client_type_doc . '|' . $document->client_number;
     }
 }

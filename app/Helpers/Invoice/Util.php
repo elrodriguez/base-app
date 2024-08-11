@@ -16,6 +16,7 @@ use Greenter\Report\Resolver\DefaultTemplateResolver;
 use Greenter\Report\XmlUtils;
 use Greenter\See;
 use Greenter\Ws\Services\SunatEndpoints;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 final class Util
 {
@@ -155,12 +156,39 @@ final class Util
             mkdir($fileDir, 0777, true);
         }
         $filePath = $fileDir . DIRECTORY_SEPARATOR . $filename;
+
+
         file_put_contents($filePath, $content);
 
         return $filePath;
     }
 
-    public function getPdf(DocumentInterface $document): ?string
+    public function generatePdf(DocumentInterface $document, $seller = null, $qr_path = null)
+    {
+
+        $params = self::getParametersPdf($this->company, $seller);
+
+        $fileDir = public_path();
+
+        if (!file_exists($fileDir)) {
+            mkdir($fileDir, 0777, true);
+        }
+        $filename = $document->getName() . '.pdf';
+        $filePath = $fileDir . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'invoice' . DIRECTORY_SEPARATOR . $filename;
+        //dd($document);
+        $pdf = Pdf::loadView('sales::sales.invoice_pdf', [
+            'document' => $document,
+            'params' => $params,
+            'qr_path' => $qr_path
+        ]);
+        //$pdf->setPaper(array(0, 0, 273, 500), 'portrait');
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->save($filePath);
+
+        return $filePath;
+    }
+
+    public function getPdf(DocumentInterface $document, $seller = null): ?string
     {
 
         $fileDir = $this->folder . DIRECTORY_SEPARATOR . 'cache';
@@ -187,17 +215,17 @@ final class Util
         ]);
 
         $binPath = self::getPathBin();
+
         if (file_exists($binPath)) {
             $render->setBinPath($binPath);
         }
 
-
         $hash = $this->getHash($document);
 
-        $params = self::getParametersPdf($this->company);
+        $params = self::getParametersPdf($this->company, $seller);
 
         $params['system']['hash'] = $hash;
-        $params['user']['footer'] = '<div>Para consultar el comprobante ingresar a <a href="' . route('find_electronic_invoice') . '">' . route('find_electronic_invoice') . '</a></div>';
+        $params['user']['footer'] = '<div>consulte en <a href="' . route("find_electronic_invoice") . '">BUSCAR</a></div>';
 
         $pdf = $render->render($document, $params);
 
@@ -280,9 +308,10 @@ final class Util
     /**
      * @return array<string, array<string, array<int, array<string, string>>|bool|string>>
      */
-    private static function getParametersPdf($company): array
+    private static function getParametersPdf($company, $seller = null): array
     {
         $img = null;
+
         if ($company->logo == '/img/logo176x32.png') {
             $img = public_path($company->logo);
         } else {
@@ -290,6 +319,12 @@ final class Util
         }
 
         $logo = file_get_contents($img);
+
+        $seller_name = 'ARACODE SELLER';
+
+        if ($seller) {
+            $seller_name  = $seller->name;
+        }
 
         return [
             'system' => [
@@ -300,8 +335,14 @@ final class Util
                 'resolucion' => '212321',
                 'header' => $company->phone,
                 'extras' => [
-                    ['name' => 'FORMA DE PAGO', 'value' => 'Contado'],
-                    ['name' => 'VENDEDOR', 'value' => 'GITHUB SELLER'],
+                    [
+                        'name' => 'FORMA DE PAGO',
+                        'value' => 'Contado'
+                    ],
+                    [
+                        'name' => 'VENDEDOR',
+                        'value' => $seller_name
+                    ],
                 ],
             ]
         ];

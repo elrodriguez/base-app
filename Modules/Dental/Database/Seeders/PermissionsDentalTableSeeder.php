@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Health\Database\Seeders;
+namespace Modules\Dental\Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
