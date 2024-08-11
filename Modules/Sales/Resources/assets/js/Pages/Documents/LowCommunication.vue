@@ -246,7 +246,7 @@
                             </thead>
                             <tbody>
                                 <template v-for="(communication, index) in communications.data" :key="communication.id">
-                                    <tr :class="summary.status ==='registrado' ? '' : summary.status ==='Rechazado' ? 'text-danger': summary.status ==='Enviado'? 'text-success' : 'text-primary'">
+                                    <tr :class="communication.status ==='registrado' ? '' : communication.status ==='Rechazado' ? 'text-danger': communication.status ==='Enviado'? 'text-success' : 'text-primary'">
                                         <td class="text-center">
                                             <div class="flex gap-4 items-center justify-center">
                                                 <button :id="'btn-check-summary'+index" @click="statusTicket(communication.id,communication.ticket,index)" v-if="communication.status ==='Enviado'" type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

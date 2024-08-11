@@ -31,7 +31,7 @@ use App\Helpers\Invoice\Documents\Factura;
 use Modules\Sales\Entities\SaleSummary;
 use Modules\Sales\Entities\SaleSummaryDetail;
 use App\Helpers\Invoice\Documents\Resumen;
-
+use DataTables;
 
 class SaleDocumentController extends Controller
 {
@@ -105,7 +105,8 @@ class SaleDocumentController extends Controller
                 'sale_documents.client_phone',
                 'sale_documents.client_email',
                 'sale_documents.invoice_broadcast_date',
-                'sale_documents.invoice_due_date'
+                'sale_documents.invoice_due_date',
+                'sale_documents.reason_cancellation'
             )
             ->whereIn('series.document_type_id', [1, 2])
             //->whereDate('sales.created_at', '=', $current_date)
@@ -133,6 +134,56 @@ class SaleDocumentController extends Controller
                 'icbper' => $this->icbper
             )
         ]);
+    }
+
+    public function tableDocument()
+    {
+        $sales = (new Sale())->newQuery();
+
+        $isAdmin = Auth::user()->hasRole('admin');
+
+        $sales = $sales->join('people', 'client_id', 'people.id')
+            ->join('sale_documents', 'sale_documents.sale_id', 'sales.id')
+            ->join('series', 'sale_documents.serie_id', 'series.id')
+            ->select(
+                'sales.id',
+                'sales.client_id',
+                'sale_documents.id AS document_id',
+                'people.full_name',
+                'total',
+                'advancement',
+                'total_discount',
+                'payments',
+                'sales.created_at',
+                'sales.local_id',
+                'sale_documents.invoice_status',
+                'sale_documents.invoice_response_description',
+                'sale_documents.invoice_response_code',
+                'sale_documents.invoice_notes',
+                'sale_documents.status',
+                'series.description AS serie',
+                'sale_documents.number',
+                'sale_documents.invoice_correlative',
+                'sale_documents.invoice_type_doc',
+                'sale_documents.client_number',
+                'sale_documents.client_rzn_social',
+                'sale_documents.client_address',
+                'sale_documents.client_ubigeo_code',
+                'sale_documents.client_ubigeo_description',
+                'sale_documents.client_phone',
+                'sale_documents.client_email',
+                'sale_documents.invoice_broadcast_date',
+                'sale_documents.invoice_due_date',
+                'sale_documents.reason_cancellation'
+            )
+            ->whereIn('series.document_type_id', [1, 2])
+            ->when(!$isAdmin, function ($q) {
+                return $q->where('sales.user_id', Auth::id());
+            })
+            ->with('documents.items')
+            ->orderBy('sales.created_at', 'DESC');
+
+        return DataTables::of($sales)->toJson();
     }
 
     /**
@@ -1151,9 +1202,11 @@ class SaleDocumentController extends Controller
         if ($type == '03') {
             $document->status = 3;
             $document->reason_cancellation = $request->get('reason');
-            $document->invoice_status = 'Enviada';
+            $document->invoice_status = 'Enviada Por Anular';
             $document->save();
             $res = $this->createSumamry($document);
+            $boleta = new Boleta();
+            $boleta->updateStockSale($document->id);
         }
 
         return response()->json($res);

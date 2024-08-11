@@ -15,8 +15,17 @@
     import DialogModal from '@/Components/DialogModal.vue';
     import Swal from "sweetalert2";
     import { Link, router } from '@inertiajs/vue3';
-    import { ConfigProvider, Dropdown,Menu,MenuItem,Button } from 'ant-design-vue';
+
     import Navigation from '@/Components/vristo/layout/Navigation.vue';
+    import DataTable from 'datatables.net-vue3';
+    import DataTablesCore from 'datatables.net';
+    import 'datatables.net-responsive';
+    import '@/Components/vristo/datatables/datatables.css'
+    import '@/Components/vristo/datatables/style.css'
+    import es_PE from '@/Components/vristo/datatables/datatables-es.js'
+
+
+    DataTable.use(DataTablesCore);
 
     const props = defineProps({
         documents: {
@@ -360,6 +369,24 @@ const showMessage = (msg = '', type = 'success') => {
             padding: '10px 20px',
         });
     };
+
+    const columns = [
+        {
+            data: null,
+            render: '#action',
+            title: 'Acciones'
+        },
+        { data: null, render: '#document', title: 'Nmr. Documento' },
+        { data: null, render: '#created',title: 'Fecha Registrado' },
+        { data: 'invoice_broadcast_date', title: 'Fecha Emitido' },
+        { data: 'full_name', title: 'Cliente' },
+        { data: 'total', title: 'Total' },
+        { data: null, render: '#status', title: 'Estado' },
+    ];
+    const options = { 
+        responsive: true, 
+        language: es_PE 
+    }
 </script>
 
 <template>
@@ -369,143 +396,91 @@ const showMessage = (msg = '', type = 'success') => {
                 <span>Lista de Documentos </span>
             </li>
         </Navigation>
-        <div class="mt-5 space-y-8">
-            <!-- ====== Table Section Start -->
-            <div class="flex flex-col gap-10">
-                <!-- ====== Table One Start -->
-                <div class="panel p-0">
-                    <div class="w-full p-4">
-                        <div class="grid grid-cols-3">
-                            <div class="col-span-3 sm:col-span-1">
-                                <form @submit.prevent="form.get(route('saledocuments_list'))">
-                                <label for="table-search" class="sr-only">Search</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-                                        </div>
-                                        <input v-model="form.search" type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar por cliente">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-span-3 sm:col-span-2">
-                                <Keypad>
-                                    <template #botones>
-                                        <Link :href="route('saledocuments_create')" class="inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Nuevo</Link>
-                                    </template>
-                                </Keypad>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <ConfigProvider>
-                        <table>
-                            <thead >
-                                <tr >
-                                    <th class="text-center">
-                                        Acciones
-                                    </th>
-                                    <th>
-                                        Nmr. Documento
-                                    </th>
-                                    <th>
-                                        Fecha Registrado
-                                    </th>
-                                    <th>
-                                        Fecha Emitido
-                                    </th>
-                                    <th>
-                                        Cliente
-                                    </th>
-                                    <th>
-                                        Total
-                                    </th>
-                                    <th>
-                                        Estado
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template v-for="(document, index) in documents.data" :key="document.id">
-                                    <tr :class="document.invoice_status ==='registrado' ? '' : document.invoice_status ==='Rechazada' ? 'text-danger': document.invoice_status ==='Pendiente' ? 'text-warning': 'text-primary'">
-                                        <td>
-                                            <Dropdown :placement="'bottomLeft'">
-                                                <button class="border py-1.5 px-2 dropdown-button inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm" type="button">
-                                                    <font-awesome-icon :icon="faGears" />
-                                                </button>
-                                                <template #overlay>
-                                                    <Menu>
-                                                        <MenuItem v-if="document.invoice_status != 'Aceptada'">
-                                                            <Button @click="showModalEditDocument(document)" type="button" >Editar</Button>
-                                                        </MenuItem>
-                                                        <MenuItem v-if="document.invoice_status != 'Aceptada'">
-                                                            <Button v-can="'invo_documento_envio_sunat'" @click="sendSunatDocument(document)" type="button" >Enviar a Sunat</Button>
-                                                        </MenuItem>
-                                                        <MenuItem>
-                                                            <Button @click="opemModalDetails(document)" type="button" >Detalles</Button>
-                                                        </MenuItem>
-                                                        <MenuItem v-if="document.status == 1">
-                                                            <Button @click="cancelDocument(index, document)" type="button" >Anular</Button>
-                                                        </MenuItem>
-                                                        <MenuItem>
-                                                            <Button @click="downloadDocument(document.document_id,document.invoice_type_doc,'PDF')"
-                                                                type="button"
-                                                                >Imprimir PDF</Button>
-                                                        </MenuItem>
-                                                        <MenuItem v-if="document.invoice_status === 'Aceptada'">
-                                                            <Button @click="downloadDocument(document.document_id,document.invoice_type_doc,'XML')" type="button" >Descargar XML</Button>
-                                                        </MenuItem>
-                                                        <MenuItem v-if="document.invoice_status === 'Aceptada'" >
-                                                            <Button @click="downloadDocument(document.document_id,document.invoice_type_doc,'CDR')" type="button" >Descargar CDR</Button>
-                                                        </MenuItem>
-                                                    </Menu>
-                                                </template>
-                                            </Dropdown>
-                                        </td>
-                                        <td>
-                                            <h6 class="font-semibold">
-                                                {{ document.serie }}-{{ document.number }}
-                                                <span v-if="document.invoice_status =='Rechazada' || document.invoice_status === 'Aceptada' || document.invoice_status === 'Anulada'" class="block text-xs">
-                                                    <code v-if="document.invoice_response_code != 0">
-                                                        Código: {{ document.invoice_response_code }}
-                                                    </code>
-                                                    <code>
-                                                        Descripción: {{ document.invoice_response_description }}
-                                                    </code>
-                                                 </span>
-                                            </h6>
-                                        </td>
-                                        <td>
-                                            {{ formatDate(document.created_at) }}
-                                        </td>
-                                        <td>
-                                            {{ document.invoice_broadcast_date }}
-                                        </td>
-                                        <td>
-                                            {{ document.full_name }}
-                                        </td>
-                                        <td>
-                                            {{ document.total }}
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <span v-if="document.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Activa</span>
-                                                <span v-else-if="document.status == 3" class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
-                                            </div>
-                                            <span v-if="document.invoice_status">
-                                                <small>Estado Sunat:</small>
-                                                {{ document.invoice_status }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </template>
-                            </tbody>
-                        </table>
-                        <Pagination :data="documents" />
-                        </ConfigProvider>
+        <div class="mt-5">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <h2 class="text-xl">Lista de Documentos </h2>
+                <div class="flex sm:flex-row flex-col sm:items-center sm:gap-3 gap-4 w-full sm:w-auto">
+                    <div class="flex gap-3">
+                        <Keypad>
+                            <template #botones>
+                                <Link :href="route('saledocuments_create')" class="inline-block px-6 py-2.5 bg-blue-900 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Nuevo</Link>
+                            </template>
+                        </Keypad>
+
                     </div>
                 </div>
             </div>
+            <div class="panel pb-1.5 mt-6">
+            
+                <DataTable :options="options" :ajax="route('saledocuments_table_document')" :columns="columns">
+                    <template #action="props">
+                        <div class="flex gap-4 items-center justify-center">
+                            <div class="dropdown">
+                                <Popper :placement="'bottom-start'" offsetDistance="0" class="align-middle">
+                                    <button type="button" class="btn btn-outline-primary px-2 py-2 dropdown-toggle">
+                                        <font-awesome-icon :icon="faGears" />
+                                    </button>
+                                    <template #content="{ close }">
+                                    <ul @click="close()" class="whitespace-nowrap">
+                                        <li v-if="props.rowData.invoice_status != 'Aceptada'">
+                                            <a @click="showModalEditDocument(props.rowData)" href="javascript:;">Editar</a>
+                                        </li>
+                                        <li v-if="props.rowData.invoice_status == 'Pendiente'">
+                                            <a @click="sendSunatDocument(props.rowData)" v-can="'invo_documento_envio_sunat'" href="javascript:;">Enviar a Sunat</a>
+                                        </li>
+                                        <li>
+                                            <a @click="opemModalDetails(props.rowData)" href="javascript:;">Detalles</a>
+                                        </li>
+                                        <li v-if="props.rowData.status == 1 || props.rowData.invoice_type_doc == '03'">
+                                            <a @click="cancelDocument(index, props.rowData)" href="javascript:;">Anular</a>
+                                        </li>
+                                        <li>
+                                            <a @click="downloadDocument(props.rowData.document_id,props.rowData.invoice_type_doc,'PDF')" href="javascript:;">Imprimir PDF</a>
+                                        </li>
+                                        <li v-if="props.rowData.invoice_status === 'Aceptada'">
+                                            <a @click="downloadDocument(document.document_id,document.invoice_type_doc,'XML')" href="javascript:;">Descargar XML</a>
+                                        </li>
+                                        <li v-if="props.rowData.invoice_status === 'Aceptada'">
+                                            <a @click="downloadDocument(document.document_id,document.invoice_type_doc,'CDR')" href="javascript:;">Descargar CDR</a>
+                                        </li>
+                                    </ul>
+                                    </template>
+                                </Popper>
+                            </div>
+                        </div>
+                    </template>
+                    <template #document="props">
+                        <h6 class="font-semibold">
+                            {{ props.rowData.serie }}-{{ props.rowData.invoice_correlative }}
+                            <span v-if="props.rowData.invoice_status =='Rechazada' || props.rowData.invoice_status === 'Aceptada' || props.rowData.invoice_status === 'Anulada'" class="block text-xs">
+                                <code v-if="props.rowData.invoice_response_code != 0">
+                                    Código: {{ props.rowData.invoice_response_code }}
+                                </code>
+                                <code>
+                                    Descripción: {{ props.rowData.invoice_response_description }}
+                                </code>
+                            </span>
+                        </h6>
+                        <p v-if="props.rowData.status == 3" class="text-xs text-danger">Motivo de anulacion: {{ props.rowData.reason_cancellation }}</p>
+                    </template>
+                    <template #created="props">
+                        {{ formatDate(props.rowData.created_at) }}
+                    </template>
+                    <template #status="props">
+                        <div>
+                            <span v-if="props.rowData.status == 1" class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Activa</span>
+                            <span v-else-if="props.rowData.status == 3" class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">Anulado</span>
+                        </div>
+                        <span v-if="props.rowData.invoice_status">
+                            <small>Estado Sunat:</small>
+                            {{ props.rowData.invoice_status }}
+                        </span>
+                    </template>
+                </DataTable>
+                        
+            </div>
         </div>
+
         <ModalLargeX
             :show="displayModalDetails"
             :onClose="closeModalDetails"

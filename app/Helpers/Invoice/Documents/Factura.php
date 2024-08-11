@@ -19,6 +19,12 @@ use Greenter\Model\Company\Company;
 use Greenter\Model\Sale\FormaPagos\FormaPagoContado;
 use Greenter\Model\Sale\Charge;
 use App\Helpers\Invoice\QrCodeGenerator;
+use App\Models\Kardex;
+use App\Models\KardexSize;
+use App\Models\Product;
+use App\Models\Sale;
+use App\Models\SaleDocumentItem;
+use Illuminate\Support\Facades\DB;
 
 class Factura
 {
@@ -245,5 +251,74 @@ class Factura
     public function stringQr($document)
     {
         return $this->mycompany->ruc . '|' . $document->invoice_type_doc . '|' . $document->invoice_serie . '|' . $document->invoice_correlative . '|' . $document->invoice_mto_imp_sale . '|' . $document->invoice_broadcast_date . '|' . $document->client_type_doc . '|' . $document->client_number;
+    }
+
+    public function updateStockSale($id)
+    {
+        try {
+            $res = DB::transaction(function () use ($id) {
+                $document = SaleDocument::find($id);
+
+                $sale = Sale::find($document->sale_id);
+                $sale->update(['status' => false]);
+
+                $products = SaleDocumentItem::where('document_id', $document->id)->get();
+
+                foreach ($products as $produc) {
+                    // solo si son productos no aplica a los servicios
+                    if ($produc->unit_type != 'ZZ') {
+
+                        $k = Kardex::create([
+                            'date_of_issue' => Carbon::now()->format('Y-m-d'),
+                            'motion' => 'sale',
+                            'product_id' => $produc->product_id,
+                            'local_id' => $sale->local_id,
+                            'quantity' => $produc->quantity,
+                            'document_id' => $document->id,
+                            'document_entity' => SaleDocument::class,
+                            'description' => 'Anulacion de Venta'
+                        ]);
+
+                        $product = Product::find($produc->product_id);
+
+                        if ($product->presentations) {
+
+                            KardexSize::create([
+                                'kardex_id' => $k->id,
+                                'product_id' => $produc->product_id,
+                                'local_id' => $sale->local_id,
+                                'size'      => json_decode($produc->product)->size,
+                                'quantity'  => $produc->quantity
+                            ]);
+
+                            $tallas = $product->sizes;
+                            $n_tallas = [];
+                            foreach (json_decode($tallas, true) as $k => $talla) {
+                                if ($talla['size'] == $produc['size']) {
+                                    $n_tallas[$k] = array(
+                                        'size' => $talla['size'],
+                                        'quantity' => ($talla['quantity'] + $produc->quantity)
+                                    );
+                                } else {
+                                    $n_tallas[$k] = array(
+                                        'size' => $talla['size'],
+                                        'quantity' => $talla['quantity']
+                                    );
+                                }
+                            }
+                            $product->update([
+                                'sizes' => json_encode($n_tallas)
+                            ]);
+                        }
+                        Product::find($produc->product_id)->increment('stock', $produc->quantity);
+                    }
+                }
+                return $sale;
+            });
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

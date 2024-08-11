@@ -172,48 +172,50 @@
                 <font-awesome-icon :icon="iconSearch" />
             </button>
             <template #content="{ close }">
-                <ul id="result" class="!py-0 text-dark dark:text-white-dark w-[300px] sm:w-[350px] divide-y dark:divide-white/10">
+                <ul id="result" class="!py-0 text-dark dark:text-white-dark w-full sm:w-[650px] divide-y dark:divide-white/10">
                     <li class="items-center px-4 py-2 justify-between font-semibold">
                         <form @submit.prevent="searchProducts()" class="mx-auto w-full mb-5">
                             <div class="relative">
                                 <input v-model="form.search" type="text" placeholder="Buscar... " class="form-input shadow-[0_0_4px_2px_rgb(31_45_61_/_10%)] bg-white rounded-full h-11 placeholder:tracking-wider" autofocus />
                                 <button type="submit" class="btn btn-primary absolute ltr:right-1 rtl:left-1 inset-y-0 m-auto rounded-full w-9 h-9 p-0 flex items-center justify-center">
-                                    <font-awesome-icon :icon="iconSearch" /> 
+                                    <font-awesome-icon :icon="iconSearch" />
                                 </button>
                             </div>
                         </form>
                     </li>
-                    <li v-for="(product, index) in form.products" class="group flex items-center px-4 py-2">
-                        <div @click="openModalSelectProduct(product),close()" style="cursor: pointer;" class="flex items-center space-x-4">
-                            <div class="flex-shrink-0">
-                                <img v-if="product.image=='img/imagen-no-disponible.jpg'"
-                                :src="astUrl+product.image"
-                                class="w-8 h-8 rounded-full"
-                                :alt="product.interne"
-                                />
+                    <div style="max-height: 200px;  overflow-y: auto; scrollbar-width: thin; ">
+                        <li v-for="(product, index) in form.products" class="w-full p-4">
+                            <div @click="openModalSelectProduct(product),close()" style="cursor: pointer;" class="flex items-center justify-between space-x-4">
+                                <div class="flex-shrink-0">
+                                    <img v-if="product.image=='img/imagen-no-disponible.jpg'"
+                                    :src="astUrl+product.image"
+                                    class="w-8 h-8 rounded-full"
+                                    :alt="product.interne"
+                                    />
 
-                                <img v-else
-                                :src="astUrl+'storage/'+product.image"
-                                class="w-8 h-8 rounded-full"
-                                :alt="product.interne"
-                                />
+                                    <img v-else
+                                    :src="astUrl+'storage/'+product.image"
+                                    class="w-8 h-8 rounded-full"
+                                    :alt="product.interne"
+                                    />
+                                </div>
+                                <div class="text-left flex-1 min-w-0 ml-2">
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        {{ product.interne }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        {{ product.description }}
+                                    </p>
+                                </div>
+                                <div v-if="product.is_product" class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                    Stock {{ product.stock }}
+                                </div>
                             </div>
-                            <div class="text-left flex-1 min-w-0 ml-2">
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                    {{ product.interne }}
-                                </p>
-                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                                    {{ product.description }}
-                                </p>
-                            </div>
-                            <div v-if="product.is_product" class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                Stock {{ product.stock }}
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    </div>
                     <li>
-                        <div class="p-4">
-                            <button class="btn btn-primary block w-full btn-small" @click="close" >
+                        <div class="p-4 flex justify-end">
+                            <button class="btn btn-primary block btn-small" @click="close" >
                                 Cerrar
                             </button>
                         </div>

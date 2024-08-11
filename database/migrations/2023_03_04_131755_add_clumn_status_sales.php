@@ -15,7 +15,7 @@ return new class extends Migration
             $table->boolean('status')->default(true);
         });
         Schema::table('sale_documents', function (Blueprint $table) {
-            $table->boolean('status')->default(true);
+            $table->tinyInteger('status')->default(1);
         });
     }
 

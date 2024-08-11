@@ -40,6 +40,7 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
 
     Route::resource('sales', SaleController::class);
 
+
     Route::get('pdf/sales/ticket/{id}', [SaleController::class, 'ticketPdf'])->name('ticketpdf_sales');
 
     Route::post('search/products', [ProductController::class, 'searchProduct'])->name('search_product');
@@ -105,6 +106,8 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::post('saledocuments/update/head', [SaleDocumentController::class, 'updateHead'])->name('saledocuments_update_head');
 
     Route::post('saledocuments/cancellation/send', [SaleDocumentController::class, 'cancelDocument'])->name('saledocuments_cancel_document');
+
+    Route::get('saledocuments/table', [SaleDocumentController::class, 'tableDocument'])->name('saledocuments_table_document');
 
     ////rutas de resumen diario
     Route::get('salesummary/list', [SaleSummaryController::class, 'index'])->name('salesummaries_list');

@@ -40,9 +40,10 @@
 
     const searchDocument = () => {
         searchForm.processing = true;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         axios.post(route('client_search_electronic_invoice'), searchForm,{
             headers: {
-                'X-CSRF-TOKEN': props.csrfToken
+                'X-CSRF-TOKEN': csrfToken
             }
         }).then((res) => {
             return res.data.document

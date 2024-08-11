@@ -241,7 +241,7 @@ class SaleController extends Controller
                 $document = SaleDocument::where('sale_id', $sale->id)->first();
 
                 $document->update([
-                    'status' => false
+                    'status' => 3
                 ]);
 
                 $products = SaleProduct::where('sale_id', $sale->id)->get();

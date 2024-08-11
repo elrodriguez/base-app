@@ -97,11 +97,9 @@ class SalesController extends Controller
      */
     public function findInvoice()
     {
-        $csrfToken = csrf_token();
         $saleDocumentTypes = DB::table('sale_document_types')->whereIn('sunat_id', ['01', '03'])->get();
         return Inertia::render('Sales::Finder/Invoices', [
-            'saleDocumentTypes' => $saleDocumentTypes,
-            'csrfToken' => $csrfToken
+            'saleDocumentTypes' => $saleDocumentTypes
         ]);
     }
 }

@@ -1,15 +1,15 @@
 <script setup>
-import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
-import Navigation from '@/Components/vristo/layout/Navigation.vue';
-import IconPlus from '@/Components/vristo/icon/icon-plus.vue';
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
-import 'datatables.net-responsive';
-import '@/Components/vristo/datatables/datatables.css'
-import '@/Components/vristo/datatables/style.css'
-import es_PE from '@/Components/vristo/datatables/datatables-es.js'
+    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
+    import Navigation from '@/Components/vristo/layout/Navigation.vue';
+    import IconPlus from '@/Components/vristo/icon/icon-plus.vue';
+    import DataTable from 'datatables.net-vue3';
+    import DataTablesCore from 'datatables.net';
+    import 'datatables.net-responsive';
+    import '@/Components/vristo/datatables/datatables.css'
+    import '@/Components/vristo/datatables/style.css'
+    import es_PE from '@/Components/vristo/datatables/datatables-es.js'
 
-DataTable.use(DataTablesCore);
+    DataTable.use(DataTablesCore);
 
     import { useForm } from '@inertiajs/vue3';
     import Keypad from '@/Components/Keypad.vue';
@@ -55,8 +55,10 @@ DataTable.use(DataTablesCore);
                     title: 'Enhorabuena',
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
-                router.visit(route('cms_items_list'), { replace: true, method: 'get' });
+                router.visit(route('cms_items_list'), { replace: false, method: 'get' });
             }
         });
     }
