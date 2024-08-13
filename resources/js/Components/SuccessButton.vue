@@ -10,7 +10,7 @@ defineProps({
 <template>
     <button
         :type="type"
-        class="btn btn-secondary uppercase text-xs"
+        class="btn btn-success uppercase text-xs"
     >
         <slot />
     </button>

@@ -77,7 +77,7 @@ class BlogArticlesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required|max:255|unique:blog_articles,url',
+            'title' => 'required|max:255|unique:blog_articles,title',
             'content_text' => 'required',
             'description' => 'required|max:255',
             'category_id' => 'required'

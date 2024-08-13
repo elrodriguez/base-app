@@ -8,15 +8,16 @@ use App\Models\PaymentMethod;
 use App\Models\PettyCash;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\SaleDocument;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use PDF;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Modules\Purchases\Entities\PurcDocument;
 
 class ReportController extends Controller
 {
@@ -358,5 +359,177 @@ class ReportController extends Controller
             'payments'  => $array_payments,
             'total'     => $total
         ]);
+    }
+
+    public function reportProductSellersDates()
+    {
+        //$users = User::where('id', '<>', 1)->get();
+        $users = User::get();
+
+        return Inertia::render('Sales::Reports/ProductSellersDates', [
+            'sellers' => $users
+        ]);
+    }
+
+    public function reportProductSellersTable(Request $request)
+    {
+
+        $date_range = $request->get('date');
+
+        // Encontrar la posición de la palabra "a"
+        $pos = strpos($date_range, 'a');
+
+        // Extraer las fechas de inicio y fin
+        $startDate = trim(substr($date_range, 0, $pos));
+        $endDate = trim(substr($date_range, $pos + 2));
+
+        $userId = $request->input('user_id');
+
+        $products = SaleDocument::with('items.product')->where('status', 1)
+            ->where('user_id', $userId);
+
+        if ($startDate) {
+            $products->whereBetween('invoice_broadcast_date', [$startDate, $endDate]);
+        } else {
+            $products->whereDate('invoice_broadcast_date', $endDate);
+        }
+
+        $products = $products->get()
+            ->flatMap(function ($saleDocument) {
+                return $saleDocument->items->map(function ($item) use ($saleDocument) {
+                    return [
+                        'product_id' => $item->product_id,
+                        'image' => $item->product->image,
+                        'product_name' => $item->product->description,
+                        'product_code' => $item->product->interne,
+                        'product_price' => $item->price_sale,
+                        'quantity' => $item->quantity,
+                        'total_amount' => $item->mto_total,
+                        'sale_date' => $saleDocument->invoice_broadcast_date
+                    ];
+                });
+            })
+            ->groupBy('product_id')
+            ->map(function ($items) {
+                return [
+                    'product_id' => $items->first()['product_id'],
+                    'image' => $items->first()['image'],
+                    'product_name' => $items->first()['product_name'],
+                    'product_code' => $items->first()['product_code'],
+                    'product_price' => $items->first()['product_price'],
+                    'total_quantity' => $items->sum('quantity'),
+                    'total_amount' => number_format($items->sum('total_amount'), 2, '.', ' '),
+                    'sale_date' => $items->first()['sale_date']
+                ];
+            })
+            ->values();
+
+        return response()->json([
+            'products' => $products
+        ]);
+    }
+    public function reportSalesExpenses()
+    {
+        return Inertia::render('Sales::Reports/SalesExpenses');
+    }
+
+    public function reportSalesExpensesData(Request $request)
+    {
+        $date_range = $request->get('date');
+
+        // Encontrar la posición de la palabra "a"
+        $pos = strpos($date_range, 'a');
+
+        // Extraer las fechas de inicio y fin
+        $startDate = trim(substr($date_range, 0, $pos));
+        $endDate = trim(substr($date_range, $pos + 2));
+
+        $establishmentId = $request->input('establishment_id');
+
+        $sales = $this->getDataSalesTotal($startDate, $endDate, $establishmentId);
+        $purchases = $this->getDataPurchPurchasesTotal($startDate, $endDate, $establishmentId);
+        $expenses = $this->getDataExpenses($startDate, $endDate, $establishmentId);
+
+        $ts = (float) str_replace(" ", "", $sales['total']);
+        $tp = (float) str_replace(" ", "", $purchases['total']);
+        $te = (float) str_replace(" ", "", $expenses['total']);
+
+        $result = $ts - ($tp + $te);
+
+        return response()->json([
+            'sales' => $sales,
+            'purchases' => $purchases,
+            'expenses' => $expenses,
+            'result' => number_format($result, 2, '.', ' ')
+        ]);
+    }
+
+    public function getDataPurchPurchasesTotal($startDate, $endDate, $establishmentId)
+    {
+        $documentsPurchases = PurcDocument::where('status', '<>', 'A');
+
+        if ($startDate) {
+            $documentsPurchases = $documentsPurchases->whereBetween('date_of_issue', [$startDate, $endDate]);
+        } else {
+            $documentsPurchases = $documentsPurchases->whereDate('date_of_issue', $endDate);
+        }
+
+        $documentsPurchases = $documentsPurchases->get();
+
+        $total = 0;
+        foreach ($documentsPurchases as $purchase) {
+            $total = $purchase->total + $total;
+        }
+
+        return [
+            'documents' => $documentsPurchases,
+            'total' => number_format($total, 2, '.', ' ')
+        ];
+    }
+
+    public function getDataSalesTotal($startDate, $endDate, $establishmentId)
+    {
+        $documentsSales = SaleDocument::where('status', 1);
+
+        if ($startDate) {
+            $documentsSales = $documentsSales->whereBetween('invoice_broadcast_date', [$startDate, $endDate]);
+        } else {
+            $documentsSales = $documentsSales->whereDate('invoice_broadcast_date', $endDate);
+        }
+
+        $documentsSales = $documentsSales->get();
+
+        $total = 0;
+        foreach ($documentsSales as $documentsSale) {
+            $total = $documentsSale->invoice_mto_imp_sale + $total;
+        }
+
+        return [
+            'documents' => $documentsSales,
+            'total' => number_format($total, 2, '.', ' ')
+        ];
+    }
+
+    public function getDataExpenses($startDate, $endDate, $establishmentId)
+    {
+        $expenses = Expense::with('cash');
+
+        if ($startDate) {
+            $expenses = $expenses->whereBetween('created_at', [$startDate, $endDate]);
+        } else {
+            $expenses = $expenses->whereDate('created_at', $endDate);
+        }
+
+        $expenses = $expenses->get();
+
+        $total = 0;
+        foreach ($expenses as $expense) {
+            $total = $expense->amount + $total;
+        }
+
+        return [
+            'details' => $expenses,
+            'total' => number_format($total, 2, '.', ' ')
+        ];
     }
 }

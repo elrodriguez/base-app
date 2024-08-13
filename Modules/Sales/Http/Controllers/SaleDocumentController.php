@@ -32,6 +32,7 @@ use Modules\Sales\Entities\SaleSummary;
 use Modules\Sales\Entities\SaleSummaryDetail;
 use App\Helpers\Invoice\Documents\Resumen;
 use DataTables;
+use Greenter\Model\Sale\SaleDetail;
 
 class SaleDocumentController extends Controller
 {
@@ -495,6 +496,17 @@ class SaleDocumentController extends Controller
 
                     ]);
 
+                    SaleProduct::create([
+                        'sale_id' => $sale->id,
+                        'product_id' => $product_id,
+                        'product' => json_encode(Product::find($product_id)),
+                        'saleProduct' => json_encode($produc),
+                        'size'      => $produc['size'],
+                        'price' => $produc['price'],
+                        'discount' => $produc['discount'],
+                        'quantity' => $produc['quantity'],
+                        'total' => round($total_item, 2)
+                    ]);
 
                     if ($produc['is_product']) {
                         $k = Kardex::create([

@@ -89,8 +89,11 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::post('data/payment/method/motals', [ReportController::class, 'dataPaymentMethodTotals'])->name('data_payment_method_totals');
 
     Route::post('import/product/data', [ProductController::class, 'import'])->name('import_product_data');
-
-
+    //////reports//////////
+    Route::get('reports/product/sellers/dates', [ReportController::class, 'reportProductSellersDates'])->name('report_product_sellers_dates');
+    Route::post('reports/product/sellers/table', [ReportController::class, 'reportProductSellersTable'])->name('report_product_sellers_table');
+    Route::get('reports/sales/expenses', [ReportController::class, 'reportSalesExpenses'])->name('report_sales_expenses');
+    Route::post('reports/sales/expenses/data', [ReportController::class, 'reportSalesExpensesData'])->name('report_sales_expenses_data');
 
     Route::get('sale_document_series/{id}', [SaleDocumentController::class, 'getSerieByDocumentType'])->name('sale_document_series');
 

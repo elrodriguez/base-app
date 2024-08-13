@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PettyCash extends Model
 {
@@ -32,5 +33,9 @@ class PettyCash extends Model
     public function getDateClosedAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y');
+    }
+    public function local(): BelongsTo
+    {
+        return $this->belongsTo(LocalSale::class, 'local_sale_id');
     }
 }

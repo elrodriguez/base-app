@@ -42,6 +42,7 @@
         "@websitebeaver/vue-magnifier": "^1.1.0",
         "ant-design-vue": "^4.0.8",
         "compressorjs": "^1.2.1",
+        "countup.js": "^2.8.0",
         "cropperjs": "^1.5.13",
         "datatables.net-responsive": "^3.0.2",
         "datatables.net-vue3": "^3.0.1",
