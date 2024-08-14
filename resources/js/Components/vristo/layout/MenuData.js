@@ -28,7 +28,7 @@ const MenuData = ref([
         permissions: 'dashboard',
     },
     menuConfig,
-    // menuPurchases,
+    menuPurchases,
     menuSales,
     menuOnlineshop,
     {
