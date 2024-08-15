@@ -94,6 +94,7 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::post('reports/product/sellers/table', [ReportController::class, 'reportProductSellersTable'])->name('report_product_sellers_table');
     Route::get('reports/sales/expenses', [ReportController::class, 'reportSalesExpenses'])->name('report_sales_expenses');
     Route::post('reports/sales/expenses/data', [ReportController::class, 'reportSalesExpensesData'])->name('report_sales_expenses_data');
+    Route::get('record/sales/income/period', [ReportController::class, 'recordSalesIncomePeriod'])->name('record_sales_income_period');
 
     Route::get('sale_document_series/{id}', [SaleDocumentController::class, 'getSerieByDocumentType'])->name('sale_document_series');
 

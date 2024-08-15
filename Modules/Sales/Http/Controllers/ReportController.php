@@ -532,4 +532,9 @@ class ReportController extends Controller
             'total' => number_format($total, 2, '.', ' ')
         ];
     }
+
+    public function recordSalesIncomePeriod()
+    {
+        return Inertia::render('Sales::Reports/RecordSalesIncomePeriod');
+    }
 }

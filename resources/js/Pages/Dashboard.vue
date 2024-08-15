@@ -21,21 +21,21 @@ const props = defineProps({
     <AppLayout title="Dashboard">
         <template v-for="role in userData.roles">
             <!--modulo academico -->
-            <StudentDashboard v-if="role.name == 'Alumno'" 
+            <!-- <StudentDashboard v-if="role.name == 'Alumno'" 
                 :userData="userData" 
                 :authPerson="authPerson"
-             />
+             /> -->
             <!-- fin modulo academico -->
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                  <!--modulo seguridad -->
                 <StorageIndicator v-if="role.name == 'admin' || role.name == 'webAdmin'" />
                 <!-- fin modulo academico -->
-                <div v-if="role.name == 'admin' || role.name == 'webAdmin'" class="col-span-3 sm:col-span-2">
+                <!-- <div v-if="role.name == 'admin' || role.name == 'webAdmin'" class="col-span-3 sm:col-span-2">
                     <!--modulo academico -->
-                    <StudentsEnrolledMonth />
+                    <!-- <StudentsEnrolledMonth /> -->
                     <!-- fin modulo academico -->
-                </div>
+                </div> -->
             </div>
         </template>
     </AppLayout>

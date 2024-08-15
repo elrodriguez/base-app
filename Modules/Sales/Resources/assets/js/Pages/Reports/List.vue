@@ -19,6 +19,13 @@ const reportsData = [
         items: [
             { url: route('sales_report_dates'), label: 'Reporte de ventas entre fechas(por locales)'}
         ]
+    },
+    {
+        title: 'Contabilidad',
+        items: [
+            { url: route('record_sales_income_period'), label: 'Registro de ventas e ingresos por periodo'},
+            { url: route('sales_report_dates'), label: 'Exportar registro  de ventas por periodo y formato'}
+        ]
     }
   
 ];
