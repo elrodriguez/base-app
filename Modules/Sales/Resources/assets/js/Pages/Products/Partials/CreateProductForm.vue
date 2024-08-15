@@ -319,6 +319,7 @@ const addBrand = () => {
                         type="text"
                         class="block w-full mt-1"
                     />
+                    <small>Solo Numeros</small>
                     <InputError :message="form.errors.purchase_prices" class="mt-2" />
                 </div>
                 
@@ -375,7 +376,7 @@ const addBrand = () => {
                 </div>
                 <div v-show="form.presentations" class="col-span-6 sm:col-span-6">
                     <label>
-                        Colores
+                        Detalles
                         <button @click="addSize" type="button" class="inline-block px-6 py-2.5 bg-transparent text-blue-600 font-medium text-xs leading-tight uppercase rounded hover:text-blue-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-0 active:bg-gray-200 transition duration-150 ease-in-out">Agregar</button>
                     </label>
                     <div v-for="(item, index) in form.sizes" v-bind:key="index">
