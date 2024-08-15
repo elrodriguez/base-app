@@ -2,7 +2,7 @@
     import ModalLargeX from '@/Components/ModalLargeX.vue';
     import DangerButton from '@/Components/DangerButton.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
-    import { ref } from 'vue';
+    import { ref, nextTick } from 'vue';
     import { useForm } from '@inertiajs/vue3';
     import swal from 'sweetalert';
     import NumberInput from '@/Components/NumberInput.vue';
@@ -161,22 +161,29 @@
 
     const astUrl = assetUrl;
 
-    const displaySearch = ref(false);
+    const setFocusToElement = async () => {
+        nextTick(() => {
+            const element = document.getElementById('searchInput');
+            if (element) {
+                element.focus();
+            }
+        });
+    };
 </script>
 
 
 <template>
     <div class="dropdown shrink-0">
-        <Popper :placement="'bottom-start'" offsetDistance="8" class="z-50">
+        <Popper :placement="'bottom-start'" @open:popper="setFocusToElement" offsetDistance="8" class="z-50">
             <button type="button" title="Abrir Buscar" class="btn btn-sm btn-outline-primary dropdown-toggle">
                 <font-awesome-icon :icon="iconSearch" />
             </button>
             <template #content="{ close }">
-                <ul id="result" class="!py-0 text-dark dark:text-white-dark w-[300px] sm:w-[350px] divide-y dark:divide-white/10">
+                <ul id="result" class="!py-0 text-dark dark:text-white-dark w-[300px] sm:w-[650px] divide-y dark:divide-white/10">
                     <li class="items-center px-4 py-2 justify-between font-semibold">
                         <form @submit.prevent="searchProducts()" class="mx-auto w-full mb-5">
                             <div class="relative">
-                                <input v-model="form.search" type="text" placeholder="Buscar... " class="form-input shadow-[0_0_4px_2px_rgb(31_45_61_/_10%)] bg-white rounded-full h-11 placeholder:tracking-wider" autofocus />
+                                <input v-model="form.search" id="searchInput" type="text" placeholder="Buscar... " class="form-input shadow-[0_0_4px_2px_rgb(31_45_61_/_10%)] bg-white rounded-full h-11 placeholder:tracking-wider" autofocus />
                                 <button type="submit" class="btn btn-primary absolute ltr:right-1 rtl:left-1 inset-y-0 m-auto rounded-full w-9 h-9 p-0 flex items-center justify-center">
                                     <font-awesome-icon :icon="iconSearch" /> 
                                 </button>
@@ -212,8 +219,8 @@
                         </div>
                     </li>
                     <li>
-                        <div class="p-4">
-                            <button class="btn btn-primary block w-full btn-small" @click="close" >
+                        <div class="p-4 flex justify-end">
+                            <button class="btn btn-primary block btn-small" @click="close" >
                                 Cerrar
                             </button>
                         </div>

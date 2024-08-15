@@ -3,7 +3,7 @@
     import { useForm, router, Link } from '@inertiajs/vue3';
     import { faGears, faPlus } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
-    import DialogModal from '@/Components/DialogModal.vue';
+    import DialogModal from '@/Components/ModalLarge.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     import DangerButton from '@/Components/DangerButton.vue';
     import InputError from '@/Components/InputError.vue';
@@ -67,7 +67,6 @@
         presentations: null
     });
 
-    const formDelete = useForm({});
     const openModalDetilsProduct = ref(false);
     const openModalEntrada = ref(false);
     const openModalTraslado = ref(false);
@@ -476,9 +475,9 @@
                                     </Button>
                                   </MenuItem>
                                   <MenuItem>
-                                    <Button type="Link">
-                                        Imprimir Tiket
-                                    </Button>
+                                    <a :href="route('product_print_barcode',product.id)" target="_blank" class="text-left block px-4 py-2 text-sm text-blue-700 hover:bg-gray-100">
+                                      Imprimir codigo
+                                    </a>
                                   </MenuItem>
                                   <MenuItem>
                                     <Button @click="openModalPrices(product)" type="Link" >
@@ -681,7 +680,7 @@
                 <div class="grid grid-cols-2 gap-4">
                   <div class="col-span-2 sm:col-span-1">
                     <InputLabel for="stablishment" value="Establecimiento" />
-                    <select v-model="formInput.local_id" id="stablishment" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select v-model="formInput.local_id" id="stablishment" class="form-select">
                       <template v-for="(establishment, index) in props.establishments" :key="index">
                           <option :value="establishment.id">{{ establishment.description }}</option>
                       </template>
@@ -694,8 +693,7 @@
                         id="description"
                         v-model="formInput.description"
                         type="text"
-                        class="block w-full mt-1"
-                        autofocus
+                       
                     />
                     <InputError :message="formInput.errors.description" class="mt-2" />
                   </div>
@@ -714,8 +712,6 @@
                                             <TextInput
                                                 v-model="item.size"
                                                 type="text"
-                                                class="block w-full mt-1"
-                                                autofocus
                                             />
                                             <InputError :message="formInput.errors[`sizes.${index}.size`]" class="mt-2" />
                                         </div>
@@ -726,7 +722,6 @@
                                             <TextInput
                                                 v-model="item.quantity"
                                                 type="number"
-                                                class="block w-full mt-1"
                                                 autofocus
                                             />
                                             <InputError :message="formInput.errors[`sizes.${index}.quantity`]" class="mt-2" />
@@ -749,7 +744,6 @@
                           id="stock"
                           v-model="formInput.stock"
                           type="number"
-                          class="block w-full mt-1"
                           disabled
                       />
                       <InputError :message="formInput.errors.stock" class="mt-2" />
@@ -760,7 +754,6 @@
                           id="quantity"
                           v-model="formInput.quantity"
                           type="number"
-                          class="block w-full mt-1"
                       />
                       <InputError :message="formInput.errors.quantity" class="mt-2" />
                     </div>
@@ -768,11 +761,7 @@
                 </div>
             </template>
 
-            <template #footer>
-                <SecondaryButton @click="closeModalEntradaSalida">
-                    Cancel
-                </SecondaryButton>
-
+            <template #buttons>
                 <DangerButton
                     class="ml-3"
                     :class="{ 'opacity-25': formInput.processing }"

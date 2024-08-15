@@ -20,6 +20,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Modules\Sales\Entities\SaleProductBrand;
 use Modules\Sales\Entities\SaleProductCategory;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PDF;
 
 class ProductController extends Controller
 {
@@ -370,6 +371,7 @@ class ProductController extends Controller
     public function searchScanerProduct(Request $request)
     {
         $search = $request->get('search');
+
         $local_id = Auth::user()->local_id;
         $success = false;
         $message = null;
@@ -804,7 +806,9 @@ class ProductController extends Controller
 
 
             $json_prices = array(
-                "high" => $data[3], "under" =>  $data[5], "medium" => $data[4]
+                "high" => $data[3],
+                "under" =>  $data[5],
+                "medium" => $data[4]
             );
 
             $pr = Product::create([
@@ -837,5 +841,22 @@ class ProductController extends Controller
             dd($ex->getMessage());
             // Note any method of class PDOException can be called on $ex.
         }
+    }
+
+    public function printBarcode($id)
+    {
+        $dir = 'storage' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'products';
+        $file = public_path($dir) . 'ticket.pdf';
+
+        $pdf = PDF::loadView('sales::products.barcode_f1', [
+            'product' => Product::find($id),
+        ]);
+
+        $pdf->setPaper(array(0, 0, 273, 78), 'portrait');
+        $pdf->save($file);
+
+        return response()->download($file, $id . '.pdf', [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 }

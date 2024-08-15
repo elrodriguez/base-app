@@ -536,7 +536,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="max-w-full overflow-x-auto py-2">
+                    <div class="max-w-full py-2">
                         <table class="table-bordered w-full ltr:text-left rtl:text-right text-gray-600">
                             <thead class="border-b border-t border-gray-400 dark:border-gray-700">
                                 <tr class="bg-gray-100 dark:bg-gray-900 dark:bg-opacity-20">

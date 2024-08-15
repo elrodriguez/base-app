@@ -33,7 +33,8 @@
     const displayResultSearch = ref(false);
     const searchProducts = async () => {
         if(formScaner.scaner){
-            axios.post(route('search_scaner_product'), form ).then((response) => {
+            var por = form.search.split('|');
+            axios.post(route('search_scaner_product'), {search: por[0]} ).then((response) => {
                 if(response.data.success){
                     displayModal.value = true;
                     form.products = [];
@@ -42,7 +43,8 @@
                     form.data.interne = response.data.product.interne;
                     form.data.stock = response.data.product.stock;
                     form.data.description = response.data.product.description;
-                    form.data.price = null;
+                    form.data.price = por[1];
+                    form.data.size = por[2];
                     form.data.total = 0;
                     form.data.quantity = 1;
                     form.data.discount = 0;

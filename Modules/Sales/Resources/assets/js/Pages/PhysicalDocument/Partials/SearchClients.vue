@@ -164,7 +164,7 @@
                     
                     <div class="col-span-6 sm:col-span-1">
                         <InputLabel for="email" value="Email" />
-                        <TextInput id="email" v-model="form.email" type="email" class="block w-full mt-1" autofocus />
+                        <TextInput id="email" v-model="form.email" type="email" class="block w-full mt-1" />
                         <InputError :message="form.errors.email" class="mt-2" />
                     </div>
                     

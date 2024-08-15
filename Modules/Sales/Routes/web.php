@@ -40,8 +40,8 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
 
     Route::resource('sales', SaleController::class);
 
-
     Route::get('pdf/sales/ticket/{id}', [SaleController::class, 'ticketPdf'])->name('ticketpdf_sales');
+    Route::get('pdf/product/print/barcode/{id}', [ProductController::class, 'printBarcode'])->name('product_print_barcode');
 
     Route::post('search/products', [ProductController::class, 'searchProduct'])->name('search_product');
 
