@@ -46,8 +46,7 @@
         @foreach (json_decode($product->sizes) as $item)
             @if ($item->quantity > 0)
                 @php
-                    $stringCode =
-                        $product->interne . '|' . json_decode($product->sale_prices)->high . '|' . $item->size;
+                    $stringCode = $product->interne;
                     $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_EAN_5, 3, 50));
                 @endphp
                 <tr>

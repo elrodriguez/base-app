@@ -43,8 +43,8 @@
                     form.data.interne = response.data.product.interne;
                     form.data.stock = response.data.product.stock;
                     form.data.description = response.data.product.description;
-                    form.data.price = por[1];
-                    form.data.size = por[2];
+                    form.data.price = por[1] ?? null;
+                    form.data.size = por[2] ?? null;
                     form.data.total = 0;
                     form.data.quantity = 1;
                     form.data.discount = 0;
