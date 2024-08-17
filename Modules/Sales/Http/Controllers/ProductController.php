@@ -852,7 +852,7 @@ class ProductController extends Controller
             'product' => Product::find($id),
         ]);
 
-        $pdf->setPaper(array(0, 0, 273, 78), 'portrait');
+        $pdf->setPaper(array(0, 0, 302, 113), 'portrait');
         $pdf->save($file);
 
         return response()->download($file, $id . '.pdf', [

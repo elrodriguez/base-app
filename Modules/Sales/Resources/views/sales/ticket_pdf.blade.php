@@ -3,6 +3,13 @@
 
 <head>
     <style>
+        @page {
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
         * {
             font-size: 14px;
             font-family: 'Times New Roman';
@@ -57,7 +64,7 @@
 
 <body style="padding: 0px">
     <div>
-        <img src="{{ asset('storage/' . $company->logo) }}" alt="Logotipo">
+        <img src="{{ asset('storage/' . $company->logo) }}" alt="Logotipo" class="centrado">
         <p class="centrado">
             {{-- {{ $company->name }} --}}
             <br>{{ \Carbon\Carbon::parse($document->created_at)->format('Y-m-d H:i:s') }}
