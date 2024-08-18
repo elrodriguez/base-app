@@ -501,7 +501,6 @@ class SaleDocumentController extends Controller
                         'product_id' => $product_id,
                         'product' => json_encode(Product::find($product_id)),
                         'saleProduct' => json_encode($produc),
-                        'size'      => $produc['size'],
                         'price' => $produc['unit_price'],
                         'discount' => $produc['discount'],
                         'quantity' => $produc['quantity'],

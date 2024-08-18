@@ -101,9 +101,12 @@
                 </tr>
             </tbody>
         </table>
-        <p class="centrado">¡GRACIAS POR SU COMPRA!
-            <br>{{ $company->name }}
-        </p>
+        <div style="margin-top:16px;margin-bottom:16px;width:100%;">
+            <p class="centrado">
+                ¡Vuelve a amar cada paso con {{ $company->name }}!
+            </p>
+        </div>
+        <p class="centrado">¡GRACIAS POR SU COMPRA!</p>
     </div>
 </body>
 
