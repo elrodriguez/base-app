@@ -248,7 +248,7 @@
                             <tr>
                                 <td width="50%" height="90" align="center">
                                     <img src="data:image/jpeg;base64,{{ base64_encode($params['system']['logo']) }}"
-                                        height="80" style="text-align:center" border="0" />
+                                        height="auto" width="276px" style="text-align:center" border="0" />
                                 </td>
                                 <td width="5%" height="40" align="center"></td>
                                 <td width="45%" rowspan="2" valign="bottom" style="padding-left:0">
