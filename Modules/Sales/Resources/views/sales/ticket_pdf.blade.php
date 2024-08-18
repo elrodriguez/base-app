@@ -64,7 +64,9 @@
 
 <body style="padding: 0px">
     <div>
-        <img src="{{ asset('storage/' . $company->logo) }}" alt="Logotipo" class="centrado">
+        <div style="margin-top:16px;width:100%;text-align: center">
+            <img src="{{ asset('storage/' . $company->logo) }}" alt="Logotipo" class="centrado">
+        </div>
         <p class="centrado">
             {{-- {{ $company->name }} --}}
             <br>{{ \Carbon\Carbon::parse($document->created_at)->format('Y-m-d H:i:s') }}

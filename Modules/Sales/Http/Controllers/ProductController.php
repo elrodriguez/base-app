@@ -846,7 +846,7 @@ class ProductController extends Controller
     public function printBarcode($id)
     {
         $dir = 'storage' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'products';
-        $file = public_path($dir) . 'ticket.pdf';
+        $file = public_path($dir) .  DIRECTORY_SEPARATOR . 'ticket.pdf';
 
         $pdf = PDF::loadView('sales::products.barcode_f1', [
             'product' => Product::find($id),

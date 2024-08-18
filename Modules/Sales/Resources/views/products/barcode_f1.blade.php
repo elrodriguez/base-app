@@ -32,16 +32,13 @@
         $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
         $company = \App\Models\Company::first();
         $logo = public_path('storage' . DIRECTORY_SEPARATOR . $company->logo_document);
-        //dd($logo);
+        $stringCode = $product->interne;
+        $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_EAN_5, 3, 50));
     @endphp
     <table style="margin: auto; width: 302px;">
         @if ($product->sizes)
             @foreach (json_decode($product->sizes) as $item)
                 @if ($item->quantity > 0)
-                    @php
-                        $stringCode = $product->interne;
-                        $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_EAN_5, 3, 50));
-                    @endphp
                     <tr>
                         <td style="padding: 0px">
                             <img src="{{ $logo }}" height='32px' />
@@ -87,10 +84,6 @@
                 @endif
             @endforeach
         @else
-            @php
-                $stringCode = $product->interne;
-                $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_EAN_5, 3, 50));
-            @endphp
             <tr>
                 <td style="padding: 0px">
                     <img src="{{ $logo }}" height='32px' />
