@@ -1,4 +1,4 @@
-import { faCartShopping, faFile } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faHandshake } from "@fortawesome/free-solid-svg-icons";
 
 const menuPurchases = {
     status: false,
@@ -8,19 +8,20 @@ const menuPurchases = {
     permissions: "purc_dashboard",
     items: [
         {
+            route: route("providers.index"),
+            status: false,
+            text: "Proveedores",
+            permissions: "proveedores",
+            icom: faHandshake,
+        },
+        {
             route: route("purc_documents_list"),
             status: false,
             text: "Documentos",
             permissions: "purc_documentos_listado",
             icom: faFile,
         },
-        // {
-        //     route: route("clients.index"),
-        //     status: false,
-        //     text: "Reporte",
-        //     permissions: "purc_reporte",
-        //     icom: faCartShopping,
-        // },
+        
     ],
 };
 export default menuPurchases;
