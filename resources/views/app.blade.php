@@ -24,6 +24,11 @@
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
     @endif
     @inertiaHead
+    <style>
+        .swal2-container {
+            z-index: 99999999 !important;
+        }
+    </style>
 </head>
 
 <body>

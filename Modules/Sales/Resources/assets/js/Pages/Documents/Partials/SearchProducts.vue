@@ -4,7 +4,7 @@
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     import { ref, nextTick } from 'vue';
     import { useForm } from '@inertiajs/vue3';
-    import swal from 'sweetalert';
+    import Swal from 'sweetalert2';
     import NumberInput from '@/Components/NumberInput.vue';
 
     const props = defineProps({
@@ -55,7 +55,13 @@
                     form.search = null;
                     
                 }else{
-                    swal(response.data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops!',
+                        text: response.data.message,
+                        padding: '2em',
+                        customClass: 'sweet-alerts',
+                    });
                 }
                 
             });
@@ -65,7 +71,13 @@
                     form.products = response.data.products;
                     displayResultSearch.value = true;
                 }else{
-                    swal(response.data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops!',
+                        text: response.data.message,
+                        padding: '2em',
+                        customClass: 'sweet-alerts',
+                    });
                 }
                 
             });
@@ -96,35 +108,39 @@
         if(form.data.stock > 0 && form.data.stock >= form.data.quantity){
             if (pre){
                 if(form.data.size){
-                    if(form.data.price){
-                        let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
-                        form.data.total = total;
-                        let data = {
-                            id: form.data.id,
-                            interne: form.data.interne,
-                            description: form.data.description + ' Talla-'+form.data.size,
-                            is_product: form.product.is_product == 1 ? true : false,
-                            unit_type: form.product.type_unit_measure_id,
-                            quantity: form.data.quantity,
-                            unit_price: form.data.price,
-                            discount: form.data.discount,
-                            total: form.data.total,
-                            afe_igv: form.product.type_sale_affectation_id,
-                            presentations: pre,
-                            size: form.data.size,
-                            m_igv: 0,
-                            v_sale: 0,
-                            icbper: false
+                    if(form.data.size_quantity >= form.data.quantity){
+                        if(form.data.price){
+                            let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
+                            form.data.total = total;
+                            let data = {
+                                id: form.data.id,
+                                interne: form.data.interne,
+                                description: form.data.description + ' Talla-'+form.data.size,
+                                is_product: form.product.is_product == 1 ? true : false,
+                                unit_type: form.product.type_unit_measure_id,
+                                quantity: form.data.quantity,
+                                unit_price: form.data.price,
+                                discount: form.data.discount,
+                                total: form.data.total,
+                                afe_igv: form.product.type_sale_affectation_id,
+                                presentations: pre,
+                                size: form.data.size,
+                                m_igv: 0,
+                                v_sale: 0,
+                                icbper: false
+                            }
+                            emit('eventdata',data);
+                            displayModal.value = false;
+                            form.data.size = null;
+                            displayResultSearch.value = false;
+                        }else{
+                            showMessage('Seleccionar Precio', 'info')
                         }
-                        emit('eventdata',data);
-                        displayModal.value = false;
-                        form.data.size = null;
-                        displayResultSearch.value = false;
                     }else{
-                        swal('Seleccionar Precio')
+                        showMessage('La cantidad a vender es mayor a las existencias del producto','info')
                     }
                 }else{
-                    swal('Seleccionar Talla')
+                    showMessage('Seleccionar Talla', 'info')
                 }
             }else{
                 if(form.data.price){
@@ -151,11 +167,11 @@
                     form.data.size = null;
                     displayResultSearch.value = false;
                 }else{
-                    swal('Seleccionar Precio')
+                    showMessage('Seleccionar Precio', 'info')
                 }
             }
         }else{
-            swal('Stock insuficiente')
+            showMessage('Stock insuficiente', 'info')
         }
     }
 
@@ -170,6 +186,25 @@
         });
     };
 
+    const selectSize = (item) => {
+        form.data.size = item.size
+        form.data.size_quantity = item.quantity
+    }
+
+    const showMessage = (msg = '', type = 'success') => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            customClass: { container: 'toast' },
+        });
+        toast.fire({
+            icon: type,
+            title: msg,
+            padding: '10px 20px',
+        });
+    };
 
 </script>
 
@@ -236,7 +271,7 @@
     
     <ModalLargeX
         :show="displayModal" 
-        @close="closeModalSelectProduct"
+        :onClose="closeModalSelectProduct"
     >
         <template #title>
             <template v-if="form.product.is_product">
@@ -320,13 +355,13 @@
                     </div>
                     <div v-show="form.product.presentations" class="mb-4">
                         <label for="size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Tallas Disponibles
+                            Presentaciones Disponibles
                         </label>
                         <div class="flex">
                             <div v-if="!form.product.local_sizes">
                                 <template v-for="(item, key) in JSON.parse(form.product.sizes)">
                                     <div class="form-check">
-                                        <input :disabled="item.quantity == 0 ? '' : disabled" v-model="form.data.size" :value="item.size" class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="sizes" :id="'size'+ key">
+                                        <input :disabled="item.quantity == 0 ? '' : disabled" @change="selectSize(item)" :value="item.size" class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="sizes" :id="'size'+ key">
                                         <label :class="item.quantity == 0 ? 'text-gray-500': 'text-gray-800'" class="form-check-label inline-block" :for="'size'+ key ">
                                             Talla: {{ item.size }} / Cantidad: {{ item.quantity }}
                                         </label>
@@ -336,7 +371,7 @@
                             <div v-else>
                                 <template v-for="(item, key) in JSON.parse(form.product.local_sizes)">
                                     <div class="form-check">
-                                        <input :disabled="item.quantity == 0 ? '' : disabled" v-model="form.data.size" :value="item.size" class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="sizes" :id="'size'+ key">
+                                        <input :disabled="item.quantity == 0 ? '' : disabled" @change="selectSize(item)" :value="item.size" class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="sizes" :id="'size'+ key">
                                         <label :class="item.quantity == 0 ? 'text-gray-500': 'text-gray-800'" class="form-check-label inline-block" :for="'size'+ key ">
                                             Talla: {{ item.size }} / Cantidad: {{ item.quantity }}
                                         </label>

@@ -29,7 +29,7 @@
 
 <body>
     @php
-        $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+        $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
         $company = \App\Models\Company::first();
         $logo = public_path('storage' . DIRECTORY_SEPARATOR . $company->logo_document);
         $stringCode = $product->interne;

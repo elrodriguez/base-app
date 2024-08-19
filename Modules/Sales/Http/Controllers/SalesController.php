@@ -2,6 +2,7 @@
 
 namespace Modules\Sales\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\SaleDocument;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -54,9 +55,16 @@ class SalesController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
+    public function minimumStock()
     {
-        return view('sales::edit');
+        $products = Product::where('stock', '<=', DB::raw('stock_min'))
+            ->where('is_product', true)
+            ->limit(100)
+            ->get();
+
+        return response()->json([
+            'products' => $products
+        ]);
     }
 
     /**

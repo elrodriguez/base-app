@@ -4,7 +4,7 @@
     import SecondaryButton from '@/Components/SecondaryButton.vue';
     import { ref } from 'vue';
     import { useForm } from '@inertiajs/vue3';
-    import swal from 'sweetalert';
+    import Swal from 'sweetalert2';
     import NumberInput from '@/Components/NumberInput.vue';
 
     const astUrl = assetUrl;
@@ -51,7 +51,13 @@
                     form.search = null;
                     
                 }else{
-                    swal(response.data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops!',
+                        text: response.data.message,
+                        padding: '2em',
+                        customClass: 'sweet-alerts',
+                    });
                 }
                 
             });
@@ -61,7 +67,13 @@
                     form.products = response.data.products;
                     displayResultSearch.value = true;
                 }else{
-                    swal(response.data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops!',
+                        text: response.data.message,
+                        padding: '2em',
+                        customClass: 'sweet-alerts',
+                    });
                 }
                 
             });
@@ -90,31 +102,37 @@
 
     const addProduct = (pre) => {
         if (pre){
+            
             if(form.data.size){
-                if(form.data.price){
-                    let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
-                    form.data.total = total.toFixed(2);
-                    let data = {
-                        id: form.data.id,
-                        interne: form.data.interne,
-                        description: form.data.description,
-                        price: form.data.price,
-                        total: form.data.total,
-                        quantity: form.data.quantity,
-                        size: form.data.size,
-                        discount: form.data.discount,
-                        presentations: pre
+                if(form.data.size_quantity >= form.data.quantity){
+                    if(form.data.price){
+                        let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
+                        form.data.total = total.toFixed(2);
+                        let data = {
+                            id: form.data.id,
+                            interne: form.data.interne,
+                            description: form.data.description,
+                            price: form.data.price,
+                            total: form.data.total,
+                            quantity: form.data.quantity,
+                            size: form.data.size,
+                            discount: form.data.discount,
+                            presentations: pre
+                        }
+                        emit('eventdata',data);
+                        displayModal.value = false;
+                        form.data.size = null;
+                        displayResultSearch.value = false;
+                    }else{
+                        showMessage('Seleccionar Precio', 'info')
                     }
-                    emit('eventdata',data);
-                    displayModal.value = false;
-                    form.data.size = null;
-                    displayResultSearch.value = false;
                 }else{
-                    swal('Seleccionar Precio')
+                    showMessage('La cantidad a vender es mayor a las existencias del producto','info')
                 }
             }else{
-                swal('Seleccionar Talla')
+                showMessage('Seleccionar Talla', 'info')
             }
+            
         }else{
             if(form.data.price){
                 let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
@@ -135,11 +153,32 @@
                 form.data.size = null;
                 displayResultSearch.value = false;
             }else{
-                swal('Seleccionar Precio')
+                showMessage('Seleccionar Precio','info')
             }
         }
         
     }
+
+    const selectSize = (item) => {
+        form.data.size = item.size
+        form.data.size_quantity = item.quantity
+    }
+
+    const showMessage = (msg = '', type = 'success') => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            customClass: { container: 'toast' },
+        });
+        toast.fire({
+            icon: type,
+            title: msg,
+            padding: '10px 20px',
+        });
+    };
+
 </script>
 
 
@@ -205,7 +244,7 @@
     </div>
     <DialogModal 
         :show="displayModal" 
-        @close="closeModalSelectProduct"
+        :onClose="closeModalSelectProduct"
     >
         <template #title>
             Detalles del Producto
@@ -292,8 +331,7 @@
                                 <template v-for="(item, key) in JSON.parse(form.product.sizes)">
                                     <div >
                                         <label :class="item.quantity == 0 ? 'text-gray-500': ''" class="inline-flex" :for="'size'+ key ">
-                                        <input :disabled="item.quantity == 0 ? '' : disabled" v-model="form.data.size" :value="item.size" class="form-radio text-success peer" type="radio" name="sizes" :id="'size'+ key">
-                                        
+                                        <input :disabled="item.quantity == 0 ? '' : disabled" @change="selectSize(item)" :value="item.size" class="form-radio text-success peer" type="radio" name="sizes" :id="'size'+ key">
                                             <span class="peer-checked:text-success">Talla: {{ item.size }} / Cantidad: {{ item.quantity }}</span>
                                         </label>
                                     </div>
@@ -303,8 +341,7 @@
                                 <template v-for="(item, key) in JSON.parse(form.product.local_sizes)">
                                     <div >
                                         <label :class="item.quantity == 0 ? 'text-gray-500': ''" class="inline-flex" :for="'size'+ key ">
-                                            <input :disabled="item.quantity == 0 ? '' : disabled" v-model="form.data.size" :value="item.size" class="form-radio text-success peer" type="radio" name="sizes" :id="'size'+ key">
-                                        
+                                            <input :disabled="item.quantity == 0 ? '' : disabled" @change="selectSize(item)" :value="item.size" class="form-radio text-success peer" type="radio" name="sizes" :id="'size'+ key">
                                             <span class="peer-checked:text-success">Talla: {{ item.size }} / Cantidad: {{ item.quantity }}</span>
                                         </label>
                                     </div>
@@ -318,7 +355,7 @@
                         <label for="quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Cantidad a vender
                         </label>
-                        <input v-model="form.data.quantity" type="number" id="quantity" class="form-input">
+                        <input v-model="form.data.quantity" type="number" id="quantity" min="1" class="form-input">
                     </div>
                     <div v-can="'sale_aplicar_descuento'" class="mb-4">
                         <label for="discount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">

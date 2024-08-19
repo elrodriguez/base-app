@@ -173,4 +173,7 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::post('services/store', [ServicesController::class, 'store'])->name('store_service');
     Route::put('services/update/{id}', [ServicesController::class, 'update'])->name('update_service');
     Route::delete('services/destroy/{id}', [ServicesController::class, 'destroy'])->name('destroy_service');
+
+
+    Route::get('dashboard/minimum/stock', [SalesController::class, 'minimumStock'])->name('sales_dashboard_minimum_stock');
 });
