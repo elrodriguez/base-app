@@ -39,7 +39,7 @@
 
         $generator->useGd();
 
-        $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_UPC_E, 3, 50));
+        $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_UPC_E));
     @endphp
     <table style="margin: auto; width: 302px;">
         @if ($product->sizes)
