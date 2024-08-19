@@ -1,6 +1,6 @@
 <script setup>
     import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
-    import { useForm } from '@inertiajs/vue3';
+    import { useForm, router } from '@inertiajs/vue3';
     import { faTimes, faCopy, faGears } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue';
     import Keypad from '@/Components/Keypad.vue';
@@ -63,8 +63,6 @@
         //window.location.href = "../print/sales/user/" + formPrint.date;
     }
 
-    const formDelete= useForm({});
-
     const deleteSale = (id) => {
         swal({
             title: "Estas seguro",
@@ -74,11 +72,19 @@
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
-                formDelete.delete(route('sales.destroy',id),{
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        swal('Venta Anulada correctamente');
-                    }
+                axios({
+                    method: 'delete',
+                    url: route('sales.destroy',id),
+                }).then((response) => {
+                    swal(response.data.message);
+                    router.visit(route('sales.index'), {
+                        method: 'get',
+                        replace: false,
+                        preserveState: true,
+                        preserveScroll: true,
+                    });
+                }).catch(function (error) {
+                    console.log(error)
                 });
             } 
         });

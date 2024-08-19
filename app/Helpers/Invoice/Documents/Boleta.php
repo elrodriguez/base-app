@@ -283,7 +283,8 @@ class Boleta
                                 'kardex_id' => $k->id,
                                 'product_id' => $produc->product_id,
                                 'local_id' => $sale->local_id,
-                                'size'      => json_decode($produc->product)->size,
+                                //'size'      => json_decode($produc->product)->size,
+                                'size'      => json_decode($produc->saleProduct)->size,
                                 'quantity'  => $produc->quantity
                             ]);
 
