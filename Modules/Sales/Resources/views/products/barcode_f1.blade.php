@@ -30,11 +30,16 @@
 <body>
     @php
         $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+
         $company = \App\Models\Company::first();
+
         $logo = public_path('storage' . DIRECTORY_SEPARATOR . $company->logo_document);
+
         $stringCode = $product->interne;
+
         $generator->useGd();
-        $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_EAN_5, 3, 50));
+
+        $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_UPC_E, 3, 50));
     @endphp
     <table style="margin: auto; width: 302px;">
         @if ($product->sizes)

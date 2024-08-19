@@ -19,7 +19,7 @@ const menuPurchases = {
             status: false,
             text: "Documentos",
             permissions: "purc_documentos_listado",
-            icom: faFile,
+            icom: faCartShopping,
         },
         
     ],
