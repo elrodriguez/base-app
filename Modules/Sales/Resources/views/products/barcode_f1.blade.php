@@ -23,6 +23,7 @@
             width: 138px;
             /* Ajusta el ancho según sea necesario */
             height: 40px;
+
         }
     </style>
 </head>
@@ -39,18 +40,18 @@
 
         $generator->useGd();
 
-        $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_UPC_E));
+        $image = base64_encode($generator->getBarcode($stringCode, $generator::TYPE_CODE_39));
     @endphp
     <table style="margin: auto; width: 302px;">
         @if ($product->sizes)
             @foreach (json_decode($product->sizes) as $item)
                 @if ($item->quantity > 0)
                     <tr>
-                        <td style="padding: 0px">
+                        <td style="padding: 0px; text-align: left;">
                             <img src="{{ $logo }}" height='32px' />
                         </td>
                         <td style="width: 40px"></td>
-                        <td style="padding: 0px">
+                        <td style="padding: 0px; text-align: left;">
                             <img src="{{ $logo }}" height='32px' />
                         </td>
                     </tr>
@@ -91,11 +92,11 @@
             @endforeach
         @else
             <tr>
-                <td style="padding: 0px">
+                <td style="padding: 0px; text-align: left;">
                     <img src="{{ $logo }}" height='32px' />
                 </td>
                 <td style="width: 40px"></td>
-                <td style="padding: 0px">
+                <td style="padding: 0px; text-align: left;">
                     <img src="{{ $logo }}" height='32px' />
                 </td>
             </tr>
