@@ -234,9 +234,10 @@
         }
     </style>
 </head>
-{{-- @php
-    dd($document);
-@endphp --}}
+@php
+    $company = \App\Models\Company::first();
+    $logo = public_path('storage' . DIRECTORY_SEPARATOR . $company->logo_document);
+@endphp
 
 <body class="white-bg">
     <table width="100%">
@@ -246,9 +247,8 @@
                     <table width="100%" height="200px" border="0" aling="center" cellpadding="0" cellspacing="0">
                         <tbody>
                             <tr>
-                                <td width="50%" height="90" align="center">
-                                    <img src="data:image/jpeg;base64,{{ base64_encode($params['system']['logo']) }}"
-                                        height="auto" width="276px" style="text-align:center" border="0" />
+                                <td width="50%" height="90" align="left">
+                                    <img src="{{ $logo }}" width="270px" border="0" />
                                 </td>
                                 <td width="5%" height="40" align="center"></td>
                                 <td width="45%" rowspan="2" valign="bottom" style="padding-left:0">
