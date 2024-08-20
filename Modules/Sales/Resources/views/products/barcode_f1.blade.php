@@ -30,7 +30,7 @@
 
 <body>
     @php
-        $textSize = 12;
+        $textSize = 14;
         $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
 
         $company = \App\Models\Company::first();
@@ -91,7 +91,7 @@
                                 {{ $stringCode }}</p>
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td style="padding: 0px">
                             <p style="font-size: {{ $textSize }}px; padding: 0px;margin: 1px;">PT:
                                 {{ $item->size }}</p>
@@ -101,7 +101,7 @@
                             <p style="font-size: {{ $textSize }}px; padding: 0px;margin: 1px;">PT:
                                 {{ $item->size }}</p>
                         </td>
-                    </tr>
+                    </tr> --}}
                 @endif
             @endforeach
         @else
@@ -136,7 +136,7 @@
                     </p>
                 </td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td style="padding: 0px">
                     <p style="font-size: {{ $textSize }}px; padding: 0px;margin: 1px;">CÓDIGO:
                         {{ $stringCode }}</p>
@@ -146,7 +146,7 @@
                     <p style="font-size: {{ $textSize }}px; padding: 0px;margin: 1px;">CÓDIGO:
                         {{ $stringCode }}</p>
                 </td>
-            </tr>
+            </tr> --}}
         @endif
     </table>
 </body>

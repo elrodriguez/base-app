@@ -5,11 +5,11 @@ const displayTable= ref(false);
 const products = ref([]);
 
 
-const getDataMinimumStock = () => {
+const getDataProductsStockStatus = () => {
     displayTable.value = true;
     axios({
         method: 'get',
-        url: route('sales_dashboard_minimum_stock'),
+        url: route('sales_dashboard_product_stock_status'),
     }).then((response) => {
         products.value = response.data.products;
         return true;
@@ -19,43 +19,39 @@ const getDataMinimumStock = () => {
 }
 
 onMounted(()=>{
-    getDataMinimumStock();
+    getDataProductsStockStatus();
 });
 </script>
 
 <template>
-    <div v-if="products.length > 0" class="panel h-full">
-        <template v-if="displayTable">
-            <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-          </div>
-        </template>
-        <template v-else>
-            <div class="flex items-center justify-between dark:text-white-light mb-5">
-                <h5 class="font-semibold text-lg">Productos por agotarse</h5>
-                <div class="ltr:ml-auto rtl:mr-auto">
-                    
-                </div>
+    <div class="panel h-full">
+        <div class="flex items-center dark:text-white-light mb-5">
+            <h5 class="font-semibold text-lg">TOPAL DE PRODUCTOS</h5>
+            <div class="ltr:ml-auto rtl:mr-auto">
+                
             </div>
-            <div>
-                <div class="space-y-6" style="overflow-y: auto; height: 400px;scrollbar-width: thin;">
-                    <div v-for="(produc, inx) in products" class="flex">
-                        <img :src="produc.image" class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover" alt="avatar">
-                        <div class="px-3 flex-1">
-                            <div>{{ produc.description }}</div>
-                            <div class="text-xs text-white-dark dark:text-gray-500">{{ produc.interne }}</div>
-                        </div>
-                        <span class="text-success text-base px-1 ltr:ml-auto rtl:mr-auto whitespace-pre">{{ produc.stock }}</span>
-                        
+        </div>
+        <div class="space-y-9">
+            <div class="flex items-center">
+                <div class="w-9 h-9 ltr:mr-3 rtl:ml-3">
+                    <div class="bg-secondary-light dark:bg-secondary text-secondary dark:text-secondary-light rounded-full w-9 h-9 grid place-content-center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.74157 18.5545C4.94119 20 7.17389 20 11.6393 20H12.3605C16.8259 20 19.0586 20 20.2582 18.5545M3.74157 18.5545C2.54194 17.1091 2.9534 14.9146 3.77633 10.5257C4.36155 7.40452 4.65416 5.84393 5.76506 4.92196M3.74157 18.5545C3.74156 18.5545 3.74157 18.5545 3.74157 18.5545ZM20.2582 18.5545C21.4578 17.1091 21.0464 14.9146 20.2235 10.5257C19.6382 7.40452 19.3456 5.84393 18.2347 4.92196M20.2582 18.5545C20.2582 18.5545 20.2582 18.5545 20.2582 18.5545ZM18.2347 4.92196C17.1238 4 15.5361 4 12.3605 4H11.6393C8.46374 4 6.87596 4 5.76506 4.92196M18.2347 4.92196C18.2347 4.92196 18.2347 4.92196 18.2347 4.92196ZM5.76506 4.92196C5.76506 4.92196 5.76506 4.92196 5.76506 4.92196Z" stroke="currentColor" stroke-width="1.5"></path>
+                            <path opacity="0.5" d="M9.1709 8C9.58273 9.16519 10.694 10 12.0002 10C13.3064 10 14.4177 9.16519 14.8295 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div class="flex font-semibold text-white-dark mb-2">
+                        <h6>Income</h6>
+                        <p class="ltr:ml-auto rtl:mr-auto">$92,600</p>
+                    </div>
+                    <div class="rounded-full h-2 bg-dark-light dark:bg-[#1b2e4b] shadow">
+                        <div class="bg-gradient-to-r from-[#7579ff] to-[#b224ef] w-11/12 h-full rounded-full"></div>
                     </div>
                 </div>
             </div>
-        </template>
+
+        </div>
     </div>
 </template>

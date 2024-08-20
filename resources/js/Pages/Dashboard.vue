@@ -7,6 +7,7 @@ import StudentsEnrolledMonth from 'Modules/Academic/Resources/assets/js/Componen
 import StudentDashboard from 'Modules/Academic/Resources/assets/js/Components/StudentDashboard.vue';
 import StorageIndicator from 'Modules/Security/Resources/assets/js/Pages/Dashboard/StorageIndicator.vue';
 import MinimumStockNotice from 'Modules/Sales/Resources/assets/js/Components/MinimumStockNotice.vue';
+import StatusProducts from 'Modules/Sales/Resources/assets/js/Components/StatusProducts.vue';
 
 
 const userData = usePage().props.auth.user;
@@ -34,6 +35,7 @@ const props = defineProps({
                 <StorageIndicator v-if="role.name == 'admin' || role.name == 'webAdmin' || role.name == 'Administrador'" />
                 <!-- ventas stock Minimo -->
                 <MinimumStockNotice v-if="role.name == 'admin' || role.name == 'webAdmin' || role.name == 'Administrador'" />
+                <StatusProducts v-if="role.name == 'admin' || role.name == 'webAdmin' || role.name == 'Administrador'" />
                 <!-- fin modulo academico -->
                 <!-- <div v-if="role.name == 'admin' || role.name == 'webAdmin'" class="col-span-3 sm:col-span-2"> -->
                     <!--modulo academico -->
