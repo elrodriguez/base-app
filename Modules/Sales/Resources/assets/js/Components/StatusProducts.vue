@@ -26,7 +26,7 @@ onMounted(()=>{
 <template>
     <div class="panel h-full">
         <div class="flex items-center dark:text-white-light mb-5">
-            <h5 class="font-semibold text-lg">TOPAL DE PRODUCTOS</h5>
+            <h5 class="font-semibold text-lg">TOTAL DE PRODUCTOS</h5>
             <div class="ltr:ml-auto rtl:mr-auto">
                 
             </div>

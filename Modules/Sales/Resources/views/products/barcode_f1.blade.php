@@ -30,7 +30,8 @@
 
 <body>
     @php
-        $textSize = 14;
+        $textSize = 15;
+        $textSizeP = 12;
         $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
 
         $company = \App\Models\Company::first();
@@ -69,13 +70,13 @@
                     </tr>
                     <tr>
                         <td style="padding: 0px">
-                            <p style="font-size: {{ $textSize }}px; padding: 0px;margin: 1px;">PRECIO: S/
+                            <p style="font-size: {{ $textSizeP }}px; padding: 0px;margin: 1px;">PRECIO: S/
                                 {{ number_format(json_decode($product->sale_prices)->high, 2, ',', ' ') }}
                             </p>
                         </td>
                         <td style="width: 40px"></td>
                         <td style="padding: 0px">
-                            <p style="font-size: {{ $textSize }}px; padding: 0px;margin: 1px;">PRECIO: S/
+                            <p style="font-size: {{ $textSizeP }}px; padding: 0px;margin: 1px;">PRECIO: S/
                                 {{ number_format(json_decode($product->sale_prices)->high, 2, ',', ' ') }}
                             </p>
                         </td>
@@ -125,18 +126,18 @@
             </tr>
             <tr>
                 <td style="padding: 0px">
-                    <p style="font-size: {{ $textSize }}px;">PRECIO: S/
+                    <p style="font-size: {{ $textSizeP }}px;">PRECIO: S/
                         {{ number_format(json_decode($product->sale_prices)->high, 2, ',', ' ') }}
                     </p>
                 </td>
                 <td style="width: 40px"></td>
                 <td style="padding: 0px">
-                    <p style="font-size: {{ $textSize }}px;">PRECIO: S/
+                    <p style="font-size: {{ $textSizeP }}px;">PRECIO: S/
                         {{ number_format(json_decode($product->sale_prices)->high, 2, ',', ' ') }}
                     </p>
                 </td>
             </tr>
-            {{-- <tr>
+            <tr>
                 <td style="padding: 0px">
                     <p style="font-size: {{ $textSize }}px; padding: 0px;margin: 1px;">CÓDIGO:
                         {{ $stringCode }}</p>
@@ -146,7 +147,7 @@
                     <p style="font-size: {{ $textSize }}px; padding: 0px;margin: 1px;">CÓDIGO:
                         {{ $stringCode }}</p>
                 </td>
-            </tr> --}}
+            </tr>
         @endif
     </table>
 </body>
