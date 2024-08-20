@@ -282,6 +282,7 @@
                                                  </span>
                                             </h6>
                                             <p v-if="summary.notes" class="text-xs">{{ summary.notes }}</p>
+                                            <p v-if="summary.reason" class="text-xs font-black text-danger">BOLETA ANULADA POR: {{ summary.reason }}</p>
                                         </td>
                                         <td>
                                             {{ summary.summary_date }}

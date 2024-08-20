@@ -258,56 +258,61 @@ class Boleta
                 $sale = Sale::find($document->sale_id);
                 $sale->update(['status' => false]);
 
-                $products = SaleDocumentItem::where('document_id', $document->id)->get();
+                $products = SaleProduct::where('sale_id', $sale->id)->get();
 
-                foreach ($products as $produc) {
+                foreach ($products as $item) {
                     // solo si son productos no aplica a los servicios
-                    if ($produc->unit_type != 'ZZ') {
+                    if (json_decode($item->saleProduct)->unit_type != 'ZZ') {
 
                         $k = Kardex::create([
                             'date_of_issue' => Carbon::now()->format('Y-m-d'),
                             'motion' => 'sale',
-                            'product_id' => $produc->product_id,
+                            'product_id' => $item->product_id,
                             'local_id' => $sale->local_id,
-                            'quantity' => $produc->quantity,
+                            'quantity' => $item->quantity,
                             'document_id' => $document->id,
                             'document_entity' => SaleDocument::class,
                             'description' => 'Anulacion de Venta'
                         ]);
 
-                        $product = Product::find($produc->product_id);
+                        $product = Product::find($item->product_id);
 
                         if ($product->presentations) {
 
                             KardexSize::create([
                                 'kardex_id' => $k->id,
-                                'product_id' => $produc->product_id,
+                                'product_id' => $item->product_id,
                                 'local_id' => $sale->local_id,
                                 //'size'      => json_decode($produc->product)->size,
-                                'size'      => json_decode($produc->saleProduct)->size,
-                                'quantity'  => $produc->quantity
+                                'size'      => json_decode($item->saleProduct)->size,
+                                'quantity'  => $item->quantity
                             ]);
 
-                            $tallas = $product->sizes;
+                            $tallas = json_decode($product->sizes, true);
+
                             $n_tallas = [];
-                            foreach (json_decode($tallas, true) as $k => $talla) {
-                                if ($talla['size'] == $produc['size']) {
-                                    $n_tallas[$k] = array(
-                                        'size' => $talla['size'],
-                                        'quantity' => ($talla['quantity'] + $produc->quantity)
-                                    );
-                                } else {
-                                    $n_tallas[$k] = array(
-                                        'size' => $talla['size'],
-                                        'quantity' => $talla['quantity']
-                                    );
+                            foreach ($tallas as &$size) {
+                                // Si el tamaño es igual a 22
+                                if ($size["size"] == json_decode($item->saleProduct)->size) {
+
+                                    // Obtiene la cantidad actual
+                                    $currentQuantity = intval($size["quantity"]); // Convierte a entero
+
+                                    // Suma 1 a la cantidad actual
+                                    $newQuantity = $currentQuantity + $item->quantity;
+
+                                    // Actualiza la cantidad
+                                    $size["quantity"] = $newQuantity;
                                 }
                             }
+
+                            $n_tallas = $tallas;
+
                             $product->update([
                                 'sizes' => json_encode($n_tallas)
                             ]);
                         }
-                        Product::find($produc->product_id)->increment('stock', $produc->quantity);
+                        Product::find($item->product_id)->increment('stock', $item->quantity);
                     }
                 }
                 return $sale;

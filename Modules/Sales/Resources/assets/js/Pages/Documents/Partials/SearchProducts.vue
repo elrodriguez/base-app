@@ -108,36 +108,40 @@
         if(form.data.stock > 0 && form.data.stock >= form.data.quantity){
             if (pre){
                 if(form.data.size){
-                    if(form.data.size_quantity >= form.data.quantity){
-                        if(form.data.price){
-                            let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
-                            form.data.total = total;
-                            let data = {
-                                id: form.data.id,
-                                interne: form.data.interne,
-                                description: form.data.description + ' Talla-'+form.data.size,
-                                is_product: form.product.is_product == 1 ? true : false,
-                                unit_type: form.product.type_unit_measure_id,
-                                quantity: form.data.quantity,
-                                unit_price: form.data.price,
-                                discount: form.data.discount,
-                                total: form.data.total,
-                                afe_igv: form.product.type_sale_affectation_id,
-                                presentations: pre,
-                                size: form.data.size,
-                                m_igv: 0,
-                                v_sale: 0,
-                                icbper: false
+                    if(form.data.quantity > 0 && form.data.quantity != ''){
+                        if(form.data.size_quantity >= form.data.quantity){
+                            if(form.data.price){
+                                let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
+                                form.data.total = total;
+                                let data = {
+                                    id: form.data.id,
+                                    interne: form.data.interne,
+                                    description: form.data.description + ' Talla-'+form.data.size,
+                                    is_product: form.product.is_product == 1 ? true : false,
+                                    unit_type: form.product.type_unit_measure_id,
+                                    quantity: form.data.quantity,
+                                    unit_price: form.data.price,
+                                    discount: form.data.discount,
+                                    total: form.data.total,
+                                    afe_igv: form.product.type_sale_affectation_id,
+                                    presentations: pre,
+                                    size: form.data.size,
+                                    m_igv: 0,
+                                    v_sale: 0,
+                                    icbper: false
+                                }
+                                emit('eventdata',data);
+                                displayModal.value = false;
+                                form.data.size = null;
+                                displayResultSearch.value = false;
+                            }else{
+                                showMessage('Seleccionar Precio', 'info')
                             }
-                            emit('eventdata',data);
-                            displayModal.value = false;
-                            form.data.size = null;
-                            displayResultSearch.value = false;
                         }else{
-                            showMessage('Seleccionar Precio', 'info')
+                            showMessage('La cantidad a vender es mayor a las existencias del producto','info')
                         }
                     }else{
-                        showMessage('La cantidad a vender es mayor a las existencias del producto','info')
+                        showMessage('La cantidad a vender debe ser mayor de 0', 'info');
                     }
                 }else{
                     showMessage('Seleccionar Talla', 'info')

@@ -104,30 +104,37 @@
         if (pre){
             
             if(form.data.size){
-                if(form.data.size_quantity >= form.data.quantity){
-                    if(form.data.price){
-                        let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
-                        form.data.total = total.toFixed(2);
-                        let data = {
-                            id: form.data.id,
-                            interne: form.data.interne,
-                            description: form.data.description,
-                            price: form.data.price,
-                            total: form.data.total,
-                            quantity: form.data.quantity,
-                            size: form.data.size,
-                            discount: form.data.discount,
-                            presentations: pre
+                if(form.data.quantity > 0 && form.data.quantity != ''){
+                    if(form.data.size_quantity >= form.data.quantity){
+                    
+                        if(form.data.price){
+                            let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
+                            form.data.total = total.toFixed(2);
+                            let data = {
+                                id: form.data.id,
+                                interne: form.data.interne,
+                                description: form.data.description,
+                                price: form.data.price,
+                                total: form.data.total,
+                                quantity: form.data.quantity,
+                                size: form.data.size,
+                                discount: form.data.discount,
+                                presentations: pre
+                            }
+                            emit('eventdata',data);
+                            displayModal.value = false;
+                            form.data.size = null;
+                            displayResultSearch.value = false;
+                        }else{
+                            showMessage('Seleccionar Precio', 'info')
                         }
-                        emit('eventdata',data);
-                        displayModal.value = false;
-                        form.data.size = null;
-                        displayResultSearch.value = false;
                     }else{
-                        showMessage('Seleccionar Precio', 'info')
+                        showMessage('La cantidad a vender es mayor a las existencias del producto','info');
                     }
+                    
                 }else{
-                    showMessage('La cantidad a vender es mayor a las existencias del producto','info')
+                    showMessage('La cantidad a vender debe ser mayor de 0', 'info');
+                    
                 }
             }else{
                 showMessage('Seleccionar Talla', 'info')

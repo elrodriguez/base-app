@@ -385,7 +385,8 @@ const showMessage = (msg = '', type = 'success') => {
     ];
     const options = { 
         responsive: true, 
-        language: es_PE 
+        language: es_PE,
+        order: [[3, 'desc']]
     }
 </script>
 
@@ -431,7 +432,7 @@ const showMessage = (msg = '', type = 'success') => {
                                         <li>
                                             <a @click="opemModalDetails(props.rowData)" href="javascript:;">Detalles</a>
                                         </li>
-                                        <li v-if="props.rowData.status == 1 || props.rowData.invoice_type_doc == '03'">
+                                        <li v-if="props.rowData.status == 1 && props.rowData.invoice_type_doc == '03'">
                                             <a @click="cancelDocument(index, props.rowData)" href="javascript:;">Anular</a>
                                         </li>
                                         <li>
@@ -450,8 +451,10 @@ const showMessage = (msg = '', type = 'success') => {
                         </div>
                     </template>
                     <template #document="props">
-                        <h6 class="font-semibold">
-                            {{ props.rowData.serie }}-{{ props.rowData.invoice_correlative }}
+                        <div>
+                            <h6 class="font-semibold" :class="props.rowData.status == 3 ? 'line-through': ''" >
+                                {{ props.rowData.serie }}-{{ props.rowData.invoice_correlative }}
+                            </h6>
                             <span v-if="props.rowData.invoice_status =='Rechazada' || props.rowData.invoice_status === 'Aceptada' || props.rowData.invoice_status === 'Anulada'" class="block text-xs">
                                 <code v-if="props.rowData.invoice_response_code != 0">
                                     Código: {{ props.rowData.invoice_response_code }}
@@ -460,8 +463,8 @@ const showMessage = (msg = '', type = 'success') => {
                                     Descripción: {{ props.rowData.invoice_response_description }}
                                 </code>
                             </span>
-                        </h6>
-                        <p v-if="props.rowData.status == 3" class="text-xs text-danger">Motivo de anulacion: {{ props.rowData.reason_cancellation }}</p>
+                        </div>
+                        <p v-if="props.rowData.status == 3" class="text-xs font-black text-danger">Motivo de anulacion: {{ props.rowData.reason_cancellation }}</p>
                     </template>
                     <template #created="props">
                         {{ formatDate(props.rowData.created_at) }}
