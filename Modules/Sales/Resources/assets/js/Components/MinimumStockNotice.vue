@@ -38,7 +38,7 @@ onMounted(()=>{
         </template>
         <template v-else>
             <div class="flex items-center justify-between dark:text-white-light mb-5">
-                <h5 class="font-semibold text-lg">Productos por agotarse</h5>
+                <h5 class="font-semibold text-lg">PRODUCTOS POR AGOTARSE</h5>
                 <div class="ltr:ml-auto rtl:mr-auto">
                     
                 </div>

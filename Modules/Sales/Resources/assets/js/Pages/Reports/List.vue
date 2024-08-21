@@ -8,25 +8,25 @@ const reportsData = [
     {
         title: 'Ventas',
         items: [
-            // { url: route('sales_report_dates'), label: 'Reporte de ventas entre fechas(por locales)'},
+            { url: route('sales_report_dates'), label: 'Reporte de ventas entre fechas(por locales)'},
             { url: route('report_payment_method_totals'), label: 'Reporte Totales de método de pago(por locales)'},
             { url: route('report_product_sellers_dates'), label: 'Reporte de Productos por Vendedores y Fechas'},
             { url: route('report_sales_expenses'), label: 'Reporte de ventas y gastos'}
         ]
     },
-    {
-        title: 'Inventario',
-        items: [
-            { url: route('sales_report_dates'), label: 'Reporte de ventas entre fechas(por locales)'}
-        ]
-    },
-    {
-        title: 'Contabilidad',
-        items: [
-            { url: route('record_sales_income_period'), label: 'Registro de ventas e ingresos por periodo'},
-            { url: route('sales_report_dates'), label: 'Exportar registro  de ventas por periodo y formato'}
-        ]
-    }
+    // {
+    //     title: 'Inventario',
+    //     items: [
+    //         { url: route('sales_report_dates'), label: 'Reporte de ventas entre fechas(por locales)'}
+    //     ]
+    // },
+    // {
+    //     title: 'Contabilidad',
+    //     items: [
+    //         { url: route('record_sales_income_period'), label: 'Registro de ventas e ingresos por periodo'},
+    //         { url: route('sales_report_dates'), label: 'Exportar registro  de ventas por periodo y formato'}
+    //     ]
+    // }
   
 ];
 

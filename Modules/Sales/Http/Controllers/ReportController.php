@@ -122,6 +122,7 @@ class ReportController extends Controller
                     'products.description as product_description',
                     'products.image',
                     'sale_products.product as product',
+                    'sale_products.saleProduct as saleProduct',
                     'sale_products.total as product_total'
                 )
                 ->whereDate('sales.created_at', '>=', $start)
@@ -143,6 +144,7 @@ class ReportController extends Controller
                     'products.description as product_description',
                     'products.image',
                     'sale_products.product as product',
+                    'sale_products.saleProduct as saleProduct',
                     'sale_products.total as product_total'
                 )
                 ->whereDate('sales.created_at', '>=', $start)
@@ -163,6 +165,7 @@ class ReportController extends Controller
                 'product_description'       => $sale->product_description,
                 'image'                     => $sale->image,
                 'product'                   => $sale->product,
+                'sale_product'              => $sale->saleProduct,
                 'product_total'             => $sale->product_total,
                 'local_description'         => $sale->local_description
             ];

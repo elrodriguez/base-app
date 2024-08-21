@@ -18,7 +18,7 @@
         }
 
         .tabla_borde {
-            border: 1px solid #666;
+            border: 1px solid #000;
             border-radius: 10px
         }
 
@@ -27,11 +27,11 @@
         }
 
         tr.border_top td {
-            border-top: 1px solid #666
+            border-top: 1px solid #000
         }
 
         td.border_right {
-            border-right: 1px solid #666
+            border-right: 1px solid #000
         }
 
         .table-valores-totales tbody>tr>td {
@@ -43,7 +43,7 @@
         }
 
         .table-valores-totales>tbody>tr>td:last-child {
-            border-bottom: 1px solid #666;
+            border-bottom: 1px solid #000;
             text-align: right;
             width: 30%
         }
@@ -330,6 +330,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td align="left">
+                                                        <strong>Teléfono: </strong>
                                                         {{ $params['user']['header'] }}
                                                     </td>
                                                 </tr>

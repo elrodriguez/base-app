@@ -129,7 +129,7 @@ const donutChart = computed(() => {
         </template>
         <template v-else>
           <div class="flex items-center justify-between mb-5">
-              <h5 class="font-semibold text-lg dark:text-white-light">Disco Duro</h5>
+              <h5 class="font-semibold text-lg dark:text-white-light">DISCO DURO</h5>
               <span class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" > {{ diskBusy.freeGB }} GB</span>
           </div>
           <div class="flex items-center justify-center">
