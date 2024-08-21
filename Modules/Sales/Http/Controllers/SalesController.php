@@ -40,21 +40,6 @@ class SalesController extends Controller
         //
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('sales::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
     public function minimumStock()
     {
         $products = Product::where('stock', '<=', DB::raw('stock_min'))

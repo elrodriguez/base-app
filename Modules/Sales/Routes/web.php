@@ -176,5 +176,4 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
 
 
     Route::get('dashboard/minimum/stock', [SalesController::class, 'minimumStock'])->name('sales_dashboard_minimum_stock');
-    Route::get('dashboard/products/stock/status', [SalesController::class, 'minimumStock'])->name('sales_dashboard_product_stock_status');
 });
