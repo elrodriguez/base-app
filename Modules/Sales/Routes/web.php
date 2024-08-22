@@ -74,6 +74,10 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::get('reports/saleindate', [ReportController::class, 'sales_report'])->name('sale_report');
     Route::get('reports/pettycash/{petty_cash_id}/report', [ReportController::class, 'PettyCashReport'])->name('PettyCashReport');
 
+    Route::get('reports/inventory/report/products', [ReportController::class, 'inventoryReportProducts'])->name('inventory_report_products');
+    Route::post('reports/inventory/report/products/data', [ReportController::class, 'inventoryReportProductsData'])->name('inventory_report_products_data');
+
+
     Route::get('reports/inventoryindate', [ReportController::class, 'inventory_report_export'])->name('inventory_report');
 
     Route::get('reports/inventory/{local_id}', [ReportController::class, 'inventory_report_by_local'])->name('inventory_report_by_local');

@@ -263,10 +263,10 @@ const urlBaseI = assetUrl;
                                     <td >
                                         {{ sale.local_description }}
                                     </td>
-                                    <td >
+                                    <td>
                                         <div class="flex"> 
                                             <img v-if="sale.image=='img/imagen-no-disponible.jpg'"
-                                                :src="urlBaseI+product.image"
+                                                :src="urlBaseI+sale.image"
                                                 class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
                                                 :alt="sale.interne"
                                             />
@@ -282,7 +282,7 @@ const urlBaseI = assetUrl;
                                                 <span class="text-primary block text-xs">PT: {{ JSON.parse(sale.sale_product).size }}</span>
                                             </p>
                                         </div>
-                                        <img  width="40"> 
+                                        
                                     </td>
                                     <td >
                                         <div v-for="pay in JSON.parse(sale.payments)"> 
