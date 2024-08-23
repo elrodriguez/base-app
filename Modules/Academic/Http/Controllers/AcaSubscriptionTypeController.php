@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\DB;
 use Modules\Academic\Entities\AcaSubscriptionType;
 
 class AcaSubscriptionTypeController extends Controller
@@ -18,7 +19,7 @@ class AcaSubscriptionTypeController extends Controller
      */
     public function index()
     {
-        $subscriptions = AcaSubscriptionType::all();
+        $subscriptions = AcaSubscriptionType::orderBy('order_number')->get();
         return Inertia::render('Academic::Subscriptions/List', [
             'subscriptions' => $subscriptions
         ]);
@@ -29,7 +30,10 @@ class AcaSubscriptionTypeController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Academic::Subscriptions/Create');
+        $periods = getEnumValues('aca_subscription_types', 'period');
+        return Inertia::render('Academic::Subscriptions/Create', [
+            'periods' => $periods
+        ]);
     }
 
     /**
@@ -46,7 +50,7 @@ class AcaSubscriptionTypeController extends Controller
                 'details.*.label' => 'required',
                 'prices.0.currency' => 'required',
                 'prices.0.amount' => 'required',
-                'prices.0.detail' => 'required',
+                'period' => 'required'
             ]
         );
 
@@ -56,6 +60,8 @@ class AcaSubscriptionTypeController extends Controller
             'details' => json_encode($request->get('details')),
             'prices' => json_encode($request->get('prices')),
             'status' => $request->get('status') ?? false,
+            'period' => $request->get('period'),
+            'order_number' => $request->get('order_number'),
         ]);
 
         return redirect()->route('aca_subscriptions_list')
@@ -75,15 +81,42 @@ class AcaSubscriptionTypeController extends Controller
      */
     public function edit($id)
     {
-        return view('academic::edit');
+        $subscription = AcaSubscriptionType::find($id);
+        $periods = getEnumValues('aca_subscription_types', 'period');
+
+        return Inertia::render('Academic::Subscriptions/Edit', [
+            'subscription' => $subscription,
+            'periods' => $periods
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'title' => 'required',
+                'description' => 'required',
+                'details.*.label' => 'required',
+                'prices.0.currency' => 'required',
+                'prices.0.amount' => 'required',
+                'prices.0.detail' => 'required',
+                'period' => 'required'
+            ]
+        );
+
+        AcaSubscriptionType::find($id)->update([
+            'title' => $request->get('title'),
+            'description' => $request->get('description'),
+            'details' => json_encode($request->get('details')),
+            'prices' => json_encode($request->get('prices')),
+            'status' => $request->get('status') ?? false,
+            'period' => $request->get('period'),
+            'order_number' => $request->get('order_number'),
+        ]);
     }
 
     /**
@@ -91,6 +124,33 @@ class AcaSubscriptionTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = null;
+        $success = false;
+        try {
+            // Usamos una transacción para asegurarnos de que la operación se realice de manera segura.
+            DB::beginTransaction();
+
+            // Verificamos si existe.
+            $item = AcaSubscriptionType::findOrFail($id);
+
+            // Si no hay detalles asociados, eliminamos.
+            $item->delete();
+
+            // Si todo ha sido exitoso, confirmamos la transacción.
+            DB::commit();
+
+            $message =  'Eliminado correctamente';
+            $success = true;
+        } catch (\Exception $e) {
+            // Si ocurre alguna excepción durante la transacción, hacemos rollback para deshacer cualquier cambio.
+            DB::rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json([
+            'success' => $success,
+            'message' => $message
+        ]);
     }
 }

@@ -14,6 +14,10 @@ import IconMinus from '@/Components/vristo/icon/icon-minus.vue';
 import { NumberSpinner } from 'vue3-number-spinner';
 
 const props = defineProps({
+    subscription: {
+        type: Object,
+        default: () => ({})
+    },
     periods: {
         type: Object,
         default: () => ({})
@@ -21,40 +25,27 @@ const props = defineProps({
 });
 
 const form = useForm({
-    title: null,
-    description: null,
-    details: [{
-        label: null
-    }],
-    prices: [{
-        currency: 'PEN',
-        amount: null,
-        detail: null
-    },
-    {
-        currency: 'USD',
-        amount: null,
-        detail: null
-    }],
-    status: true,
-    period: null,
-    order_number: 1
+    title: props.subscription.title,
+    description: props.subscription.description,
+    details: JSON.parse(props.subscription.details),
+    prices: JSON.parse(props.subscription.prices),
+    status: props.subscription.status == 1 ? true : false,
+    period: props.subscription.period,
+    order_number: props.subscription.order_number ?? 1
 });
 
-const createSubscription = () => {
-    form.post(route('aca_subscriptions_store'), {
-        forceFormData: true,
-        errorBag: 'createSubscription',
+const updateSubscription = () => {
+    form.put(route('aca_subscriptions_update',props.subscription.id), {
+        errorBag: 'updateSubscription',
         preserveScroll: true,
         onSuccess: () => {
             Swal2.fire({
                 title: 'Enhorabuena',
-                text: 'Se registró correctamente',
+                text: 'Actualizado correctamente',
                 icon: 'success',
                 padding: '2em',
                 customClass: 'sweet-alerts',
             });
-            form.reset()
         },
     });
 }
@@ -88,12 +79,12 @@ const removePrice = (indexToRemove) => {
 </script>
 
 <template>
-    <FormSection @submitted="createSubscription" class="">
+    <FormSection @submitted="updateSubscription" class="">
         <template #title>
             Suscripción Detalles
         </template>
         <template #description>
-            Crear Suscripción, Los campos con * son obligatorios
+            Editar Suscripción, Los campos con * son obligatorios
         </template>
         <template #form>
             <div class="col-span-6 sm:col-span-3">
@@ -107,7 +98,7 @@ const removePrice = (indexToRemove) => {
                 <InputError :message="form.errors.title" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-3">
-                <InputLabel for="title" value="Título *" />
+                <InputLabel for="period" value="Periodo *" />
                 <select v-model="form.period" class="form-select text-white-dark">
                     <template v-for="period in periods">
                         <option :value="period">{{ period }}</option>
@@ -144,6 +135,7 @@ const removePrice = (indexToRemove) => {
                 />
                 <InputError :message="form.errors.description" class="mt-2" />
             </div>
+            
             <div class="col-span-6">
                 <label class="inline-flex">
                     <input v-model="form.status" type="checkbox" class="form-checkbox rounded-full" />
@@ -166,7 +158,7 @@ const removePrice = (indexToRemove) => {
                                     <icon-x class="w-4 h-4" />
                                 </button>
                             </div>
-                            <InputError :message="form.errors[`details.${key}.label`]" class="mt-2" />
+                            <InputError :message="form.errors[`details.${ixdex}.label`]" class="mt-2" />
                         </template>
                     </div>
                 </div>

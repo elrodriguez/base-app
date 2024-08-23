@@ -18,7 +18,9 @@ class AcaSubscriptionType extends Model
         'description',
         'details',
         'prices',
-        'status'
+        'status',
+        'period',
+        'order_number'
     ];
 
     protected static function newFactory(): AcaSubscriptionTypeFactory
