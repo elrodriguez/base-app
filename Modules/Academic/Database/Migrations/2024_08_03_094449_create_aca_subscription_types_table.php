@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('details')->nullable();
             $table->json('prices')->nullable();
             $table->timestamps();
+            $table->string('status', 1)->default(1);
         });
 
         Schema::table('aca_cap_registrations', function (Blueprint $table) {

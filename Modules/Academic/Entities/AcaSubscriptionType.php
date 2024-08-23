@@ -13,8 +13,14 @@ class AcaSubscriptionType extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'title',
+        'description',
+        'details',
+        'prices',
+        'status'
+    ];
+
     protected static function newFactory(): AcaSubscriptionTypeFactory
     {
         //return AcaSubscriptionTypeFactory::new();

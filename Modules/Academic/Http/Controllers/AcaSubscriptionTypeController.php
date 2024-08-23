@@ -7,15 +7,21 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Modules\Academic\Entities\AcaSubscriptionType;
 
 class AcaSubscriptionTypeController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('Academic::Subscriptions/List');
+        $subscriptions = AcaSubscriptionType::all();
+        return Inertia::render('Academic::Subscriptions/List', [
+            'subscriptions' => $subscriptions
+        ]);
     }
 
     /**
@@ -23,7 +29,7 @@ class AcaSubscriptionTypeController extends Controller
      */
     public function create()
     {
-        return view('academic::create');
+        return Inertia::render('Academic::Subscriptions/Create');
     }
 
     /**
@@ -31,7 +37,29 @@ class AcaSubscriptionTypeController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        //dd($request->all());
+        $this->validate(
+            $request,
+            [
+                'title' => 'required',
+                'description' => 'required',
+                'details.*.label' => 'required',
+                'prices.0.currency' => 'required',
+                'prices.0.amount' => 'required',
+                'prices.0.detail' => 'required',
+            ]
+        );
+
+        AcaSubscriptionType::create([
+            'title' => $request->get('title'),
+            'description' => $request->get('description'),
+            'details' => json_encode($request->get('details')),
+            'prices' => json_encode($request->get('prices')),
+            'status' => $request->get('status') ?? false,
+        ]);
+
+        return redirect()->route('aca_subscriptions_list')
+            ->with('message', __('Creado con éxito'));
     }
 
     /**
