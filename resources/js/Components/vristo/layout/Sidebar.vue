@@ -46,7 +46,7 @@
         <nav class="sidebar fixed min-h-screen h-full top-0 bottom-0 w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] z-50 transition-all duration-300">
             <div class="bg-white dark:bg-[#0e1726] h-full">
                 <div class="flex justify-between items-center px-4 py-3">
-                    <Link href="/" class="main-logo flex items-center shrink-0">
+                    <Link :href="route('dashboard')" class="main-logo flex items-center shrink-0">
                         <img v-if="$page.props.company.isotipo == '/img/isotipo.png'" class="w-8 ml-[5px] flex-none" :src="xasset+$page.props.company.isotipo" alt="" />
                         <img v-else class="w-8 ml-[5px] flex-none" :src="xasset+'storage/'+$page.props.company.isotipo" alt="" />
                         <span class="text-2xl ltr:ml-1.5 rtl:mr-1.5 font-semibold align-middle lg:inline dark:text-white-light">{{ $page.props.company.name }}</span>
@@ -59,6 +59,7 @@
                         <icon-carets-down class="m-auto rotate-90" />
                     </a>
                 </div>
+
                 <perfect-scrollbar
                     :options="{
                         swipeEasing: true,
@@ -167,9 +168,11 @@
                             
                         </template>
                     </ul>
+                    
                 </perfect-scrollbar>
             </div>
         </nav>
+        
     </div>
 </template>
 

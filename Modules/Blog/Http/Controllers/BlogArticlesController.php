@@ -266,4 +266,15 @@ class BlogArticlesController extends Controller
 
         return response()->json(['location' =>  $url]);
     }
+
+
+    public function show($url)
+    {
+        $article = BlogArticle::with('category')
+            ->with('author')
+            ->where('url', $url)->first();
+        return Inertia::render('Blog::articles/Show', [
+            'article' => $article
+        ]);
+    }
 }
