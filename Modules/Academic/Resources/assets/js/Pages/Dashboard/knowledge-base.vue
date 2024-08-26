@@ -285,9 +285,7 @@
                 <h3 class="mb-6 text-xl font-bold md:text-3xl">Artículos más buscados</h3>
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
                     <template v-for="(article, i) in  interests.popularArticles" :key="i">
-                        <div
-                            class="space-y-5 rounded-md border border-white-light bg-white p-5 shadow-[0px_0px_2px_0px_rgba(145,158,171,0.20),0px_12px_24px_-4px_rgba(145,158,171,0.12)] dark:border-[#1B2E4B] dark:bg-black"
-                        >
+                        <div class="space-y-5 rounded-md border border-white-light bg-white p-5 shadow-[0px_0px_2px_0px_rgba(145,158,171,0.20),0px_12px_24px_-4px_rgba(145,158,171,0.12)] dark:border-[#1B2E4B] dark:bg-black" >
                             <div class="relative h-[340px] overflow-hidden rounded-md group">
                                 <img :src="article.imagen" alt="video tutorial" class="h-full w-full object-cover cursor-pointer" @click="modal = true" />
                                 <Link

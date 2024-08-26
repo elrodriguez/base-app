@@ -273,8 +273,22 @@ class BlogArticlesController extends Controller
         $article = BlogArticle::with('category')
             ->with('author')
             ->where('url', $url)->first();
+
+        $categories = BlogCategory::where('status', true)->get();
+
+        $articles = BlogArticle::orderByDesc('views')->take(4)->get();
+
+        $archives = BlogArticle::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total_articles')
+            ->groupBy('year', 'month')
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->get();
+
         return Inertia::render('Blog::articles/Show', [
-            'article' => $article
+            'article' => $article,
+            'categories' => $categories,
+            'articles' => $articles,
+            'archives' => $archives
         ]);
     }
 }
