@@ -13,6 +13,7 @@
 
 use Modules\Blog\Http\Controllers\BlogArticlesController;
 use Modules\Blog\Http\Controllers\BlogCategoriesController;
+use Modules\Blog\Http\Controllers\BlogCommentController;
 
 Route::prefix('blog')->group(function () {
     Route::get('/', 'BlogController@index');
@@ -36,5 +37,7 @@ Route::prefix('blog')->group(function () {
             ->name('blog_article_uploa_image_tiny');
         Route::get('article/{url}/show', [BlogArticlesController::class, 'show'])
             ->name('blog_article_show_studante');
+        Route::post('comment/store', [BlogCommentController::class, 'store'])
+            ->name('blog_comment_store');
     });
 });

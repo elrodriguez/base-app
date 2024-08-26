@@ -23,6 +23,14 @@
         article_id: props.article.id,
         message: null
     });
+
+    const saveComment = () => {
+        formComment.post(route('blog-article.store'), {
+            errorBag: 'saveComment',
+            preserveScroll: true,
+            preserveScroll: true
+        });
+    }
 </script>
 
 <template>
@@ -83,6 +91,7 @@
                     <div class="relative mb-3">
                         <label for="comments" class="text-gray-900 dark:text-gray-50">Mensaje</label>
                         <textarea v-model="formComment.message"name="comments" id="comments" rows="4" class="form-textarea" placeholder="Escribe aqui tu mensaje"></textarea>
+                        <InputError :message="form.errors.message" class="mt-2" />
                     </div>
                 </div>
             </div>

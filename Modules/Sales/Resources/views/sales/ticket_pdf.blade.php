@@ -50,7 +50,7 @@
 
         .ticket {
             width: 155px;
-            max-width: 155px;
+            max-width: 155px !important;
         }
 
         img {
@@ -71,6 +71,7 @@
             {{-- {{ $company->name }} --}}
             <br>{{ \Carbon\Carbon::parse($document->created_at)->format('Y-m-d H:i:s') }}
         </p>
+        <p class="centrado">NOTA DE VENTA</p>
         <p class="centrado">{{ $document->description }} - {{ $document->number }}</p>
         <table style="width: 100%">
             <thead>
@@ -100,6 +101,14 @@
                     <td style="text-align: right" class="precio">{{ $sale->total }}</td>
                 </tr>
             </tbody>
+        </table>
+        <br><br>
+        <table style="width: 100%; border-bottom: 1px solid black !important;padding:0px">
+            <tr>
+                <td style="padding: 0px">
+                    <p style="padding: 0px">VENDEDOR: {{ $seller->name }}</p>
+                </td>
+            </tr>
         </table>
         <div style="margin-top:16px;margin-bottom:16px;width:100%;">
             <p class="centrado">

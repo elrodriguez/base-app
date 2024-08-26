@@ -14,6 +14,7 @@ use App\Models\Sale;
 use App\Models\SaleDocument;
 use App\Models\SaleProduct;
 use App\Models\Serie;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -325,16 +326,18 @@ class SaleController extends Controller
         $local = LocalSale::find($sale->local_id);
         $products = SaleProduct::where('sale_id', $sale->id)->get();
         $company = Company::first();
+        $seller = User::find($sale->user_id);
 
         $data = [
             'local'     => $local,
             'sale'      => $sale,
             'products'  => $products,
             'document'  => $document,
-            'company'   => $company
+            'company'   => $company,
+            'seller'    => $seller
         ];
 
-        $file = public_path('ticket/') . 'ticket.pdf';
+        $file = public_path('ticket/') . $seller->id . '-ticket.pdf';
         $pdf = PDF::loadView('sales::sales.ticket_pdf', $data);
         $pdf->setPaper(array(0, 0, 273, 500), 'portrait');
         $pdf->save($file);
