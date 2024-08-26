@@ -35,9 +35,11 @@ Route::prefix('blog')->group(function () {
         Route::middleware(['middleware' => 'permission:blog_articulos_editar'])
             ->post('blog-article-upload-image', 'BlogArticlesController@uploadImageCkeditor')
             ->name('blog_article_uploa_image_tiny');
-        Route::get('article/{url}/show', [BlogArticlesController::class, 'show'])
+        Route::middleware(['middleware' => 'role:Alumno'])
+            ->get('article/{url}/show', [BlogArticlesController::class, 'show'])
             ->name('blog_article_show_studante');
-        Route::post('comment/store', [BlogCommentController::class, 'store'])
+        Route::middleware(['middleware' => 'role:Alumno'])
+            ->post('comment/store', [BlogCommentController::class, 'store'])
             ->name('blog_comment_store');
     });
 });

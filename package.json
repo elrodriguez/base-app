@@ -76,6 +76,7 @@
         "vue3-number-spinner": "^0.0.9",
         "vue3-perfect-scrollbar": "^2.0.0",
         "vue3-popper": "^1.5.0",
+        "vue3-quill": "^0.3.1",
         "xlsx": "^0.18.5"
     }
 }
