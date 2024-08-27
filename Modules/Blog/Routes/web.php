@@ -41,5 +41,14 @@ Route::prefix('blog')->group(function () {
         Route::middleware(['middleware' => 'role:Alumno'])
             ->post('comment/store', [BlogCommentController::class, 'store'])
             ->name('blog_comment_store');
+        Route::middleware(['middleware' => 'role:Alumno'])
+            ->post('comment/appreciate/store', [BlogCommentController::class, 'appreciateStore'])
+            ->name('blog_comment_appreciate_store');
+        Route::middleware(['middleware' => 'role:Alumno'])
+            ->post('comment/reply/store', [BlogCommentController::class, 'storeReply'])
+            ->name('blog_comment_reply_store');
+        Route::middleware(['middleware' => 'role:Alumno'])
+            ->delete('comment/destroy/{id}', [BlogCommentController::class, 'destroy'])
+            ->name('blog_comment_destroy');
     });
 });

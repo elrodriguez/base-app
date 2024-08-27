@@ -30,6 +30,10 @@
         comments: {
             type: Object,
             default: () => ({})
+        },
+        relatedArticles: {
+            type: Object,
+            default: () => ({})
         }
     });
 
@@ -142,10 +146,10 @@
                                 </li>
                             </ul> -->
                             
-                            <Comments :comments="comments" :article="article" />                            
+                            <Comments :comments="comments" :article="{id:article.id,url:article.url}" />                            
                         </div>
                         <div class="mt-8">
-                            <Carousel />
+                            <Carousel :articles="relatedArticles" />
                         </div>
                     </div>
                     <div class="col-span-12 lg:col-span-4">

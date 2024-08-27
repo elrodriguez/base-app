@@ -10,17 +10,24 @@
     import 'swiper/css/navigation';
     import 'swiper/css/pagination';
 
+    import { Link } from "@inertiajs/vue3"
+
+    defineProps({
+        articles: {
+            type: Object,
+            default: () => ({})
+        }
+    });
+
     const xasset = assetUrl;
 
     const getImage = (path) => {
         return xasset + path;
     }
 
-    const items = ref([getImage('themes/vristo/images/carousel1.jpeg'), getImage('themes/vristo/images/carousel2.jpeg'), getImage('themes/vristo/images/carousel3.jpeg')]);
-
 </script>
 <template>
-    <div>
+    <div v-if="articles.length > 0">
         <h5 class="pb-3 text-xl text-gray-900 border-b border-gray-100/50 dark:text-gray-50 dark:border-zinc-700">Artículos relacionados</h5>
     
         <!-- autopaly -->
@@ -32,16 +39,16 @@
             class="max-w-3xl mx-auto mb-5"
             id="slider2"
         >
-            <template v-for="(item, i) in items" :key="i">
+            <template v-for="(item, i) in articles" :key="i">
                 <swiper-slide>
-                <img :src="item" class="w-full max-h-80 object-cover" alt="" />
-                <div class="absolute z-[999] text-white top-1/4 ltr:left-12 rtl:right-12">
-                    <div class="sm:text-3xl text-base font-bold">This is blog Image</div>
-                    <div class="sm:mt-5 mt-1 w-4/5 text-base sm:block hidden font-medium">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
+                    <img :src="item.image" class="w-full max-h-80 object-cover" alt="" />
+                    <div class="absolute z-[999] text-white top-1/4 ltr:left-12 rtl:right-12">
+                        <div class="sm:text-3xl text-base font-bold">{{ item.title }}</div>
+                        <div class="sm:mt-5 mt-1 w-4/5 text-base sm:block hidden font-medium">
+                            {{ item.short_description }}
+                        </div>
+                        <Link :href="route('blog_article_show_studante',item.url)" type="button" class="mt-4 btn btn-primary">Leer mas</Link>
                     </div>
-                    <button type="button" class="mt-4 btn btn-primary">Learn more</button>
-                </div>
                 </swiper-slide>
             </template>
             <a

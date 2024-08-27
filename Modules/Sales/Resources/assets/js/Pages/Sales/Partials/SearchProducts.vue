@@ -33,8 +33,7 @@
     const displayResultSearch = ref(false);
     const searchProducts = async () => {
         if(formScaner.scaner){
-            var por = form.search.split('|');
-            axios.post(route('search_scaner_product'), {search: por[0]} ).then((response) => {
+            axios.post(route('search_scaner_product'), form ).then((response) => {
                 if(response.data.success){
                     displayModal.value = true;
                     form.products = [];
@@ -43,13 +42,12 @@
                     form.data.interne = response.data.product.interne;
                     form.data.stock = response.data.product.stock;
                     form.data.description = response.data.product.description;
-                    form.data.price = por[1] ?? null;
-                    form.data.size = por[2] ?? null    ;
+                    form.data.price = null;
+                    form.data.size = null;
                     form.data.total = 0;
                     form.data.quantity = 1;
                     form.data.discount = 0;
                     form.search = null;
-                    
                 }else{
                     Swal.fire({
                         icon: 'error',
@@ -58,8 +56,9 @@
                         padding: '2em',
                         customClass: 'sweet-alerts',
                     });
+                    
                 }
-                
+                displayResultSearch.value = false;
             });
         }else{
             axios.post(route('search_product'), form ).then((response) => {
@@ -109,6 +108,7 @@
                     
                         if(form.data.price){
                             let total = parseFloat(form.data.quantity)*(parseFloat(form.data.price)-parseFloat(form.data.discount))
+                            
                             form.data.total = total.toFixed(2);
                             let data = {
                                 id: form.data.id,
@@ -197,9 +197,11 @@
                 <div class="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
                     <input v-model="formScaner.scaner" value="" id="scaner" type="checkbox" class="form-checkbox border-[#e0e6ed] dark:border-white-dark ltr:mr-0 rtl:ml-0" />
                 </div>
-                <input v-model="form.search" autofocus autocomplete="off" type="text" class="form-input ltr:rounded-l-none rtl:rounded-r-none ltr:rounded-r-none rtl:rounded-l-none" placeholder="Buscar por código o descripción..." required />
+                <input v-model="form.search" @input="searchProducts()" autofocus autocomplete="off" type="text" class="form-input ltr:rounded-l-none rtl:rounded-r-none ltr:rounded-r-none rtl:rounded-l-none" placeholder="Buscar por código o descripción..." required />
                 <button type="submit" class="btn btn-secondary ltr:rounded-l-none rtl:rounded-r-none">
-                    <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
                 </button>
             </div>
         </form>

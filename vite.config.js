@@ -25,9 +25,6 @@ export default defineConfig({
             '@Public': path.resolve(__dirname, './public'),
         },
     },
-    optimizeDeps: {
-        include: ['quill'],
-    },
     build: {
         sourcemap: true,
     },

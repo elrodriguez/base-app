@@ -55,10 +55,19 @@
     });
     
     const getDataTable = async (data) => {
-        let xtotal = parseFloat(data.total) + parseFloat(form.total);
-        form.total = xtotal.toFixed(2);
-        form.products.push(data);
-        form.payments[0].amount = form.total;
+        // Verificar si el objeto ya existe en el array
+        if (form.products.some(product => product.id === data.id && product.size === data.size)) {
+            // El objeto ya existe, mostrar una alerta
+            showMessage('El producto ya fue agregado','info');
+        } else {
+            // El objeto no existe, agregarlo al array
+            
+            let xtotal = parseFloat(data.total) + parseFloat(form.total);
+            form.total = xtotal.toFixed(2);
+            form.products.push(data);
+            form.payments[0].amount = form.total;
+        }
+        
     }
 
     const removeProduct = (key) => {
@@ -119,7 +128,7 @@
                 Swal2.close();
             });
         }else{
-            swal('Agregar Productos para realizar la venta');
+            showMessage('Agregar Productos para realizar la venta');
         }
         
     }
@@ -134,6 +143,21 @@
         form.client.id = data.id;
         form.client.full_name = data.full_name;
     }
+
+    const showMessage = (msg = '', type = 'success') => {
+        const toast = Swal2.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            customClass: { container: 'toast' },
+        });
+        toast.fire({
+            icon: type,
+            title: msg,
+            padding: '10px 20px',
+        });
+    };
 </script>
 
 <template>

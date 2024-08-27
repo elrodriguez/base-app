@@ -12,6 +12,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Modules\Blog\Entities\BlogCategory;
+use Modules\Blog\Entities\BlogComment;
 
 class BlogArticlesController extends Controller
 {
@@ -203,7 +204,7 @@ class BlogArticlesController extends Controller
         $blogArticle = BlogArticle::find($request->get('id'));
 
         $this->validate($request, [
-            'title' => 'required|max:255|unique:blog_articles,url,' . $blogArticle->id,
+            'title' => 'required|max:255|unique:blog_articles,title,' . $blogArticle->id,
             'content_text' => 'required',
         ]);
 
@@ -284,11 +285,21 @@ class BlogArticlesController extends Controller
             ->orderByDesc('month')
             ->get();
 
+        $relatedArticles = BlogArticle::where('category_id', $article->category_id)->take(4)->get();
+
+        $comments = BlogComment::with('person')
+            ->with('comments.person')
+            ->where('article_id', $article->id)
+            ->whereNull('comment_id')
+            ->get();
+
         return Inertia::render('Blog::articles/Show', [
             'article' => $article,
             'categories' => $categories,
             'articles' => $articles,
-            'archives' => $archives
+            'archives' => $archives,
+            'comments' => $comments,
+            'relatedArticles' => $relatedArticles
         ]);
     }
 }
