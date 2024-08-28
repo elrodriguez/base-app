@@ -39,47 +39,27 @@ class DashboardController extends Controller
         $student = AcaStudent::where('person_id', Auth::user()->person_id)->first();
         $student_id = $student->id;
 
-        $popularCourses = AcaCapRegistration::join('aca_courses', function ($query) use ($student_id) {
-            $query->on('aca_courses.id', 'aca_cap_registrations.course_id')
-                ->where('aca_cap_registrations.student_id', '<>', $student_id);
-        })
-            ->join('aca_teachers', 'aca_courses.teacher_id', 'aca_teachers.id')
+        $popularCourses = AcaCourse::join('aca_teachers', 'aca_courses.teacher_id', 'aca_teachers.id')
             ->join('people', 'aca_teachers.person_id', 'people.id')
             ->join('onli_items', function ($query) {
                 $query->on('onli_items.item_id', 'aca_courses.id')
-                    ->where('onli_items.entitie', 'Modules-Academic-Entities-AcaCourse');
+                    ->where('entitie', 'Modules-Academic-Entities-AcaCourse');
             })
             ->select(
                 'onli_items.id AS onitem_id',
+                'onli_items.price AS onitem_price',
                 'aca_courses.*',
                 'people.names AS person_names',
                 'people.father_lastname',
                 'people.image AS person_image',
             )
-            ->selectRaw('count(aca_cap_registrations.id) as registrations_count')
-            ->groupBy([
-                'onitem_id',
-                'people.names',
-                'aca_courses.id',
-                'people.father_lastname',
-                'people.image',
-                'aca_courses.status',
-                'aca_courses.description',
-                'aca_courses.course_day',
-                'aca_courses.course_month',
-                'aca_courses.course_year',
-                'aca_courses.category_id',
-                'aca_courses.image',
-                'aca_courses.created_at',
-                'aca_courses.updated_at',
-                'aca_courses.modality_id',
-                'aca_courses.type_description',
-                'aca_courses.teacher_id',
-                'aca_courses.sector_description',
-                'aca_courses.price',
-            ])
-            ->orderByDesc('registrations_count')
-            ->take('4')
+            ->selectRaw('(SELECT COUNT(aca_cap_registrations.id) FROM aca_cap_registrations WHERE aca_cap_registrations.course_id = aca_courses.id) AS registrations')
+            ->whereNot('aca_courses.id', '=', function ($query) use ($student_id) {
+                $query->select('i.course_id')->from('aca_cap_registrations AS i')
+                    ->where('student_id', $student_id);
+            })
+            ->orderByDesc('registrations')
+            ->take(8)
             ->get();
 
         $articles = BlogArticle::orderByDesc('views')->take('4')->get();

@@ -100,7 +100,7 @@ const handleImageCompressed = (file) => {
             </div>
             <div class="col-span-6 sm:col-span-2 ">
                 <InputLabel for="type_description" value="Tipo *" />
-                <select v-model="form.type_description" id="type_description" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select v-model="form.type_description" id="type_description" class="form-select text-white-dark">
                     <option value="" selected>Seleccionar</option>
                     <option v-for="(type) in types" :value="type" > {{ type }}</option>
                 </select>
@@ -108,7 +108,7 @@ const handleImageCompressed = (file) => {
             </div>
             <div class="col-span-6 sm:col-span-2 ">
                 <InputLabel for="modality_id" value="Modalidad *" />
-                <select v-model="form.modality_id" id="modality_id" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select v-model="form.modality_id" id="modality_id" class="form-select text-white-dark">
                     <option value="" selected>Seleccionar</option>
                     <option v-for="(modality) in modalities" :value="modality.id">{{ modality.description }}</option>
                 </select>

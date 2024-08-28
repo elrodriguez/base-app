@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MetaController;
+use App\Http\Controllers\WebPageController;
 use App\Mail\StudentRegistrationMailable;
 use App\Models\District;
 use App\Models\Person;
@@ -25,6 +26,8 @@ use Modules\Sales\Http\Controllers\SalesController;
 
 Route::get('/', [LandingController::class, 'index'])->name('index_main');
 Route::get('/computer/store', [LandingController::class, 'computerStore'])->name('index_computer_store');
+
+Route::get('/curso-descripcion/{id}', [WebPageController::class, 'cursodescripcion'])->name('web_curso_descripcion');
 
 //////mensajes de whatsapp///////
 Route::get('/ask/product/{id}', [LandingController::class, 'redirectToWhatsApp'])->name('whatsapp_send');

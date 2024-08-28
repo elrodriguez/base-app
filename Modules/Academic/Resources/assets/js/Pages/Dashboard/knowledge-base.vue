@@ -267,8 +267,8 @@
                                     </div>
                                 </div>
                             </template>
-                            <template>
-                                <button class="btn btn-primary">Ingresar</button>
+                            <template v-if="item.onitem_price > 0">
+                                <a :href="route('web_curso_descripcion',item.onitem_id)" class="btn btn-primary">Ingresar</a>
                             </template>
                         </div>
                     </template>
