@@ -22,14 +22,14 @@
     const xasset = assetUrl;
 
     const getImage = (path) => {
-        return xasset + path;
+        return xasset +'storage/'+ path;
     }
 
 </script>
 <template>
     <div v-if="articles.length > 0">
         <h5 class="pb-3 text-xl text-gray-900 border-b border-gray-100/50 dark:text-gray-50 dark:border-zinc-700">Artículos relacionados</h5>
-    
+
         <!-- autopaly -->
         <swiper
             :modules="[Navigation,Pagination, Autoplay]"
@@ -41,13 +41,13 @@
         >
             <template v-for="(item, i) in articles" :key="i">
                 <swiper-slide>
-                    <img :src="item.image" class="w-full max-h-80 object-cover" alt="" />
+                    <img :src="item.imagen" class="w-full max-h-80 object-cover" alt="" />
                     <div class="absolute z-[999] text-white top-1/4 ltr:left-12 rtl:right-12">
                         <div class="sm:text-3xl text-base font-bold">{{ item.title }}</div>
                         <div class="sm:mt-5 mt-1 w-4/5 text-base sm:block hidden font-medium">
                             {{ item.short_description }}
                         </div>
-                        <Link :href="route('blog_article_show_studante',item.url)" type="button" class="mt-4 btn btn-primary">Leer mas</Link>
+                        <Link style="width: 120px" href="route('blog_article_show_studante',item.url)" type="button" class="mt-4 btn btn-primary">Leer mas</Link>
                     </div>
                 </swiper-slide>
             </template>

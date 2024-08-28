@@ -31,7 +31,11 @@ class DashboardController extends Controller
 
     private function getDataStudent()
     {
-        $categoriesArticles = BlogCategory::limit(4)->get();
+        $categoriesArticles = BlogCategory::withCount('articles')
+            ->orderBy('articles_count', 'desc')
+            ->limit(3)
+            ->get();
+
         $student = AcaStudent::where('person_id', Auth::user()->person_id)->first();
         $student_id = $student->id;
 

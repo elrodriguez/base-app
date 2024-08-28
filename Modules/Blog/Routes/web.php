@@ -50,5 +50,16 @@ Route::prefix('blog')->group(function () {
         Route::middleware(['middleware' => 'role:Alumno'])
             ->delete('comment/destroy/{id}', [BlogCommentController::class, 'destroy'])
             ->name('blog_comment_destroy');
+
+        Route::middleware(['middleware' => 'role:Alumno'])
+            ->get('category/articles/{id}', [BlogCategoriesController::class, 'articlesAll'])
+            ->name('blog_category_articles_all');
+
+        Route::middleware(['middleware' => 'role:Alumno'])
+            ->get('articles/archives/{year}/{month}', [BlogArticlesController::class, 'articlesArchive'])
+            ->name('blog_articles_archive');
+
+        Route::post('articles/search/title', [BlogArticlesController::class, 'searchArticles'])
+            ->name('blog_search_articles');
     });
 });

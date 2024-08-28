@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Modules\Blog\Entities\BlogCategory;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Modules\Blog\Entities\BlogArticle;
 
 class BlogCategoriesController extends Controller
 {
@@ -118,5 +119,31 @@ class BlogCategoriesController extends Controller
 
         return redirect()->route('blog-category.index')
             ->with('message', __('Category deleted successfully'));
+    }
+
+    public function articlesAll($id)
+    {
+        $articlesCategory = BlogArticle::with(['author', 'comments'])
+            ->withCount('comments')
+            ->where('category_id', $id)
+            ->get();
+
+        $categories = BlogCategory::where('status', true)->get();
+
+        $articles = BlogArticle::orderByDesc('views')->take(4)->get();
+
+        $archives = BlogArticle::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total_articles')
+            ->groupBy('year', 'month')
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->get();
+
+        return Inertia::render('Blog::categories/Articles', [
+            'articlesCategory' => $articlesCategory,
+            'categories' => $categories,
+            'articles' => $articles,
+            'archives' => $archives,
+            'category_id' => $id
+        ]);
     }
 }

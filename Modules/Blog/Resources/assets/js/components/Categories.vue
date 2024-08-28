@@ -19,7 +19,7 @@
         </div>
         <div class="my-4">
             <div v-for="(category, index) in categories" class="mb-3">
-                <Link class="inline-flex">
+                <Link :href="route('blog_category_articles_all',category.id)" class="inline-flex">
                     <input :value="category.id" type="checkbox" :id="`category-chx-${index}`" class="form-checkbox rounded-full" :checked="categoryActive == category.id" />
                     <span>{{ category.description }}</span>
                 </Link>

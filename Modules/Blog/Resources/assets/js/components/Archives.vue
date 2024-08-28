@@ -28,10 +28,12 @@
         </div>
         <ul class="mt-3 mb-0 space-y-3 font-semibold">
             <li v-for="(archive, ke) in archives">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline text-primary rtl:rotate-180 ltr:mr-2 rtl:ml-2">
-                    <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                </svg>
-                <span class="list-text">{{ nomMonth(archive.month) }} {{ archive.year }} ({{ archive.total_articles }})</span>
+                <Link :href="route('blog_articles_archive',[archive.year,archive.month])">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline text-primary rtl:rotate-180 ltr:mr-2 rtl:ml-2">
+                        <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <span class="list-text">{{ nomMonth(archive.month) }} {{ archive.year }} ({{ archive.total_articles }})</span>
+                </Link> 
             </li>
         </ul>
     </div>

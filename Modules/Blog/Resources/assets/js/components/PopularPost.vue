@@ -25,7 +25,7 @@
                     <img :src="arti.imagen" alt="" class="w-16 h-16 rounded" />
                 </div>
                 <div class="flex-1">
-                    <Link class="font-semibold text-lg mb-2 text-gray-900 dark:text-white">{{ arti.title }}</Link>
+                    <Link :href="route('blog_article_show_studante',arti.url)" class="font-semibold text-lg mb-2 text-gray-900 dark:text-white">{{ arti.title }}</Link>
                     <span class="block text-sm text-gray-500 dark:text-gray-300">{{ formatDateArticle(arti.created_at) }}</span>
                 </div>
             </li>

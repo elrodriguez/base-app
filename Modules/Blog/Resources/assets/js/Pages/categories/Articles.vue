@@ -5,15 +5,17 @@
     import Categories from '../../components/Categories.vue';
     import PopularPost from '../../components/PopularPost.vue';
     import Archives from '../../components/Archives.vue';
-    import Comments from '../../components/Comments.vue';
-    import Carousel from '../../components/Carousel.vue';
-    import IconCalendar from '@/Components/vristo/icon/icon-calendar.vue';
-    import IconMessage from '@/Components/vristo/icon/icon-message.vue';
+    import IconEye from '@/Components/vristo/icon/icon-eye.vue';
+    import IconArrowLeft from '@/Components/vristo/icon/icon-arrow-left.vue';
 
     import { ref } from 'vue';
 
     defineProps({
-        article: {
+        category_id: {
+            type: Number,
+            default: null
+        },
+        articlesCategory: {
             type: Object,
             default: () => ({})
         },
@@ -28,14 +30,6 @@
         archives: {
             type: Object,
             default: () => ({})
-        },
-        comments: {
-            type: Object,
-            default: () => ({})
-        },
-        relatedArticles: {
-            type: Object,
-            default: () => ({})
         }
     });
 
@@ -47,7 +41,7 @@
         return xasset + 'storage/'+ path;
     }
 
-    const formatDate = (dateString) => {
+    const formatDateCategory = (dateString) => {
         const dateObj = new Date(dateString);
         const options = { month: 'short', day: 'numeric', year: 'numeric', locale: 'es-ES' };
         return dateObj.toLocaleDateString('es-ES', options);
@@ -56,102 +50,45 @@
 
 <template>
     <AppLayout title="Articulo">
+        
         <section class="panel py-10">
             <div class="container mx-auto">
                 <div class="grid grid-cols-12 md:gap-8">
-                    <div class="col-span-12 md:col-span-6 md:col-start-4">
-                        <div class="text-center">
-                            <p class="mb-0 font-semibold text-red-600">{{ article.category.description }}</p>
-                            <h3 class="text-gray-900 text-[26px] dark:text-white">{{ article.title }}</h3>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="grid grid-cols-12 mt-8 md:gap-14">
                     <div class="col-span-12 lg:col-span-8">
-                        <div class="swiper blogdetailSlider">
-                            <img :src="article.imagen" alt="" class="rounded-lg" style="width: 100%;" />
-                        </div>
-                        <ul class="flex flex-wrap items-center mt-3 mb-0 text-gray-500">
-                            <li>
-                                <div class="flex items-center">
-                                    <div class="shrink-0">
-                                        <img v-if="article.author.avatar"
-                                            class="w-12 h-12 rounded-full"
-                                                :src="getImage(article.author.avatar)"
-                                                :alt="article.author.name"
-                                            />
-                                        <img v-else :src="`https://ui-avatars.com/api/?name=${article.author.name}&size=150&rounded=true`" class="w-12 h-12 rounded-full" />
-                                    </div>
-                                    <div class="ltr:ml-3 rtl:mr-3">
-                                        <a href="#" class="text-gray-900 dark:text-white">
-                                            <h6 class="mb-0 dark:text-gray-300">{{ article.author.name }}</h6>
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="ltr:ml-3 rtl:mr-3">
-                                <div class="flex items-center">
-                                    <div class="shrink-0">
-                                        <icon-calendar />
-                                    </div>
-                                    <div class="ltr:ml-2 rtl:mr-2">
-                                        <p class="mb-0 dark:text-gray-300"> {{ formatDate(article.created_at) }}</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="ltr:ml-3 rtl:mr-3">
-                                <div class="flex items-center">
-                                    <div class="shrink-0">
-                                        <icon-message />
-                                    </div>
-                                    <div class="ltr:ml-2 rtl:mr-2 flex-grow-1">
-                                        <p class="mb-0 dark:text-gray-300"> {{ article.comments_count }} Comentarios</p>
+                        <div class="grid grid-cols-12 md:gap-5">
+                            <template v-for="(row, key) in articlesCategory">
+                                <div class="col-span-12 lg:col-span-6">
+                                    <div class="p-2 transition-all duration-500 bg-white rounded-md shadow-md hover:-translate-y-2 dark:bg-transparent dark:shadow-none">
+                                        <img :src="row.imagen" alt="" class="img-fluid">
+                                        <div class="p-5">
+                                            <ul class="flex justify-between mb-3 list-inline">
+                                                <li>
+                                                    <p class="mb-0 text-gray-500 dark:text-gray-300">
+                                                        <a href="#" class="font-semibold text-muted">{{ row.author.name }}</a> - {{ formatDateCategory(row.created_at) }}
+                                                    </p>
+                                                </li>
+                                                <li>
+                                                    <p class="flex mb-0 text-gray-500 dark:text-gray-300"><icon-eye class="mr-1" /> {{ row.views }}</p>
+                                                </li>
+                                            </ul>
+                                            <Link :href="route('blog_article_show_studante', row.url)" class="primary-link">
+                                                <h6 class="text-gray-900 transition-all duration-300 text-17 dark:text-white group-data-[theme-color=violet]:hover:text-violet-500 group-data-[theme-color=sky]:hover:text-sky-500 group-data-[theme-color=red]:hover:text-red-500 group-data-[theme-color=green]:hover:text-green-500 group-data-[theme-color=pink]:hover:text-pink-500 group-data-[theme-color=blue]:hover:text-blue-500">
+                                                    {{ row.title }}
+                                                </h6>
+                                            </Link>
+                                            <p class="mt-2 text-gray-500 dark:text-gray-300">
+                                                {{ row.short_description }}
+                                            </p>
+                                            <div class="mt-4 font-medium group-data-[theme-color=violet]:text-violet-500 group-data-[theme-color=sky]:text-sky-500 group-data-[theme-color=red]:text-red-500 group-data-[theme-color=green]:text-green-500 group-data-[theme-color=pink]:text-pink-500 group-data-[theme-color=blue]:text-blue-500">
+                                                <Link :href="route('blog_article_show_studante', row.url)" class="form-text flex items-center">Leer más <icon-arrow-left /></Link>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </li>
-                        </ul>
-                        <div class="mt-4">
-                            <div v-html="article.content_text"></div>
-                            <div class="flex items-center my-4">
-                                <div class="shrink-0">
-                                    <b class="text-gray-900 dark:text-gray-50">Tags:</b>
-                                </div>
-                                <div class="ltr:ml-2 rtl:mr-2 flex-grow-1 space-x-2">
-                                    <template v-for="tag in JSON.parse(JSON.stringify(article.keywords))">
-                                        <a href="javascript:void(0)" class="px-1.5 py-0.5 mt-1 text-sm font-medium text-green-500 bg-green-500/20 rounded">{{ tag }}</a>
-                                    </template>
-                                </div>
-                            </div>
-                            <!-- <ul class="flex gap-2 mb-0 md:justify-end">
-                                <li>
-                                    <b class="text-gray-900 dark:text-gray-50">Share post:</b>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" class="p-2.5 rounded bg-violet-500/20 text-violet-500">
-                                        <i class="uil uil-facebook-f"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" class="p-2.5 rounded bg-green-500/20 text-green-500">
-                                        <i class="uil uil-whatsapp"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" class="p-2.5 rounded bg-violet-500/20 text-violet-500">
-                                        <i class="uil uil-linkedin-alt"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" class="p-2.5 rounded bg-red-500/20 text-red-500">
-                                        <i class="uil uil-envelope"></i>
-                                    </a>
-                                </li>
-                            </ul> -->
-                            
-                            <Comments :comments="comments" :article="{id:article.id,url:article.url}" />                            
-                        </div>
-                        <div class="mt-8">
-                            <Carousel :articles="relatedArticles" />
+                            </template>
                         </div>
                     </div>
                     <div class="col-span-12 lg:col-span-4">
@@ -169,7 +106,7 @@
                             </div>
                         </form>
                         <div class="mt-8">
-                            <Categories :categories="categories" :categoryActive="article.category_id" />
+                            <Categories :categories="categories" :categoryActive="category_id" />
                         </div>
                         <div class="mt-8">
                             <PopularPost :articles="articles" />
