@@ -243,7 +243,7 @@
                     Nuestros especialistas siempre están dispuestos a ayudar. Comuníquese con nosotros durante el horario comercial habitual o envíenos un correo electrónico las 24 horas del día, los 7 días de la semana y nos comunicaremos con usted.
                 </div>
                 <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
-                    <button type="button" class="btn btn-primary">Envia un correo</button>
+                    <Link :href="route('crm_mailbox_dashboard')" type="button" class="btn btn-primary">Envia un correo</Link>
                     <button type="button" class="btn btn-primary">Chatea con nosotros</button>
                 </div>
             </div>

@@ -15,6 +15,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use Modules\CRM\Emails\ClientHelpEmail;
 
 class CrmMessagesController extends Controller
 {
@@ -44,7 +46,8 @@ class CrmMessagesController extends Controller
             $conversation = CrmConversation::create([
                 'title' => 'private',
                 'user_id' => Auth::id(),
-                'type_name' => 'whatsapp',
+                'type_name' => 'chat',
+                'type_action' => null
             ]);
 
             // Agregar participantes
@@ -66,7 +69,7 @@ class CrmMessagesController extends Controller
         CrmMessage::create([
             'conversation_id' => $conversationId,
             'person_id' => $personId,
-            'content' => $request->get('text'),
+            'content' => htmlentities($request->get('text'), ENT_QUOTES, "UTF-8"),
             'type' => $request->get('type')
         ]);
 
@@ -157,7 +160,7 @@ class CrmMessagesController extends Controller
         $pdfFile = $request->file('file');
         if ($pdfFile && $pdfFile->extension() == 'pdf') {
             $fileSizeInMB = $pdfFile->getSize() / (1024 * 1024);
-            $destination = 'chat/pdf';
+            $destination = 'crm' . DIRECTORY_SEPARATOR . 'chat' . DIRECTORY_SEPARATOR . Auth::id();
             $filename = time() . '.' . $pdfFile->extension();
             $path = Storage::disk('public')->putFileAs($destination, $pdfFile, $filename);
         } else {
@@ -182,5 +185,77 @@ class CrmMessagesController extends Controller
 
         // Descargar el archivo
         return Storage::download($filePath[1]);
+    }
+
+    public function sendMessageEmail(Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'to' => 'required',
+                'title' => 'required|string|max:255',
+                'description' => 'required'
+            ]
+        );
+
+        $personId = Auth::user()->person_id;
+        //$contactId = $request->get('fromUserId');
+
+
+        // Crear nueva conversación
+        $conversation = CrmConversation::create([
+            'title' => $request->get('title'),
+            'user_id' => Auth::id(),
+            'type_name' => 'email',
+            'description' => $request->get('displayDescription'),
+            'type_action' => $request->get('type'),
+            'status' => 'Enviado'
+        ]);
+
+        // Agregar participantes
+        CrmParticipant::create([
+            'conversation_id' => $conversation->id,
+            'person_id' => $personId,
+            'user_id' => Auth::id()
+        ]);
+
+        $conversationId = $conversation->id;
+
+
+        // Crear el mensaje
+        $message = CrmMessage::create([
+            'conversation_id' => $conversationId,
+            'person_id' => $personId,
+            'content' => htmlentities($request->get('description'), ENT_QUOTES, "UTF-8"),
+            'type' => 'text',
+            'email_from' => $request->get('from'),
+            'email_for' => $request->get('to'),
+            'status' => 'Enviado'
+        ]);
+
+        $file = $request->file('file');
+
+        if ($file) {
+            $folder = 'crm' . DIRECTORY_SEPARATOR . 'chat' . DIRECTORY_SEPARATOR . Auth::id();
+            $file_name = str_replace(' ', '_', $file->getClientOriginalName());
+            $path = $request->file('file')->storeAs($folder, $file_name, 'public');
+
+            $message->attachments = [
+                array('path' => $path, 'file_name' => $file_name)
+            ];
+            $message->save();
+        }
+
+        $this->sendMail([$conversation, $message, Auth::user()->name]);
+
+        // Devolver la conversación con los mensajes
+        return response()->json(['success' => true], 201);
+    }
+
+    private function sendMail($data)
+    {
+        Mail::to($data[1]->email_for)->send(new ClientHelpEmail($data));
+
+        return true;
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('crm_conversations', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
+            $table->text('title')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->enum('type_name', ['whatsapp', 'messenger', 'email', 'msgTexto']);
             $table->timestamps();

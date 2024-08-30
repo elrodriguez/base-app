@@ -17,16 +17,14 @@ class CrmConversation extends Model
         'title',
         'user_id',
         'type_name',
+        'description',
+        'type_action',
+        'status'
     ];
 
     protected static function newFactory(): CrmConversationFactory
     {
         //return CrmConversationFactory::new();
-    }
-
-    public function users()
-    {
-        return $this->belongsToMany(CrmUser::class, 'crm_participants');
     }
 
     public function messages()
@@ -37,5 +35,10 @@ class CrmConversation extends Model
     public function participants()
     {
         return $this->hasMany(CrmParticipant::class, 'conversation_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(CrmUser::class, 'user_id');
     }
 }

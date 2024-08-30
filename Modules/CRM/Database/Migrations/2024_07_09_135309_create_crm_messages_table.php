@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('conversation_id')->constrained('crm_conversations')->onDelete('cascade');
             $table->foreignId('person_id')->constrained('people')->onDelete('cascade');
-            $table->text('content');
+            $table->binary('content');
             $table->json('server_response')->nullable();
             $table->enum('type', ['text', 'audio', 'image', 'link', 'video', 'file'])->nullable();
             $table->timestamps();
