@@ -23,6 +23,10 @@
         documentTypes: {
             type: Object,
             default: () => ({}),
+        },
+        sizeslist: {
+            type: Object,
+            default: () => ({}),
         }
     });
 
@@ -175,7 +179,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <div class="mb-2 col-span-2 sm:col-span-1 md:col-span-1">
                     <div class="panel">
-                        <SearchProducts @eventdata="getDataTable" />
+                        <SearchProducts @eventdata="getDataTable" :sizeslist="sizeslist" />
                         <div class="table-responsive mt-4">
                             <table >
                                 <thead class="">

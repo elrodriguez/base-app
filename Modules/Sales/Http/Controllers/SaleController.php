@@ -87,12 +87,17 @@ class SaleController extends Controller
         $payments = PaymentMethod::all();
         $client = Person::find(1);
         $documentTypes = DB::table('identity_document_type')->get();
+        $sizes = (new Product)->getUniqueSizes();
+
         return Inertia::render('Sales::Sales/Create', [
             'payments'      => $payments,
             'client'        => $client,
-            'documentTypes' => $documentTypes
+            'documentTypes' => $documentTypes,
+            'sizeslist'         => $sizes
         ]);
     }
+
+
 
     /**
      * Store a newly created resource in storage.

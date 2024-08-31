@@ -271,6 +271,151 @@ class ProductController extends Controller
             ->with('message', __('Producto eliminado con éxito'));
     }
 
+    public function searchProductByDescriptionCode($local_id, $search)
+    {
+        $products = DB::table('products as t1')
+            ->select(
+                't1.id',
+                't1.usine',
+                't1.interne',
+                't1.description',
+                't1.image',
+                't1.purchase_prices',
+                't1.sale_prices',
+                't1.sizes',
+                't1.stock_min',
+                't1.stock',
+                't1.presentations',
+                't1.is_product',
+                't1.type_sale_affectation_id',
+                't1.type_purchase_affectation_id',
+                't1.type_unit_measure_id',
+                't1.status',
+                't1.category_id',
+                't1.brand_id',
+                't1.icbper',
+                DB::raw(`
+                SELECT
+                    JSON_ARRAYAGG(JSON_OBJECT('size', size, 'quantity', quantity_sum)) AS productos
+                    FROM (
+                        SELECT size, SUM(quantity) AS quantity_sum
+                        FROM kardex_sizes
+                        WHERE kardex_sizes.product_id=t1.id AND local_id = ` . $local_id . `GROUP BY size
+                    ) AS local_sizes`)
+            )
+            ->selectSub(function ($query) use ($local_id) {
+                $query->from('product_establishment_prices')
+                    ->selectRaw("JSON_OBJECT('high', high, 'under', under,'medium',MEDIUM)")
+                    ->whereColumn('product_establishment_prices.product_id', 't1.id')
+                    ->where('product_establishment_prices.local_id', $local_id);
+            }, 'local_prices')
+            ->leftJoin('kardexes', 't1.id', '=', 'kardexes.product_id')
+            ->where(function ($query) use ($search) {
+                $query->where('t1.interne', '=', $search)
+                    ->orWhere('t1.usine', '=', $search)
+                    ->orWhere('t1.description', 'like', '%' . $search . '%');
+            })
+            //->where('kardexes.local_id', '=', $local_id)
+            ->where(function ($query) use ($local_id) {
+                $query->where('t1.is_product', '=', false)
+                    ->orWhere('kardexes.local_id', '=', $local_id);
+            })
+            ->groupBy([
+                't1.id',
+                't1.usine',
+                't1.interne',
+                't1.description',
+                't1.image',
+                't1.purchase_prices',
+                't1.sale_prices',
+                't1.sizes',
+                't1.stock_min',
+                't1.stock',
+                't1.presentations',
+                't1.is_product',
+                't1.type_sale_affectation_id',
+                't1.type_purchase_affectation_id',
+                't1.type_unit_measure_id',
+                't1.status',
+                't1.category_id',
+                't1.brand_id',
+                't1.icbper',
+            ])
+            ->get();
+
+        return $products;
+    }
+
+    public function getProductsBySize($local_id, $size)
+    {
+
+        $products =  DB::table('products as t1')->select(
+            't1.id',
+            't1.usine',
+            't1.interne',
+            't1.description',
+            't1.image',
+            't1.purchase_prices',
+            't1.sale_prices',
+            't1.sizes',
+            't1.stock_min',
+            't1.stock',
+            't1.presentations',
+            't1.is_product',
+            't1.type_sale_affectation_id',
+            't1.type_purchase_affectation_id',
+            't1.type_unit_measure_id',
+            't1.status',
+            't1.category_id',
+            't1.brand_id',
+            't1.icbper',
+            DB::raw(`
+                SELECT
+                    JSON_ARRAYAGG(JSON_OBJECT('size', size, 'quantity', quantity_sum)) AS productos
+                    FROM (
+                        SELECT size, SUM(quantity) AS quantity_sum
+                        FROM kardex_sizes
+                        WHERE kardex_sizes.product_id=t1.id AND local_id = ` . $local_id . `GROUP BY size
+                    ) AS local_sizes`)
+        )
+            ->selectSub(function ($query) use ($local_id) {
+                $query->from('product_establishment_prices')
+                    ->selectRaw("JSON_OBJECT('high', high, 'under', under,'medium',MEDIUM)")
+                    ->whereColumn('product_establishment_prices.product_id', 't1.id')
+                    ->where('product_establishment_prices.local_id', $local_id);
+            }, 'local_prices')
+            ->leftJoin('kardexes', 't1.id', '=', 'kardexes.product_id')
+            ->whereRaw("JSON_CONTAINS(sizes, '{\"size\": \"$size\"}')")
+            //->where('kardexes.local_id', '=', $local_id)
+            ->where(function ($query) use ($local_id) {
+                $query->where('t1.is_product', '=', false)
+                    ->orWhere('kardexes.local_id', '=', $local_id);
+            })
+            ->groupBy([
+                't1.id',
+                't1.usine',
+                't1.interne',
+                't1.description',
+                't1.image',
+                't1.purchase_prices',
+                't1.sale_prices',
+                't1.sizes',
+                't1.stock_min',
+                't1.stock',
+                't1.presentations',
+                't1.is_product',
+                't1.type_sale_affectation_id',
+                't1.type_purchase_affectation_id',
+                't1.type_unit_measure_id',
+                't1.status',
+                't1.category_id',
+                't1.brand_id',
+                't1.icbper',
+            ])
+            ->get();
+
+        return $products; // Devuelve los productos que tienen esa talla
+    }
     public function searchProduct(Request $request)
     {
         // dd($request->all());
@@ -280,76 +425,11 @@ class ProductController extends Controller
         $success = false;
         $message = null;
         if ($local_id) {
-
-            $products = DB::table('products as t1')
-                ->select(
-                    't1.id',
-                    't1.usine',
-                    't1.interne',
-                    't1.description',
-                    't1.image',
-                    't1.purchase_prices',
-                    't1.sale_prices',
-                    't1.sizes',
-                    't1.stock_min',
-                    't1.stock',
-                    't1.presentations',
-                    't1.is_product',
-                    't1.type_sale_affectation_id',
-                    't1.type_purchase_affectation_id',
-                    't1.type_unit_measure_id',
-                    't1.status',
-                    't1.category_id',
-                    't1.brand_id',
-                    't1.icbper',
-                    DB::raw(`
-                SELECT
-                    JSON_ARRAYAGG(JSON_OBJECT('size', size, 'quantity', quantity_sum)) AS productos
-                    FROM (
-                        SELECT size, SUM(quantity) AS quantity_sum
-                        FROM kardex_sizes
-                        WHERE kardex_sizes.product_id=t1.id AND local_id = ` . $local_id . `GROUP BY size
-                    ) AS local_sizes`)
-                )
-                ->selectSub(function ($query) use ($local_id) {
-                    $query->from('product_establishment_prices')
-                        ->selectRaw("JSON_OBJECT('high', high, 'under', under,'medium',MEDIUM)")
-                        ->whereColumn('product_establishment_prices.product_id', 't1.id')
-                        ->where('product_establishment_prices.local_id', $local_id);
-                }, 'local_prices')
-                ->leftJoin('kardexes', 't1.id', '=', 'kardexes.product_id')
-                ->where(function ($query) use ($search) {
-                    $query->where('t1.interne', '=', $search)
-                        ->orWhere('t1.usine', '=', $search)
-                        ->orWhere('t1.description', 'like', '%' . $search . '%');
-                })
-                //->where('kardexes.local_id', '=', $local_id)
-                ->where(function ($query) use ($local_id) {
-                    $query->where('t1.is_product', '=', false)
-                        ->orWhere('kardexes.local_id', '=', $local_id);
-                })
-                ->groupBy([
-                    't1.id',
-                    't1.usine',
-                    't1.interne',
-                    't1.description',
-                    't1.image',
-                    't1.purchase_prices',
-                    't1.sale_prices',
-                    't1.sizes',
-                    't1.stock_min',
-                    't1.stock',
-                    't1.presentations',
-                    't1.is_product',
-                    't1.type_sale_affectation_id',
-                    't1.type_purchase_affectation_id',
-                    't1.type_unit_measure_id',
-                    't1.status',
-                    't1.category_id',
-                    't1.brand_id',
-                    't1.icbper',
-                ])
-                ->get();
+            if ($request->has('presentation')) {
+                $products = $this->getProductsBySize($local_id, $request->input('presentation'));
+            } else {
+                $products = $this->searchProductByDescriptionCode($local_id, $search);
+            }
 
             if (count($products) > 0) {
                 $success = true;
