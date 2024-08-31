@@ -216,7 +216,7 @@
                     <input v-model="formScaner.scaner" value="" id="scaner" type="checkbox" class="form-checkbox border-[#e0e6ed] dark:border-white-dark ltr:mr-0 rtl:ml-0" />
                 </div>
                 <input v-model="form.search" autofocus autocomplete="off" type="text" class="form-input ltr:rounded-l-none rtl:rounded-r-none ltr:rounded-r-none rtl:rounded-l-none" placeholder="Buscar por código o descripción..." required />
-                <select v-can="sale_enventas_buscar_por_presentacion" v-model="form.presentation" @change="searchProducts(2)" style="width: 150px;" class="form-select text-white-dark ltr:rounded-l-none rtl:rounded-r-none ltr:rounded-r-none rtl:rounded-l-none">
+                <select v-can="'sale_enventas_buscar_por_presentacion'" v-model="form.presentation" @change="searchProducts(2)" style="width: 150px;" class="form-select text-white-dark ltr:rounded-l-none rtl:rounded-r-none ltr:rounded-r-none rtl:rounded-l-none">
                     <template v-for="sizze in sizeslist">
                         <option :value="sizze">{{ sizze }}</option>
                     </template>

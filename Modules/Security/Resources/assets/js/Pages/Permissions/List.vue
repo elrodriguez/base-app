@@ -81,7 +81,7 @@ DataTable.use(DataTablesCore);
                 <div class="flex sm:flex-row flex-col sm:items-center sm:gap-3 gap-4 w-full sm:w-auto">
                     <div class="flex gap-3">
                         <div>
-                            <Link v-can="'cms_items'" :href="route('permissions.create')" type="button" class="btn btn-primary">
+                            <Link v-can="'permisos'" :href="route('permissions.create')" type="button" class="btn btn-primary">
                                 <icon-plus class="ltr:mr-2 rtl:ml-2" />
                                 Nuevo
                             </Link>
