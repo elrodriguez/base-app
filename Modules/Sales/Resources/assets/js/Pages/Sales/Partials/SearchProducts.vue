@@ -39,8 +39,13 @@
     });
 
     const displayResultSearch = ref(false);
-    const searchProducts = async () => {
+    const searchProducts = async (type) => {
         form.processing = true;
+        if(type == 1){
+            form.presentation = null;
+        }else{
+            form.search = null;
+        }
         if(formScaner.scaner){
             axios.post(route('search_scaner_product'), form ).then((response) => {
                 if(response.data.success){
@@ -67,6 +72,7 @@
                     });
                     
                 }
+
                 displayResultSearch.value = false;
                 form.processing = false;
             });
@@ -75,6 +81,7 @@
                 if(response.data.success){
                     form.products = response.data.products;
                     displayResultSearch.value = true;
+                    
                 }else{
                     Swal.fire({
                         icon: 'error',
@@ -84,6 +91,7 @@
                         customClass: 'sweet-alerts',
                     });
                 }
+
                 form.processing = false;
             });
         }
@@ -201,14 +209,14 @@
 
 <template>
     <div style="position: relative;">
-        <form @submit.prevent="searchProducts()">
+        <form @submit.prevent="searchProducts(1)">
             <div class="flex">
                 <div class="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">Scaner</div>
                 <div class="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold ltr:border-r-0 rtl:border-l-0 border-[#e0e6ed] dark:border-[#17263c] dark:bg-[#1b2e4b]">
                     <input v-model="formScaner.scaner" value="" id="scaner" type="checkbox" class="form-checkbox border-[#e0e6ed] dark:border-white-dark ltr:mr-0 rtl:ml-0" />
                 </div>
-                <input v-model="form.search" @input="searchProducts()" autofocus autocomplete="off" type="text" class="form-input ltr:rounded-l-none rtl:rounded-r-none ltr:rounded-r-none rtl:rounded-l-none" placeholder="Buscar por código o descripción..." required />
-                <select v-can="sale_enventas_buscar_por_presentacion" v-model="form.presentation" @change="searchProducts" style="width: 150px;" class="form-select text-white-dark ltr:rounded-l-none rtl:rounded-r-none ltr:rounded-r-none rtl:rounded-l-none">
+                <input v-model="form.search" autofocus autocomplete="off" type="text" class="form-input ltr:rounded-l-none rtl:rounded-r-none ltr:rounded-r-none rtl:rounded-l-none" placeholder="Buscar por código o descripción..." required />
+                <select v-can="sale_enventas_buscar_por_presentacion" v-model="form.presentation" @change="searchProducts(2)" style="width: 150px;" class="form-select text-white-dark ltr:rounded-l-none rtl:rounded-r-none ltr:rounded-r-none rtl:rounded-l-none">
                     <template v-for="sizze in sizeslist">
                         <option :value="sizze">{{ sizze }}</option>
                     </template>

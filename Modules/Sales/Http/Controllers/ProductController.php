@@ -425,7 +425,7 @@ class ProductController extends Controller
         $success = false;
         $message = null;
         if ($local_id) {
-            if ($request->has('presentation')) {
+            if ($request->get('presentation')) {
                 $products = $this->getProductsBySize($local_id, $request->input('presentation'));
             } else {
                 $products = $this->searchProductByDescriptionCode($local_id, $search);
