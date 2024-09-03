@@ -1,6 +1,6 @@
 <script setup>
 import { Link, useForm, usePage } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import { Spanish } from 'flatpickr/dist/l10n/es.js';
@@ -13,56 +13,63 @@ import IconFacebook from '@/Components/vristo/icon/icon-facebook.vue';
 import IconInstagram from '@/Components/vristo/icon/icon-instagram.vue';
 import Swal2 from 'sweetalert2';
 
-const props = defineProps({
-    person: {
-        type: Object,
-        default: () => ({})
-    },
-    document_types: {
-        type: Object,
-        default: () => ({})
-    },
-    ubigeo: {
-        type: Object,
-        default: () => ({})
-    }
-});
+    const props = defineProps({
+        person: {
+            type: Object,
+            default: () => ({})
+        },
+        document_types: {
+            type: Object,
+            default: () => ({})
+        },
+        ubigeo: {
+            type: Object,
+            default: () => ({})
+        }
+    });
 
 
-const form = useForm({
-    id: props.person ? props.person.id : null,
-    document_type_id: props.person ? props.person.document_type_id : 99,
-    short_name: props.person ? props.person.short_name : null,
-    full_name: props.person ? props.person.full_name : null,
-    description: props.person ? props.person.description : null,
-    number: props.person ? props.person.number : null,
-    telephone: props.person ? props.person.telephone : null,
-    email: props.person ? props.person.email : null,
-    image: props.person ? props.person.image : null,
-    address: props.person ? props.person.address : null,
-    ubigeo: props.person ? {"district_id" : props.person.ubigeo, "name_city" : props.person.ubigeo_description} : null,
-    birthdate: props.person ? props.person.birthdate : null,
-    names: props.person ? props.person.names : null,
-    father_lastname: props.person ? props.person.father_lastname : null,
-    mother_lastname: props.person ? props.person.mother_lastname : null,
-    ocupacion: props.person ? props.person.ocupacion : null,
-    presentacion: props.person ? props.person.presentacion : null,
-    gender: props.person ? props.person.gender : 'M',
-    status: props.person ? props.person.status : null,
-    social_networks: props.person ? props.person.social_networks : null
-});
+    const form = useForm({
+        id: props.person ? props.person.id : null,
+        document_type_id: props.person ? props.person.document_type_id : 99,
+        short_name: props.person ? props.person.short_name : null,
+        full_name: props.person ? props.person.full_name : null,
+        description: props.person ? props.person.description : null,
+        number: props.person ? props.person.number : null,
+        telephone: props.person ? props.person.telephone : null,
+        email: props.person ? props.person.email : null,
+        image: props.person ? props.person.image : null,
+        address: props.person ? props.person.address : null,
+        ubigeo: props.person ? {"district_id" : props.person.ubigeo, "name_city" : props.person.ubigeo_description} : null,
+        birthdate: props.person ? props.person.birthdate : null,
+        names: props.person ? props.person.names : null,
+        father_lastname: props.person ? props.person.father_lastname : null,
+        mother_lastname: props.person ? props.person.mother_lastname : null,
+        ocupacion: props.person ? props.person.ocupacion : null,
+        presentacion: props.person ? props.person.presentacion : null,
+        gender: props.person ? props.person.gender : 'M',
+        status: props.person ? props.person.status : null,
+        social_networks: props.person ? props.person.social_networks : null
+    });
+    const socialData = ref({});
+    const basic = ref({
+        dateFormat: 'Y-m-d',
+        locale: Spanish,
+    });
 
-  const basic = ref({
-    dateFormat: 'Y-m-d',
-    locale: Spanish,
-  });
+    onMounted(()=>{
+        if(props.person){
+            socialData.value = {
+                facebook: props.person.social_networks ? JSON.parse(props.person.social_networks).facebook : null,
+                instagram: props.person.social_networks ? JSON.parse(props.person.social_networks).instagram : null,
+                linkedin: props.person.social_networks ? JSON.parse(props.person.social_networks).linkedin : null,
+                twitter: props.person.social_networks ? JSON.parse(props.person.social_networks).twitter : null,
+            }
+        }
+        
+    });
 
-  const socialData = ref({
-    facebook: props.person.social_networks ? JSON.parse(props.person.social_networks).facebook : null,
-    instagram: props.person.social_networks ? JSON.parse(props.person.social_networks).instagram : null,
-    linkedin: props.person.social_networks ? JSON.parse(props.person.social_networks).linkedin : null,
-    twitter: props.person.social_networks ? JSON.parse(props.person.social_networks).twitter : null,
-  });
+
 
   const savePerson = () => {
     form.social_networks = socialData.value;
