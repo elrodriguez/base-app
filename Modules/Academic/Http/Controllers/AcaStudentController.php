@@ -149,7 +149,7 @@ class AcaStudentController extends Controller
             ],
             [
                 'short_name'            => $request->get('names'),
-                'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
+                'full_name'             => trim($request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names')),
                 'description'           => $request->get('description'),
                 'telephone'             => $request->get('telephone'),
                 'email'                 => $request->get('email'),
@@ -159,9 +159,9 @@ class AcaStudentController extends Controller
                 'is_client'             => true,
                 'ubigeo'                => $request->get('ubigeo'),
                 'birthdate'             => $request->get('birthdate'),
-                'names'                 => $request->get('names'),
-                'father_lastname'       => $request->get('father_lastname'),
-                'mother_lastname'       => $request->get('mother_lastname')
+                'names'                 => trim($request->get('names')),
+                'father_lastname'       => trim($request->get('father_lastname')),
+                'mother_lastname'       => trim($request->get('mother_lastname'))
             ]
         );
 
@@ -313,8 +313,8 @@ class AcaStudentController extends Controller
 
         Person::find($person_id)->update([
             'document_type_id'      => $request->get('document_type_id'),
-            'short_name'            => $request->get('names'),
-            'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
+            'short_name'            => trim($request->get('names')),
+            'full_name'             => trim($request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names')),
             'description'           => $request->get('description'),
             'number'                => $request->get('number'),
             'telephone'             => $request->get('telephone'),
@@ -325,9 +325,9 @@ class AcaStudentController extends Controller
             'is_client'             => true,
             'ubigeo'                => $request->get('ubigeo'),
             'birthdate'             => $request->get('birthdate'),
-            'names'                 => $request->get('names'),
-            'father_lastname'       => $request->get('father_lastname'),
-            'mother_lastname'       => $request->get('mother_lastname')
+            'names'                 => trim($request->get('names')),
+            'father_lastname'       => trim($request->get('father_lastname')),
+            'mother_lastname'       => trim($request->get('mother_lastname'))
         ]);
 
         $user->update([

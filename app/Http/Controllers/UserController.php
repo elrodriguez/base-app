@@ -55,8 +55,8 @@ class UserController extends Controller
         ]);
 
         $user = User::create([
-            'name'          => $request->get('name'),
-            'email'         => $request->get('email'),
+            'name'          => trim($request->get('name')),
+            'email'         => trim($request->get('email')),
             'password'      => Hash::make($request->get('password')),
             'local_id'      => $request->get('local_id')
         ]);
@@ -95,6 +95,8 @@ class UserController extends Controller
             $this->validate($request, [
                 'local_id' => 'required'
             ]);
+
+            $user->local_id = $request->get('local_id');
         }
 
         $this->validate($request, [
@@ -104,9 +106,9 @@ class UserController extends Controller
 
 
         $user->syncRoles([]);
-        $user->local_id = $request->get('local_id');
-        $user->name = $request->get('name');
-        $user->email = $request->get('email');
+
+        $user->name = trim($request->get('name'));
+        $user->email = trim($request->get('email'));
 
         if ($request->get('password')) {
             $user->password = Hash::make($request->get('password'));

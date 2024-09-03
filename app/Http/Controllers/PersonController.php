@@ -86,7 +86,7 @@ class PersonController extends Controller
                 'number' => $request->input('number')
             ], // Buscamos a la persona 
             [
-                'full_name' => $request->input('full_name'),
+                'full_name' => trim($request->input('full_name')),
                 'telephone' => $request->input('telephone'),
                 'email' => $request->input('email'),
                 'address' => $request->input('address'),
@@ -163,7 +163,6 @@ class PersonController extends Controller
         $path = null;
         $destination = 'uploads/students';
         $base64Image = $request->get('image');
-        $person = Person::find($person_id);
 
         if ($base64Image) {
             $fileData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
@@ -187,15 +186,13 @@ class PersonController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $file_name = trim($request->get('number')) . '.' . $extension;
                 $path = Storage::disk('public')->putFileAs($destination, $file, $file_name);
-                $person->image = $path;
-                $person->save();
             }
         }
 
-        $person->update([
+        Person::find($person_id)->update([
             'document_type_id'      => $request->get('document_type_id'),
-            'short_name'            => $request->get('names'),
-            'full_name'             => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
+            'short_name'            => trim($request->get('names')),
+            'full_name'             => trim($request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names')),
             'description'           => $request->get('description'),
             'number'                => $request->get('number'),
             'telephone'             => $request->get('telephone'),
@@ -206,9 +203,9 @@ class PersonController extends Controller
             'is_client'             => true,
             'ubigeo'                => $request->get('ubigeo'),
             'birthdate'             => $request->get('birthdate'),
-            'names'                 => $request->get('names'),
-            'father_lastname'       => $request->get('father_lastname'),
-            'mother_lastname'       => $request->get('mother_lastname')
+            'names'                 => trim($request->get('names')),
+            'father_lastname'       => trim($request->get('father_lastname')),
+            'mother_lastname'       => trim($request->get('mother_lastname'))
         ]);
 
         $user->update([
@@ -231,7 +228,7 @@ class PersonController extends Controller
     public function createdOrUpdated(Request $request)
     {
         $person_id = $request->get('id');
-        $user = User::where('person_id', $person_id)->first();
+        $user = Auth::user();
 
         $this->validate(
 
@@ -260,16 +257,16 @@ class PersonController extends Controller
             ], // Buscamos a la persona 
             [
                 'short_name' => $request->input('names'),
-                'full_name' => $request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names'),
+                'full_name' => trim($request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names')),
                 'description' => $request->input('description'),
                 'telephone' => $request->input('telephone'),
                 'email' => $request->input('email'),
                 'address' => $request->input('address'),
                 'ubigeo' => $request->input('ubigeo')['district_id'],
                 'birthdate' => $request->input('birthdate'),
-                'names' => $request->input('names'),
-                'father_lastname' => $request->input('father_lastname'),
-                'mother_lastname' => $request->input('mother_lastname'),
+                'names' => trim($request->input('names')),
+                'father_lastname' => trim($request->input('father_lastname')),
+                'mother_lastname' => trim($request->input('mother_lastname')),
                 'ocupacion' => $request->input('ocupacion'),
                 'presentacion' => $request->input('presentacion'),
                 'gender' => $request->input('gender'),
