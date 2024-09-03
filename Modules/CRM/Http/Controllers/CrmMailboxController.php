@@ -27,11 +27,29 @@ class CrmMailboxController extends Controller
     {
         $user = Auth::user();
         $person = Person::find($user->person_id);
-        $mailList = CrmConversation::with('user')
-            ->with('messages.person')
-            ->where('user_id', $user->id)
-            ->where('type_name', 'email')
-            ->get();
+
+        if ($user->hasRole('admin')) {
+            $mailList = CrmConversation::with('user.person')
+                ->with('messages.person')
+                ->where('type_name', 'email')
+                ->get();
+
+            // Cambia el campo type_name a 'inbox' si el usuario es administrador
+            $mailList->transform(function ($conversation) use ($user) {
+                if ($conversation->user_id != $user->id) {
+                    $conversation->type_action = 'inbox'; // Cambiar el valor
+                }
+                return $conversation;
+            });
+        } else {
+            $mailList = CrmConversation::whereHas('participants', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+                ->with('user.person')
+                ->with('messages.person')
+                ->where('type_name', 'email')
+                ->get();
+        }
 
         return Inertia::render('CRM::Mailbox/Dashboard', [
             'emailfor' => $this->P000011,

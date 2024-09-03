@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Attachment;
 
 class ClientHelpEmail extends Mailable
 {
@@ -28,6 +29,7 @@ class ClientHelpEmail extends Mailable
         $con = $this->data[0];
         $msg = $this->data[1];
         $nam = $this->data[2];
+
         return new Envelope(
             from: new Address($msg->email_from, $nam),
             subject: $con->title,
@@ -47,6 +49,14 @@ class ClientHelpEmail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        //dd($this->data[1]->attachments);
+        $Attachments = [];
+        foreach ($this->data[1]->attachments as $file) {
+            array_push(
+                $Attachments,
+                Attachment::fromPath(public_path('storage' . DIRECTORY_SEPARATOR . $file['path']))->as($file['file_name'])
+            );
+        }
+        return $Attachments;
     }
 }

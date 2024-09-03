@@ -28,7 +28,7 @@ class CrmMessage extends Model
 
     public function conversation()
     {
-        return $this->belongsTo(CrmConversation::class);
+        return $this->belongsTo(CrmConversation::class, 'conversation_id');
     }
 
     public function person()

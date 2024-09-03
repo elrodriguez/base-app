@@ -4,6 +4,7 @@ namespace Modules\CRM\Entities;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Company;
+use App\Models\Person;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -69,5 +70,9 @@ class CrmUser extends Authenticatable
     public function messages()
     {
         return $this->hasMany(CrmMessage::class);
+    }
+    public function person(): HasOne
+    {
+        return $this->hasOne(Person::class, 'id', 'person_id');
     }
 }

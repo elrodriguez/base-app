@@ -123,11 +123,18 @@
 
         if(props.mailList.length > 0){
             props.mailList.forEach(mail => {
+                
+                let messages = '';
+
+                mail.messages.forEach(message => {
+                    messages += message.content;
+                });
+
                 mailList.value.push({
                     id: mail.id,
                     path: getPath(mail.user.avatar),
-                    firstName: mail.user.name,
-                    lastName: 'laurel',
+                    firstName: mail.user.person.names,
+                    lastName: mail.user.person.father_lastname,
                     email: mail.user.email,
                     date: formatDate(mail.created_at, 'date'),
                     time: formatDate(mail.created_at, 'time'),
@@ -136,9 +143,9 @@
                     type: mail.type_action,
                     isImportant: false,
                     isStar: false,
-                    group: '',
+                    group: mail.status,   
                     isUnread: false,
-                    description: mail.messages.length > 0 ? mail.messages[0].content : null,
+                    description: mail.messages.length > 0 ? messages : null,
                     email_from: mail.messages.length > 0 ? mail.messages[0].email_from : null,
                     email_for: mail.messages.length > 0 ? mail.messages[0].email_for : null
                 });
@@ -183,7 +190,7 @@
             return item.time;
         } else {
             if (displayDt.getFullYear() === cDt.getFullYear()) {
-                var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
                 return monthNames[displayDt.getMonth()] + ' ' + String(displayDt.getDate()).padStart(2, '0');
             } else {
                 return String(displayDt.getMonth() + 1).padStart(2, '0') + '/' + String(displayDt.getDate()).padStart(2, '0') + '/' + displayDt.getFullYear();
@@ -400,7 +407,7 @@
         let cDt = new Date();
 
         let obj = {
-            id: maxId + 1,
+            id: null,
             path: '',
             firstName: '',
             lastName: '',
@@ -506,11 +513,14 @@
             params.value.displayDescription = data.email;
         } else if (type === 'reply') {
             let data = JSON.parse(JSON.stringify(item));
+            params.value.id = defaultData.value.id;
             params.value = data;
             params.value.from = defaultData.value.from;
             params.value.to = data.email;
             params.value.title = 'Re: ' + params.value.title;
             params.value.displayDescription = 'Re: ' + params.value.title;
+            params.value.description = '';
+
         } else if (type === 'forward') {
             let data = JSON.parse(JSON.stringify(item));
             params.value = data;
@@ -587,37 +597,44 @@
                             class="relative ltr:pr-3.5 rtl:pl-3.5 ltr:-mr-3.5 rtl:-ml-3.5 h-full grow"
                         >
                             <div class="space-y-1">
-                                <button
-                                    type="button"
-                                    class="w-full flex justify-between items-center p-2 hover:bg-white-dark/10 rounded-md dark:hover:text-primary hover:text-primary dark:hover:bg-[#181F32] font-medium h-10"
-                                    :class="{
-                                        'bg-gray-100 dark:text-primary text-primary dark:bg-[#181F32]': !isEdit && selectedTab === 'inbox',
-                                    }"
-                                    @click="tabChanged('inbox')"
-                                >
-                                    <div class="flex items-center">
-                                        <icon-mail class="w-5 h-5 shrink-0" />
+                                <template v-if="mailList && mailList.filter((d) => d.type == 'inbox').length > 0">
+                                    <button
+                                        type="button"
+                                        class="w-full flex justify-between items-center p-2 hover:bg-white-dark/10 rounded-md dark:hover:text-primary hover:text-primary dark:hover:bg-[#181F32] font-medium h-10"
+                                        :class="{
+                                            'bg-gray-100 dark:text-primary text-primary dark:bg-[#181F32]': !isEdit && selectedTab === 'inbox',
+                                        }"
+                                        @click="tabChanged('inbox')"
+                                    >
+                                        <div class="flex items-center">
+                                            <icon-mail class="w-5 h-5 shrink-0" />
 
-                                        <div class="ltr:ml-3 rtl:mr-3">Recibidos</div>
-                                    </div>
-                                    <div class="bg-primary-light dark:bg-[#060818] rounded-md py-0.5 px-2 font-semibold whitespace-nowrap">
-                                        {{ mailList && mailList.filter((d) => d.type == 'inbox').length }}
-                                    </div>
-                                </button>
-                                <button
-                                    type="button"
-                                    class="w-full flex justify-between items-center p-2 hover:bg-white-dark/10 rounded-md dark:hover:text-primary hover:text-primary dark:hover:bg-[#181F32] font-medium h-10"
-                                    :class="{
-                                        'bg-gray-100 dark:text-primary text-primary dark:bg-[#181F32]': !isEdit && selectedTab === 'sent_mail',
-                                    }"
-                                    @click="tabChanged('sent_mail')"
-                                >
-                                    <div class="flex items-center">
-                                        <icon-send class="shrink-0" />
+                                            <div class="ltr:ml-3 rtl:mr-3">Recibidos</div>
+                                        </div>
+                                        <div class="bg-primary-light dark:bg-[#060818] rounded-md py-0.5 px-2 font-semibold whitespace-nowrap">
+                                            {{ mailList && mailList.filter((d) => d.type == 'inbox').length }}
+                                        </div>
+                                    </button>
+                                </template>
+                                <template v-if="mailList && mailList.filter((d) => d.type == 'sent_mail').length > 0">
+                                    <button
+                                        type="button"
+                                        class="w-full flex justify-between items-center p-2 hover:bg-white-dark/10 rounded-md dark:hover:text-primary hover:text-primary dark:hover:bg-[#181F32] font-medium h-10"
+                                        :class="{
+                                            'bg-gray-100 dark:text-primary text-primary dark:bg-[#181F32]': !isEdit && selectedTab === 'sent_mail',
+                                        }"
+                                        @click="tabChanged('sent_mail')"
+                                    >
+                                        <div class="flex items-center">
+                                            <icon-send class="shrink-0" />
 
-                                        <div class="ltr:ml-3 rtl:mr-3">Enviados</div>
-                                    </div>
-                                </button>
+                                            <div class="ltr:ml-3 rtl:mr-3">Enviados</div>
+                                        </div>
+                                        <div class="bg-primary-light dark:bg-[#060818] rounded-md py-0.5 px-2 font-semibold whitespace-nowrap">
+                                            {{ mailList && mailList.filter((d) => d.type == 'sent_mail').length }}
+                                        </div>
+                                    </button>
+                                </template>
                                 <!-- <button
                                     type="button"
                                     class="w-full flex justify-between items-center p-2 hover:bg-white-dark/10 rounded-md dark:hover:text-primary hover:text-primary dark:hover:bg-[#181F32] font-medium h-10"
@@ -951,10 +968,10 @@
                                                         v-tippy:group
                                                         class="w-2 h-2 rounded-full"
                                                         :class="{
-                                                            'bg-primary': selectedMail.group === 'personal',
-                                                            'bg-warning': selectedMail.group === 'work',
-                                                            'bg-success': selectedMail.group === 'social',
-                                                            'bg-danger': selectedMail.group === 'private',
+                                                            'bg-primary': selectedMail.group === 'Resuelto',
+                                                            'bg-warning': selectedMail.group === 'Enviado',
+                                                            'bg-success': selectedMail.group === 'En revisión',
+                                                            'bg-danger': selectedMail.group === 'Cerrado',
                                                         }"
                                                     ></div>
                                                     <tippy target="group" class="capitalize">{{ selectedMail.group }}</tippy>
@@ -1015,45 +1032,46 @@
                                     </div>
                                     <div>
                                         <div class="flex items-center justify-center space-x-3 rtl:space-x-reverse">
-                                            <button
-                                                type="button"
-                                                v-tippy:star
-                                                class="enabled:hover:text-warning disabled:opacity-60"
-                                                :class="{ 'text-warning': selectedMail.isStar }"
-                                                @click="setStar(selectedMail.id)"
-                                                :disabled="selectedTab === 'trash'"
-                                            >
-                                                <icon-star :class="{ 'fill-warning': selectedMail.isStar }" />
-                                            </button>
-                                            <tippy target="star">Estrella</tippy>
+                                            <template v-if="$page.props.auth.user.roles[0].name == 'admin'" > 
+                                                <button
+                                                    type="button"
+                                                    v-tippy:star
+                                                    class="enabled:hover:text-warning disabled:opacity-60"
+                                                    :class="{ 'text-warning': selectedMail.isStar }"
+                                                    @click="setStar(selectedMail.id)"
+                                                    :disabled="selectedTab === 'trash'"
+                                                >
+                                                    <icon-star :class="{ 'fill-warning': selectedMail.isStar }" />
+                                                </button>
+                                                <tippy target="star">Estrella</tippy>
 
-                                            <button
-                                                type="button"
-                                                v-tippy:important
-                                                class="enabled:hover:text-primary disabled:opacity-60"
-                                                :class="{ 'text-primary': selectedMail.isImportant }"
-                                                @click="setImportant(selectedMail.id)"
-                                                :disabled="selectedTab === 'trash'"
-                                            >
-                                                <icon-bookmark
-                                                    :bookmark="false"
-                                                    class="w-4.5 h-4.5 rotate-90"
-                                                    :class="{ 'fill-primary': selectedMail.isImportant }"
-                                                />
-                                            </button>
-                                            <tippy target="important">Importante</tippy>
-
-                                            <button type="button" v-tippy:reply class="hover:text-info" @click="openMail('reply', selectedMail)">
-                                                <icon-arrow-backward class="rtl:hidden" />
-                                                <icon-arrow-forward class="ltr:hidden" />
-                                            </button>
-                                            <tippy target="reply">Responder</tippy>
-
-                                            <button type="button" v-tippy:forward class="hover:text-info" @click="openMail('forward', selectedMail)">
+                                                <button
+                                                    type="button"
+                                                    v-tippy:important
+                                                    class="enabled:hover:text-primary disabled:opacity-60"
+                                                    :class="{ 'text-primary': selectedMail.isImportant }"
+                                                    @click="setImportant(selectedMail.id)"
+                                                    :disabled="selectedTab === 'trash'"
+                                                >
+                                                    <icon-bookmark
+                                                        :bookmark="false"
+                                                        class="w-4.5 h-4.5 rotate-90"
+                                                        :class="{ 'fill-primary': selectedMail.isImportant }"
+                                                    />
+                                                </button>
+                                                <tippy target="important">Importante</tippy>
+                                            
+                                                <button type="button" v-tippy:reply class="hover:text-info" @click="openMail('reply', selectedMail)">
+                                                    <icon-arrow-backward class="rtl:hidden" />
+                                                    <icon-arrow-forward class="ltr:hidden" />
+                                                </button>
+                                                <tippy target="reply">Responder</tippy>
+                                            </template>
+                                            <!-- <button type="button" v-tippy:forward class="hover:text-info" @click="openMail('forward', selectedMail)">
                                                 <icon-arrow-backward class="ltr:hidden" />
                                                 <icon-arrow-forward class="rtl:hidden" />
                                             </button>
-                                            <tippy target="forward">Forward</tippy>
+                                            <tippy target="forward">Forward</tippy> -->
                                         </div>
                                     </div>
                                 </div>
@@ -1152,9 +1170,9 @@
                                 </div>
 
                                 <div class="flex items-center ltr:ml-auto rtl:mr-auto mt-8">
-                                    <button type="button" class="btn btn-outline-danger ltr:mr-3 rtl:ml-3" @click="closeMsgPopUp">Close</button>
+                                    <button type="button" class="btn btn-outline-danger ltr:mr-3 rtl:ml-3" @click="closeMsgPopUp">Cancelar</button>
                                     <!-- <button type="button" class="btn btn-success ltr:mr-3 rtl:ml-3" @click="saveMail('save', null)">Save</button> -->
-                                    <button type="button" class="btn btn-primary" @click="saveMail('send', params.id)">Send</button>
+                                    <button type="button" class="btn btn-primary" @click="saveMail('send', params.id)">Enviar</button>
                                 </div>
                             </form>
                         </div>

@@ -35,6 +35,7 @@
     import IconMenuForms from '@/Components/vristo/icon/menu/icon-menu-forms.vue';
     import IconMenuPages from '@/Components/vristo/icon/menu/icon-menu-pages.vue';
     import IconMenuMore from '@/Components/vristo/icon/menu/icon-menu-more.vue';
+    import { faCartPlus } from  '@fortawesome/free-solid-svg-icons';
 
     import menuData from './MenuData.js'
 
@@ -195,14 +196,16 @@
                                 <icon-edit />
                             </Link>
                         </li> -->
-                        <!-- <li>
+                        <li v-can="'punto_ventas'">
                             <Link
-                                href="/apps/chat"
+                                v-tippy:bottom
+                                :href="route('sales.create')"
                                 class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
                             >
-                                <icon-chat-notification />
+                                <font-awesome-icon :icon="faCartPlus" class="w-5" />
                             </Link>
-                        </li> -->
+                            <tippy target="bottom" placement="bottom">Vender por notas de ventas</tippy>
+                        </li>
                     </ul>
                 </div>
                 <div

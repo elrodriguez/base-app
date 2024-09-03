@@ -200,20 +200,24 @@ class CrmMessagesController extends Controller
 
         $personId = Auth::user()->person_id;
         //$contactId = $request->get('fromUserId');
+        $conversation = [];
 
-
-        // Crear nueva conversación
-        $conversation = CrmConversation::create([
-            'title' => $request->get('title'),
-            'user_id' => Auth::id(),
-            'type_name' => 'email',
-            'description' => $request->get('displayDescription'),
-            'type_action' => $request->get('type'),
-            'status' => 'Enviado'
-        ]);
+        if ($request->has('id') && $request->get('id')) {
+            $conversation = CrmConversation::find($request->get('id'));
+        } else {
+            // Crear nueva conversación
+            $conversation = CrmConversation::create([
+                'title' => $request->get('title'),
+                'user_id' => Auth::id(),
+                'type_name' => 'email',
+                'description' => $request->get('displayDescription'),
+                'type_action' => $request->get('type'),
+                'status' => 'Enviado'
+            ]);
+        }
 
         // Agregar participantes
-        CrmParticipant::create([
+        CrmParticipant::firstOrCreate([
             'conversation_id' => $conversation->id,
             'person_id' => $personId,
             'user_id' => Auth::id()
