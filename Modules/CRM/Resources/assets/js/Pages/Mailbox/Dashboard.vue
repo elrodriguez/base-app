@@ -64,9 +64,33 @@
 
     const store = useAppStore();
 
+    const validatePersonalData = () => {
+        if(!props.person){
+            Swal.fire({
+                title: 'Información requerida',
+                text: 'No puede ver los correos. dirijase a su perfil y registre su información en la pestaña "Datos personales".',
+                icon: 'warning',
+                confirmButtonText: 'Ir a mi perfil',
+                allowOutsideClick: false, // No permite cerrar al hacer clic fuera
+                allowEscapeKey: false,     // No permite cerrar con la tecla Esc
+                padding: '2em',
+                customClass: 'sweet-alerts',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    router.visit(route('profile.edit'), {
+                        method: 'get',
+                        replace: true,
+                        preserveState: false,
+                        preserveScroll: false,
+                    });
+                }
+            });
+        }
+    }
+
     const defaultData = ref({
         id: null,
-        from: props.person.email,
+        from: props.person ? props.person.email : null,
         to: props.emailfor,
         cc: '',
         title: '',
@@ -154,6 +178,7 @@
     }
 
     onMounted(() => {
+        validatePersonalData();
         logProducts();
     });
 
