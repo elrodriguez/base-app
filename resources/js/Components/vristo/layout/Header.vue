@@ -14,14 +14,14 @@
     import IconEdit from '@/Components/vristo/icon/icon-edit.vue';
     import IconChatNotification from '@/Components/vristo/icon/icon-chat-notification.vue';
     import IconSearch from '@/Components/vristo/icon/icon-search.vue';
-    import IconXCircle from '@/Components/vristo/icon/icon-x-circle.vue';
+
     import IconSun from '@/Components/vristo/icon/icon-sun.vue';
     import IconMoon from '@/Components/vristo/icon/icon-moon.vue';
     import IconLaptop from '@/Components/vristo/icon/icon-laptop.vue';
     import IconMailDot from '@/Components/vristo/icon/icon-mail-dot.vue';
     import IconArrowLeft from '@/Components/vristo/icon/icon-arrow-left.vue';
-    import IconInfoCircle from '@/Components/vristo/icon/icon-info-circle.vue';
-    import IconBellBing from '@/Components/vristo/icon/icon-bell-bing.vue';
+
+
     import IconUser from '@/Components/vristo/icon/icon-user.vue';
     import IconMail from '@/Components/vristo/icon/icon-mail.vue';
     import IconLockDots from '@/Components/vristo/icon/icon-lock-dots.vue';
@@ -36,6 +36,7 @@
     import IconMenuPages from '@/Components/vristo/icon/menu/icon-menu-pages.vue';
     import IconMenuMore from '@/Components/vristo/icon/menu/icon-menu-more.vue';
     import { faCartPlus } from  '@fortawesome/free-solid-svg-icons';
+    import ChatNotifications from 'Modules/CRM/Resources/assets/js/Components/ChatNotifications.vue';
 
     import menuData from './MenuData.js'
 
@@ -208,9 +209,7 @@
                         </li>
                     </ul>
                 </div>
-                <div
-                    class="sm:flex-1 ltr:sm:ml-0 ltr:ml-auto sm:rtl:mr-0 rtl:mr-auto flex items-center space-x-1.5 lg:space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]"
-                >
+                <div class="sm:flex-1 ltr:sm:ml-0 ltr:ml-auto sm:rtl:mr-0 rtl:mr-auto flex items-center space-x-1.5 lg:space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
                     <div class="sm:ltr:mr-auto sm:rtl:ml-auto">
                         <!-- <form
                             class="sm:relative absolute inset-x-0 sm:top-0 top-1/2 sm:translate-y-0 -translate-y-1/2 sm:mx-0 mx-4 z-10 sm:block hidden"
@@ -366,7 +365,7 @@
                             </template>
                         </Popper>
                     </div> -->
-
+                    <ChatNotifications />
                     <!-- <div class="dropdown shrink-0">
                         <Popper :placement="store.rtlClass === 'rtl' ? 'bottom-end' : 'bottom-start'" offsetDistance="8">
                             <button
