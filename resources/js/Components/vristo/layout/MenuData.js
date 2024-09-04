@@ -5,7 +5,7 @@ import {
 import { ref } from 'vue';
 import menuAcademic from 'Modules/Academic/Resources/assets/js/Menu.js';
 import menuRestaurant from 'Modules/Restaurant/Resources/assets/js/Menu.js';
-import { menuSales, menuFacturacion } from 'Modules/Sales/Resources/assets/js/Menu.js';
+import menuSales from 'Modules/Sales/Resources/assets/js/Menu.js';
 import menuPurchases from 'Modules/Purchases/Resources/assets/js/Menu.js';
 import menuConfig from 'Modules/Security/Resources/assets/js/Menu.js';
 import menuCMS from 'Modules/CMS/Resources/assets/js/Menu.js';
@@ -25,8 +25,8 @@ const MenuData = ref([
     },
     menuConfig,
     menuPurchases,
-    menuSales,
-    menuFacturacion,
+    menuSales[0],
+    menuSales[1],
     menuOnlineshop,
     // menuHelpdesk,
     menuCMS,
