@@ -93,6 +93,12 @@ Route::middleware('auth')->group(function () {
     )->name('search_person_number');
 
     Route::post(
+        'search/person/apies',
+        [PersonController::class, 'searchByNumberTypeApies']
+    )->name('search_person_apies');
+
+
+    Route::post(
         'save/person/update/create',
         [PersonController::class, 'saveUpdateOrCreate']
     )->name('save_person_update_create');

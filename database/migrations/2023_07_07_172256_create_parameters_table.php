@@ -93,6 +93,22 @@ return new class extends Migration
             'json_query_data'   => null,
             'value_default'     => 'xmpsrss1dh49by6nnf83jicfv477cz0o31h0xu3ejsnnhsnz'
         ]);
+
+        Parameter::create([
+            'parameter_code'    => 'P000011',
+            'description'       => 'Correo electronico a donde llegaran los mensajes del modulo CRM  Buzón de correo',
+            'control_type'      => 'tx',
+            'json_query_data'   => null,
+            'value_default'     => 'aracode_atencion@gmail.com'
+        ]);
+
+        Parameter::create([
+            'parameter_code'    => 'P000012',
+            'description'       => 'token para consultas reniec y sunat',
+            'control_type'      => 'tx',
+            'json_query_data'   => null,
+            'value_default'     => 'apis-token-9042.kSfEdAqdNoOW8-fGfu-cKQoWOH7Tzg2Z'
+        ]);
     }
 
     /**

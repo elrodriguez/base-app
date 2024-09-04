@@ -334,7 +334,8 @@ class SaleDocumentController extends Controller
                     'invoice_legend_code'           => '1000',
                     'invoice_legend_description'    => $numberletters->convertToLetter($request->get('total')),
                     'invoice_status'                => 'registrado',
-                    'user_id'                       => Auth::id()
+                    'user_id'                       => Auth::id(),
+                    'additional_description'        => $request->get('additional_description')
                 ]);
 
                 ///obtenemos los productos o servicios para insertar en los 

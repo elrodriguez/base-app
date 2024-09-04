@@ -12,6 +12,7 @@ defineProps({
 </script>
 <template>
     <button
+        :type="type"
         :disabled="disabled"
         :style="disabled ? 'cursor: not-allowed': ''"
         class="btn btn-primary uppercase text-xs"

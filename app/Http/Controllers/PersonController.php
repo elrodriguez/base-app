@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Parameter;
 use App\Models\Person;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,9 +11,18 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use GuzzleHttp\Client;
 
 class PersonController extends Controller
 {
+
+    protected $P000012;
+
+    public function __construct()
+    {
+        $this->P000012 = Parameter::where('parameter_code', 'P000012')->value('value_default');
+    }
+
     public function searchByNumberType(Request $request)
     {
         $document_type = $request->input('document_type');
@@ -279,5 +289,34 @@ class PersonController extends Controller
         User::find(Auth::id())->update([
             'person_id' => $person->id
         ]);
+    }
+
+
+    public function consultApisNet($dni)
+    {
+        $token = $this->P000012;
+        $numero = $dni;
+        $client = new Client(['base_uri' => 'https://api.apis.net.pe', 'verify' => false]);
+        $parameters = [
+            'http_errors' => true,
+            'connect_timeout' => 5,
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Referer' => 'https://apis.net.pe/api-consulta-dni',
+                'User-Agent' => 'laravel/guzzle',
+                'Accept' => 'application/json',
+            ],
+            'query' => ['numero' => $numero]
+        ];
+        $res = $client->request('GET', '/v2/reniec/dni', $parameters);
+
+        if ($res->getStatusCode() == 200) {
+            $response = json_decode($res->getBody()->getContents(), true);
+            // Resto del código
+        } else {
+            // Manejo de error en caso de que la solicitud no sea exitosa
+        }
+
+        return view('DniConsulta', ['dni' => $response]);
     }
 }

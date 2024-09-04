@@ -83,7 +83,13 @@
     const saveNewSearchClient = () => {
         axios.post(route('save_person_update_create'), form).then((res) => {
             disabledBtnSelect.value = false;
-            Swal2.fire('Enhorabuena','Se registró correctamente','success');
+            Swal2.fire({
+                title: 'Enhorabuena',
+                text: 'Se registró correctamente',
+                icon: 'success',
+                padding: '2em',
+                customClass: 'sweet-alerts',
+            });
             person.value = res.data;
         });
     }

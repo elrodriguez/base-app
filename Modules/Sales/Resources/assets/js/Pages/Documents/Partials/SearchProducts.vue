@@ -225,7 +225,7 @@
                     <li class="items-center px-4 py-2 justify-between font-semibold">
                         <form @submit.prevent="searchProducts()" class="mx-auto w-full mb-5">
                             <div class="relative">
-                                <input v-model="form.search" @input="searchProducts()" id="searchInput" type="text" placeholder="Buscar... " class="form-input shadow-[0_0_4px_2px_rgb(31_45_61_/_10%)] bg-white rounded-full h-11 placeholder:tracking-wider" autofocus />
+                                <input v-model="form.search" @input="searchProducts()" id="searchInput" autocomplete="off" type="text" placeholder="Buscar... " class="form-input shadow-[0_0_4px_2px_rgb(31_45_61_/_10%)] bg-white rounded-full h-11 placeholder:tracking-wider" autofocus />
                                 <button type="submit" class="btn btn-primary absolute ltr:right-1 rtl:left-1 inset-y-0 m-auto rounded-full w-9 h-9 p-0 flex items-center justify-center">
                                     <font-awesome-icon :icon="iconSearch" />
                                 </button>

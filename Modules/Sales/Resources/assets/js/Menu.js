@@ -4,10 +4,15 @@ import {
     faScrewdriverWrench,
     faChartLine,
     faLocationDot,
-    faMoneyBillTrendUp
+    faBolt,
+    faMoneyBillTrendUp,
+    faFileInvoice,
+    faListOl,
+    faListCheck,
+    faFileExport
 } from "@fortawesome/free-solid-svg-icons";
 
-const menuSales = {
+export const menuSales = {
     status: true,
     text: "Ventas",
     icom: faCashRegister,
@@ -22,6 +27,12 @@ const menuSales = {
             permissions: "productos",
             icom: faScrewdriverWrench,
             items: [
+                {
+                    status: false,
+                    route: route("clients.index"),
+                    text: "Clientes",
+                    permissions: "sale_marcas",
+                },
                 {
                     status: false,
                     route: route("sale_brands_product_list"),
@@ -84,5 +95,43 @@ const menuSales = {
             icom: faChartLine,
         },
     ],
+
 };
-export default menuSales;
+
+export const menuFacturacion = {
+    status:false,
+    text: 'Facturación Electrónica',
+    icom: faBolt,
+    route: 'module',
+    permissions: 'invo_dashboard',
+    items: [
+        {
+            route: route('saledocuments_create'),
+            status: false,
+            text: 'Crear Documento',
+            permissions: 'invo_documento',
+            icom: faFileInvoice,
+        },
+        {
+            route: route('saledocuments_list'),
+            status: false,
+            text: 'Lista de Documentos',
+            permissions: 'invo_documento_lista',
+            icom: faListOl,
+        },
+        {
+            route: route('salesummaries_list'),
+            status: false,
+            text: 'Resumen',
+            permissions: 'invo_resumenes_lista',
+            icom: faListCheck,
+        },
+        {
+            route: route('low_communication_list'),
+            status: false,
+            text: 'Comunicacion de Baja',
+            permissions: 'invo_comunicacion_baja',
+            icom: faFileExport,
+        }
+    ]
+};
