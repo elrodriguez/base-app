@@ -54,8 +54,9 @@ class DashboardController extends Controller
                 'people.image AS person_image',
             )
             ->selectRaw('(SELECT COUNT(aca_cap_registrations.id) FROM aca_cap_registrations WHERE aca_cap_registrations.course_id = aca_courses.id) AS registrations')
-            ->whereNot('aca_courses.id', '=', function ($query) use ($student_id) {
-                $query->select('i.course_id')->from('aca_cap_registrations AS i')
+            ->whereNotIn('aca_courses.id', function ($query) use ($student_id) {
+                $query->select('i.course_id')
+                    ->from('aca_cap_registrations AS i')
                     ->where('student_id', $student_id);
             })
             ->orderByDesc('registrations')
