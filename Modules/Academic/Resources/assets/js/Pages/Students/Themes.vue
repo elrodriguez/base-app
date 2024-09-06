@@ -5,9 +5,10 @@
     import { Link, useForm, router } from '@inertiajs/vue3';
     import { faFolderOpen, faNoteSticky, faLink, faVideo, faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
     import IconSend from '@/Components/vristo/icon/icon-send.vue';
-
-    import IconEdit from '@/Components/vristo/icon/icon-edit.vue';
-    import IconTrash from '@/Components/vristo/icon/icon-trash.vue';
+    import IconSquareRotated from '@/Components/vristo/icon/icon-square-rotated.vue';
+    import IconFilePdf from '@/Components/vristo/icon/icon-file-pdf.vue';
+    import IconVideo from '@/Components/vristo/icon/icon-video.vue';
+    import IconFile from '@/Components/vristo/icon/icon-file.vue';
     import IconMessage from '@/Components/vristo/icon/icon-message.vue';
     import InputError from '@/Components/InputError.vue';
     import Swal2 from 'sweetalert2';
@@ -15,6 +16,10 @@
 
     const props = defineProps({
         course: {
+            type: Object,
+            default: () => ({}),
+        },
+        module: {
             type: Object,
             default: () => ({}),
         }
@@ -169,9 +174,20 @@
         return baseUrl + 'storage/'+ path;
     }
 
+    const selectedTab = ref('');
+    const contentsData = ref([]);
+    const commentsData = ref([]);
+
+    const selectTheme = (theme) => {
+        contentsData.value = theme.contents;
+        selectedTab.value = theme.id
+    }
+
+    const getPath = (path) => {
+        return baseUrl + 'storage/'+ path;
+    }
 
 </script>
-
 <template>
     <AppLayout title="Mis Cursos">
         <ul class="flex space-x-2 rtl:space-x-reverse">
@@ -182,29 +198,91 @@
                 <Link :href="route('aca_mycourses')" class="text-primary hover:underline">Cursos</Link>
             </li>
             <li class="before:content-['/'] ltr:before:mr-1 rtl:before:ml-1">
-                <span>{{ course.description }}</span>
+                <Link :href="route('aca_mycourses_lessons',course.id)" class="text-primary hover:underline">{{ course.description }}</Link>
+            </li>
+            <li class="before:content-['/'] ltr:before:mr-1 rtl:before:ml-1">
+                <span>{{ module.description }}</span>
             </li>
         </ul>
         <div class="pt-5 space-y-5 relative">
-            <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 relative">
-                <div class="max-w-xl mx-auto text-center">
-                    <div class="inline-flex px-4 py-1.5 mx-auto rounded-full  ">
-                        <p class="text-4xl font-semibold tracking-widest text-g uppercase">MODULOS DEL CURSO</p>
+            <div class="grid grid-cols-6 gap-4">
+                <div class="panel col-span-6 sm:col-span-2">
+                    <div class="flex justify-between items-center">
+                        <h1 class="font-extrabold tracking-wider">Temas</h1>
                     </div>
-                    <p class="mt-4 text-base leading-relaxed text-gray-600 group-hover:text-white">{{ course.description }}</p>
-                </div>
-                <div class="grid grid-cols-1 gap-2 sm:grid-cols-3 mt-6">
-                    <template v-for="(module, index) in course.modules">
-                        <Link :href="route('aca_mycourses_lesson_themes', module.id)" class="transition-all  duration-1000 bg-white hover:bg-blue-500  hover:shadow-xl m-2 p-4 relative z-40 group  ">
-                            <div class=" absolute  bg-blue-500/50 top-0 left-0 w-24 h-1 z-30  transition-all duration-200   group-hover:bg-white group-hover:w-1/2  "></div>
-                            <div class="py-2 px-9 relative  ">
-                                <svg class="w-10 h-10 fill-gray-400 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M88.7 223.8L0 375.8 0 96C0 60.7 28.7 32 64 32l117.5 0c17 0 33.3 6.7 45.3 18.7l26.5 26.5c12 12 28.3 18.7 45.3 18.7L416 96c35.3 0 64 28.7 64 64l0 32-336 0c-22.8 0-43.8 12.1-55.3 31.8zm27.6 16.1C122.1 230 132.6 224 144 224l400 0c11.5 0 22 6.1 27.7 16.1s5.7 22.2-.1 32.1l-112 192C453.9 474 443.4 480 432 480L32 480c-11.5 0-22-6.1-27.7-16.1s-5.7-22.2 .1-32.1l112-192z"/></svg>
-                                <p class="mt-4 text-base text-gray-600 group-hover:text-white  ">{{ module.description }}</p>
+                    <div class="flex flex-col mt-5 gap-4 text-sm">
+                        <template v-for="(theme, index) in module.themes">
+                            <div @click="selectTheme(theme)" class="cursor-pointer flex justify-between items-center p-3 rounded-sm shadow-sm hover:bg-white-dark/10 dark:hover:bg-[#181F32] font-medium ltr:hover:pl-3 rtl:hover:pr-3 duration-300 dark:bg-gray-700 dark:text-white"
+                                :class="selectedTab === theme.id ? 'ltr:pl-3 rtl:pr-3 bg-gray-100 dark:bg-[#181F32] text-primary' : 'bg-yellow-50 text-success'">
+                                <div class="flex items-center">
+                                    <icon-square-rotated class=" fill-success shrink-0" />
+                                    <div class="text-left ltr:ml-3 rtl:mr-3">
+                                        {{ theme.description }}
+                                    </div>
+                                </div>
+                                <span class="font-bold text-yellow-500">{{ theme.contents.length }}</span>
                             </div>
-                        </Link>
-                    </template>
+                        </template>
+                    </div>
+                </div>
+                <div class="panel col-span-6 sm:col-span-4">
+                    <div class="p-10 flow-root">
+                        <div class="space-y-6">
+                            <template v-for="(content, key) in contentsData">
+                                <template v-if="content.is_file == 1">
+                                    <div class="flex items-center p-3.5 rounded text-primary bg-primary-light dark:bg-primary-dark-light">
+                                        <span class="w-6 h-6 ltr:mr-4 rtl:ml-4">
+                                            <icon-file />
+                                        </span>
+                                        <span>
+                                            <strong class="ltr:mr-1 rtl:ml-1">Link de archivo: </strong>
+                                            {{ content.description }}
+                                        </span>
+                                        <a :href="content.content" target="_blank"  type="button" class="btn btn-sm bg-white text-black ltr:ml-auto rtl:mr-auto">
+                                            Ir al sitio
+                                        </a>
+                                    </div>
+                                </template>
+                                <template v-else-if="content.is_file == 0">
+                                    <div class="flex items-center p-3.5 rounded text-primary bg-primary-light dark:bg-primary-dark-light">
+                                        <span class="w-6 h-6 ltr:mr-4 rtl:ml-4">
+                                            <icon-video />
+                                        </span>
+                                        <span>
+                                            <strong class="ltr:mr-1 rtl:ml-1">Video: </strong>
+                                            {{ content.description }}
+                                        </span>
+                                        <button @click="openSelectedVideo(content.content)" type="button" class="btn btn-sm bg-white text-black ltr:ml-auto rtl:mr-auto">
+                                            Reproducir
+                                        </button>
+                                    </div>
+                                </template>
+                                <template v-else-if="content.is_file == 2">
+                                    <div class="flex items-center p-3.5 rounded text-primary bg-primary-light dark:bg-primary-dark-light">
+                                        <span class="w-6 h-6 ltr:mr-4 rtl:ml-4">
+                                            <icon-file-pdf />
+                                        </span>
+                                        <span>
+                                            <strong class="ltr:mr-1 rtl:ml-1">Archivo: </strong>
+                                            {{ content.description }}
+                                        </span>
+                                        <a :href="getPath(content.content)" target="_blank" type="button" class="btn btn-sm bg-white text-black ltr:ml-auto rtl:mr-auto">
+                                            Descargar
+                                        </a>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div> 
+            
+        </div>
+        <DraggableDiv :isVisible="displayModalVideo" :onClose="closeSelectedVideo">
+            <template #title>VIDEO</template>
+            <template #content>
+                <div id="div-video-content" v-html="videoSelected" class="m-0"></div>
+            </template>
+        </DraggableDiv>
     </AppLayout>
 </template>

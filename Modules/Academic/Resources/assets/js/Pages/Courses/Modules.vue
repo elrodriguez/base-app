@@ -1,15 +1,14 @@
 <script setup>
     import AppLayout from "@/Layouts/Vristo/AppLayout.vue";
-    import { Link, useForm } from '@inertiajs/vue3';
+    import { Link, useForm, router } from '@inertiajs/vue3';
     import Navigation from '@/Components/vristo/layout/Navigation.vue';
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, computed, watch } from 'vue';
     import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogOverlay } from '@headlessui/vue';
     // import { quillEditor } from 'vue3-quill';
     // import 'vue3-quill/lib/vue3-quill.css';
     import Swal2 from 'sweetalert2';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import SecondaryButton from '@/Components/SecondaryButton.vue';
-    import { useAppStore } from '@/stores/index';
     import SpinnerLoading from '@/Components/SpinnerLoading.vue';
     import IconClipboardText from '@/Components/vristo/icon/icon-clipboard-text.vue';
     import IconListCheck from '@/Components/vristo/icon/icon-list-check.vue';
@@ -26,6 +25,8 @@
     import IconPencilPaper from '@/Components/vristo/icon/icon-pencil-paper.vue';
     import IconRestore from '@/Components/vristo/icon/icon-restore.vue';
     import IconX from '@/Components/vristo/icon/icon-x.vue';
+    import InputError from '@/Components/InputError.vue';
+
     const props = defineProps({
         course: {
             type: Object,
@@ -55,16 +56,18 @@
     const viewTaskModal = ref(false);
 
     const contentForm = useForm({
+        theme_key: null,
         theme_name: null,
         theme_id: null,
         id: null,
         position: null,
         description: null,
         content: null,
-        is_file: null
+        is_file: 1
     });
 
     const themeForm = useForm({
+        module_index: null,
         module_name: null,
         module_id: null,
         id: null,
@@ -92,9 +95,10 @@
         moduleForm.course_id = props.course.id;
     });
 
-    const themesChanged = (module = null) => {
+    const themesChanged = (module = null, index = null) => {
         themeForm.module_id = module.id;
         themeForm.module_name = module.description;
+        themeForm.module_index = index;
 
         if(module.themes){
             dataThemes.value = module.themes;
@@ -153,6 +157,9 @@
             }
         }).then((result) => {
             dataContents.value.push(result);
+
+            dataThemes.value[contentForm.theme_key].contents = dataContents.value;
+
             contentForm.reset(
                 'id',
                 'position',
@@ -241,7 +248,7 @@
         displayThemeModal.value = true;
     }
 
-    const viewContents = (item = null) => {
+    const viewContents = (item = null, key = null) => {
         if(item.contents){
             dataContents.value = item.contents;
         }else{
@@ -250,12 +257,14 @@
         
         contentForm.theme_name = item.description;
         contentForm.theme_id = item.id;
+        contentForm.theme_key = key;
         setTimeout(() => {
             viewTaskModal.value = true;
         });
     };
 
     const saveTheme = () => {
+        
         btnThemeLoading.value = true;
         
         let urrl = route('aca_courses_module_themes_store');
@@ -265,14 +274,13 @@
             urrl = route('aca_courses_module_themes_update',themeForm.id);
             metthod = 'PUT';
         }
-
+        
         axios({
             method: metthod,
             url: urrl,
             data: themeForm
         }).then((response) => {
             let newContent = response.data.theme;
-
             return newContent;
         }).then((result) => {
             if(themeForm.id){
@@ -287,12 +295,20 @@
             );
             setTimeout(() => {
                 btnThemeLoading.value = false;
+                displayThemeModal.value = false;
             });
         }).catch(function (error) {
-            console.log(error)
+            if (error.response.status === 422) {
+                // Obtén los errores del objeto de respuesta JSON
+                const errors = error.response.data.errors;
+
+                for (let field in errors) {
+                    themeForm.setError(field, errors[field][0]);
+                }
+            }
+            themeForm.progress = false;
             btnThemeLoading.value = false;
         });
-        displayThemeModal.value = false;
     }
 
     const replaceItemById = (id, newItem = null) => {
@@ -344,6 +360,7 @@
 
     const closeModalModule = () => {
         displayModuleModal.value = false;
+        moduleForm.clearErrors();
     }
 
     const openModalModule = (data = null) => {
@@ -390,10 +407,18 @@
                 btnModuleLoading.value = false;
             });
         }).catch(function (error) {
-            console.log(error)
+            if (error.response.status === 422) {
+                // Obtén los errores del objeto de respuesta JSON
+                const errors = error.response.data.errors;
+
+                for (let field in errors) {
+                    moduleForm.setError(field, errors[field][0]);
+                }
+            }
             btnModuleLoading.value = false;
+            //displayModuleModal.value = false;
         });
-        displayModuleModal.value = false;
+        
     }
 
     const replaceModuleById = (id, newItem = null) => {
@@ -499,7 +524,7 @@
                                         class="w-full flex justify-between items-center p-1 hover:bg-white-dark/10 rounded-md dark:hover:bg-[#181F32] font-medium ltr:hover:pl-3 rtl:hover:pr-3 duration-300"
                                         :class="selectedTab === module.id ? 'ltr:pl-3 rtl:pr-3 bg-gray-100 dark:bg-[#181F32] text-primary' : 'text-success'"
                                     >
-                                        <div  @click="themesChanged(module)" class="flex items-center" style="cursor: pointer;">
+                                        <div  @click="themesChanged(module, index)" class="flex items-center" style="cursor: pointer;">
                                             <icon-square-rotated class="fill-success shrink-0" />
                                             <div class="text-left ltr:ml-3 rtl:mr-3">{{ module.description }}</div>
                                         </div>
@@ -591,7 +616,7 @@
                                                         {{ theme.position }}
                                                     </td>
                                                     <td>
-                                                        <div @click="viewContents(theme)"
+                                                        <div @click="viewContents(theme, key)"
                                                                 class="group-hover:text-primary font-semibold text-sm text-danger"
                                                                 :class="{ 'text-warning': (theme.contents ? theme.contents.length : 0) > 0 }"
                                                             >
@@ -652,7 +677,7 @@
                     </div>
 
                     <TransitionRoot appear :show="displayThemeModal" as="template">
-                        <Dialog as="div" @close="closeModalTheme" class="relative z-[51]">
+                        <Dialog as="div" class="relative z-[51]">
                             <TransitionChild
                                 as="template"
                                 enter="duration-300 ease-out"
@@ -693,14 +718,16 @@
                                                         <div class="">
                                                             <label>Posición</label>
                                                             <input v-model="themeForm.position" id="themposition" type="text" class="form-input" placeholder="Posición" />
+                                                            <InputError :message="themeForm.errors.position" class="mt-2" />
                                                         </div>
                                                         <div class="">
                                                             <label>Descripción</label>
                                                             <textarea v-model="themeForm.description" id="themdescription" type="text" class="form-input" placeholder="Descripción" rows="4" ></textarea>
+                                                            <InputError :message="themeForm.errors.description" class="mt-2" />
                                                         </div>
                                                     </div>
                                                     <div class="ltr:text-right rtl:text-left flex justify-end items-center mt-8 space-x-4">
-                                                        <PrimaryButton @click="saveTheme" :class="{ 'opacity-25': btnThemeLoading }" :disabled="btnThemeLoading">
+                                                        <PrimaryButton :class="{ 'opacity-25': btnThemeLoading }" :disabled="btnThemeLoading">
                                                             <SpinnerLoading :display="btnThemeLoading" /> 
                                                             Cuardar
                                                         </PrimaryButton>
@@ -716,7 +743,7 @@
                     </TransitionRoot>
 
                     <TransitionRoot appear :show="viewTaskModal" as="template">
-                        <Dialog as="div" @close="viewTaskModal = false" class="relative z-[51]">
+                        <Dialog as="div" class="relative z-[51]">
                             <TransitionChild
                                 as="template"
                                 enter="duration-300 ease-out"
@@ -756,29 +783,28 @@
                                                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                                                         <div class="sm:col-span-1">
                                                             <input v-model="contentForm.position" id="conposition" type="text" class="form-input" placeholder="Posición" />
-                                                            <div class="text-danger mt-1" v-if="contentForm.errors.position">{{ contentForm.errors.position }}</div>
+                                                            <div class="text-danger text-sm mt-1" v-if="contentForm.errors.position">{{ contentForm.errors.position }}</div>
                                                         </div>
                                                         <div class="sm:col-span-1">
                                                             <select v-model="contentForm.is_file" id="ctnSelect2" class="form-select text-white-dark" required>
-                                                                <option value="">Seleccionar</option>
                                                                 <option value="1">Link de archivo</option>
                                                                 <option value="0">frame de vídeo</option>
                                                                 <option value="2">Subir Archivo</option>
                                                             </select>
-                                                            <div class="text-danger mt-1" v-if="contentForm.errors.is_file">{{ contentForm.errors.is_file }}</div>
+                                                            <div class="text-danger text-sm mt-1" v-if="contentForm.errors.is_file">{{ contentForm.errors.is_file }}</div>
                                                         </div>
                                                         <div class="sm:col-span-2">
                                                             <input v-model="contentForm.description" id="condescription" type="text" class="form-input" placeholder="Descripción" />
-                                                            <div class="text-danger mt-1" v-if="contentForm.errors.description">{{ contentForm.errors.description }}</div>
+                                                            <div class="text-danger text-sm mt-1" v-if="contentForm.errors.description">{{ contentForm.errors.description }}</div>
                                                         </div>
                                                         <div v-if="contentForm.is_file == 2" class="sm:col-span-4">
                                                             <label for="ctnFile">Archivo</label>
                                                             <input @change="handleFileChangeContent" id="ctnFile" type="file" class="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 rtl:file:ml-5 file:text-white file:hover:bg-primary" required />
-                                                            <div class="text-danger mt-1" v-if="contentForm.errors.content">{{ contentForm.errors.content }}</div>
+                                                            <div class="text-danger text-sm mt-1" v-if="contentForm.errors.content">{{ contentForm.errors.content }}</div>
                                                         </div>
                                                         <div v-else class="sm:col-span-4">
                                                             <textarea v-model="contentForm.content" id="concontent" rows="3" class="form-textarea" placeholder="Contenido" quired></textarea>
-                                                            <div class="text-danger mt-1" v-if="contentForm.errors.content">{{ contentForm.errors.content }}</div>
+                                                            <div class="text-danger text-sm mt-1" v-if="contentForm.errors.content">{{ contentForm.errors.content }}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -820,7 +846,7 @@
                                                     
                                                 </div>
                                                 <div class="flex justify-end items-center mt-8 space-x-2">
-                                                    <PrimaryButton @click="saveContent" :class="{ 'opacity-25': btnContentLoading }" :disabled="btnContentLoading">
+                                                    <PrimaryButton :type="'button'" @click="saveContent" :class="{ 'opacity-25': btnContentLoading }" :disabled="btnContentLoading">
                                                         <SpinnerLoading :display="btnContentLoading" /> 
                                                         Cuardar Contenido
                                                     </PrimaryButton>
@@ -835,7 +861,7 @@
                     </TransitionRoot>
 
                     <TransitionRoot appear :show="displayModuleModal" as="template">
-                        <Dialog as="div" @close="closeModalModule" class="relative z-[51]">
+                        <Dialog as="div" class="relative z-[51]">
                             <TransitionChild
                                 as="template"
                                 enter="duration-300 ease-out"
@@ -876,10 +902,12 @@
                                                         <div class="">
                                                             <label>Posición</label>
                                                             <input v-model="moduleForm.position" id="modposition" type="text" class="form-input" placeholder="Posición" />
+                                                            <InputError :message="moduleForm.errors.position" class="mt-2" />
                                                         </div>
                                                         <div class="">
                                                             <label>Descripción</label>
                                                             <textarea v-model="moduleForm.description" id="moddescription" type="text" class="form-input" placeholder="Descripción" rows="4" ></textarea>
+                                                            <InputError :message="moduleForm.errors.description" class="mt-2" />
                                                         </div>
                                                     </div>
                                                     <div class="ltr:text-right rtl:text-left flex justify-end items-center mt-8 space-x-4">
