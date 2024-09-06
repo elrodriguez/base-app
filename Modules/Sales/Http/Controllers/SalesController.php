@@ -3,7 +3,9 @@
 namespace Modules\Sales\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Sale;
 use App\Models\SaleDocument;
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -35,9 +37,58 @@ class SalesController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function totalBalanceTables(Request $request)
     {
-        //
+        // Validar el parámetro de búsqueda
+        $request->validate([
+            'period' => 'required|in:day,week,month',
+        ]);
+
+        $period = $request->input('period');
+        $now = Carbon::now();
+
+        // Inicializar la consulta base
+        $query = Sale::selectRaw('SUM(total) as total_sales');
+
+        // Determinar el agrupamiento según el período
+        switch ($period) {
+            case 'day':
+                $query->whereDate('created_at', $now->format('Y-m-d'));
+                $previousDay = $now->subDay()->format('Y-m-d');
+                $previousTotal = Sale::whereDate('created_at', $previousDay)->sum('total');
+                break;
+
+            case 'week':
+                $startOfWeek = $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
+                $endOfWeek = $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+                $query->whereBetween('created_at', [$startOfWeek, $endOfWeek]);
+                $previousWeekStart = $now->subWeek()->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
+                $previousWeekEnd = $previousWeekStart . '+6 days';
+                $previousTotal = Sale::whereBetween('created_at', [$previousWeekStart, $previousWeekEnd])->sum('total');
+                break;
+
+            case 'month':
+                $startOfMonth = $now->startOfMonth()->format('Y-m-d');
+                $endOfMonth = $now->endOfMonth()->format('Y-m-d');
+                $query->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+                $previousMonthStart = $now->subMonth()->startOfMonth()->format('Y-m-d');
+                $previousMonthEnd = $now->subMonth()->endOfMonth()->format('Y-m-d');
+                $previousTotal = Sale::whereBetween('created_at', [$previousMonthStart, $previousMonthEnd])->sum('total');
+                break;
+        }
+
+        // Obtener el total de ventas
+        $totalSales = $query->first()->total_sales ?? 0;
+
+        // Calcular la diferencia con el período anterior
+        $difference = $totalSales - $previousTotal;
+        //dd($totalSales);
+        // Devolver la respuesta en formato JSON
+        return response()->json([
+            'total_sales' => $totalSales,
+            'difference' => $difference,
+            'period' => $period,
+        ]);
     }
 
     public function minimumStock()
