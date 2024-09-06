@@ -402,12 +402,13 @@ class AcaStudentController extends Controller
 
         $module = AcaModule::with(['themes' => function ($query) {
             $query->orderBy('position')
-                ->with('contents'); // Cargar los contenidos de cada theme
+                ->with('contents')
+                ->with('comments.user'); // Cargar los contenidos de cada theme
         }])
             ->where('id', $id)
             ->first();
 
-        $course = AcaCourse::where('id', $module->course_id)
+        $course = AcaCourse::with('teacher.person')->where('id', $module->course_id)
             ->first();
 
         return Inertia::render('Academic::Students/Themes', [

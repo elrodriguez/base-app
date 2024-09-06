@@ -12,7 +12,9 @@ class AcaTheme extends Model
     use HasFactory;
 
     protected $fillable = [
-        'position', 'description', 'module_id'
+        'position',
+        'description',
+        'module_id'
     ];
 
     protected static function newFactory()
@@ -28,5 +30,9 @@ class AcaTheme extends Model
     public function contents(): HasMany
     {
         return $this->hasMany(AcaContent::class, 'theme_id');
+    }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(AcaThemeComment::class, 'theme_id');
     }
 }

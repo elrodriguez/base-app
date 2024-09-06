@@ -8,7 +8,7 @@
         @mouseup="dragEnd"
         @mousemove="drag"
     >
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center" title="Puedes hacer clic sostenido para arrastrar el video" >
             <h2 class="text-lg font-semibold text-gray-100">
             <slot name="title" />
             </h2>
@@ -19,6 +19,8 @@
         <div class="mt-4">
             <slot name="content" />
         </div>
+        
+
     </div>
 </template>
   
@@ -96,9 +98,9 @@ export default {
 
 <style scoped>
     .draggable {
-        position: absolute;
+        position: absolute !important;
         cursor: move;
-        z-index: 10000000 !important;
+        z-index: 999999999 !important;
     }
     .dragging {
         background-color: rgba(14, 23, 38, 0.75); /* Ajusta el color según tus preferencias */
