@@ -78,6 +78,7 @@
         total: 0,
         total_taxed: 0, //operaciones gravadas
         payments: JSON.parse(props.sale.payments),
+        additional_description: null
     });
 
     const series = ref([]);

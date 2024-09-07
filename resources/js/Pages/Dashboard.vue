@@ -9,6 +9,7 @@ import StorageIndicator from 'Modules/Security/Resources/assets/js/Pages/Dashboa
 import MinimumStockNotice from 'Modules/Sales/Resources/assets/js/Components/MinimumStockNotice.vue';
 import StatusProducts from 'Modules/Sales/Resources/assets/js/Components/StatusProducts.vue';
 import TotalBalance from 'Modules/Sales/Resources/assets/js/Components/TotalBalance.vue';
+import SalesSummary from 'Modules/Sales/Resources/assets/js/Components/SalesSummary.vue';
 
 const userData = usePage().props.auth.user;
 
@@ -37,8 +38,9 @@ const props = defineProps({
                 <!-- modulo ventas -->
                 <MinimumStockNotice v-if="role.name == 'admin' || role.name == 'webAdmin' || role.name == 'Administrador'" />
                 <StatusProducts v-if="role.name == 'admin' || role.name == 'webAdmin' || role.name == 'Administrador'" />
-                <div>
-                    <TotalBalance />
+                <div class="space-y-6">
+                    <TotalBalance v-if="role.name == 'admin' || role.name == 'webAdmin' || role.name == 'Administrador'" />
+                    <SalesSummary v-if="role.name == 'admin' || role.name == 'webAdmin' || role.name == 'Administrador'" />
                 </div>
                 <!-- fin modulo academico -->
                 <!-- <div v-if="role.name == 'admin' || role.name == 'webAdmin'" class="col-span-3 sm:col-span-2"> -->

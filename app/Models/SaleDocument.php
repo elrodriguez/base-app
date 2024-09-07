@@ -56,7 +56,8 @@ class SaleDocument extends Model
         'invoice_json_discounts',
         'reason_cancellation',
         'user_id',
-        'additional_description'
+        'additional_description',
+        'overall_total'
     ];
 
     public function items(): HasMany

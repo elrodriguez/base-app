@@ -205,6 +205,7 @@
                                     <td >
                                         <template v-if="sale.have_document <= 1">
                                             <Badge v-if="sale.status == 1" type="yellow">Registrado</Badge>
+                                            <Badge v-else-if="sale.status == 9" type="yellow">Con documento vinculado</Badge>
                                             <Badge v-else type="red">Anulado</Badge>
                                         </template>
                                         <template v-else>

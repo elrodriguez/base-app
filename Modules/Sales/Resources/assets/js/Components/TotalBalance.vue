@@ -34,7 +34,9 @@
 
             <div class="relative text-xl whitespace-nowrap">
                 S/ {{ balanceData.total_sales }}
-                <span class="table text-[#d3d3d3] bg-[#4361ee] rounded p-1 text-xs mt-1 ltr:ml-auto rtl:mr-auto">+ {{ balanceData.difference }}</span>
+                <span  v-if="balanceData && balanceData.difference !== undefined" class="table text-[#d3d3d3] bg-[#4361ee] rounded p-1 text-xs mt-1 ltr:ml-auto rtl:mr-auto"> 
+                    {{ (balanceData.difference < 0 ? '' : '+') + (balanceData.difference).toFixed(2) }}
+                </span>
             </div>
         </div>
         <div class="flex items-center justify-between z-10">

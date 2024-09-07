@@ -160,6 +160,7 @@ class SaleController extends Controller
                     'sale_id'   => $sale->id,
                     'serie_id'  => $serie_id,
                     'number'    => str_pad($serie->number, 9, '0', STR_PAD_LEFT),
+                    'overall_total'     => $request->get('total')
                 ]);
 
                 $serie->increment('number', 1);

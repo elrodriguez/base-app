@@ -182,7 +182,7 @@ class SaleDocumentController extends Controller
                 return $q->where('sales.user_id', Auth::id());
             })
             ->with('documents.items')
-            ->orderBy('sales.created_at', 'DESC');
+            ->orderBy('sales.id', 'DESC');
 
         return DataTables::of($sales)->toJson();
     }
@@ -335,7 +335,8 @@ class SaleDocumentController extends Controller
                     'invoice_legend_description'    => $numberletters->convertToLetter($request->get('total')),
                     'invoice_status'                => 'registrado',
                     'user_id'                       => Auth::id(),
-                    'additional_description'        => $request->get('additional_description')
+                    'additional_description'        => $request->get('additional_description'),
+                    'overall_total'                 => $request->get('total')
                 ]);
 
                 ///obtenemos los productos o servicios para insertar en los 
@@ -1017,6 +1018,12 @@ class SaleDocumentController extends Controller
                 ]);
                 ///se crea la venta
                 $sale = Sale::find($sale_id);
+                $sale->update([
+                    'status' => 9
+                ]);
+                SaleDocument::where('sale_id', $sale_id)->update([
+                    'status' => 9
+                ]);
 
                 ///obtenemos la serie elejida para hacer la venta
                 ///para traer tambien su numero correlativo
@@ -1051,7 +1058,9 @@ class SaleDocumentController extends Controller
                     'invoice_send_date'             => Carbon::now()->format('Y-m-d'),
                     'invoice_legend_code'           => '1000',
                     'invoice_legend_description'    => $numberletters->convertToLetter($request->get('total')),
-                    'invoice_status'                => 'registrado'
+                    'invoice_status'                => 'registrado',
+                    'additional_description'        => $request->get('additional_description'),
+                    'overall_total'                 => $request->get('total')
                 ]);
 
                 ///obtenemos los productos o servicios para insertar en los 
@@ -1192,6 +1201,8 @@ class SaleDocumentController extends Controller
                     'invoice_sunat_points'      => null,
                     'invoice_status'            => 'Pendiente',
                 ]);
+
+
 
                 $serie->increment('number', 1);
 

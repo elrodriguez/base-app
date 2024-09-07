@@ -32,11 +32,71 @@ class SalesController extends Controller
         return view('sales::create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
+    public function getSummaryTotals(Request $request)
+    {
+        // Validar el parámetro de búsqueda
+        $request->validate([
+            'period' => 'required|in:day,week,month',
+        ]);
+
+        $period = $request->input('period');
+        $now = Carbon::now();
+
+        // Inicializar la consulta
+        $query = SaleDocument::select('invoice_type_doc', DB::raw('SUM(overall_total) as total'))
+            ->whereNotNull('invoice_type_doc')
+            ->where('status', 1)
+            ->groupBy('invoice_type_doc');
+
+        $queryNote = SaleDocument::select('invoice_type_doc', DB::raw('SUM(overall_total) as total'))
+            ->whereNull('invoice_type_doc')
+            ->where('status', 1)
+            ->groupBy('invoice_type_doc');
+
+
+        // Filtrar según el período
+        switch ($period) {
+            case 'day':
+                $query->whereDate('created_at', $now->format('Y-m-d'));
+                $queryNote->whereDate('created_at', $now->format('Y-m-d'));
+                break;
+
+            case 'week':
+                $startOfWeek = $now->startOfWeek()->format('Y-m-d');
+                $endOfWeek = $now->endOfWeek()->format('Y-m-d');
+                $query->whereBetween('created_at', [$startOfWeek, $endOfWeek]);
+                $queryNote->whereBetween('created_at', [$startOfWeek, $endOfWeek]);
+                break;
+
+            case 'month':
+                $startOfMonth = $now->startOfMonth()->format('Y-m-d');
+                $endOfMonth = $now->endOfMonth()->format('Y-m-d');
+                $query->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+                $queryNote->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+                break;
+        }
+
+        // Obtener los totales
+        $documents = $query->get();
+        $salesNote = $queryNote->get();
+
+        $total = 0;
+
+        foreach ($documents as $doc) {
+            $total = $total + $doc->total;
+        }
+        foreach ($salesNote as $not) {
+            $total = $total + $not->total;
+        }
+
+        // Devolver la respuesta en formato JSON
+        return response()->json([
+            'documents' => $documents,
+            'notes_sale' => $salesNote,
+            'total' => $total
+        ]);
+    }
+
     public function totalBalanceTables(Request $request)
     {
         // Validar el parámetro de búsqueda
@@ -48,7 +108,7 @@ class SalesController extends Controller
         $now = Carbon::now();
 
         // Inicializar la consulta base
-        $query = Sale::selectRaw('SUM(total) as total_sales');
+        $query = SaleDocument::selectRaw('SUM(overall_total) as total_sales')->where('status', 1);
 
         // Determinar el agrupamiento según el período
         switch ($period) {
