@@ -30,24 +30,72 @@
     }
 </script>
 <template>
-    <div class="panel">
+    <div v-if="displayData"class="panel">
         <div class="flex items-center dark:text-white-light mb-5">
             <h5 class="font-semibold text-lg">Resumen</h5>
             <div class="dropdown ltr:ml-auto rtl:mr-auto">
                 <Popper :placement="'bottom-start'" offsetDistance="0" class="align-middle">
-                    <a href="javascript:;">
+                    <button type="button" class="shadow-[0_0_2px_0_#012951] rounded p-1 text-primary hover:text-white-light hover:bg-[#1937cc] place-content-center ltr:mr-2 rtl:ml-2">
                         <icon-plus />
-                    </a>
+                    </button>
                     <template #content="{ close }">
                         <ul @click="close()">
                             <li>
-                                <a href="javascript:;">Día</a>
+                                <a @click="getSalesSummary('day')" href="javascript:;">Día</a>
                             </li>
                             <li>
-                                <a href="javascript:;">Semana</a>
+                                <a @click="getSalesSummary('week')" href="javascript:;">Semana</a>
                             </li>
                             <li>
-                                <a href="javascript:;">Mes</a>
+                                <a @click="getSalesSummary('month')" href="javascript:;">Mes</a>
+                            </li>
+                        </ul>
+                    </template>
+                </Popper>
+            </div>
+        </div>
+        <div class="space-y-9">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                </div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+            </div>
+            <div class="flex items-center justify-between pt-4">
+                <div>
+                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                </div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+            </div>
+            <div class="flex items-center justify-between pt-4">
+                <div>
+                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                </div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+            </div>
+        </div>
+    </div>
+    <div v-else class="panel">
+        <div class="flex items-center dark:text-white-light mb-5">
+            <h5 class="font-semibold text-lg">Resumen</h5>
+            <div class="dropdown ltr:ml-auto rtl:mr-auto">
+                <Popper :placement="'bottom-start'" offsetDistance="0" class="align-middle">
+                    <button type="button" class="shadow-[0_0_2px_0_#012951] rounded p-1 text-primary hover:text-white-light hover:bg-[#1937cc] place-content-center ltr:mr-2 rtl:ml-2">
+                        <icon-plus />
+                    </button>
+                    <template #content="{ close }">
+                        <ul @click="close()">
+                            <li>
+                                <a @click="getSalesSummary('day')" href="javascript:;">Día</a>
+                            </li>
+                            <li>
+                                <a @click="getSalesSummary('week')" href="javascript:;">Semana</a>
+                            </li>
+                            <li>
+                                <a @click="getSalesSummary('month')" href="javascript:;">Mes</a>
                             </li>
                         </ul>
                     </template>
