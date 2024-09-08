@@ -172,6 +172,7 @@ class SalePhysicalDocumentController extends Controller
                 $sale = SalePhysicalDocument::create([
                     'sale_id' => $tk->id,
                     'user_id' => Auth::id(),
+                    'document_type' => $request->get('sale_documenttype_id'),
                     'serie' => $request->get('serie'),
                     'corelative' => $request->get('corelative'),
                     'document_date' => $request->get('date_issue'),
@@ -361,45 +362,55 @@ class SalePhysicalDocumentController extends Controller
             $sal_pros = SaleProduct::where('sale_id', $sal->id)->get();
 
             foreach ($sal_pros as $sal_pro) {
-                $k = Kardex::create([
-                    'date_of_issue' => Carbon::now()->format('Y-m-d'),
-                    'motion' => 'sale',
-                    'product_id' => $sal_pro->product_id,
-                    'local_id' => $sal->local_id,
-                    'quantity' => $sal_pro->quantity,
-                    'document_id' => $dos->id,
-                    'document_entity' => SalePhysicalDocument::class,
-                    'description' => 'Venta Anulada'
-                ]);
                 $product = Product::find($sal_pro->product_id);
-                if ($product->presentations) {
-                    KardexSize::create([
-                        'kardex_id' => $k->id,
-                        'product_id' => $product->id,
+
+                if ($product->is_product) {
+
+
+                    $k = Kardex::create([
+                        'date_of_issue' => Carbon::now()->format('Y-m-d'),
+                        'motion' => 'sale',
+                        'product_id' => $sal_pro->product_id,
                         'local_id' => $sal->local_id,
-                        'size'      => json_decode($sal_pro->product)['size'],
-                        'quantity'  => $sal_pro->quantity
+                        'quantity' => $sal_pro->quantity,
+                        'document_id' => $dos->id,
+                        'document_entity' => SalePhysicalDocument::class,
+                        'description' => 'Venta Anulada'
                     ]);
-                    $tallas = $product->sizes;
-                    $n_tallas = [];
-                    foreach (json_decode($tallas, true) as $k => $talla) {
-                        if ($talla['size'] == json_decode($sal_pro->product)['size']) {
-                            $n_tallas[$k] = array(
-                                'size' => $talla['size'],
-                                'quantity' => ($talla['quantity'] + $sal_pro->quantity)
-                            );
-                        } else {
-                            $n_tallas[$k] = array(
-                                'size' => $talla['size'],
-                                'quantity' => $talla['quantity']
-                            );
+
+
+
+                    if ($product->presentations) {
+                        //dd($sal_pro->product);
+                        KardexSize::create([
+                            'kardex_id' => $k->id,
+                            'product_id' => $product->id,
+                            'local_id' => $sal->local_id,
+                            //'size'      => json_decode($sal_pro->product)['size'],
+                            'size'      => json_decode($sal_pro->saleProduct)->size,
+                            'quantity'  => $sal_pro->quantity
+                        ]);
+                        $tallas = $product->sizes;
+                        $n_tallas = [];
+                        foreach (json_decode($tallas, true) as $k => $talla) {
+                            if ($talla['size'] == json_decode($sal_pro->saleProduct)->size) {
+                                $n_tallas[$k] = array(
+                                    'size' => $talla['size'],
+                                    'quantity' => ($talla['quantity'] + $sal_pro->quantity)
+                                );
+                            } else {
+                                $n_tallas[$k] = array(
+                                    'size' => $talla['size'],
+                                    'quantity' => $talla['quantity']
+                                );
+                            }
                         }
+                        $product->update([
+                            'sizes' => json_encode($n_tallas)
+                        ]);
                     }
-                    $product->update([
-                        'sizes' => json_encode($n_tallas)
-                    ]);
+                    Product::find($sal_pro->product_id)->decrement('stock', $sal_pro->quantity);
                 }
-                Product::find($sal_pro->product_id)->decrement('stock', $sal_pro->quantity);
             }
 
             DB::commit();

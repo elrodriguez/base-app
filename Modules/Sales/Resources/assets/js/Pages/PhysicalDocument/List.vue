@@ -36,6 +36,8 @@
             confirmButtonText: '¡Sí, Anular!',
             cancelButtonText: 'Cancelar',
             showLoaderOnConfirm: true,
+            padding: '2em',
+            customClass: 'sweet-alerts',
             preConfirm: () => {
                 return axios.delete(route('sale_physical_document_destroy', id)).then((res) => {
                     if (!res.data.success) {
@@ -51,8 +53,10 @@
                     title: 'Enhorabuena',
                     text: 'Se Eliminó correctamente',
                     icon: 'success',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
-                router.visit(route('sale_physical_document_list'), { replace: true, method: 'get' });
+                router.visit(route('sale_physical_document_list'), { replace: false, method: 'get' });
             }
         });
     }

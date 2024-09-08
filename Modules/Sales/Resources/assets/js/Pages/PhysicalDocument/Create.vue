@@ -141,6 +141,8 @@
                     title: 'Información Importante',
                     text: "El cliente no cuenta con ruc para emitir una factura",
                     icon: 'info',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
             }
         }
@@ -233,6 +235,8 @@
                     title: 'Información Importante',
                     text: "El cliente debe tener ruc para emitir una factura",
                     icon: 'error',
+                    padding: '2em',
+                    customClass: 'sweet-alerts',
                 });
                 formDocument.processing = false
                 return;
@@ -391,6 +395,8 @@
             confirmButtonText: 'Enviar',
             showLoaderOnConfirm: true,
             clickOutside: false,
+            padding: '2em',
+            customClass: 'sweet-alerts',
             preConfirm: () => {
                 return axios.get(route('saledocuments_send', [document.id,document.invoice_type_doc])).then((res) => {
                     if (!res.data.success) {

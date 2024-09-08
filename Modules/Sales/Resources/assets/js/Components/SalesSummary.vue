@@ -76,6 +76,13 @@
                 </div>
                 <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
             </div>
+            <div class="flex items-center justify-between pt-4">
+                <div>
+                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                </div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+            </div>
         </div>
     </div>
     <div v-else class="panel">
@@ -151,6 +158,24 @@
                         </div>
                         <div class="w-full rounded-full h-2 bg-dark-light dark:bg-[#1b2e4b] shadow">
                             <div class="bg-gradient-to-r from-[#f09819] to-[#ff5858] w-full h-full rounded-full" :style="`width: ${calculatePercentage(note.total,summaryData.total)}%`"></div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template v-if="summaryData.physical > 0">
+                <div class="flex items-center">
+                    <div class="w-9 h-9 ltr:mr-3 rtl:ml-3">
+                        <div class="bg-warning-light dark:bg-warning text-warning dark:text-warning-light rounded-full w-9 h-9 grid place-content-center">
+                            <span class="shrink-0 grid place-content-center text-base w-9 h-9 rounded-md bg-info-light dark:bg-info text-info dark:text-info-light">DF</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex font-semibold text-white-dark mb-2">
+                            <h6>DOCUMENTOS FISICOS</h6>
+                            <p class="ltr:ml-auto rtl:mr-auto">S/ {{ (summaryData.physical).toFixed(2) }}</p>
+                        </div>
+                        <div class="w-full rounded-full h-2 bg-dark-light dark:bg-[#1b2e4b] shadow">
+                            <div class="bg-gradient-to-r from-[#f09819] to-[#ff5858] w-full h-full rounded-full" :style="`width: ${calculatePercentage(summaryData.physical,summaryData.total)}%`"></div>
                         </div>
                     </div>
                 </div>
