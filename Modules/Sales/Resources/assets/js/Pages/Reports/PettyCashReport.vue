@@ -22,7 +22,11 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
-    start:{
+    documents: {
+        type: Object,
+        default: () => ({}),
+    },
+    start: {
         type: String,
         default: null
     },
@@ -286,6 +290,26 @@ onMounted(()=>{
                                         </td>
                                     </tr>
                                 </template>
+                                <tr v-for="(document, index) in documents" :key="document.id">
+                                    <th class="font-medium whitespace-nowrap">
+                                        {{ document.sale_date }}
+                                    </th>
+                                    <td>
+                                        {{ getLocal(document.local_id) }}
+                                    </td>
+                                    <td>
+                                        {{ document.interne + " - " + document.product_description }}
+                                    </td>
+                                    <td class="text-right">
+                                        {{ document.price }}
+                                    </td>
+                                    <td class="text-right">
+                                        {{ document.quantity }}
+                                    </td>
+                                    <td class="text-right">
+                                        {{ (document.quantity * document.price).toFixed(2) }}
+                                    </td>
+                                </tr>
                                 <tr class="">
                                     <td colspan="5" class="text-right font-medium whitespace-nowrap" style="text-align: right;">
                                         <strong>Totales En Ventas</strong>

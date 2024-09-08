@@ -131,7 +131,9 @@ class AcaSalesController extends Controller
                     'invoice_send_date'             => Carbon::now()->format('Y-m-d'),
                     'invoice_legend_code'           => '1000',
                     'invoice_legend_description'    => $numberletters->convertToLetter($request->get('total')),
-                    'invoice_status'                => 'registrado'
+                    'invoice_status'                => 'registrado',
+                    'additional_description'        => $request->get('additional_description'),
+                    'overall_total'                 => $request->get('total')
                 ]);
 
                 ///obtenemos los productos o servicios para insertar en los 

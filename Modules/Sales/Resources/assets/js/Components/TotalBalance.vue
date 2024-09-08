@@ -74,8 +74,8 @@
         <div class="flex items-start justify-between text-white-light mb-16 z-[7]">
             <h5 class="font-semibold text-lg">Total Balance</h5>
 
-            <div class="relative text-xl whitespace-nowrap">
-                S/ {{ balanceData.total_sales }}
+            <div v-if="balanceData && balanceData.total_sales !== undefined" class="relative text-xl whitespace-nowrap">
+                S/ {{ (balanceData.total_sales).toFixed(2) }}
                 <span  v-if="balanceData && balanceData.difference !== undefined" class="table text-[#d3d3d3] bg-[#4361ee] rounded p-1 text-xs mt-1 ltr:ml-auto rtl:mr-auto"> 
                     {{ (balanceData.difference < 0 ? '' : '+') + (balanceData.difference).toFixed(2) }}
                 </span>

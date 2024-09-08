@@ -62,7 +62,8 @@
         total_igv: 0,
         percentage_igv: 0,
         total: 0,
-        total_taxed: 0
+        total_taxed: 0,
+        additional_description: null
     });
 
     const getSeriesByDocumentType = () => {

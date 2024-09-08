@@ -1019,7 +1019,7 @@ class SaleDocumentController extends Controller
                 ///se crea la venta
                 $sale = Sale::find($sale_id);
                 $sale->update([
-                    'status' => 9
+                    'status' => 9,
                 ]);
                 SaleDocument::where('sale_id', $sale_id)->update([
                     'status' => 9
