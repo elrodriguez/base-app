@@ -170,7 +170,7 @@ class Boleta
         return $invoice;
     }
 
-    public function getBoletatDomPdf($id)
+    public function getBoletatDomPdf($id, $format = 'A4')
     {
         try {
             $document = SaleDocument::find($id);
@@ -184,7 +184,7 @@ class Boleta
 
 
             $seller = User::find($document->user_id);
-            $pdf = $this->util->generatePdf($invoice, $seller, $qr_path);
+            $pdf = $this->util->generatePdf($invoice, $seller, $qr_path, $format);
             $document->invoice_pdf = $pdf;
             $document->save();
 
@@ -196,6 +196,7 @@ class Boleta
             var_dump($e);
         }
     }
+
 
     public function getBoletatPdf($id)
     {

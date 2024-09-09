@@ -31,7 +31,8 @@
         agent: null,
         email: null,
         image: null,
-        image_view: null
+        image_view: null,
+        sunat_code: null
     });
 
     const createEstablishment = () => {
@@ -94,24 +95,31 @@
         </template>
 
         <template #form>
-            <div class="col-span-6 sm:col-span-3">
+            <div class="col-span-6 sm:col-span-2">
+                <InputLabel for="sunat_code" value="Código" />
+                <TextInput
+                    id="sunat_code"
+                    v-model="form.sunat_code"
+                    type="text"
+                    autofocus
+                />
+                <InputError :message="form.errors.sunat_code" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-4">
                 <InputLabel for="description" value="Descripción" />
                 <TextInput
                     id="description"
                     v-model="form.description"
                     type="text"
-                    class="block w-full mt-1"
-                    autofocus
                 />
                 <InputError :message="form.errors.description" class="mt-2" />
             </div>
-            <div class="col-span-6 sm:col-span-3">
+            <div class="col-span-6">
                 <InputLabel for="address" value="Dirección" />
                 <TextInput
                     id="address"
                     v-model="form.address"
                     type="text"
-                    class="block w-full mt-1"
                 />
                 <InputError :message="form.errors.address" class="mt-2" />
             </div>
@@ -121,7 +129,6 @@
                     id="phone"
                     v-model="form.phone"
                     type="text"
-                    class="block w-full mt-1"
                 />
                 <InputError :message="form.errors.phone" class="mt-2" />
             </div>
@@ -131,7 +138,6 @@
                     id="agent"
                     v-model="form.agent"
                     type="text"
-                    class="block w-full mt-1"
                 />
                 <InputError :message="form.errors.agent" class="mt-2" />
             </div>
@@ -141,13 +147,12 @@
                     id="email"
                     v-model="form.email"
                     type="text"
-                    class="block w-full mt-1"
                 />
                 <InputError :message="form.errors.email" class="mt-2" />
             </div>
             <div v-can="'sale_tienda_agregar_vendedor'" class="col-span-6 sm:col-span-3">
                 <InputLabel for="user" value="Vendedor" />
-                <select v-model="form.user_id" id="stablishment" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select v-model="form.user_id" id="stablishment" class="form-select">
                     <option value="">Sin Vendedor</option>
                     <template v-for="(user, index) in props.users" :key="index">
                         <option :value="user.id">{{ user.name }}</option>

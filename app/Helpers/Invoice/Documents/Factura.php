@@ -102,6 +102,7 @@ class Factura
             ->setUrbanizacion('-')
             ->setDireccion($establishment->address)
             ->setCodLocal($establishment->sunat_code); // Codigo de establecimiento asignado por SUNAT, 0000 por defecto.
+
         $company = (new Company())
             ->setRuc($this->mycompany->ruc)
             ->setRazonSocial($this->mycompany->business_name)
@@ -176,7 +177,7 @@ class Factura
         return $invoice;
     }
 
-    public function getFacturaDomPdf($id)
+    public function getFacturaDomPdf($id, $format = 'A4')
     {
         try {
             $document = SaleDocument::find($id);
@@ -189,7 +190,7 @@ class Factura
 
 
             $seller = User::find($document->user_id);
-            $pdf = $this->util->generatePdf($invoice, $seller, $qr_path);
+            $pdf = $this->util->generatePdf($invoice, $seller, $qr_path, $format);
             $document->invoice_pdf = $pdf;
             $document->save();
 

@@ -41,10 +41,12 @@ class LocalSaleController extends Controller
             'local_sales.id',
             'local_sales.description',
             'local_sales.address',
-            'local_sales.phone'
+            'local_sales.phone',
+            'local_sales.sunat_code'
         )
             ->selectRaw('(SELECT GROUP_CONCAT(name) FROM users WHERE users.local_id=local_sales.id) AS user_name')
-            ->paginate(10)->onEachSide(2);
+            ->paginate(10)
+            ->onEachSide(2);
 
         return Inertia::render('Establishments/List', [
             'locals' => $locals,
@@ -87,7 +89,8 @@ class LocalSaleController extends Controller
         $this->validate($request, [
             'description'   => 'required',
             'address'       => 'required',
-            'ubigeo'        => 'required'
+            'ubigeo'        => 'required',
+            'sunat_code'    => 'required|string'
         ]);
         if ($request->get('user_id')) {
             $this->validate($request, [
@@ -118,7 +121,8 @@ class LocalSaleController extends Controller
             'map'           => $request->get('map'),
             'agent'         => $request->get('agent'),
             'email'         => $request->get('email'),
-            'image'         => $path
+            'image'         => $path,
+            'sunat_code'    => $request->get('sunat_code'),
         ]);
 
         if ($request->get('user_id')) {
@@ -191,6 +195,7 @@ class LocalSaleController extends Controller
         $localsale->map = $request->get('map');
         $localsale->agent = $request->get('agent');
         $localsale->email = $request->get('email');
+        $localsale->sunat_code = $request->get('sunat_code');
 
         $destination = 'uploads/stablishments';
         $file = $request->file('image');

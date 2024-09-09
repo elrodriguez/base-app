@@ -40,7 +40,8 @@
         agent: props.local.agent,
         email: props.local.email,
         image: null,
-        image_view: assetUrl +'storage/'+ props.local.image
+        image_view: props.local.image ? assetUrl +'storage/'+ props.local.image : null,
+        sunat_code: props.local.sunat_code,
     });
 
     const updateEstablishment = () => {
@@ -110,7 +111,17 @@
         </template>
 
         <template #form>
-            <div class="col-span-6 sm:col-span-3">
+            <div class="col-span-6 sm:col-span-2">
+                <InputLabel for="sunat_code" value="Código" />
+                <TextInput
+                    id="sunat_code"
+                    v-model="form.sunat_code"
+                    type="text"
+                    autofocus
+                />
+                <InputError :message="form.errors.sunat_code" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-4">
                 <InputLabel for="description" value="Descripción" />
                 <TextInput
                     id="description"
@@ -121,7 +132,7 @@
                 />
                 <InputError :message="form.errors.description" class="mt-2" />
             </div>
-            <div class="col-span-6 sm:col-span-3">
+            <div class="col-span-6">
                 <InputLabel for="address" value="Dirección" />
                 <TextInput
                     id="address"
@@ -192,7 +203,7 @@
             </div>
             <div class="col-span-6 ">
                 <InputLabel for="image" value="Imagen *" />
-                <div class="flex justify-center space-x-2">
+                <div v-if="form.image_view" class="flex justify-center space-x-2">
                     <figure class="max-w-lg">
                         <img style="width: 200px;" id="preview_img" class="h-auto rounded-lg" :src="form.image_view">
                         <figcaption class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400">Imagen Actual</figcaption>

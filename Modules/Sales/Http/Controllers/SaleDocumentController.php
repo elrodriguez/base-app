@@ -843,7 +843,7 @@ class SaleDocumentController extends Controller
         }
     }
 
-    public function printDocument($id, $type, $file)
+    public function printDocument($id, $type, $file, $format = 'A4')
     {
 
         $res = array();
@@ -852,7 +852,7 @@ class SaleDocumentController extends Controller
             case '01':
                 $factura = new Factura();
                 if ($file == 'PDF') {
-                    $res = $factura->getFacturaDomPdf($id);
+                    $res = $factura->getFacturaDomPdf($id, $format);
                     $content_type = 'application/pdf';
                 } else if ($file == 'XML') {
                     $content_type =  'application/xml';
@@ -867,7 +867,7 @@ class SaleDocumentController extends Controller
                 $boleta = new Boleta();
                 if ($file == 'PDF') {
                     $content_type = 'application/pdf';
-                    $res = $boleta->getBoletatDomPdf($id);
+                    $res = $boleta->getBoletatDomPdf($id, $format);
                 } else if ($file == 'XML') {
                     $content_type =  'application/xml';
                     $res = $boleta->getBoletaXML($id);

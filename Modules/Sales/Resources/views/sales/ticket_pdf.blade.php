@@ -61,11 +61,20 @@
         }
     </style>
 </head>
+@php
+    $logo = '';
+    if ($company->logo_document == '/img/logo176x32.png') {
+        $logo = public_path($company->logo_document);
+    } else {
+        $logo = public_path('storage' . DIRECTORY_SEPARATOR . $company->logo_document);
+    }
+
+@endphp
 
 <body style="padding: 0px">
     <div>
         <div style="margin-top:16px;width:100%;text-align: center">
-            <img src="{{ asset('storage/' . $company->logo) }}" alt="Logotipo" class="centrado">
+            <img src="{{ $logo }}" alt="Logotipo" class="centrado">
         </div>
         <p class="centrado">
             {{-- {{ $company->name }} --}}
@@ -110,11 +119,11 @@
                 </td>
             </tr>
         </table>
-        <div style="margin-top:16px;margin-bottom:16px;width:100%;">
+        {{-- <div style="margin-top:16px;margin-bottom:16px;width:100%;">
             <p class="centrado">
                 ¡Vuelve a amar cada paso con {{ $company->name }}!
             </p>
-        </div>
+        </div> --}}
         <p class="centrado">¡GRACIAS POR SU COMPRA!</p>
     </div>
 </body>

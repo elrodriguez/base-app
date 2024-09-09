@@ -206,6 +206,7 @@ class ReportController extends Controller
             ->where('sales.petty_cash_id', '=', $petty_cash_id)
             ->where('sales.status', '=', 1)
             ->where('physical', 3)
+            ->where('sale_physical_documents.status', '<>', 'A')
             ->orderBy('id', 'desc')
             ->get();
 

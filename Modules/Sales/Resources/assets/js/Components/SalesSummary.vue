@@ -30,7 +30,7 @@
     }
 </script>
 <template>
-    <div v-if="displayData"class="panel">
+    <div v-if="displayData" class="panel">
         <div class="flex items-center dark:text-white-light mb-5">
             <h5 class="font-semibold text-lg">Resumen</h5>
             <div class="dropdown ltr:ml-auto rtl:mr-auto">

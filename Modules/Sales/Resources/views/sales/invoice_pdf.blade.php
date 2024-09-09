@@ -236,7 +236,13 @@
 </head>
 @php
     $company = \App\Models\Company::first();
-    $logo = public_path('storage' . DIRECTORY_SEPARATOR . $company->logo_document);
+    $logo = '';
+    if ($company->logo_document == '/img/logo176x32.png') {
+        $logo = public_path($company->logo_document);
+    } else {
+        $logo = public_path('storage' . DIRECTORY_SEPARATOR . $company->logo_document);
+    }
+
 @endphp
 
 <body class="white-bg">

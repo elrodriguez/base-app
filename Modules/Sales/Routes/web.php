@@ -110,7 +110,7 @@ Route::middleware(['auth', 'verified'])->prefix('sales')->group(function () {
     Route::get('saledocuments/send/{id}/{type}', [SaleDocumentController::class, 'sendSunatDocument'])->name('saledocuments_send');
     Route::post('saledocuments/update/details', [SaleDocumentController::class, 'updateDetailsAndHeader'])->name('saledocuments_update_details');
     Route::get('saledocuments/create/fromticket/{id}', [SaleDocumentController::class, 'createFromFicket'])->name('saledocuments_create_from_ticket');
-    Route::get('saledocuments/download/{id}/{type}/{file}', [SaleDocumentController::class, 'printDocument'])->name('saledocuments_download');
+    Route::get('saledocuments/download/{id}/{type}/{file}/{format?}', [SaleDocumentController::class, 'printDocument'])->name('saledocuments_download');
     Route::post('saledocuments/update/head', [SaleDocumentController::class, 'updateHead'])->name('saledocuments_update_head');
 
     Route::post('saledocuments/cancellation/send', [SaleDocumentController::class, 'cancelDocument'])->name('saledocuments_cancel_document');

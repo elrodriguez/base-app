@@ -203,8 +203,8 @@
 
     }
 
-    const downloadDocument = (id,type,file) => {
-        let url = route('saledocuments_download',[id, type,file])
+    const downloadDocument = (id,type,file,format = 'A4') => {
+        let url = route('saledocuments_download',[id, type,file,format])
         window.open(url, "_blank");      
     }
 
@@ -436,7 +436,10 @@ const showMessage = (msg = '', type = 'success') => {
                                             <a @click="cancelDocument(index, props.rowData)" href="javascript:;">Anular</a>
                                         </li>
                                         <li>
-                                            <a @click="downloadDocument(props.rowData.document_id,props.rowData.invoice_type_doc,'PDF')" href="javascript:;">Imprimir PDF</a>
+                                            <a @click="downloadDocument(props.rowData.document_id,props.rowData.invoice_type_doc,'PDF')" href="javascript:;">PDF A4</a>
+                                        </li>
+                                        <li>
+                                            <a @click="downloadDocument(props.rowData.document_id,props.rowData.invoice_type_doc,'PDF','t80')" href="javascript:;">PDF 80x250</a>
                                         </li>
                                         <li v-if="props.rowData.invoice_status === 'Aceptada'">
                                             <a @click="downloadDocument(document.document_id,document.invoice_type_doc,'XML')" href="javascript:;">Descargar XML</a>

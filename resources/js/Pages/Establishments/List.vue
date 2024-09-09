@@ -130,10 +130,7 @@
     <AppLayout title="Tiendas">
         <Navigation :routeModule="route('sales_dashboard')" :titleModule="'Ventas'">
             <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
-                <span>Administracion</span>
-            </li>
-            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
-                <span>Centros de distribución</span>
+                <span>Tiendas</span>
             </li>
         </Navigation>
         <div class="mt-5">
@@ -173,6 +170,9 @@
                                         Acciones
                                     </th>
                                     <th>
+                                        Código
+                                    </th>
+                                    <th>
                                         Nombre
                                     </th>
                                     <th >
@@ -199,6 +199,9 @@
                                                 <font-awesome-icon :icon="faTrashAlt" />
                                             </button>
                                         </div>
+                                    </td>
+                                    <td>
+                                        {{ local.sunat_code }}
                                     </td>
                                     <td>
                                         {{ local.description }}
