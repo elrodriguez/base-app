@@ -352,6 +352,43 @@ class SaleController extends Controller
         return response()->download($file);
     }
 
+    public function printA4Pdf($id)
+    {
+        $sale = Sale::find($id);
+        $document = SaleDocument::join('series', 'serie_id', 'series.id')
+            ->select(
+                'series.description',
+                'sale_documents.created_at',
+                'sale_documents.number'
+            )
+            ->where('sale_documents.sale_id', $sale->id)
+            ->first();
+        $local = LocalSale::find($sale->local_id);
+        $products = SaleProduct::where('sale_id', $sale->id)->get();
+        $company = Company::first();
+        $seller = User::find($sale->user_id);
+        $client = Person::find($sale->client_id);
+
+        $data = [
+            'local'     => $local,
+            'sale'      => $sale,
+            'products'  => $products,
+            'document'  => $document,
+            'company'   => $company,
+            'seller'    => $seller,
+            'client'    => $client
+        ];
+
+        //return view('sales::sales.A4_pdf', $data);
+
+        $file = public_path('ticket/') . $seller->id . '-A4.pdf';
+        $pdf = PDF::loadView('sales::sales.A4_pdf', $data);
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->save($file);
+
+        return response()->download($file);
+    }
+
     public function printSalesDay($date)
     {
         $header = [

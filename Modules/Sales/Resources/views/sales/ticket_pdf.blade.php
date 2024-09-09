@@ -100,7 +100,8 @@
                         <td style="text-align: center" class="cantidad">{{ (int) $item->quantity }}</td>
                         <td class="producto">
                             {{ json_decode($item->product, true)['interne'] }}-{{ json_decode($item->product, true)['description'] }}
-                            {{ $size ? ' / ' . $size : '' }}</td>
+                            {{ $size ? ' / ' . $size : '' }}
+                        </td>
                         <td style="text-align: right" class="precio">{{ $item->total }}</td>
                     </tr>
                 @endforeach

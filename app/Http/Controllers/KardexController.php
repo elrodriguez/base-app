@@ -100,9 +100,11 @@ class KardexController extends Controller
             ->sum('quantity');
 
         $stock_sales = SaleProduct::join('sales', 'sale_id', 'sales.id')
+            ->join('products', 'sale_products.product_id', 'products.id')
             ->whereDate('sale_products.created_at', $current_date)
             ->where('sales.local_id', $local_id)
             ->where('sales.status', true)
+            ->where('products.is_product', true)
             ->sum('quantity');
 
         $stock_input = Kardex::whereDate('created_at', '=', $current_date)

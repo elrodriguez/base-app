@@ -33,6 +33,10 @@
         let url = route('ticketpdf_sales',id)
         window.open(url, "_blank");
     }
+    const printA4Pdf = (id) => {
+        let url = route('printA4pdf_sales',id)
+        window.open(url, "_blank");
+    }
 
 
     const displayModalPrint = ref(false);
@@ -169,8 +173,13 @@
                                             <template #overlay>
                                                 <Menu>
                                                     <MenuItem>
+                                                        <Button @click="printA4Pdf(sale.id)" type="button">
+                                                            pdf A4
+                                                        </Button>
+                                                    </MenuItem>
+                                                    <MenuItem>
                                                         <Button @click="printTicket(sale.id)" type="button">
-                                                            Imprimir
+                                                            pdf 80x250
                                                         </Button>
                                                     </MenuItem>
                                                     <MenuItem v-if="sale.have_document <= 1">
