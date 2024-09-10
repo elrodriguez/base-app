@@ -1,105 +1,59 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 
-const props = defineProps({
-    authUser: {
-        type: Object,
-        default: () => ({})
-    },
-    authCompany: {
-        type: Object,
-        default: () => ({})
-    },
-    pageActive: String
-});
+const user = usePage().props.auth.user;
+const company = usePage().props.company;
+const xassetUrl = assetUrl;
 
-const darkMode = ref(false);
-
-const darkModeActive = () => {
-    const body = document.body;
-    const clasesDark = ['dark', 'text-bodydark', 'bg-boxdark-2'];
-    const clasesLight = ['font-sans', 'antialiased'];
-
-    const modo = localStorage.getItem('modo');
-    let xmodo = modo ?? 'light';
-    darkMode.value = xmodo == 'light' ? false : true;
-
-    darkMode.value = !darkMode.value;
-    body.classList.remove(...clasesDark, ...clasesLight);
-
-    if (darkMode.value) {
-        body.classList.add(...clasesDark);
-        localStorage.setItem('modo', 'dark');
-    } else {
-        body.classList.add(...clasesLight);
-        localStorage.setItem('modo', 'light');
-    }
-}
-
-const aplicarClasesSegunLocalStorage = () => {
-    const body = document.body;
-    const clasesDark = ['dark', 'text-bodydark', 'bg-boxdark-2'];
-    const clasesLight = ['font-sans', 'antialiased'];
-
-    const modoAlmacenado = localStorage.getItem('modo');
-
-    body.classList.remove(...clasesDark, ...clasesLight);
-
-    if (modoAlmacenado === 'dark') {
-        body.classList.add(...clasesDark);
-        darkMode.value = true;
-    } else {
-        body.classList.add(...clasesLight);
-        darkMode.value = false;
-    }
-}
-
-onMounted(() => {
-    aplicarClasesSegunLocalStorage();
-});
 </script>
 <template>
-    <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <Link :href="route('dashboard')" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img v-if="darkMode" src="/img/isotipo_negativo.png" class="h-8" alt="Flowbite Logo">
-                <img v-else src="/img/isotipo.png" class="h-8" alt="Flowbite Logo">
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{{ authCompany.name }}</span>
-            </Link>
-            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                <template v-if="Object.entries(props.authUser).length !== 0">
-                    <Link :href="route('dashboard')" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Dashboard</Link>
-                </template>
-                <template v-else>
-                    <Link :href="route('login')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get started</Link>
-                </template>
-                <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-                    </svg>
-                </button>
+
+    <!-- header -->
+    <header class="bg-[#f6f8ff] w-full bx-static">
+        <nav class="border-gray-200 py-2">
+            <div
+                class="flex flex-wrap justify-between items-center px-6 mx-auto 2xl:max-w-[1320px] xl:max-w-[1140px] lg:max-w-[960px] md:max-w-[720px] sm:max-w-[540px] max-[320px]:px-[12px]">
+                <Link :href="route('index_main')" class="flex items-center">
+                    <img v-if="company.isotipo == '/img/isotipo.png'" :src="company.isotipo" class="w-[90px]" alt="Logo">
+                    <img v-else :src="`${xassetUrl}storage/${company.isotipo}` " class="w-[90px]" alt="Logo2">
+                </Link>
+                <div class="flex items-center lg:order-2">
+                    <a href="#contact" type="button"
+                        class="text-white bg-[#7963e0] hover:bg-opacity-80 no-underline font-medium rounded-full text-sm px-8 py-2.5 mr-2 hidden 2xl:block xl:block lg:block">
+                        Obtenga una cotización
+                    </a>
+                    <button data-collapse-toggle="mobile-menu" type="button" id="dropdown-toggle"
+                        class="inline-flex items-center border p-2 text-lg text-gray-500 rounded-lg lg:hidden"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Abrir el menú principal</span>
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+                <div class="justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu">
+                    <ul class="flex flex-col font-medium lg:flex-row lg:space-x-8 2xl:border-0 lg:border-0 border lg:mt-0 lg-mb-4 lg:p-[0] lg:border-none lg:rounded-[0] lg:text-[15px] mt-4 p-[15px] 2xl:mb-0 xl:mb-0 lg:mb-0 mb-2 border-[#eee] rounded-[30px] text-[13px]"
+                        id="top-menu">
+                        <li class="nav-item active">
+                            <a href="#home" class="block py-2 pr-4 pl-3 text-[#000] lg:p-0">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#about" class="block py-2 pr-4 pl-3 text-[#000] lg:p-0">Acerca de Nosotros</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a href="#experience" class="block py-2 pr-4 pl-3 text-[#000] lg:p-0">Experiencia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#portfolio" class="block py-2 pr-4 pl-3 text-[#000] lg:p-0">Cartera</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#news" class="block py-2 pr-4 pl-3 text-[#000] lg:p-0">Blog</a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a href="#contact" class="block py-2 pr-4 pl-3 text-[#000] lg:p-0">Contacta con nosotros</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-                <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                    <li>
-                        <a :href="route('index_main')" :class="pageActive == 'home' ? 'block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500' : 'block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'" aria-current="page">Inicio</a>
-                    </li>
-                    <li>
-                        <a href="#nosotros" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Nosotros</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Blog</a>
-                    </li>
-                    <li>
-                        <a href="#contacto" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contacto</a>
-                    </li>
-                    <!-- <li>
-                        <Link :href="route('index_computer_store')" :class="pageActive == 'store' ? 'block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500' : 'block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'">Tienda</Link>
-                    </li> -->
-                </ul>
-            </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 </template>

@@ -50,7 +50,8 @@
         address: '',
         ubigeo: '',
         ubigeo_description: '',
-        presentations: false
+        presentations: false,
+        is_client: true
     });
     
     const disabledBtnSelect = ref(true);

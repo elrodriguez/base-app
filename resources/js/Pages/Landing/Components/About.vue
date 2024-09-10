@@ -1,43 +1,53 @@
-<template>
-    <section class="bg-red-50 dark:bg-gray-900" id="nosotros">
-        <div class="px-4 mx-auto max-w-screen-xl lg:py-16 py-20 lg:py-20 lg:gap-16">
-            <div class="grid grid-cols-6 gap-6">
-                <div class="col-span-6 sm:col-span-3 md:col-span-3">
-                    <h4 class="mb-4 text-xl font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-4xl dark:text-white">
-                        Potencia tu éxito con nuestra empresa de desarrollo de software
-                    </h4>
-                    <p class="font-normal text-gray-700 dark:text-gray-400">En ARACODE PERÚ, somos un equipo apasionado de expertos en desarrollo de software que se dedica a convertir tus ideas en realidad. Ofrecemos soluciones innovadoras y a medida para satisfacer las necesidades específicas de tu negocio. Nuestro enfoque centrado en el cliente y nuestra experiencia en la industria nos permiten ofrecer servicios de desarrollo de software de primera categoría.</p>
-                </div>
-                <div class="col-span-6 sm:col-span-3 md:col-span-3">
-                    
-                    <div class="grid mb-8 border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2 bg-white dark:bg-gray-800">
-                        <figure class="flex flex-col items-center justify-center p-4 text-center bg-white border-b border-gray-200 rounded-t-lg md:rounded-t-none md:rounded-ss-lg md:border-e dark:bg-gray-800 dark:border-gray-700">
-                            <blockquote class="max-w-2xl mx-auto mb-2 text-gray-500 lg:mb-4 dark:text-gray-400">
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Código de alta calidad</h3>
-                                <p class="my-2">En ARACODE, nos comprometemos con la excelencia en cada línea de código.</p>
-                            </blockquote>
-                        </figure>
-                        <figure class="flex flex-col items-center justify-center p-4 text-center bg-white border-b border-gray-200 md:rounded-se-lg dark:bg-gray-800 dark:border-gray-700">
-                            <blockquote class="max-w-2xl mx-auto mb-2 text-gray-500 lg:mb-4 dark:text-gray-400">
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Enfoque ágil</h3>
-                                <p class="my-2">Adoptamos un enfoque ágil en el desarrollo de software para ofrecerte soluciones que se adaptan y evolucionan con tus necesidades.</p>
-                            </blockquote>
-                        </figure>
-                        <figure class="flex flex-col items-center justify-center p-4 text-center bg-white border-b border-gray-200 md:rounded-es-lg md:border-b-0 md:border-e dark:bg-gray-800 dark:border-gray-700">
-                            <blockquote class="max-w-2xl mx-auto mb-2 text-gray-500 lg:mb-4 dark:text-gray-400">
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Equipos Full-stack</h3>
-                                <p class="my-2">Nuestros equipos Full-stack están formados por profesionales versátiles y altamente capacitados que dominan todas las capas del desarrollo web.</p>
-                            </blockquote>
-                        </figure>
-                        <figure class="flex flex-col items-center justify-center p-4 text-center bg-white border-gray-200 rounded-b-lg md:rounded-se-lg dark:bg-gray-800 dark:border-gray-700">
-                            <blockquote class="max-w-2xl mx-auto mb-2 text-gray-500 lg:mb-4 dark:text-gray-400">
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Sistemas mas Seguros</h3>
-                                <p class="my-2">Priorizamos la seguridad en cada línea de código. Nuestros sistemas están diseñados con un enfoque meticuloso en la protección de tus datos y la privacidad de tus usuarios. </p>
-                            </blockquote>
+<script setup>
+import { Link, usePage } from '@inertiajs/vue3';
+const company = usePage().props.company;
 
-                        </figure>
+const xtassetUrl = assetUrl;
+const pathImage = xtassetUrl;
+</script>
+<template>
+<section id="about" class="bg-white 2xl:pb-[80px] pb-[70px]">
+        <div
+            class="flex flex-wrap justify-between items-center mx-auto mx-auto 2xl:max-w-[1320px] xl:max-w-[1140px] lg:max-w-[960px] md:max-w-[720px] sm:max-w-[540px] max-[320px]:px-[12px]">
+            <div class="grid lg:grid-cols-2 grid-cols-1 gap-[30px] px-6 max-[320px]:px-[0px]">
+                <div class="transition-all relative" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="300">
+                    <img :src="`${pathImage}themes/personalLanding/assets/img/shape/shape-6.png`" alt="shape-6" class="absolute w-12 top-2.5 left-2.5">
+                    <img :src="`${pathImage}themes/vristo/images/about-page-amico.svg`" alt="about-img-1" class="w-full rounded-lg">
+                    <img :src="`${pathImage}themes/personalLanding/assets/img/shape/shape-7.png`" alt="shape-7" class="absolute w-12 bottom-5 right-2.5">
+                </div>
+                <div class="transition-all" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="300">
+                    <div class="banner mb-[30px]">
+                        <span class="text-[14px] text-[#777]">Sobre nosotros</span>
+                        <h2
+                            class="mt-[5px] 2xl:text-[35px] xl:text-[33px] lg:text-[30px] md:text-[26px] sm:text-[24px] text-[22px] font-bold">
+                            Impulsamos tu éxito con soluciones 
+                            <span class="text-[#7963e0]">tecnológicas a medida.</span>
+                        </h2>
                     </div>
-                </div>       
+                    <p class="text-[16px] text-[#777] mb-[30px]">
+                        somos un equipo apasionado de profesionales dedicados a desarrollar soluciones tecnológicas innovadoras.
+                    </p>
+                    <div class="border p-[24px] rounded-lg">
+                        <div class="box-border flex justify-between max-[400px]:block">
+                            <div class="left">
+                                <div class="name">
+                                    <span class="text-[16px] leading-[28px] font-bold"> Nombre : </span><br>
+                                    <span class="detail text-[14px] leading-[28px] text-[#777]">{{ company.business_name }} </span>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="ph">
+                                    <span class="text-[16px] leading-[28px] font-bold">Número de teléfono : </span><br>
+                                    <span class="detail text-[14px] leading-[28px] text-[#777]">+51 {{ company.phone }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom pt-[20px]">
+                            <span class="text-[16px] leading-[28px] font-bold">DIRECCIÓN : </span>
+                            <span class="detail text-[14px] leading-[28px] text-[#777]">{{ company.fiscal_address }}, Nuevo Chimbote</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
