@@ -95,7 +95,7 @@
           <p class="mb-3">
             <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-lg text-xs uppercase font-semibold bg-blue-100 text-blue-800 dark:bg-blue-600 dark:text-white">Lo más popular</span>
           </p>
-          <h4 class="font-medium text-lg text-gray-800 dark:text-neutral-200">Startup</h4>
+          <h4 class="font-medium text-lg text-gray-800 dark:text-neutral-200">Mensual</h4>
           <span class="mt-5 font-bold text-5xl text-gray-800 dark:text-neutral-200">
             <span class="font-bold text-2xl -me-2">$</span>
             39
@@ -133,7 +133,7 @@
 
         <!-- Card -->
         <div class="flex flex-col border border-gray-200 text-center rounded-xl p-8 dark:border-neutral-800">
-          <h4 class="font-medium text-lg text-gray-800 dark:text-neutral-200">Team</h4>
+          <h4 class="font-medium text-lg text-gray-800 dark:text-neutral-200">Al año</h4>
           <span class="mt-5 font-bold text-5xl text-gray-800 dark:text-neutral-200">
             <span class="font-bold text-2xl -me-2">$</span>
             89
@@ -171,7 +171,7 @@
 
         <!-- Card -->
         <div class="flex flex-col border border-gray-200 text-center rounded-xl p-8 dark:border-neutral-800">
-          <h4 class="font-medium text-lg text-gray-800 dark:text-neutral-200">Enterprise</h4>
+          <h4 class="font-medium text-lg text-gray-800 dark:text-neutral-200">VIP</h4>
           <span class="mt-5 font-bold text-5xl text-gray-800 dark:text-neutral-200">
             <span class="font-bold text-2xl -me-2">$</span>
             149
