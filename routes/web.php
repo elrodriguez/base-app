@@ -59,11 +59,11 @@ Route::get('/mipais', function () {
     dd($dataArray);
 });
 
-Route::get('/email', function () {
-    Mail::to('elrodriguez2423@gmail.com')
-        ->send(new StudentRegistrationMailable('data'));
-    return 'mensaje enviado';
-});
+// Route::get('/email', function () {
+//     Mail::to('elrodriguez2423@gmail.com')
+//         ->send(new StudentRegistrationMailable('data'));
+//     return 'mensaje enviado';
+// });
 
 
 

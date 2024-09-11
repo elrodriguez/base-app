@@ -53,7 +53,10 @@ class PermissionTableSeeder extends Seeder
             $role->givePermissionTo($permission->name);
         }
 
-        Role::create(['name' => 'Alumno']);
-        Role::create(['name' => 'Docente']);
+        $alumno = Role::create(['name' => 'Alumno']);
+        $alumno->givePermissionTo('aca_miscursos');
+
+        $docente = Role::create(['name' => 'Docente']);
+        $docente->givePermissionTo('aca_cursos_listado');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    '403Forbidden' => 'El usuario no tiene los permisos correctos.',
     'Not Found' => 'Pagina no encontrada',
     '404NotFound' => '¡La página solicitada no fue encontrada!',
     '401Unauthorized' => 'No autorizado',

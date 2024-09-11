@@ -1,6 +1,19 @@
 <script setup>
+  import { useForm, usePage } from '@inertiajs/vue3';
   const baseUrl = assetUrl;
+  const company = usePage().props.company;
 
+  const formStart = useForm({
+    subscription: null
+  });
+
+  const startSubscription = (id) => {
+    formStart.subscription = id;
+    formStart.post(route('aca_subscriptions_free_user'), {
+      preserveScroll: true,
+      onSuccess: () => formStart.reset(),
+    });
+  }
 </script>
 <template>
   <!-- Hero -->
@@ -27,17 +40,19 @@
         <!-- End Title -->
 
         <div class="mt-5 max-w-3xl text-center mx-auto">
-          <p class="text-lg text-gray-600 dark:text-neutral-400">Preline is a large open-source project, crafted with Tailwind CSS framework by Hmlstream.</p>
+          <p class="text-lg text-gray-600 dark:text-neutral-400">
+            En <strong>{{ company.name }}</strong>, tendrás la oportunidad de aprender de los mejores profesionales. Compartirán contigo el conocimiento adquirido a través de su experiencia.
+          </p>
         </div>
 
         <!-- Buttons -->
         <div class="mt-8 gap-3 flex justify-center">
-          <a class="inline-flex justify-center items-center gap-x-3 text-center bg-gradient-to-tl from-blue-600 to-violet-600 hover:from-violet-600 hover:to-blue-600 focus:outline-none focus:from-violet-600 focus:to-blue-600 border border-transparent text-white text-sm font-medium rounded-full py-3 px-4" href="#">
+          <button @click="startSubscription" type="button" class="inline-flex justify-center items-center gap-x-3 text-center bg-gradient-to-tl from-blue-600 to-violet-600 hover:from-violet-600 hover:to-blue-600 focus:outline-none focus:from-violet-600 focus:to-blue-600 border border-transparent text-white text-sm font-medium rounded-full py-3 px-4" href="#">
             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 512 512">
               <path d="M88 0C74.7 0 64 10.7 64 24c0 38.9 23.4 59.4 39.1 73.1l1.1 1C120.5 112.3 128 119.9 128 136c0 13.3 10.7 24 24 24s24-10.7 24-24c0-38.9-23.4-59.4-39.1-73.1l-1.1-1C119.5 47.7 112 40.1 112 24c0-13.3-10.7-24-24-24zM32 192c-17.7 0-32 14.3-32 32L0 416c0 53 43 96 96 96l192 0c53 0 96-43 96-96l16 0c61.9 0 112-50.1 112-112s-50.1-112-112-112l-48 0L32 192zm352 64l16 0c26.5 0 48 21.5 48 48s-21.5 48-48 48l-16 0 0-96zM224 24c0-13.3-10.7-24-24-24s-24 10.7-24 24c0 38.9 23.4 59.4 39.1 73.1l1.1 1C232.5 112.3 240 119.9 240 136c0 13.3 10.7 24 24 24s24-10.7 24-24c0-38.9-23.4-59.4-39.1-73.1l-1.1-1C231.5 47.7 224 40.1 224 24z"/>
             </svg>
             Empezar gratis
-          </a>
+          </button>
         </div>
         <!-- End Buttons -->
       </div>

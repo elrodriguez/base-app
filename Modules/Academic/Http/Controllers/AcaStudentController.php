@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Hash;
 use Modules\Academic\Entities\AcaCapRegistration;
 use Modules\Academic\Entities\AcaCourse;
 use Modules\Academic\Entities\AcaModule;
+use Illuminate\Http\RedirectResponse;
 
 class AcaStudentController extends Controller
 {
@@ -463,5 +464,30 @@ class AcaStudentController extends Controller
             'mycourses' => $mycourses,
             'allcourses' => $allcourses
         ]);
+    }
+
+    public function startStudentFree(Request $request): RedirectResponse
+    {
+        $type = $request->get('subscription');
+        $user = Auth::user();
+        $person_id = $user->person_id;
+        $per = null;
+        if ($person_id) {
+            $per = Person::find($person_id);
+
+            $user->assignRole('Alumno');
+
+            AcaStudent::updateOrCreate(
+                [
+                    'person_id'     => $per->id
+                ],
+                [
+                    'student_code'  => $per->number,
+                ]
+            );
+            return to_route('dashboard');
+        } else {
+            return to_route('profile.edit');
+        }
     }
 }
