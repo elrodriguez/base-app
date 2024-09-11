@@ -18,9 +18,6 @@
     import { ref, onMounted } from 'vue';
     import { Image, AvatarGroup, Avatar, Tooltip } from 'ant-design-vue';
 
-    const store = useAppStore();
-
-
     const props = defineProps({
         userData: {
             type: Object,

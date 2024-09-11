@@ -14,9 +14,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
@@ -30,24 +28,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Inertia::share('company', function () {
-            return Company::select(
-                'ruc',
-                'name',
-                'business_name',
-                'tradename',
-                'fiscal_address',
-                'phone',
-                'representative',
-                'email',
-                'logo',
-                'logo_document',
-                'ubigeo',
-                'logo_negative',
-                'logo_dark',
-                'isotipo',
-                'isotipo_negative',
-                'isotipo_dark'
-            )->first();
+            return Company::first();
         });
     }
 }

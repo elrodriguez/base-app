@@ -4,7 +4,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 
 import { computed, reactive } from 'vue';
     import { useI18n } from 'vue-i18n';
@@ -47,6 +47,8 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const company = usePage().props.company;
 </script>
 
 <template>
@@ -57,9 +59,10 @@ const submit = () => {
                 <img :src="`${baseUrl}/themes/vristo/images/auth/bg-gradient.png`" alt="image" class="h-full w-full object-cover" />
             </div>
             <div
-                class="relative flex min-h-screen items-center justify-center bg-[url(/assets/images/auth/map.png)] bg-cover bg-center bg-no-repeat px-6 py-10 dark:bg-[#060818] sm:px-16"
+                :style="`background-image:url('${baseUrl}/themes/vristo/images/auth/map.png');`"
+                class="relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-6 py-10 dark:bg-[#060818] sm:px-16"
             >
-            <img :src="`${baseUrl}/themes/vristo/images/auth/coming-soon-object1.png`" alt="image" class="absolute left-0 top-1/2 h-full max-h-[893px] -translate-y-1/2" />
+                <img :src="`${baseUrl}/themes/vristo/images/auth/coming-soon-object1.png`" alt="image" class="absolute left-0 top-1/2 h-full max-h-[893px] -translate-y-1/2" />
                 <img :src="`${baseUrl}/themes/vristo/images/auth/coming-soon-object2.png`" alt="image" class="absolute left-24 top-0 h-40 md:left-[30%]" />
                 <img :src="`${baseUrl}/themes/vristo/images/auth/coming-soon-object3.png`" alt="image" class="absolute right-0 top-0 h-[300px]" />
                 <img :src="`${baseUrl}/themes/vristo/images/auth/polygon-object.svg`" alt="image" class="absolute bottom-0 end-[28%]" />
@@ -67,8 +70,9 @@ const submit = () => {
                     <div class="relative hidden w-full items-center justify-center bg-[linear-gradient(225deg,rgba(239,18,98,1)_0%,rgba(67,97,238,1)_100%)] p-5 lg:inline-flex lg:max-w-[835px] xl:-ms-28 ltr:xl:skew-x-[14deg] rtl:xl:skew-x-[-14deg]">
                         <div class="absolute inset-y-0 w-8 from-primary/10 via-transparent to-transparent ltr:-right-10 ltr:bg-gradient-to-r rtl:-left-10 rtl:bg-gradient-to-l xl:w-16 ltr:xl:-right-20 rtl:xl:-left-20"></div>
                         <div class="ltr:xl:-skew-x-[14deg] rtl:xl:skew-x-[14deg]">
-                            <Link to="/" class="w-48 block lg:w-72 ms-10">
-                                <img :src="`${baseUrl}/img/logo176x32_negativo.png`" alt="Logo" class="w-full" />
+                            <Link :href="route('index_main')" class="w-48 block lg:w-72 ms-10">
+                                <img v-if="company.logo_negative == '/img/logo176x32_negativo.png'" :src="company.logo_negative" alt="Logo" class="w-full" />
+                                <img v-else :src="`${baseUrl}storage/${company.logo_negative}`" alt="Logo" class="w-full" />
                             </Link>
                             <div class="mt-24 hidden w-full max-w-[430px] lg:block">
                                 <img :src="`${baseUrl}/themes/vristo/images/auth/register.svg`" alt="Cover Image" class="w-full" />
@@ -77,7 +81,7 @@ const submit = () => {
                     </div>
                     <div class="relative flex w-full flex-col items-center justify-center gap-6 px-4 pb-16 pt-6 sm:px-6 lg:max-w-[667px]">
                         <div class="flex w-full max-w-[440px] items-center gap-2 lg:absolute lg:end-6 lg:top-6 lg:max-w-full">
-                            <Link to="/" class="w-8 block lg:hidden">
+                            <Link :href="route('index_main')" class="w-8 block lg:hidden">
                                 <img :src="`${baseUrl}/img/isotipo.png`" alt="Logo" class="mx-auto w-10" />
                             </Link>
                             <!-- <div class="dropdown ms-auto w-max">
@@ -152,7 +156,7 @@ const submit = () => {
                                             class="ps-10 placeholder:text-white-dark"
                                             v-model="form.email"
                                             required
-                                            autocomplete="username"
+                                            autocomplete="off"
                                         />
                                         <span class="absolute start-4 top-1/2 -translate-y-1/2">
                                             <icon-mail :fill="true" />
@@ -169,7 +173,6 @@ const submit = () => {
                                             class="ps-10 placeholder:text-white-dark"
                                             v-model="form.password"
                                             required
-                                            autocomplete="new-password"
                                         />
                                         <span class="absolute start-4 top-1/2 -translate-y-1/2">
                                             <icon-lock-dots :fill="true" />
@@ -186,7 +189,6 @@ const submit = () => {
                                             class="ps-10 placeholder:text-white-dark"
                                             v-model="form.password_confirmation"
                                             required
-                                            autocomplete="new-password"
                                         />
                                         <span class="absolute start-4 top-1/2 -translate-y-1/2">
                                             <icon-lock-dots :fill="true" />
@@ -197,7 +199,7 @@ const submit = () => {
                                 <div>
                                     <label class="flex cursor-pointer items-center">
                                         <input type="checkbox" class="form-checkbox bg-white dark:bg-black" />
-                                        <span class="text-white-dark">Subscribe to weekly newsletter</span>
+                                        <span class="text-white-dark">Al crear tu cuenta aceptas los terminos y condiciones</span>
                                     </label>
                                 </div>
                                 <button type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" class="btn btn-gradient !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">

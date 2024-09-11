@@ -207,7 +207,10 @@
                 >
                     <div class="flex justify-between items-center">
                         <div class="flex items-center">
-                            <div class="flex-none"><img :src="getImage($page.props.auth.user.avatar)" class="rounded-full h-12 w-12 object-cover" /></div>
+                            <div class="flex-none">
+                                <img v-if="$page.props.auth.user.avatar" :src="getImage($page.props.auth.user.avatar)" class="rounded-full h-12 w-12 object-cover" />
+                                <img v-else :src="`https://ui-avatars.com/api/?name=${$page.props.auth.user.name}&size=150&rounded=true`" class="rounded-full h-12 w-12 object-cover" />
+                            </div>
                             <div class="mx-3">
                                 <p class="mb-1 font-semibold">{{ $page.props.auth.user.name }}</p>
                                 <p class="text-xs text-white-dark">{{ $page.props.auth.user.email }}</p>
