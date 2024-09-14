@@ -7,5 +7,6 @@ return [
     '401Unauthorized' => 'Unauthorized',
     '500ServerError' => 'Server Error',
     '503ServiceUnavailable' => 'Service Unavailable',
-    'btn_go_back'    => 'Go back'
+    'btn_go_back'    => 'Go back',
+    '419PageExpired' => 'Page Expired'
 ];

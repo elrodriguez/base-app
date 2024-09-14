@@ -11,11 +11,12 @@
     import IconFacebookCircle from '@/Components/vristo/icon/icon-facebook-circle.vue';
     import IconTwitter from '@/Components/vristo/icon/icon-twitter.vue';
     import IconGoogle from '@/Components/vristo/icon/icon-google.vue';
-    import { Link, router, useForm, Head } from '@inertiajs/vue3';
+    import { Link, router, useForm, Head, usePage } from '@inertiajs/vue3';
     import Checkbox from '@/Components/vristo/inputs/Checkbox.vue';
     import InputError from '@/Components/InputError.vue';
 
     const store = useAppStore();
+    const company = usePage().props.company;
     // multi language
     const i18n = reactive(useI18n());
     const changeLanguage = (item) => {
@@ -77,7 +78,7 @@
                     </div>
                     <div class="relative flex w-full flex-col items-center justify-center gap-6 px-4 pb-16 pt-6 sm:px-6 lg:max-w-[667px]">
                         <div class="flex w-full max-w-[440px] items-center gap-2 lg:absolute lg:end-6 lg:top-6 lg:max-w-full">
-                            <Link href="/" class="w-8 block lg:hidden">
+                            <Link :href="route('index_main')" class="w-8 block lg:hidden">
                                 <img :src="`${baseUrl}/img/isotipo.png`" alt="Logo" class="mx-auto w-10" />
                             </Link>
                             <!-- <div class="dropdown ms-auto w-max">
@@ -135,7 +136,10 @@
                                     <InputError class="mt-2" :message="form.errors.email" />
                                 </div>
                                 <div>
-                                    <label for="Password">Contraseña</label>
+                                    <div class="flex justify-between items-center">
+                                        <label for="password" class="block text-sm mb-2 dark:text-white">Contraseña</label>
+                                        <Link :href="route('password.request')" class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500">¿Has olvidado tu contraseña?</Link>
+                                    </div>
                                     <div class="relative text-white-dark">
                                         <input v-model="form.password" id="Password" type="password" placeholder="Ingrese la contraseña" class="form-input ps-10 placeholder:text-white-dark" />
                                         <span class="absolute start-4 top-1/2 -translate-y-1/2">

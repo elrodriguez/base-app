@@ -2,6 +2,7 @@
 
 namespace Modules\CRM\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -66,7 +67,7 @@ class CrmMessagesController extends Controller
         }
 
         // Crear el mensaje
-        CrmMessage::create([
+        $message = CrmMessage::create([
             'conversation_id' => $conversationId,
             'person_id' => $personId,
             'content' => htmlentities($request->get('text'), ENT_QUOTES, "UTF-8"),
@@ -74,6 +75,9 @@ class CrmMessagesController extends Controller
         ]);
 
         // Devolver la conversación con los mensajes
+
+        broadcast(new MessageSent($message))->toOthers();
+
         return response()->json(['success' => true], 201);
     }
 

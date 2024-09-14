@@ -69,7 +69,6 @@ const company = usePage().props.company;
                             <div class="mb-7">
                                 <h1 class="mb-3 text-2xl font-bold !leading-snug dark:text-white">Verificación de correo electrónico</h1>
                                 <p>¡Gracias por registrarte! Antes de comenzar, ¿podrías verificar tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte? Si no recibiste el correo electrónico, con gusto te enviaremos otro.</p>
-                                <p>Se ha enviado un nuevo enlace de verificación a la dirección de correo electrónico que proporcionaste durante el registro.</p>
                             </div>
                             <form @submit.prevent="submit">
                                 <div class="mt-4 flex items-center justify-between">
@@ -85,6 +84,9 @@ const company = usePage().props.company;
                                         >
                                         Finalizar
                                     </Link>
+                                </div>
+                                <div v-if="verificationLinkSent" class="mt-4 font-medium text-sm text-green-600 dark:text-green-400">
+                                    Se ha enviado un nuevo enlace de verificación a la dirección de correo electrónico que proporcionaste durante el registro.
                                 </div>
                             </form>
                         </div>

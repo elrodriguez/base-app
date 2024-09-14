@@ -14,6 +14,7 @@ use App\Mail\VerifyEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Password;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -83,5 +84,10 @@ class User extends Authenticatable implements MustVerifyEmail
             Carbon::now()->addMinutes(60), // Caducidad de la URL
             ['id' => $this->id, 'hash' => sha1($this->email)]
         );
+    }
+
+    public function createPasswordResetToken()
+    {
+        return Password::createToken($this);
     }
 }

@@ -8,5 +8,5 @@ return [
     '500ServerError' => 'Error del servidor',
     '503ServiceUnavailable' => 'Servicio No Disponible',
     'btn_go_back'    => 'Regresar',
-
+    '419PageExpired' => 'Página caducada'
 ];

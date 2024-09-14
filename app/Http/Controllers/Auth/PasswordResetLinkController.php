@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ResetPassword;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Support\Facades\Mail;
 
 class PasswordResetLinkController extends Controller
 {
@@ -29,23 +31,26 @@ class PasswordResetLinkController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
         $request->validate([
             'email' => 'required|email',
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        // Busca al usuario
+        $user = \App\Models\User::where('email', $request->email)->first();
 
-        if ($status == Password::RESET_LINK_SENT) {
-            return back()->with('status', __($status));
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'email' => [trans('No se encontró un usuario con este correo.')],
+            ]);
         }
 
-        throw ValidationException::withMessages([
-            'email' => [trans($status)],
-        ]);
+        // Genera un token de restablecimiento
+
+
+        // Envía la notificación personalizada
+        Mail::to($user->email)->send(new ResetPassword($user));
+
+        return back()->with('status', __('Se ha enviado el enlace de restablecimiento de contraseña.'));
     }
 }

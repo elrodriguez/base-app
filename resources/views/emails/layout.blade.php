@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifica correo electrónico</title>
+    <title>@yield('title')</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,13 +59,7 @@
                 <img src="{{ asset($company->logo) }}" style="width: 300px" />
             @endif
         </div>
-        <h1>Hola, {{ $user->name }}</h1>
-        <p>
-            Gracias por registrarte. Para completar tu registro, por favor verifica tu dirección de correo electrónico
-            haciendo clic en el siguiente botón:
-        </p>
-        <a href="{{ $url }}" class="button">Verificar mi correo electrónico</a>
-        <p>Si no te registraste en nuestro sitio, puedes ignorar este correo.</p>
+        @yield('message')
         <div class="footer">
             <p>Saludos,<br>El equipo de {{ $company->name }}</p>
         </div>

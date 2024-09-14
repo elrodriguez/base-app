@@ -7,17 +7,17 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 
 import { computed, reactive } from 'vue';
-    import { useI18n } from 'vue-i18n';
-    import appSetting from '@/app-setting';
-    import { useAppStore } from '@/stores/index';
-    import IconCaretDown from '@/Components/vristo/icon/icon-caret-down.vue';
-    import IconUser from '@/Components/vristo/icon/icon-user.vue';
-    import IconMail from '@/Components/vristo/icon/icon-mail.vue';
-    import IconLockDots from '@/Components/vristo/icon/icon-lock-dots.vue';
-    import IconInstagram from '@/Components/vristo/icon/icon-instagram.vue';
-    import IconFacebookCircle from '@/Components/vristo/icon/icon-facebook-circle.vue';
-    import IconTwitter from '@/Components/vristo/icon/icon-twitter.vue';
-    import IconGoogle from '@/Components/vristo/icon/icon-google.vue';
+import { useI18n } from 'vue-i18n';
+import appSetting from '@/app-setting';
+import { useAppStore } from '@/stores/index';
+import IconCaretDown from '@/Components/vristo/icon/icon-caret-down.vue';
+import IconUser from '@/Components/vristo/icon/icon-user.vue';
+import IconMail from '@/Components/vristo/icon/icon-mail.vue';
+import IconLockDots from '@/Components/vristo/icon/icon-lock-dots.vue';
+import IconInstagram from '@/Components/vristo/icon/icon-instagram.vue';
+import IconFacebookCircle from '@/Components/vristo/icon/icon-facebook-circle.vue';
+import IconTwitter from '@/Components/vristo/icon/icon-twitter.vue';
+import IconGoogle from '@/Components/vristo/icon/icon-google.vue';
 
 
 

@@ -31,8 +31,10 @@ class CrmChatController extends Controller
     {
         $persomId = Auth::user()->person_id;
         $persons = Person::join('users', 'people.id', 'users.person_id')
-            ->where('id', '<>', $persomId)
+            ->select('people.*')
+            ->where('people.id', '<>', $persomId)
             ->latest();
+
 
         if (request()->has('search')) {
             $persons->where('full_name', 'like', '%' . request()->input('search') . '%');

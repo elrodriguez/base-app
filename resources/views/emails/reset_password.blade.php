@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifica correo electrónico</title>
+    <title>Restablecer Contraseña</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,12 +60,11 @@
             @endif
         </div>
         <h1>Hola, {{ $user->name }}</h1>
-        <p>
-            Gracias por registrarte. Para completar tu registro, por favor verifica tu dirección de correo electrónico
-            haciendo clic en el siguiente botón:
-        </p>
-        <a href="{{ $url }}" class="button">Verificar mi correo electrónico</a>
-        <p>Si no te registraste en nuestro sitio, puedes ignorar este correo.</p>
+        <p>Estás recibiendo este correo electrónico porque recibimos una solicitud de restablecimiento de contraseña
+            para tu cuenta:</p>
+        <a href="{{ $url }}" class="button">Restablecer contraseña</a>
+        <p>Este enlace de restablecimiento de contraseña caducará en 60 minutos.</p>
+        <p>Si no solicitó un restablecimiento de contraseña, no se requiere ninguna otra acción.</p>
         <div class="footer">
             <p>Saludos,<br>El equipo de {{ $company->name }}</p>
         </div>
