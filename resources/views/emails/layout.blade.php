@@ -56,7 +56,7 @@
             @if ($company->logo == '/img/logo176x32.png')
                 <img src="{{ asset($company->logo) }}" style="width: 300px;" />
             @else
-                <img src="{{ asset($company->logo) }}" style="width: 300px" />
+                <img src="{{ asset('storage/' . $company->logo) }}" style="width: 300px" />
             @endif
         </div>
         @yield('message')

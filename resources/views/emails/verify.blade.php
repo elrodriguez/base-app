@@ -56,7 +56,7 @@
             @if ($company->logo == '/img/logo176x32.png')
                 <img src="{{ asset($company->logo) }}" style="width: 300px;" />
             @else
-                <img src="{{ asset($company->logo) }}" style="width: 300px" />
+                <img src="{{ asset('storage/' . $company->logo) }}" style="width: 300px" />
             @endif
         </div>
         <h1>Hola, {{ $user->name }}</h1>
@@ -64,7 +64,7 @@
             Gracias por registrarte. Para completar tu registro, por favor verifica tu dirección de correo electrónico
             haciendo clic en el siguiente botón:
         </p>
-        <a href="{{ $url }}" class="button">Verificar mi correo electrónico</a>
+        <a href="{{ $url }}" class="button" style="color: #fff">Verificar mi correo electrónico</a>
         <p>Si no te registraste en nuestro sitio, puedes ignorar este correo.</p>
         <div class="footer">
             <p>Saludos,<br>El equipo de {{ $company->name }}</p>

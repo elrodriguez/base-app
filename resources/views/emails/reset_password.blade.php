@@ -56,13 +56,13 @@
             @if ($company->logo == '/img/logo176x32.png')
                 <img src="{{ asset($company->logo) }}" style="width: 300px;" />
             @else
-                <img src="{{ asset($company->logo) }}" style="width: 300px" />
+                <img src="{{ asset('storage/' . $company->logo) }}" style="width: 300px" />
             @endif
         </div>
         <h1>Hola, {{ $user->name }}</h1>
         <p>Estás recibiendo este correo electrónico porque recibimos una solicitud de restablecimiento de contraseña
             para tu cuenta:</p>
-        <a href="{{ $url }}" class="button">Restablecer contraseña</a>
+        <a href="{{ $url }}" class="button" style="color: #fff">Restablecer contraseña</a>
         <p>Este enlace de restablecimiento de contraseña caducará en 60 minutos.</p>
         <p>Si no solicitó un restablecimiento de contraseña, no se requiere ninguna otra acción.</p>
         <div class="footer">
