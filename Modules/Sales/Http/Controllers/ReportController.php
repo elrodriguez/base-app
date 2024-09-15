@@ -492,7 +492,11 @@ class ReportController extends Controller
 
     public function getDataSalesTotal($startDate, $endDate, $establishmentId)
     {
-        $documentsSales = SaleDocument::where('status', 1);
+        $documentsSales = SaleDocument::where('status', 1)->whereIn('invoice_type_doc', ['03', '01']);
+        $documentsNotes = SaleDocument::where('status', 1)->where(function ($query) {
+            $query->where('invoice_type_doc', '80')
+                ->orWhereNull('invoice_type_doc');
+        });
 
         if ($startDate) {
             $documentsSales = $documentsSales->whereBetween('invoice_broadcast_date', [$startDate, $endDate]);
@@ -500,15 +504,27 @@ class ReportController extends Controller
             $documentsSales = $documentsSales->whereDate('invoice_broadcast_date', $endDate);
         }
 
-        $documentsSales = $documentsSales->get();
-
-        $total = 0;
-        foreach ($documentsSales as $documentsSale) {
-            $total = $documentsSale->invoice_mto_imp_sale + $total;
+        if ($startDate) {
+            $documentsNotes = $documentsNotes->whereBetween('created_at', [$startDate, $endDate]);
+        } else {
+            $documentsNotes = $documentsNotes->whereDate('created_at', $endDate);
         }
 
+
+        // $documentsSales = $documentsSales->get();
+        // $documentsNotes = $documentsNotes->get();
+
+        $documents = $documentsSales->union($documentsNotes)->get();
+
+        $total = 0;
+        foreach ($documents as $document) {
+            $total = $document->overall_total + $total;
+        }
+
+
+
         return [
-            'documents' => $documentsSales,
+            'documents' => $documents,
             'total' => number_format($total, 2, '.', ' ')
         ];
     }

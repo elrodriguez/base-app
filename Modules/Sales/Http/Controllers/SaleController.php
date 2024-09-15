@@ -161,7 +161,10 @@ class SaleController extends Controller
                     'serie_id'  => $serie_id,
                     'number'    => str_pad($serie->number, 9, '0', STR_PAD_LEFT),
                     'overall_total'     => $request->get('total'),
-                    'user_id'  => Auth::id()
+                    'user_id'  => Auth::id(),
+                    'invoice_type_doc' => '80',
+                    'invoice_serie' => $serie->description,
+                    'invoice_correlative' => $serie->number
                 ]);
 
                 $serie->increment('number', 1);

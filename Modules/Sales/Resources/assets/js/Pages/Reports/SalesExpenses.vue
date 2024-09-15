@@ -150,7 +150,7 @@ const showMessage = (msg = '', type = 'success') => {
                                     <template v-for="sale in resumen.sales.documents">
                                         <div class="flex flex-col py-3">
                                             <dt class="mb-1 text-gray-500 dark:text-gray-400">{{ sale.invoice_serie }}-{{ sale.invoice_correlative }}</dt>
-                                            <dd class="text-md font-semibold">TOTAL: {{ sale.invoice_mto_imp_sale }}</dd>
+                                            <dd class="text-md font-semibold">TOTAL: {{ sale.overall_total }}</dd>
                                         </div>
                                     </template>
                                 </dl>

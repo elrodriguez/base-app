@@ -25,7 +25,7 @@ return new class extends Migration
         DB::table('payment_methods')->insert([
             ['description' => 'Efectivo', 'number' => null],
             ['description' => 'Yape', 'number' => '123456789'],
-            ['description' => 'Pim', 'number' => '123456789'],
+            ['description' => 'Plin', 'number' => '123456789'],
             ['description' => 'Transferencia BCP', 'number' => '123456789'],
             ['description' => 'Transferencia BBVA', 'number' => '123456789']
         ]);
