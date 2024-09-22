@@ -53,14 +53,41 @@ class CrmChatController extends Controller
                 ->having(DB::raw('COUNT(DISTINCT user_id)'), '>=', 2)
                 ->value('conversation_id');
 
+            $message_active = false;
+            $message_last = CrmMessage::where('conversation_id', $conversationId)
+                ->orderByDesc('id')
+                ->first();
+
+            $preview = '';
+            if ($message_last) {
+                $who = $message_last->person_id == $persomId ? 'Tu: ' : '';
+
+                if ($message_last->type == 'text') {
+                    $preview = ($who . $message_last->content);
+                } else if ($message_last->type == 'audio') {
+                    $preview = ($who . 'audio');
+                } else if ($message_last->type == 'link') {
+                    $preview = ($who . 'enlace');
+                } else {
+                    $preview = ($who . 'archivo');
+                }
+                $see = CrmConversation::where('id', $conversationId)->value('new_message');
+                $message_active = $message_last->person_id != $persomId ? $see : false;
+            }
+
             $person->conversationId = $conversationId;
+            $person->newMessage = $message_active ?? false;
             $person->userId = $person->id;
-            $person->time = '2:09 PM';
-            $person->preview = 'Wasup for the third time like is you bling bitch';
+            $person->time = $message_last ? timeElapsed($message_last->created_at) : null;
+            $person->preview = $message_last ? $preview : null;
             $person->messages = [];
             $person->active = true;
+            $person->new_order = $message_last ? $message_last->created_at : null;
             return $person;
         });
+
+        // Ordenar por el campo new_order
+        $formattedPersons = $formattedPersons->sortByDesc('new_order')->values();
 
         // Reemplazar la colección de personas en la paginación con la colección formateada
         $persons->setCollection($formattedPersons);

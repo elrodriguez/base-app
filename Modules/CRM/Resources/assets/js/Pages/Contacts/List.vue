@@ -32,9 +32,9 @@ const getImage = (path) => {
 </script>
 <template>
     <AppLayout title="Items">
-        <Navigation :routeModule="route('cms_dashboard')" :titleModule="'CMS'">
+        <Navigation :routeModule="route('crm_dashboard')" :titleModule="'CRM'">
             <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
-                <span>Items</span>
+                <span>Contactos</span>
             </li>
         </Navigation>
         <div class="mt-5">
@@ -53,44 +53,45 @@ const getImage = (path) => {
                 </div> -->
             </div>
             <div class="panel pb-1.5 mt-6">
-                <DataTable :ajax="route('crm_contacts_list_data')" :columns="columns">
-                    <template #action="props">
-                        <div class="flex gap-1 items-center justify-center">
+                <div class="table-responsive">
+                    <DataTable :ajax="route('crm_contacts_list_data')" :columns="columns">
+                        <template #action="props">
+                            <div class="flex gap-1 items-center justify-center">
 
-                            <button v-tippy:bottom type="button" class="btn btn-sm btn-outline-info" @click="destroyItem(props.rowData.id)">
-                                <font-awesome-icon :icon="faComments" />
-                            </button>
-                            <tippy target="bottom" placement="bottom">Enviar Mensaje</tippy>
-                        </div>
-                    </template>
-                    <template #perinformation="props">
-                        <div class="flex items-center w-max hover:text-primary">
-                            <div class="w-max">
-                                <img v-if="props.rowData.image"
-                                    :src="getImage(props.rowData.image)"
-                                    class="h-8 w-8 rounded-full object-cover ltr:mr-2 rtl:ml-2"
-                                    alt="AV"
-                                />
-                                <img v-else :src="'https://ui-avatars.com/api/?name='+props.rowData.full_name+'&size=54&rounded=true'" class="h-8 w-8 rounded-full object-cover ltr:mr-2 rtl:ml-2" :alt="props.rowData.full_name"/>
+                                <button v-tippy:bottom type="button" class="btn btn-sm btn-outline-info" @click="destroyItem(props.rowData.id)">
+                                    <font-awesome-icon :icon="faComments" />
+                                </button>
+                                <tippy target="bottom" placement="bottom">Enviar Mensaje</tippy>
                             </div>
-                            <div>{{ props.rowData.full_name }}</div>
-                        </div>
-                    </template>
-                    <template #pergender="props">
-                        <div class="text-center" >
-                            <template v-if="props.rowData.gender == 'M'">
-                                <font-awesome-icon v-tippy:left :icon="faPerson" class="w-6 h-6 text-success" /> 
-                                <tippy target="left" placement="left">Masculino</tippy>
-                            </template> 
-                            <template v-else>
-                                <font-awesome-icon v-tippy:left :icon="faPersonDress" class="w-6 h-6 text-primary" /> 
-                                <tippy target="left" placement="left">Femenino</tippy>
-                            </template> 
-                        </div>
-                    </template>
-                </DataTable>
+                        </template>
+                        <template #perinformation="props">
+                            <div class="flex items-center w-max hover:text-primary">
+                                <div class="w-max">
+                                    <img v-if="props.rowData.image"
+                                        :src="getImage(props.rowData.image)"
+                                        class="h-8 w-8 rounded-full object-cover ltr:mr-2 rtl:ml-2"
+                                        alt="AV"
+                                    />
+                                    <img v-else :src="'https://ui-avatars.com/api/?name='+props.rowData.full_name+'&size=54&rounded=true'" class="h-8 w-8 rounded-full object-cover ltr:mr-2 rtl:ml-2" :alt="props.rowData.full_name"/>
+                                </div>
+                                <div>{{ props.rowData.full_name }}</div>
+                            </div>
+                        </template>
+                        <template #pergender="props">
+                            <div class="text-center" >
+                                <template v-if="props.rowData.gender == 'M'">
+                                    <font-awesome-icon v-tippy:left :icon="faPerson" class="w-6 h-6 text-success" /> 
+                                    <tippy target="left" placement="left">Masculino</tippy>
+                                </template> 
+                                <template v-else>
+                                    <font-awesome-icon v-tippy:left :icon="faPersonDress" class="w-6 h-6 text-primary" /> 
+                                    <tippy target="left" placement="left">Femenino</tippy>
+                                </template> 
+                            </div>
+                        </template>
+                    </DataTable>
+                </div>
             </div>
-            
         </div>
         
     </AppLayout>

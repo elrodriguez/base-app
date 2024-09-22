@@ -19,7 +19,8 @@ class CrmConversation extends Model
         'type_name',
         'description',
         'type_action',
-        'status'
+        'status',
+        'new_message'
     ];
 
     protected static function newFactory(): CrmConversationFactory

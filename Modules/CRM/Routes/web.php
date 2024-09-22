@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\CRM\Http\Controllers\CrmChatController;
 use Modules\CRM\Http\Controllers\CrmContactsController;
 use Modules\CRM\Http\Controllers\CRMController;
+use Modules\CRM\Http\Controllers\CrmConversationController;
 use Modules\CRM\Http\Controllers\CrmMessagesController;
 use Modules\CRM\Http\Controllers\CrmMailboxController;
 
@@ -35,9 +36,18 @@ Route::middleware(['auth', 'verified'])->prefix('crm')->group(function () {
         ->get('chat/dashboard', [CrmChatController::class, 'index'])
         ->name('crm_chat_dashboard');
 
+    Route::middleware(['middleware' => 'permission:crm_chat_notifications'])
+        ->get('chat/notifications', [CrmConversationController::class, 'getConversations'])
+        ->name('crm_chat_notifications');
+
     Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
         ->get('chat/contacts', [CrmChatController::class, 'getContacts'])
         ->name('crm_chat_contacts_data');
+
+    Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
+        ->get('chat/conversation/{id}/status', [CrmConversationController::class, 'updateConversationStatus'])
+        ->name('crm_chat_conveersation_status');
+
 
     Route::middleware(['middleware' => 'permission:crm_chat_dashboard'])
         ->post('conversations/messages', [CrmMessagesController::class, 'sendMessage'])

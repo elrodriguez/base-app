@@ -2,7 +2,7 @@
 
 namespace Modules\CRM\Http\Controllers;
 
-use App\Events\MessageSent;
+use Modules\CRM\Events\SendMessage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,6 +16,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Modules\CRM\Emails\ClientHelpEmail;
 
@@ -34,51 +35,65 @@ class CrmMessagesController extends Controller
         );
 
         $personId = Auth::user()->person_id;
-        $contactId = $request->get('fromUserId');
 
-        // Buscar conversación existente
-        $conversationId = CrmParticipant::whereIn('person_id', [$contactId, $personId])
-            ->groupBy('conversation_id')
-            ->having(DB::raw('COUNT(DISTINCT user_id)'), '>=', 2)
-            ->value('conversation_id');
+        if ($personId) {
+            $contactId = $request->get('fromUserId');
 
-        if (!$conversationId) {
-            // Crear nueva conversación
-            $conversation = CrmConversation::create([
-                'title' => 'private',
-                'user_id' => Auth::id(),
-                'type_name' => 'chat',
-                'type_action' => null
-            ]);
+            // Buscar conversación existente
+            $conversationId = CrmParticipant::whereIn('person_id', [$contactId, $personId])
+                ->groupBy('conversation_id')
+                ->having(DB::raw('COUNT(DISTINCT user_id)'), '>=', 2)
+                ->value('conversation_id');
 
-            // Agregar participantes
-            CrmParticipant::create([
-                'conversation_id' => $conversation->id,
+            $participants = [];
+
+            if (!$conversationId) {
+                // Crear nueva conversación
+                $conversation = CrmConversation::create([
+                    'title' => 'private',
+                    'user_id' => Auth::id(),
+                    'type_name' => 'chat',
+                    'type_action' => null
+                ]);
+
+                // Agregar participantes
+                CrmParticipant::create([
+                    'conversation_id' => $conversation->id,
+                    'person_id' => $personId,
+                    'user_id' => Auth::id()
+                ]);
+
+                CrmParticipant::create([
+                    'conversation_id' => $conversation->id,
+                    'person_id' => $contactId,
+                    'user_id' => CrmUser::where('person_id', $contactId)->value('id') ?? null
+                ]);
+
+                $conversationId = $conversation->id;
+            }
+            // buscamos a todos los participantes de la conversacion ecepto el que lo envia
+            $participants = CrmParticipant::where('conversation_id', $conversationId)
+                ->where('user_id', '<>', Auth::id())
+                ->pluck('user_id');
+            // Crear el mensaje
+            $message = CrmMessage::create([
+                'conversation_id' => $conversationId,
                 'person_id' => $personId,
-                'user_id' => Auth::id()
-            ]);
-            CrmParticipant::create([
-                'conversation_id' => $conversation->id,
-                'person_id' => $contactId,
-                'user_id' => CrmUser::where('person_id', $contactId)->value('id') ?? null
+                'content' => htmlentities($request->get('text'), ENT_QUOTES, "UTF-8"),
+                'type' => $request->get('type')
             ]);
 
-            $conversationId = $conversation->id;
+            // Devolver la conversación con los mensajes
+            broadcast(new SendMessage($participants, $message, ['ofUserId' => $personId]));
+
+            CrmConversation::find($conversationId)->update([
+                'new_message' => true,
+            ]);
+
+            return response()->json(['success' => true], 201);
+        } else {
+            return response()->json(['success' => false], 201);
         }
-
-        // Crear el mensaje
-        $message = CrmMessage::create([
-            'conversation_id' => $conversationId,
-            'person_id' => $personId,
-            'content' => htmlentities($request->get('text'), ENT_QUOTES, "UTF-8"),
-            'type' => $request->get('type')
-        ]);
-
-        // Devolver la conversación con los mensajes
-
-        broadcast(new MessageSent($message))->toOthers();
-
-        return response()->json(['success' => true], 201);
     }
 
     public function getMessages(Request $request)
@@ -89,8 +104,13 @@ class CrmMessagesController extends Controller
         $AuthpersonId = Auth::user()->person_id;
 
         $messages = CrmMessage::where('conversation_id', $conversationId)
-            ->orderBy('created_at')
+            ->orderBy('id')
+            ->limit(200)
             ->get();
+
+        $message_last = CrmMessage::where('conversation_id', $conversationId)
+            ->orderByDesc('id')
+            ->first();
 
         $formattedMessages = $messages->map(function ($message) use ($AuthpersonId, $personId) {
             $message->fromUserId = ($message->person_id == $AuthpersonId ? $personId : 0);
@@ -99,7 +119,14 @@ class CrmMessagesController extends Controller
             $message->time = timeElapsed($message->created_at);
             return $message;
         });
-        //dd($formattedMessages);
+
+        if ($message_last && $message_last->person_id != $AuthpersonId) {
+            CrmConversation::find($conversationId)->update([
+                'new_message' => false
+            ]);
+        }
+
+
         return response()->json($formattedMessages);
     }
 

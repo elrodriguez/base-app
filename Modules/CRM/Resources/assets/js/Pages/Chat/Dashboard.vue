@@ -22,11 +22,12 @@
     import IconSend from '@/Components/vristo/icon/icon-send.vue';
     import IconCamera from '@/Components/vristo/icon/icon-camera.vue';
     import IconMessage from '@/Components/vristo/icon/icon-message.vue';
-    import { useForm, Link } from '@inertiajs/vue3'
+    import { useForm, Link, usePage } from '@inertiajs/vue3';
     import AudioRecord from './Partials/AudioRecord.vue';
     import UploadFile from './Partials/UploadFile.vue';
-    import AudioPlay from '@/Components/AudioPlay.vue';
+    import AudioPlay from '@/Components/AudioPlayer.vue';
     import FileDownload from './Partials/FileDownload.vue';
+    import Swal from 'sweetalert2';
 
     const data = reactive({
         posts: []
@@ -86,8 +87,17 @@
         }
     };
 
-    const selectUser = (user) => {
+    const selectUser = (user,iidex) => {
         isShowLoadingMessages.value = true;
+        data.posts.data[iidex].newMessage = false;
+        // Cambia 'miDiv' por el ID de tu div
+        let myDiv = document.getElementById('header-total-news'); 
+
+        // Verifica si el div existe
+        if (myDiv) {
+            myDiv.style.display = 'none'; // Oculta el div
+        }
+        
         try {
             axios.post(route('crm_list_message'),{
                 conversationId: user.conversationId,
@@ -111,7 +121,6 @@
     const sendMessage = () => {
         if (textMessage.value.trim()) {
             isShowLoadingSend.value = true;
-            const user = data.posts.data.find((d) => d.userId === selectedUser.value.userId);
             const msg = {
                 fromUserId: selectedUser.value.userId,
                 toUserId: 0,
@@ -123,9 +132,13 @@
             axios.post(route('crm_send_message'),msg).then((response) => {
                 return response.data;
             }).then((res) => {
-                user.messages.push(msg);
-                textMessage.value = '';
-                scrollToBottom();
+                if(res.success){
+                    selectedUser.value.messages.push(msg);
+                    textMessage.value = '';
+                    scrollToBottom();
+                }else{
+                    showMessage('No puede enviar mensajes en este momento. Por favor, complete su información personal en su perfil para habilitar esta función.','info');
+                }
                 isShowLoadingSend.value = false;
             });
         }
@@ -150,7 +163,7 @@
     const sendAudioMessage = (audio) => {
         if (audio.file_name.trim()) {
             isShowLoadingSend.value = true;
-            const user = data.posts.data.find((d) => d.userId === selectedUser.value.userId);
+            
             const msg = {
                 fromUserId: selectedUser.value.userId,
                 toUserId: 0,
@@ -162,7 +175,7 @@
             axios.post(route('crm_send_message'),msg).then((response) => {
                 return response.data;
             }).then((res) => {
-                user.messages.push(msg);
+                selectedUser.value.messages.push(msg);
                 scrollToBottom();
                 isShowLoadingSend.value = false;
             });
@@ -172,7 +185,6 @@
     const sendFileMessage = (file) => {
         if (file.name.trim()) {
             isShowLoadingSend.value = true;
-            const user = data.posts.data.find((d) => d.userId === selectedUser.value.userId);
             const msg = {
                 fromUserId: selectedUser.value.userId,
                 toUserId: 0,
@@ -184,12 +196,63 @@
             axios.post(route('crm_send_message'),msg).then((response) => {
                 return response.data;
             }).then((res) => {
-                user.messages.push(msg);
+                selectedUser.value.messages.push(msg);
                 scrollToBottom();
                 isShowLoadingSend.value = false;
             });
         }
     }
+
+    // Configura tu conexión a Socket.IO
+    const authUser = usePage().props.auth.user;
+
+    onMounted(() => {
+        window.socketIo.on('message-notification', (result) => {
+            let participants = result.data.participants;
+            let conversationId = result.data.message.conversation_id;
+
+            const newmsg = {
+                fromUserId: result.data.ofUserId,
+                toUserId: 0,
+                text: result.data.message.content,
+                time: 'En este momento',
+                type: result.data.message.type,
+                id: result.data.message.id
+            };
+            
+            participants.forEach(item => {
+                if(authUser.id == item){
+                    fetchPosts()
+                    if(selectedUser.value){
+                        if(conversationId == selectedUser.value.conversationId){
+                            selectedUser.value.messages.push(newmsg);
+                            scrollToBottom();
+                        }
+                    }
+                    
+                }
+            });
+        });
+    });
+
+    onUnmounted(() => {
+        window.socketIo.off('message-notification'); // Dejar el canal cuando se desmonte el componente
+    });
+
+    const showMessage = (msg = '', type = 'success') => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            customClass: { container: 'toast' },
+        });
+        toast.fire({
+            icon: type,
+            title: msg,
+            padding: '10px 20px',
+        });
+    };
 </script>
 <template>
     <AppLayout title="Chat">
@@ -302,14 +365,14 @@
                                 </div>
                             </template>
                             <template v-else>
-                                <template v-for="person in data.posts.data" :key="person.id">
+                                <template v-for="(person, iidex) in data.posts.data" :key="person.id">
                                     <button
                                         type="button"
                                         class="w-full flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-[#050b14] rounded-md dark:hover:text-primary hover:text-primary"
                                         :class="{
                                             'bg-gray-100 dark:bg-[#050b14] dark:text-primary text-primary': selectedUser && selectedUser.userId === person.userId,
                                         }"
-                                        @click="selectUser(person)"
+                                        @click="selectUser(person,iidex)"
                                     >
                                         <div class="flex-1">
                                             <div class="flex items-center">
@@ -327,13 +390,20 @@
                                                         </div>
                                                     </template>
                                                 </div>
+                                                
                                                 <div class="mx-3 ltr:text-left rtl:text-right">
-                                                    <p class="mb-1 font-semibold">{{ person.full_name }}</p>
-                                                    <p class="text-xs text-white-dark truncate max-w-[185px]">{{ person.preview }}</p>
+                                                    <p 
+                                                        :class="person.newMessage == true ? 'text-gray-900 font-semibold dark:text-white' : 'text-gray-700 dark:text-white-dark'"
+                                                        class="mb-1 "
+                                                    >{{ person.full_name }} </p>
+                                                    <p 
+                                                        :class="person.newMessage == true ? 'text-gray-900 dark:text-white' : 'text-white-dark'"
+                                                        class="text-xs truncate max-w-[185px]"
+                                                    >{{ person.preview }}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="font-semibold whitespace-nowrap text-xs">
+                                        <div v-if="person.time" class="font-semibold whitespace-nowrap text-xs">
                                             <p>{{ person.time }}</p>
                                         </div>
                                     </button>
@@ -610,7 +680,7 @@
                                                     <div class="flex-none" :class="{ 'order-2': selectedUser.userId === message.fromUserId }">
                                                         <template v-if="selectedUser.userId === message.fromUserId">
                                                             <img v-if="$page.props.auth.user.avatar" :src="getImage($page.props.auth.user.avatar)" class="rounded-full h-10 w-10 object-cover" />
-                                                            <img v-else :src="'https://ui-avatars.com/api/?name='+$page.props.auth.user.full_name+'&size=54&rounded=true'" :alt="$page.props.auth.user.full_name" class="rounded-full h-10 w-10 object-cover" />
+                                                            <img v-else :src="'https://ui-avatars.com/api/?name='+$page.props.auth.user.name+'&size=54&rounded=true'" :alt="$page.props.auth.user.full_name" class="rounded-full h-10 w-10 object-cover" />
                                                         </template>
                                                         <template v-if="selectedUser.userId !== message.fromUserId">
                                                             <img v-if="selectedUser.image" :src="getImage(selectedUser.image)" class="rounded-full h-10 w-10 object-cover" />
@@ -619,28 +689,32 @@
                                                     </div>
                                                     <div class="space-y-2">
                                                         <div class="flex items-center gap-3">
-                                                            <template v-if="message.type == 'text'">
+                                                            
                                                                 <div class="dark:bg-gray-800 p-4 py-2 rounded-md bg-black/10"
                                                                     :class="message.fromUserId == selectedUser.userId
-                                                                            ? 'ltr:rounded-br-none rtl:rounded-bl-none '
-                                                                            : 'ltr:rounded-bl-none rtl:rounded-br-none'
+                                                                            ? 'ltr:rounded-br-none rtl:rounded-bl-none !bg-primary text-white'
+                                                                            : 'ltr:rounded-tl-none rtl:rounded-tr-none'
                                                                     "
                                                                 >
-                                                                    {{ message.text }}
+                                                                    <template v-if="message.type == 'text'">
+                                                                        {{ message.text }}
+                                                                    </template>
+                                                                    <template v-if="message.type == 'audio'">
+                                                                        <AudioPlay :audioSrc="message.text" :position="message.fromUserId == selectedUser.userId ? 'right' : 'left'" />
+                                                                    </template>
+                                                                    <template v-if="message.type == 'file'">
+                                                                        <FileDownload 
+                                                                            :fileDate="message.text" 
+                                                                            :position="message.fromUserId == selectedUser.userId
+                                                                                    ? 'right'
+                                                                                    : 'left'
+                                                                            "
+                                                                        />
+                                                                    </template>
                                                                 </div>
-                                                            </template>
-                                                            <template v-if="message.type == 'audio'">
-                                                                <AudioPlay :audio="message.text" :stclass="message.fromUserId == selectedUser.userId ? 'right' : 'left'" />
-                                                            </template>
-                                                            <template v-if="message.type == 'file'">
-                                                                <FileDownload 
-                                                                    :fileDate="message.text" 
-                                                                    :class="message.fromUserId == selectedUser.userId
-                                                                            ? 'ltr:rounded-br-none rtl:rounded-bl-none'
-                                                                            : 'ltr:rounded-bl-none rtl:rounded-br-none'
-                                                                    "
-                                                                />
-                                                            </template>
+                                                           
+                                                            
+                                                            
                                                             <div :class="{ hidden: selectedUser.userId === message.fromUserId }">
                                                                 <icon-mood-smile class="hover:text-primary" />
                                                             </div>
@@ -664,7 +738,7 @@
                                     <div class="relative flex-1">
                                         <input
                                             class="form-input rounded-full border-0 bg-[#f4f4f4] px-12 focus:outline-none py-2"
-                                            placeholder="Type a message"
+                                            placeholder="Escribe un mensaje"
                                             v-model="textMessage"
                                             @keyup.enter.exact="sendMessage()"
                                         />

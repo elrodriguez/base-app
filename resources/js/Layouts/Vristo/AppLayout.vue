@@ -8,6 +8,8 @@
     import { Head } from '@inertiajs/vue3';
     import { useAppStore } from '@/stores/index';
 
+    import ChatBox from 'Modules/CRM/Resources/assets/js/Components/ChatBox.vue';
+
     const store = useAppStore();
 
     const showTopButton = ref(false);
@@ -122,6 +124,7 @@
                 </div>
             </div>
         </div>
+        <ChatBox /> 
     </div>
 </template>
 

@@ -72,6 +72,10 @@ createInertiaApp({
                         // Redirigir al inicio de sesión cuando la sesión ha caducado
                         router.visit("/login", { replace: true });
                     }
+                    if (error.response && error.response.status === 419) {
+                        // Redirigir al inicio de sesión cuando la sesión ha caducado
+                        router.visit("/login", { replace: true });
+                    }
                 });
             },
         });

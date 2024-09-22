@@ -25,6 +25,13 @@ window.axios.interceptors.response.use(
         // Redirigir al usuario a la página de inicio de sesión (reemplaza "/login" con la ruta real)
         window.location.href = '/login';
       }
+      if (error.response && error.response.status === 419) {
+        // Si la respuesta tiene un código de estado 401, significa que el usuario no está autenticado.
+        // Aquí redirigiremos al usuario a la página de inicio de sesión.
+  
+        // Redirigir al usuario a la página de inicio de sesión (reemplaza "/login" con la ruta real)
+        window.location.href = '/login';
+      }
       return Promise.reject(error);
     }
 );
@@ -50,3 +57,7 @@ window.axios.interceptors.response.use(
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
+
+import io from 'socket.io-client';
+const socketIoHost = import.meta.env.SOCKET_IO_SERVER ?? 'https://localhost:3000';
+window.socketIo = io(socketIoHost);

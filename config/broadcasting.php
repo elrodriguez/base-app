@@ -56,10 +56,11 @@ return [
             'driver' => 'redis',
             'connection' => 'default',
         ],
+
         'socketio' => [
-            'driver' => 'custom',
-            'via' => \App\Broadcasting\SocketIoBroadcaster::class, // Creamos esta clase después
+            'driver' => 'socketio',  // Nombre del driver personalizado registrado en el Service Provider
         ],
+
         'log' => [
             'driver' => 'log',
         ],

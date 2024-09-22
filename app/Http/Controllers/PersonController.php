@@ -260,18 +260,16 @@ class PersonController extends Controller
             ]
         );
 
-        $person = Person::updateOrCreate(
-            [
+        if ($person_id) {
+            Person::find($person_id)->update([
                 'document_type_id' => $request->get('document_type_id'),
-                'number' => $request->input('number')
-            ], // Buscamos a la persona 
-            [
-                'short_name' => $request->input('names'),
+                'number' => trim($request->input('number')),
+                'short_name' => trim($request->input('names')),
                 'full_name' => trim($request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names')),
-                'description' => $request->input('description'),
+                'description' => trim($request->input('description')),
                 'telephone' => $request->input('telephone'),
-                'email' => $request->input('email'),
-                'address' => $request->input('address'),
+                'email' => trim($request->input('email')),
+                'address' => trim($request->input('address')),
                 'ubigeo' => $request->input('ubigeo')['district_id'],
                 'birthdate' => $request->input('birthdate'),
                 'names' => trim($request->input('names')),
@@ -283,12 +281,43 @@ class PersonController extends Controller
                 'status' => true,
                 'social_networks' => json_encode($request->input('social_networks')),
                 'ubigeo_description' => $request->input('ubigeo')['name_city']
-            ]
-        );
+            ]);
 
-        User::find(Auth::id())->update([
-            'person_id' => $person->id
-        ]);
+            User::find(Auth::id())->update([
+                'email' => trim($request->input('email')),
+                'name' => trim($request->input('names'))
+            ]);
+        } else {
+            $person = Person::updateOrCreate(
+                [
+                    'document_type_id' => $request->get('document_type_id'),
+                    'number' => $request->input('number')
+                ], // Buscamos a la persona 
+                [
+                    'short_name' => $request->input('names'),
+                    'full_name' => trim($request->get('father_lastname') . ' ' .  $request->get('mother_lastname') . ' ' . $request->get('names')),
+                    'description' => $request->input('description'),
+                    'telephone' => $request->input('telephone'),
+                    'email' => trim($request->input('email')),
+                    'address' => trim($request->input('address')),
+                    'ubigeo' => $request->input('ubigeo')['district_id'],
+                    'birthdate' => $request->input('birthdate'),
+                    'names' => trim($request->input('names')),
+                    'father_lastname' => trim($request->input('father_lastname')),
+                    'mother_lastname' => trim($request->input('mother_lastname')),
+                    'ocupacion' => $request->input('ocupacion'),
+                    'presentacion' => $request->input('presentacion'),
+                    'gender' => $request->input('gender'),
+                    'status' => true,
+                    'social_networks' => json_encode($request->input('social_networks')),
+                    'ubigeo_description' => $request->input('ubigeo')['name_city']
+                ]
+            );
+
+            User::find(Auth::id())->update([
+                'person_id' => $person->id
+            ]);
+        }
     }
 
 
