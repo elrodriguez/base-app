@@ -14,6 +14,12 @@ const menuConfig = {
             permissions: "empresa",
         },
         {
+            route: route("modulos.index"),
+            status: false,
+            text: "Modulos",
+            permissions: "modulos",
+        },
+        {
             route: route("roles.index"),
             status: false,
             text: "Roles",

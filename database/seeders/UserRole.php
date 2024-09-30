@@ -25,6 +25,7 @@ class UserRole extends Seeder
         array_push($permissions, Permission::create(['name' => 'dashboard']));
         array_push($permissions, Permission::create(['name' => 'configuracion']));
         array_push($permissions, Permission::create(['name' => 'empresa']));
+        array_push($permissions, Permission::create(['name' => 'modulos']));
         array_push($permissions, Permission::create(['name' => 'usuarios']));
         array_push($permissions, Permission::create(['name' => 'usuarios_nuevo']));
         array_push($permissions, Permission::create(['name' => 'usuarios_editar']));

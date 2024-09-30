@@ -4,7 +4,7 @@ namespace Modules\Dental\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Health\Database\Seeders\PermissionsDentalTableSeeder;
+use Modules\Dental\Database\Seeders\PermissionsDentalTableSeeder;
 
 class DentalDatabaseSeeder extends Seeder
 {

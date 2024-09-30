@@ -45,7 +45,7 @@
 
 <template>
     <AppLayout title="Roles">
-       <Navigation :routeModule="route('security_dashboard')" :titleModule="'Configuraciones'">
+        <Navigation :routeModule="route('security_dashboard')" :titleModule="'Configuraciones'">
             <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                 <span>Roles</span>
             </li>

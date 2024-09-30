@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\MetaController;
+use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\WebPageController;
 use App\Mail\StudentRegistrationMailable;
 use App\Models\District;
@@ -73,7 +74,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('clients', ClientController::class);
     Route::resource('users', UserController::class);
     Route::resource('establishments', LocalSaleController::class);
-
+    Route::resource('modulos', ModuloController::class);
+    Route::get('modulos/permissions/{id}/add', [ModuloController::class, 'permissions'])->name('modulos_permissions');
+    Route::post('modulos/permissions/store', [ModuloController::class, 'storePermissions'])->name('modulos_permissions_store');
     Route::delete('establishments/destroies/{id}', [LocalSaleController::class, 'destroy'])->name('establishment_destroies');
     Route::post('establishments/updated', [LocalSaleController::class, 'update'])->name('establishment_updated');
 

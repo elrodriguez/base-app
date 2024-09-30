@@ -119,6 +119,7 @@ class AppointmentController extends Controller
             'message'               => $request->get('message'),
             'status'                => 1,
             'created_user_id'       => Auth::id(),
+            'updated_user_id'       => Auth::id(),
             'sick_time'             => $request->get('sick_time'),
         ]);
 

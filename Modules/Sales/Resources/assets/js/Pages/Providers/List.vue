@@ -3,6 +3,7 @@
     import { useForm } from '@inertiajs/vue3';
     import { faTrashAlt, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
     import Pagination from '@/Components/Pagination.vue'
+    import Navigation from '@/Components/vristo/layout/Navigation.vue';
 
     const props = defineProps({
         providers: {
@@ -28,16 +29,15 @@
 </script>
 
 <template>
-    <AppLayout title="Create Team">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Proveedors
-            </h2>
-        </template>
-
-        <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div class="col-span-6 p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+    <AppLayout title="Proveedores">
+        <Navigation :routeModule="route('sales_dashboard')" :titleModule="'Ventas'">
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Proveedores</span>
+            </li>
+        </Navigation>
+        <div class="mt-5">
+            <div class="panel p-0">
+                <div class="w-full p-4">
                     <form @submit.prevent="form.get(route('providers.index'))">
                         <div class="grid grid-cols-3 gap-4 py-2">
                             <div>
@@ -71,26 +71,27 @@
                             </div>
                         </div>
                     </form>
-
-                    <table class="border mb-4" style="width: 100%;">
+                </div>
+                <div class="table-responsive">
+                    <table class="border-t mb-4" style="width: 100%;">
                         <thead class="border-b">
                             <tr>
-                                <th scope="col" class="w-2.5 text-sm font-medium text-gray-900 px-6 py-4 border-r">
+                                <th scope="col" class="w-2.5 text-sm font-medium text-gray-900 px-6 py-2.5 border-r">
                                 #
                                 </th>
-                                <th scope="col" class="w-4 text-sm font-medium text-gray-900 px-6 py-4 border-r">
+                                <th scope="col" class="w-4 text-sm font-medium text-gray-900 px-6 py-2.5 border-r">
                                     Acción
                                 </th>
-                                <th scope="col" class="w-4 text-sm font-medium text-gray-900 px-6 py-4 border-r">
+                                <th scope="col" class="w-4 text-sm font-medium text-gray-900 px-6 py-2.5 border-r">
                                     RUC
                                 </th>
-                                <th scope="col" class="w-4 text-sm font-medium text-gray-900 px-6 py-4 border-r">
-                                    Nombre de Proveedor(C)
+                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-2.5 border-r">
+                                    Nombre de Proveedor
                                 </th>
-                                <th scope="col" class="w-4 text-sm font-medium text-gray-900 px-6 py-4 border-r">
+                                <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-2.5 border-r">
                                     Nombre Corto
                                 </th>
-                                <th scope="col" class="text-left text-sm font-medium text-gray-900 px-6 py-4">
+                                <th scope="col" class="text-left text-sm font-medium text-gray-900 px-6 py-2.5">
                                     Descripción
                                 </th>
                             </tr>
@@ -131,8 +132,8 @@
                         </tbody>
                     </table>
                     <Pagination :data="providers" />
+                    
                 </div>
-
             </div>
         </div>
     </AppLayout>

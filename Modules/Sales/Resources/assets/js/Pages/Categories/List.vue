@@ -28,8 +28,6 @@
         search: props.filters.search,
     });
 
-    const formDelete = useForm({})
-
     const destroyCategory = (id) => {
         Swal2.fire({
             title: '¿Estas seguro?',

@@ -1,20 +1,22 @@
 <script setup>
-    import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
+import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
 import CreateProviderForm from './Partials/CreateProviderForm.vue';
+import Navigation from '@/Components/vristo/layout/Navigation.vue';
+
 </script>
 
 <template>
     <AppLayout title="Create Team">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Crear Proveedor
-            </h2>
-        </template>
-
-        <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <CreateProviderForm />
-            </div>
+        <Navigation :routeModule="route('purchases_dashboard')" :titleModule="'Compras'">
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <Link :href="route('providers.index')">Proveedores</Link>
+            </li>
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Nuevo</span>
+            </li>
+        </Navigation>
+        <div class="mt-5">
+            <CreateProviderForm />
         </div>
     </AppLayout>
 </template>

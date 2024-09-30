@@ -68,6 +68,7 @@
         "tippy.vue": "^3.2.1",
         "vue-collapsed": "^1.3.3",
         "vue-cropperjs": "^5.0.0",
+        "vue-draggable-next": "^2.2.1",
         "vue-flatpickr-component": "^11.0.5",
         "vue-gates": "^2.1.2",
         "vue-height-collapsible": "^0.1.1",
