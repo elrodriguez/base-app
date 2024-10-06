@@ -49,6 +49,8 @@
 /* form element*/
 @import 'form-elements.css';
 
+@import 'ant-design-vue.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -715,4 +717,7 @@ hover:text-primary hover:before:!bg-primary ltr:before:mr-2 rtl:before:ml-2 dark
 }
 .no-animtion [data-height-collapsible] {
     transition: none !important;
+}
+.ar-shadow {
+    box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6, 0 -1px 0 #e6e6e6, 0 3px 13px rgba(0,0,0,0.08);
 }

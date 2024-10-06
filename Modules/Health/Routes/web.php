@@ -14,7 +14,7 @@
 use Modules\Health\Http\Controllers\Odontology\HealOdoAppointmentController;
 
 Route::middleware(['auth', 'verified'])->prefix('health')->group(function () {
-    Route::get('dashboard', 'HealthController@index');
+    Route::get('dashboard', 'HealthController@index')->name('health_dashboard');
     Route::get('patients', 'HealPatientController@index')->name('heal_patients_list');
     Route::get('patients/create', 'HealPatientController@create')->name('heal_patients_create');
     Route::post('patients/store', 'HealPatientController@store')->name('heal_patients_store');
@@ -29,4 +29,6 @@ Route::middleware(['auth', 'verified'])->prefix('health')->group(function () {
     Route::get('doctor/edit/{id}', 'DoctorController@edit')->name('heal_doctors_edit');
     Route::post('doctor/update', 'DoctorController@update')->name('heal_doctors_update');
     Route::delete('doctor/destroy/{id}', 'DoctorController@destroy')->name('heal_doctors_destroy');
+    Route::get('patients/appointments/{id}/todos', 'HealPatientController@appointments')->name('heal_patients_appointments');
+    Route::get('patients/medical/{id}/record', 'HealHistoryController@patientStory')->name('heal_patients_story');
 });

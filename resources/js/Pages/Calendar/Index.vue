@@ -8,6 +8,8 @@
     import timeGridPlugin from '@fullcalendar/timegrid';
     import interactionPlugin from '@fullcalendar/interaction';
     import momentTimezonePlugin from '@fullcalendar/moment-timezone';
+    import esLocale from '@fullcalendar/core/locales/es';
+
     import Swal from 'sweetalert2';
 
     import IconPlus from '@/Components/vristo/icon/icon-plus.vue';
@@ -55,6 +57,7 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay',
             },
+            locale: esLocale,
             editable: true,
             dayMaxEvents: true,
             selectable: true,

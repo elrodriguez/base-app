@@ -1,19 +1,24 @@
 <script setup>
     import AppLayout from '@/Layouts/Vristo/AppLayout.vue';
     import { ref, onMounted } from 'vue';
-    import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogOverlay } from '@headlessui/vue';
     import Swal from 'sweetalert2';
-
+    import ModalLarge from '@/Components/ModalLarge.vue';
     import IconUserPlus from '@/Components/vristo/icon/icon-user-plus.vue';
     import IconListCheck from '@/Components/vristo/icon/icon-list-check.vue';
     import IconLayoutGrid from '@/Components/vristo/icon/icon-layout-grid.vue';
     import IconSearch from '@/Components/vristo/icon/icon-search.vue';
     import { faPerson, faPersonDress, faFile, faClock, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
-    import IconEdit from '@/Components/vristo/icon/icon-edit.vue';
-    import IconInstagram from '@/Components/vristo/icon/icon-instagram.vue';
-    import IconLinkedin from '@/Components/vristo/icon/icon-linkedin.vue';
-    import IconTwitter from '@/Components/vristo/icon/icon-twitter.vue';
+    import IconChecks from '@/Components/vristo/icon/icon-checks.vue';
+    import IconX from '@/Components/vristo/icon/icon-x.vue';
+    import IconTooth from '@/Components/vristo/icon/icon-tooth.vue';
+    import IconClock from '@/Components/vristo/icon/icon-clock.vue';
+    import IconCalendar from '@/Components/vristo/icon/icon-calendar.vue';
+    import IconCaretDown from '@/Components/vristo/icon/icon-caret-down.vue';
+    import IconDollarSignCircle from '@/Components/vristo/icon/icon-dollar-sign-circle.vue';
     import { useForm, Link } from '@inertiajs/vue3';
+    import VueCollapsible from 'vue-height-collapsible/vue3';
+
+    const accordians3 = ref(0);
 
     const props = defineProps({
         patients: {
@@ -31,7 +36,6 @@
     });
 
     const displayType = ref('list');
-    const showAppointmentsModal = ref(false);
     const baseUrl = assetUrl;
 
     const getImage = (path) => {
@@ -40,11 +44,6 @@
 
     const searchContacts = () => {
         form.get(route('heal_patients_list'));
-    };
-
-    const showAppointments = () => {
-
-        showAppointmentsModal.value = true;
     };
 
     const deleteUser = (user = null) => {
@@ -65,6 +64,29 @@
             padding: '10px 20px',
         });
     };
+
+    const displayModalAppointments = ref(false);
+    const loadingAppointments = ref(false);
+    const listAppointments = ref([]);
+
+    const showModalAppointments = (item) => {
+        getAppointments(item.id);
+        displayModalAppointments.value = true;
+    }
+    const hideModalAppointments = () => {
+        displayModalAppointments.value = false;
+    }
+    const getAppointments = (id) => {
+        loadingAppointments.value = true;
+        axios({
+            method: 'get',
+            url: route('heal_patients_appointments',id),
+        }).then((response) => {
+            listAppointments.value = response.data
+        }).finally(() => {
+            loadingAppointments.value = false;
+        });
+    }
 </script>
 <template>
     <AppLayout title="Pacientes">
@@ -143,22 +165,22 @@
                                 <tr>
                                     <td>
                                         <div class="flex gap-1 items-center justify-center">
-                                            <Link v-tippy:bottom :href="route('heal_patients_edit',contact.person_id)" type="button" class="btn btn-sm btn-outline-primary">
+                                            <Link v-tippy:editar :href="route('heal_patients_edit',contact.person_id)" type="button" class="btn btn-sm btn-outline-primary">
                                                 <font-awesome-icon  :icon="faPencil" class="m-0" />
                                             </Link>
-                                            <tippy target="bottom" placement="bottom">Editar</tippy>
-                                            <Link v-tippy:bottom :href="route('heal_patients_edit',contact.person_id)" type="button" class="btn btn-sm btn-outline-success">
+                                            <tippy target="editar" placement="bottom">Editar</tippy>
+                                            <Link v-tippy:historia :href="route('heal_patients_story',contact.id)" type="button" class="btn btn-sm btn-outline-success">
                                                 <font-awesome-icon :icon="faFile" class="m-0" />
                                             </Link>
-                                            <tippy target="bottom" placement="bottom">Historia</tippy>
-                                            <button v-tippy:bottom type="button" class="btn btn-sm btn-outline-warning" @click="deleteUser(contact.person_id)">
+                                            <tippy target="historia" placement="bottom">Historia</tippy>
+                                            <button v-tippy:citass type="button" class="btn btn-sm btn-outline-warning" @click="showModalAppointments(contact)">
                                                 <font-awesome-icon :icon="faClock" />
                                             </button>
-                                            <tippy target="bottom" placement="bottom">Citas</tippy>
-                                            <button v-tippy:bottom type="button" class="btn btn-sm btn-outline-danger" @click="deleteUser(contact.person_id)">
+                                            <tippy target="citass" placement="bottom">Citas</tippy>
+                                            <button v-tippy:eliminar type="button" class="btn btn-sm btn-outline-danger" @click="deleteUser(contact.person_id)">
                                                 <font-awesome-icon :icon="faTrash" />
                                             </button>
-                                            <tippy target="bottom" placement="bottom">Eliminar</tippy>
+                                            <tippy target="eliminar" placement="bottom">Eliminar</tippy>
                                         </div>
                                     </td>
                                     <td>
@@ -229,16 +251,16 @@
                                 <div class="mt-4">
                                     <ul class="flex space-x-4 rtl:space-x-reverse items-center justify-center">
                                         <li>
-                                            <a v-tippy:bottom href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
+                                            <Link :href="route('heal_patients_story',contact.id)" v-tippy:history href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
                                                 <font-awesome-icon :icon="faFile" />
-                                            </a>
-                                            <tippy target="bottom" placement="bottom">Historia</tippy>
+                                            </Link>
+                                            <tippy target="history" placement="bottom">Historia</tippy>
                                         </li>
                                         <li>
-                                            <a v-tippy:bottom href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
+                                            <button @click="showModalAppointments(contact)" v-tippy:citas href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
                                                 <font-awesome-icon :icon="faClock" />
-                                            </a>
-                                            <tippy target="bottom" placement="bottom">Citas</tippy>
+                                            </button>
+                                            <tippy target="citas" placement="bottom">Citas</tippy>
                                         </li>
                                         <!-- <li>
                                             <a href="javascript:;" class="btn btn-outline-primary p-0 h-7 w-7 rounded-full">
@@ -277,5 +299,76 @@
             </div>
         </template>
     </div>
+    <ModalLarge 
+        :show="displayModalAppointments"
+        :onClose="hideModalAppointments"
+    >
+        <template #title>Citas</template>
+        <template #message>Listado de citas del Paciente</template>
+        <template #content>
+            <div class="space-y-2 font-semibold">
+                <template v-for="(item, ix) in listAppointments">
+                    <div class="border border-[#d3d3d3] dark:border-[#1b2e4b] rounded">
+                        <button
+                            type="button"
+                            class="p-4 w-full flex items-center text-white-dark dark:bg-[#1b2e4b]"
+                            :class="{ '!text-primary': accordians3 === ix }"
+                            @click="accordians3 === ix ? (accordians3 = null) : (accordians3 = ix)"
+                        >
+                            <icon-tooth class="w-5 h-6" />
+                            {{ item.title }}
+                            <div class="ltr:ml-auto rtl:mr-auto" :class="{ 'rotate-180': accordians3 === ix }">
+                                <icon-caret-down />
+                            </div>
+                        </button>
+                        <vue-collapsible :isOpen="accordians3 === ix">
+                            <div class="space-y-2 p-4 text-white-dark text-[13px] border-t border-[#d3d3d3] dark:border-[#1b2e4b]">
+                               <template v-for="(appointment, co) in item.appointments">
+                                    <div class="max-w-2xl mx-auto divide-y divide-gray-200 dark:divide-neutral-700">
+                                        <div class="py-8 first:pt-0 last:pb-0">
+                                            <div class="flex gap-x-5">
+                                                <div class="relative inline-flex align-middle flex-col items-start justify-center">
+                                                    <button v-if="appointment.status == 1" v-tippy:atender type="button" class="btn btn-danger btn-sm rounded-b-none w-full">
+                                                        <icon-x class="w-5 h-5" />
+                                                    </button>
+                                                    <tippy target="atender" :placement="'right'">Atender</tippy>
+                                                    <button v-if="appointment.status == 1" v-tippy:rechazar type="button" class="btn btn-success btn-sm rounded-t-none w-full">
+                                                        <icon-checks class="w-5 h-5" />
+                                                    </button>
+                                                    <tippy target="rechazar" :placement="'right'">Rechazar</tippy>
+                                                    <button v-if="appointment.status == 2" v-tippy:cobrar type="button" class="btn btn-primary btn-sm w-full">
+                                                        <icon-dollar-sign-circle class="w-5 h-5" />
+                                                    </button>
+                                                    <tippy target="cobrar" :placement="'right'">Cobrar</tippy>
+                                                </div>
+                                                <div class="grow">
+                                                    <h3 class="md:text-lg font-semibold text-gray-800 dark:text-neutral-200">
+                                                        {{ appointment.description }}
+                                                    </h3>
+                                                    <div class="flex items-center space-x-2">
+                                                        <icon-calendar class="w-4 h-4" />
+                                                        <span>{{ appointment.date_appointmen }} </span>
+                                                        <icon-clock class="w-4 h-4" />  
+                                                        <span>{{ appointment.time_appointmen }} hasta {{ appointment.time_end_appointmen }}</span>
+                                                    </div>
+                                                    <p class="mt-1 text-gray-500 dark:text-neutral-500">
+                                                        {{ appointment.details }}
+                                                        <span v-if="appointment.status == 1" class="badge bg-info my-auto ltr:ml-3 rtl:mr-3 hover:top-0">Pendiente</span>
+                                                        <span v-if="appointment.status == 2" class="badge bg-success my-auto ltr:ml-3 rtl:mr-3 hover:top-0">Atendido</span>
+                                                        <span v-if="appointment.status == 0" class="badge bg-danger my-auto ltr:ml-3 rtl:mr-3 hover:top-0">Rechazado</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr v-if="co > 0" />
+                               </template>                                 
+                            </div>
+                        </vue-collapsible>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </ModalLarge>
     </AppLayout>
 </template>

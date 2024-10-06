@@ -253,3 +253,33 @@
   background-color: #0e1726;
   color: #888ea8;
 }
+
+
+
+.dark .fc-list-table .fc-list-day .fc-list-day-cushion {
+  background-color: #212335 !important;  /* Asegura que los td cambien de fondo */
+}
+
+
+
+.dark .fc-theme-standard .fc-list {
+  border: 1px solid #3b3f5c;
+}
+.calendar-wrapper .fc-event td{
+  padding: 2px 4px;
+  background-color: #888ea8;
+}
+.dark .fc .fc-list-table tr td:hover{
+  background-color: #0e1726;
+  padding: 2px 4px;
+  color: white;
+}
+
+.fc-list-table .fc-event:hover {
+  background-color: black !important;  /* Cambia el fondo del tr */
+}
+
+.fc-list-table .fc-event:hover td {
+  background-color: black !important;  /* Asegura que los td cambien de fondo */
+  color: white !important;  /* Cambia el color del texto dentro de cada td */
+}

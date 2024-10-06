@@ -34,7 +34,7 @@ const menuHealth = {
             permissions: 'dental_dashboard',
             items: [
                 {
-                    route: route('odontology_appointments_list'),
+                    route: route('odontology_appointments_calendar'),
                     status: false,
                     text: 'Citas',
                     permissions: 'dental_citas_listado',

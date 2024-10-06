@@ -714,7 +714,7 @@ const sendMessageWhatsapp = () => {
                                         leave-to="opacity-0 scale-95"
                                     >
                                         <DialogPanel
-                                            class="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg text-black dark:text-white-dark"
+                                            class="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-5xl text-black dark:text-white-dark"
                                         >
                                             <button
                                                 type="button"
@@ -728,89 +728,57 @@ const sendMessageWhatsapp = () => {
                                             </div>
                                             <div class="p-5">
                                                 <form @submit.prevent="saveAppointment" class="space-y-5" >
-                                                    <div :class="[form.doctor_id? form.errors.doctor_id ? 'has-success' : 'has-error' : '', ]" class="" >
-                                                        <label for="doctor_id" >Doctores</label>
-                                                        <multiselect
-                                                            id="doctor_id" :model-value="form.doctor_id"
-                                                            v-model="form.doctor_id"
-                                                            :options="doctors"
-                                                            class="custom-multiselect"
-                                                            :searchable="true"
-                                                            placeholder="Buscar doctor"
-                                                            selected-label="seleccionado"
-                                                            select-label="Elegir"
-                                                            deselect-label="Quitar"
-                                                            label="name"
-                                                            track-by="code"
-                                                        ></multiselect>
-                                                        <InputError
-                                                            :message="
-                                                                form.errors
-                                                                    .doctor_id
-                                                            "
-                                                            class="mt-1"
-                                                        />
-                                                    </div>
-                                                    <div
-                                                        :class="[
-                                                            form.patient_id
-                                                                ? form.errors
-                                                                      .patient_id
-                                                                    ? 'has-success'
-                                                                    : 'has-error'
-                                                                : '',
-                                                        ]"
-                                                        class=""
-                                                    >
-                                                        <label for="patient_id" >Paciente</label>
-                                                        <multiselect
-                                                            id="patient_id"
-                                                            v-model="form.patient_id"
-                                                            :options="patients"
-                                                            class="custom-multiselect"
-                                                            :searchable="true"
-                                                            placeholder="Buscar paciente"
-                                                            selected-label="seleccionado"
-                                                            select-label="Elegir"
-                                                            deselect-label="Quitar"
-                                                            label="name"
-                                                            track-by="code"
-                                                            @update:model-value="updateSelected"
-                                                        ></multiselect>
-                                                        <InputError :message="form.errors.patient_id" class="mt-1" />
-                                                    </div>
-                                                    <div class="grid grid-cols-1 gap-5 md:grid-cols-2" >
-                                                        <div
-                                                            :class="[
-                                                                form.date_appointmen
-                                                                    ? form
-                                                                          .errors
-                                                                          .date_appointmen
-                                                                        ? 'has-success'
-                                                                        : 'has-error'
-                                                                    : '',
-                                                            ]"
+                                                    <div class="grid sm:grid-cols-2 gap-5">
+                                                        <div :class="[form.doctor_id? form.errors.doctor_id ? 'has-success' : 'has-error' : '', ]" class="" >
+                                                            <label for="doctor_id" >Doctores</label>
+                                                            <multiselect
+                                                                id="doctor_id" :model-value="form.doctor_id"
+                                                                v-model="form.doctor_id"
+                                                                :options="doctors"
+                                                                class="custom-multiselect"
+                                                                :searchable="true"
+                                                                placeholder="Buscar doctor"
+                                                                selected-label="seleccionado"
+                                                                select-label="Elegir"
+                                                                deselect-label="Quitar"
+                                                                label="name"
+                                                                track-by="code"
+                                                            ></multiselect>
+                                                            <InputError :message="form.errors.doctor_id" class="mt-1" />
+                                                        </div>
+                                                        <div :class="[form.patient_id ? form.errors.patient_id ? 'has-success' : 'has-error' : '', ]"
                                                             class=""
                                                         >
-                                                            <label
-                                                                for="date_appointmen"
-                                                                >Día</label
-                                                            >
+                                                            <label for="patient_id" >Paciente</label>
+                                                            <multiselect
+                                                                id="patient_id"
+                                                                v-model="form.patient_id"
+                                                                :options="patients"
+                                                                class="custom-multiselect"
+                                                                :searchable="true"
+                                                                placeholder="Buscar paciente"
+                                                                selected-label="seleccionado"
+                                                                select-label="Elegir"
+                                                                deselect-label="Quitar"
+                                                                label="name"
+                                                                track-by="code"
+                                                                @update:model-value="updateSelected"
+                                                            ></multiselect>
+                                                            <InputError :message="form.errors.patient_id" class="mt-1" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="grid grid-cols-1 gap-5 md:grid-cols-2" >
+                                                        <div :class="[form.date_appointmen ? form.errors.date_appointmen ? 'has-success' : 'has-error' : '', ]"
+                                                            class=""
+                                                        >
+                                                            <label for="date_appointmen" >Día</label>
                                                             <input
                                                                 id="date_appointmen"
                                                                 type="date"
                                                                 class="form-input"
-                                                                v-model="
-                                                                    form.date_appointmen
-                                                                "
+                                                                v-model="form.date_appointmen"
                                                             />
-                                                            <InputError
-                                                                :message="
-                                                                    form.errors
-                                                                        .date_appointmen
-                                                                "
-                                                                class="mt-1"
-                                                            />
+                                                            <InputError :message="form.errors.date_appointmen" class="mt-1" />
                                                         </div>
                                                         <div :class="[form.time_appointmen ? form.errors.time_appointmen ? 'has-success' : 'has-error' : '', ]"
                                                             class=""
@@ -825,37 +793,37 @@ const sendMessageWhatsapp = () => {
                                                             <InputError :message="form.errors.time_appointmen" class="mt-1" />
                                                         </div>
                                                     </div>
-                                                    <div class="grid grid-cols-1 gap-5 md:grid-cols-2" >
-                                                        <div :class="[form.email ? form.errors.email ? 'has-success' : 'has-error' : '', ]" class="">
+                                                    <div class="grid grid-cols-1 gap-5 md:grid-cols-4" >
+                                                        <div :class="[form.email ? form.errors.email ? 'has-success' : 'has-error' : '', ]" class="sm:col-span-1">
                                                             <label for="email" >Email</label>
                                                             <input id="email" type="text" class="form-input" v-model="form.email" />
                                                             <InputError :message="form.errors.email" class="mt-1" />
                                                         </div>
-                                                        <div :class="[form.telephone ? form.errors.telephone ? 'has-success' : 'has-error' : '', ]" class="" >
+                                                        <div :class="[form.telephone ? form.errors.telephone ? 'has-success' : 'has-error' : '', ]" class="sm:col-span-1" >
                                                             <label for="email" >Teléfono</label>
                                                             <input id="email" type="text" class="form-input" v-model="form.telephone" />
                                                             <InputError :message="form.errors.telephone" class="mt-1" />
                                                         </div>
-                                                    </div>
-                                                    <div>
-                                                        <label for="description" >Motivo de consulta</label>
-                                                        <input v-model="form.description" id="description" class="form-input" />
-                                                        <InputError :message="form.errors.description" class="mt-1" />
-                                                    </div>
-                                                    <div>
-                                                        <label for="details">Signos y Sintomas</label>
-                                                        <input v-model="form.details" id="details" class="form-input" />
-                                                        <InputError :message="form.errors.details" class="mt-1" />
-                                                    </div>
-                                                    <div>
-                                                        <label for="message">Tiempo de Enfermedad</label>
-                                                        <input v-model="form.message" id="message" class="form-input" />
-                                                        <InputError :message="form.errors.message" class="mt-1" />
-                                                    </div>
-                                                    <div>
-                                                        <label for="sick_time">Relato Cronológico</label>
-                                                        <input v-model="form.sick_time" id="sick_time" class="form-input" />
-                                                        <InputError :message="form.errors.sick_time" class="mt-1" />
+                                                        <div class="sm:col-span-2">
+                                                            <label for="description" >Motivo de consulta</label>
+                                                            <input v-model="form.description" id="description" class="form-input" />
+                                                            <InputError :message="form.errors.description" class="mt-1" />
+                                                        </div>
+                                                        <!-- <div>
+                                                            <label for="details">Signos y Sintomas</label>
+                                                            <input v-model="form.details" id="details" class="form-input" />
+                                                            <InputError :message="form.errors.details" class="mt-1" />
+                                                        </div> -->
+                                                        <!-- <div>
+                                                            <label for="message">Tiempo de Enfermedad</label>
+                                                            <input v-model="form.message" id="message" class="form-input" />
+                                                            <InputError :message="form.errors.message" class="mt-1" />
+                                                        </div>
+                                                        <div>
+                                                            <label for="sick_time">Relato Cronológico</label>
+                                                            <input v-model="form.sick_time" id="sick_time" class="form-input" />
+                                                            <InputError :message="form.errors.sick_time" class="mt-1" />
+                                                        </div> -->
                                                     </div>
                                                     <div class="flex justify-end items-center mt-8" >
                                                         <button type="button" class="btn btn-outline-danger gap-2" @click="isAddNoteModal = false" >

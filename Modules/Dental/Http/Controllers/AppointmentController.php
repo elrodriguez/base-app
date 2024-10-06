@@ -18,9 +18,43 @@ use Modules\Health\Entities\HealPatient;
 class AppointmentController extends Controller
 {
     use ValidatesRequests;
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function calendar()
+    {
+        $appointments = DentAppointment::with('patient')
+            ->with('doctor')
+            ->where('date_appointmen', '>=', Carbon::today())
+            ->get();
+
+        $patients = HealPatient::with('person')->get();
+        if (count($patients) > 0) {
+            foreach ($patients as $i => $patient) {
+                $patients[$i] = array(
+                    'code' => $patient->id,
+                    'name' => $patient->person->full_name,
+                    'email' => $patient->person->email,
+                    'telephone' => $patient->person->telephone
+                );
+            }
+        }
+
+        $doctors = HealDoctor::with('person')->get();
+        if (count($doctors) > 0) {
+            foreach ($doctors as $i => $doctor) {
+                $doctors[$i] = array(
+                    'code' => $doctor->id,
+                    'name' => $doctor->person->full_name,
+                    'email' => $patient->person->email,
+                    'telephone' => $patient->person->telephone
+                );
+            }
+        }
+        return Inertia::render('Dental::Appointments/Calendar', [
+            'appointments' => $appointments,
+            'patients' => $patients,
+            'doctors' => $doctors
+        ]);
+    }
     public function index()
     {
         //dd(request()->all());
@@ -103,7 +137,7 @@ class AppointmentController extends Controller
         // Agregar 30 minutos
         $newDateTime = $initialDateTime->addMinutes(30);
 
-        DentAppointment::create([
+        $appointment = DentAppointment::create([
             'patient_id'            => $request->get('patient_id')['code'],
             'patient_person_id'     => $patient->person_id,
             'doctor_id'             => $request->get('doctor_id')['code'],
@@ -123,30 +157,14 @@ class AppointmentController extends Controller
             'sick_time'             => $request->get('sick_time'),
         ]);
 
-        return redirect()->route('odontology_appointments_list')
-            ->with('message', __('Cita registrada con éxito'));
+        return response()->json([
+            'appointment' => $appointment
+        ]);
     }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('Dental::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('Dental::edit');
-    }
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)
     {
         //dd($request->all());
         $this->validate(
@@ -186,11 +204,16 @@ class AppointmentController extends Controller
             'details'               => $request->get('details'),
             'message'               => $request->get('message'),
             'updated_user_id'       => Auth::id(),
+            'status'                => $request->get('status'),
             'sick_time'             => $request->get('sick_time'),
         ]);
 
-        return redirect()->route('odontology_appointments_list')
-            ->with('message', __('Cita Actualizada con éxito'));
+        $appointment = DentAppointment::find($id);
+
+
+        return response()->json([
+            'appointment' => $appointment
+        ]);
     }
 
     /**
@@ -238,6 +261,19 @@ class AppointmentController extends Controller
     {
         DentAppointment::find($id)->update([
             'important' => $request->get('important')
+        ]);
+    }
+
+    public function getBusyHours($date, $doctor)
+    {
+
+        $times = DentAppointment::whereDate('date_appointmen', $date)
+            ->where('doctor_id', $doctor)
+            ->where('status', 1)
+            ->pluck('time_appointmen');
+
+        return response()->json([
+            'times' => $times
         ]);
     }
 }

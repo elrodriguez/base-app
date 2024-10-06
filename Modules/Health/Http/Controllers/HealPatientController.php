@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Modules\Health\Entities\HealPatient;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Modules\Dental\Entities\DentAppointment;
 
 class HealPatientController extends Controller
 {
@@ -295,6 +296,21 @@ class HealPatientController extends Controller
 
         return Inertia::render('Health::Patients/Panel', [
             'patient' => $patient
+        ]);
+    }
+
+    public function appointments($id)
+    {
+        ///citas odontologicas 
+        $appointmentsDental = DentAppointment::where('patient_id', $id)->get();
+
+        return response()->json([
+            [
+                'title' => 'Odontología',
+                'icon' => 'dental',
+                'model' => DentAppointment::class,
+                'appointments' => $appointmentsDental
+            ],
         ]);
     }
 }
