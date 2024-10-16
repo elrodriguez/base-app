@@ -4,6 +4,7 @@ import {
     faUserDoctor,
     faTooth
 } from "@fortawesome/free-solid-svg-icons";
+import menuDental from 'Modules/Dental/Resources/assets/js/Menu.js';
 
 const menuHealth = {
     status:false,
@@ -26,21 +27,7 @@ const menuHealth = {
             icom: faWheelchair,
             permissions: 'heal_pacientes_listado',
         },
-        { 
-            route: null,
-            status: false,
-            text: 'Odontología',
-            icom: faTooth,
-            permissions: 'dental_dashboard',
-            items: [
-                {
-                    route: route('odontology_appointments_calendar'),
-                    status: false,
-                    text: 'Citas',
-                    permissions: 'dental_citas_listado',
-                },
-            ]
-        }
+        menuDental
     ]
     
 };

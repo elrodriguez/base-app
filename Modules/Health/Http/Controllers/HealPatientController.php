@@ -313,4 +313,27 @@ class HealPatientController extends Controller
             ],
         ]);
     }
+
+    public function searchPatient(Request $request)
+    {
+        $search = $request->get('search');
+
+        $patients = HealPatient::with('person')
+            ->whereHas('person', function ($query) use ($search) {
+                $query->where('full_name', 'like', '%' . $search . '%')
+                    ->orWhere('number', $search);
+            })
+            ->get();
+
+        if (count($patients) > 0) {
+            return response()->json([
+                'success' => true,
+                'patients' => $patients
+            ]);
+        } else {
+            return response()->json([
+                'success' => false
+            ]);
+        }
+    }
 }

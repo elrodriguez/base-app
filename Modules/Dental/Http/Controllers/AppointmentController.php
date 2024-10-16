@@ -94,8 +94,8 @@ class AppointmentController extends Controller
                 $doctors[$i] = array(
                     'code' => $doctor->id,
                     'name' => $doctor->person->full_name,
-                    'email' => $patient->person->email,
-                    'telephone' => $patient->person->telephone
+                    'email' => $doctor->person->email,
+                    'telephone' => $doctor->person->telephone
                 );
             }
         }

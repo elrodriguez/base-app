@@ -12,6 +12,7 @@
 */
 
 use Modules\Dental\Http\Controllers\AppointmentController;
+use Modules\Dental\Http\Controllers\DentAttentionController;
 
 Route::middleware(['auth', 'verified'])->prefix('dental')->group(function () {
     Route::get('/', 'DentalController@index')->name('dental_dashboard');
@@ -26,4 +27,7 @@ Route::middleware(['auth', 'verified'])->prefix('dental')->group(function () {
     Route::delete('appointments/destroy/{id}', [AppointmentController::class, 'destroy'])->name('odontology_appointments_destroy');
     Route::get('event/appointments', [AppointmentController::class, 'getDentAppointments'])->name('dental_event_appointments');
     Route::get('appointments/hours/{date}/{doctor}/busy', [AppointmentController::class, 'getBusyHours'])->name('odontology_appointments_busy_hours');
+    Route::get('attention/list', [DentAttentionController::class, 'index'])->name('odontology_attention_list');
+    Route::get('attention/table', [DentAttentionController::class, 'getTable'])->name('odontology_attention_table');
+    Route::get('attention/create', [DentAttentionController::class, 'create'])->name('odontology_attention_create');
 });
