@@ -57,10 +57,18 @@ function calculateTotals() {
     totalFinal.value    = 0;
     form.sales.forEach(sale => {
         console.log(sale.sale_product);
-        totalPrice.value      = totalPrice.value + parseFloat(JSON.parse(sale.sale_product).unit_price);
+        //totalPrice.value      = totalPrice.value + parseFloat(JSON.parse(sale.sale_product).price);
+        totalPrice.value += parseFloat(
+            JSON.parse(sale.sale_product).price || JSON.parse(sale.sale_product).unit_price || 0
+        );
+        
         totalQuantity.value   = totalQuantity.value + parseFloat(JSON.parse(sale.sale_product).quantity);
         totalDiscount.value   = totalDiscount.value + parseFloat(JSON.parse(sale.sale_product).discount);
-        totalFinal.value      = totalFinal.value + (parseFloat(JSON.parse(sale.sale_product).unit_price)*parseFloat(JSON.parse(sale.sale_product).quantity))-parseFloat(JSON.parse(sale.sale_product).discount);
+        //totalFinal.value      = totalFinal.value + (parseFloat(JSON.parse(sale.sale_product).price)*parseFloat(JSON.parse(sale.sale_product).quantity))-parseFloat(JSON.parse(sale.sale_product).discount);
+        totalFinal.value += (parseFloat(JSON.parse(sale.sale_product).price || JSON.parse(sale.sale_product).unit_price || 0) *
+            parseFloat(JSON.parse(sale.sale_product).quantity || 1)) - 
+            parseFloat(JSON.parse(sale.sale_product).discount || 0);
+    
     });
     
 }
@@ -300,7 +308,7 @@ const urlBaseI = assetUrl;
                                         </div>
                                     </td>
                                     <td >
-                                        {{ JSON.parse(sale.sale_product).unit_price }}
+                                        {{ JSON.parse(sale.sale_product).unit_price || JSON.parse(sale.sale_product).price }}
                                     </td>
                                     <td >
                                         {{ JSON.parse(sale.sale_product).quantity }}

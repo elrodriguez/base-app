@@ -29,8 +29,8 @@ class AcaModuleController extends Controller
         $this->validate(
             $request,
             [
-                'position' => 'required',
-                'description' => 'required|max:255'
+                'position' => 'required|max:4',
+                'description' => 'required|max:200'
             ]
         );
 
@@ -51,8 +51,8 @@ class AcaModuleController extends Controller
         $this->validate(
             $request,
             [
-                'position' => 'required',
-                'description' => 'required|max:255'
+                'position' => 'required|max:4',
+                'description' => 'required|max:200'
             ]
         );
 

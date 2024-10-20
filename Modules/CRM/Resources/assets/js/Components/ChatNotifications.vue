@@ -31,20 +31,20 @@
         return xasset + 'storage/'+ path;
     }
     onMounted(() => {
-        window.socketIo.on('message-notification', (result) => {
-            let participants = result.data.participants;
-            participants.forEach(item => {
-                if(authUser.id == item){
-                    fetchNotifications();
-                }
-            });
-        });
+        // window.socketIo.on('message-notification', (result) => {
+        //     let participants = result.data.participants;
+        //     participants.forEach(item => {
+        //         if(authUser.id == item){
+        //             fetchNotifications();
+        //         }
+        //     });
+        // });
     });
 
     onMounted(() => fetchNotifications());
 
     onUnmounted(() => {
-        window.socketIo.off('message-notification'); // Dejar el canal cuando se desmonte el componente
+       // window.socketIo.off('message-notification'); // Dejar el canal cuando se desmonte el componente
     });
 
 

@@ -58,6 +58,6 @@ window.axios.interceptors.response.use(
 //     enabledTransports: ['ws', 'wss'],
 // });
 
-import io from 'socket.io-client';
-const socketIoHost = import.meta.env.SOCKET_IO_SERVER ?? 'https://localhost:3000';
-window.socketIo = io(socketIoHost);
+// import io from 'socket.io-client';
+// const socketIoHost = import.meta.env.SOCKET_IO_SERVER ?? 'https://localhost:3000';
+// window.socketIo = io(socketIoHost);

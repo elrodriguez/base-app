@@ -133,35 +133,35 @@
     };
 
     onMounted(() => {
-        window.socketIo.on('message-notification', (result) => {
-            let participants = result.data.participants;
-            let conversationId = result.data.message.conversation_id;
+        // window.socketIo.on('message-notification', (result) => {
+        //     let participants = result.data.participants;
+        //     let conversationId = result.data.message.conversation_id;
 
-            const newmsg = {
-                fromUserId: result.data.ofUserId,
-                toUserId: 0,
-                text: result.data.message.content,
-                time: 'En este momento',
-                type: result.data.message.type,
-                id: result.data.message.id
-            };
+        //     const newmsg = {
+        //         fromUserId: result.data.ofUserId,
+        //         toUserId: 0,
+        //         text: result.data.message.content,
+        //         time: 'En este momento',
+        //         type: result.data.message.type,
+        //         id: result.data.message.id
+        //     };
             
-            participants.forEach(item => {
-                if(authUser.id == item){
-                    if(privateChat.value){
-                        if(conversationId == privateChat.value.conversation){
-                            privateChat.value.messages.push(newmsg);
-                            scrollToBottomChatBox();
-                        }
-                    }
+        //     participants.forEach(item => {
+        //         if(authUser.id == item){
+        //             if(privateChat.value){
+        //                 if(conversationId == privateChat.value.conversation){
+        //                     privateChat.value.messages.push(newmsg);
+        //                     scrollToBottomChatBox();
+        //                 }
+        //             }
                     
-                }
-            });
-        });
+        //         }
+        //     });
+        // });
     });
 
     onUnmounted(() => {
-        window.socketIo.off('message-notification'); // Dejar el canal cuando se desmonte el componente
+       // window.socketIo.off('message-notification'); // Dejar el canal cuando se desmonte el componente
     });
 
     onMounted(() => {

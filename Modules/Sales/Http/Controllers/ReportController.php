@@ -290,10 +290,15 @@ class ReportController extends Controller
 
     public function dataPaymentMethodTotals(Request $request)
     {
+        $start = $request->input('start');
+        $end = $request->input('end');
 
         $payments = Sale::select('payments')->where('local_id', $request->input('local_id'))
-            ->whereDate('created_at', '>=', $request->input('start'))
-            ->whereDate('created_at', '<=', $request->input('end'))
+            ->where(function ($query) use ($start, $end) {
+                $query->whereDate('created_at', '>=', $start)
+                    ->whereDate('created_at', '<=', $end);
+            })
+            ->where('status', true)
             ->get();
 
         //$array = json_decode($payments, true);
