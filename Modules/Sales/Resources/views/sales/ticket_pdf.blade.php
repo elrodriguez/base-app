@@ -68,7 +68,6 @@
     } else {
         $logo = public_path('storage' . DIRECTORY_SEPARATOR . $company->logo_document);
     }
-
 @endphp
 
 <body style="padding: 0px">
@@ -116,15 +115,44 @@
         <table style="width: 100%; border-bottom: 1px solid black !important;padding:0px">
             <tr>
                 <td style="padding: 0px">
-                    <p style="padding: 0px">VENDEDOR: {{ $seller->name }}</p>
+                    <p style="padding: 0px">VENDEDOR: </p>
+                </td>
+                <td style="padding: 0px">
+                    <p style="padding: 0px">{{ $seller->name }}</p>
                 </td>
             </tr>
+            <tr>
+                <td colspan="2">
+                    @foreach (json_decode($sale->payments) as $payment)
+                        <div>
+                            <ul class="">
+                                <li>
+                                    @foreach ($payments as $pay)
+                                        <span>
+                                            @if ($pay->id == $payment->type)
+                                                <strong>
+                                                    Metodo: {{ $pay->description }}
+                                                </strong>
+                                            @endif
+                                        </span>
+                                    @endforeach
+                                    <span><strong>Importe: {{ $payment->amount }}</strong></span>
+                                    @if ($payment->reference)
+                                        <span>Referencia: {{ $payment->reference }}</span>
+                                    @endif
+                                </li>
+                            </ul>
+                        </div>
+                    @endforeach
+                </td>
+            </tr>
+
         </table>
-        {{-- <div style="margin-top:16px;margin-bottom:16px;width:100%;">
+        <div style="margin-top:16px;margin-bottom:16px;width:100%;">
             <p class="centrado">
                 ¡Vuelve a amar cada paso con {{ $company->name }}!
             </p>
-        </div> --}}
+        </div>
         <p class="centrado">¡GRACIAS POR SU COMPRA!</p>
     </div>
 </body>

@@ -125,8 +125,10 @@ class ReportController extends Controller
                     'sale_products.saleProduct as saleProduct',
                     'sale_products.total as product_total'
                 )
-                ->whereDate('sales.created_at', '>=', $start)
-                ->whereDate('sales.created_at', '<=', $end)
+                ->where(function ($query) use ($start, $end) {
+                    $query->whereDate('sales.created_at', '>=', $start)
+                        ->whereDate('sales.created_at', '<=', $end);
+                })
                 ->where('sales.status', '=', 1)
                 ->orderBy('sales.id')
                 ->get();
@@ -298,7 +300,7 @@ class ReportController extends Controller
                 $query->whereDate('created_at', '>=', $start)
                     ->whereDate('created_at', '<=', $end);
             })
-            ->where('status', true)
+            ->where('status', 1)
             ->get();
 
         //$array = json_decode($payments, true);

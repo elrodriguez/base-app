@@ -115,6 +115,7 @@ class SaleController extends Controller
                 'payments.*.type' => 'required',
                 'payments.*.amount' => 'required|numeric|min:0|not_in:0|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
                 'client.id' => 'required',
+                'sale_date' => 'required'
             ],
             [
                 'payments.*.type.required' => 'Seleccione un tipo de pago',
@@ -337,6 +338,7 @@ class SaleController extends Controller
         $products = SaleProduct::where('sale_id', $sale->id)->get();
         $company = Company::first();
         $seller = User::find($sale->user_id);
+        $payments = PaymentMethod::all();
 
         $data = [
             'local'     => $local,
@@ -344,7 +346,8 @@ class SaleController extends Controller
             'products'  => $products,
             'document'  => $document,
             'company'   => $company,
-            'seller'    => $seller
+            'seller'    => $seller,
+            'payments'  => $payments
         ];
 
         $file = public_path('ticket/') . $seller->id . '-ticket.pdf';
