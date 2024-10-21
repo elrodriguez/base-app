@@ -254,12 +254,17 @@
     }
 
     const removeCalculateTotals = (key) => {
-
+        formDocument.payments = [];
         formDocument.total = (parseFloat(formDocument.total) - parseFloat(formDocument.items[key].total)).toFixed(2);
         formDocument.total_discount = (parseFloat(formDocument.total_discount) - parseFloat(formDocument.items[key].discount)).toFixed(2);
         formDocument.total_taxed = (parseFloat(formDocument.total_taxed) - parseFloat(formDocument.items[key].v_sale)).toFixed(2);
         formDocument.total_igv = (parseFloat(formDocument.total_igv) - parseFloat(formDocument.items[key].m_igv)).toFixed(2);
-        formDocument.payments[0].amount = formDocument.total;
+
+        formDocument.payments.push({
+            type:1,
+            reference: null,
+            amount: formDocument.total
+        });
         
     }
 
