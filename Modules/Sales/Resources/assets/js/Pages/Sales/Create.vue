@@ -75,9 +75,15 @@
     }
 
     const removeProduct = (key) => {
+        form.payments = [];
         let t = parseFloat(form.products[key].total);
         form.total = parseFloat(form.total) - t;
         form.products.splice(key,1);
+        form.payments.push({
+            type:1,
+            reference: null,
+            amount: form.total
+        });
     }
 
     const addPayment = () => {
