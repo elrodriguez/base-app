@@ -72,8 +72,8 @@
 
 <body style="padding: 0px">
     <div>
-        <div style="margin-top:16px;width:100%;text-align: center">
-            <img src="{{ $logo }}" alt="Logotipo" class="centrado">
+        <div style="margin-top:10px;width:100%;text-align: center">
+            <img src="{{ $logo }}" alt="Logotipo" class="centrado" width="180px" height="180px">
         </div>
         <p class="centrado">
             {{-- {{ $company->name }} --}}
@@ -111,42 +111,43 @@
                 </tr>
             </tbody>
         </table>
-        <br><br>
+        <br>
         <table style="width: 100%; border-bottom: 1px solid black !important;padding:0px">
-            <tr>
-                <td style="padding: 0px">
-                    <p style="padding: 0px">VENDEDOR: </p>
-                </td>
-                <td style="padding: 0px">
-                    <p style="padding: 0px">{{ $seller->name }}</p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    @foreach (json_decode($sale->payments) as $payment)
-                        <div>
-                            <ul class="">
-                                <li>
-                                    @foreach ($payments as $pay)
-                                        <span>
-                                            @if ($pay->id == $payment->type)
-                                                <strong>
-                                                    Metodo: {{ $pay->description }}
-                                                </strong>
-                                            @endif
-                                        </span>
-                                    @endforeach
-                                    <span><strong>Importe: {{ $payment->amount }}</strong></span>
-                                    @if ($payment->reference)
-                                        <span>Referencia: {{ $payment->reference }}</span>
-                                    @endif
-                                </li>
-                            </ul>
-                        </div>
-                    @endforeach
-                </td>
-            </tr>
-
+            <tbody>
+                <tr>
+                    <td style="padding: 0px">
+                        <p style="padding: 0px">VENDEDOR: </p>
+                    </td>
+                    <td style="padding: 0px">
+                        <p style="padding: 0px">{{ $seller->name }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        @foreach (json_decode($sale->payments) as $payment)
+                            <div>
+                                <ul class="">
+                                    <li>
+                                        @foreach ($payments as $pay)
+                                            <span>
+                                                @if ($pay->id == $payment->type)
+                                                    <strong>
+                                                        Metodo: {{ $pay->description }}
+                                                    </strong>
+                                                @endif
+                                            </span>
+                                        @endforeach
+                                        <span><strong>Importe: {{ $payment->amount }}</strong></span>
+                                        @if ($payment->reference)
+                                            <span>Referencia: {{ $payment->reference }}</span>
+                                        @endif
+                                    </li>
+                                </ul>
+                            </div>
+                        @endforeach
+                    </td>
+                </tr>
+            </tbody>
         </table>
         <div style="margin-top:16px;margin-bottom:16px;width:100%;">
             <p class="centrado">
