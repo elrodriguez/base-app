@@ -365,7 +365,7 @@
                             </template>
                         </Popper>
                     </div> -->
-                    <ChatNotifications />
+                    <!-- <ChatNotifications /> -->
                     <!-- <div class="dropdown shrink-0">
                         <Popper :placement="store.rtlClass === 'rtl' ? 'bottom-end' : 'bottom-start'" offsetDistance="8">
                             <button
