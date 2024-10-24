@@ -383,11 +383,21 @@ const showMessage = (msg = '', type = 'success') => {
         { data: 'total', title: 'Total' },
         { data: null, render: '#status', title: 'Estado' },
     ];
+
     const options = { 
         responsive: true, 
         language: es_PE,
         order: [[3, 'desc']]
     }
+
+    const documentTable = ref(null);
+
+    const refreshTable = () => {
+        const dataTableInstance = documentTable.value?.dt; // accede a la instancia del DataTable
+        if (dataTableInstance) {
+            dataTableInstance.ajax.reload();
+        }
+    };
 </script>
 
 <template>
@@ -413,7 +423,7 @@ const showMessage = (msg = '', type = 'success') => {
             </div>
             <div class="panel pb-1.5 mt-6">
             
-                <DataTable :options="options" :ajax="route('saledocuments_table_document')" :columns="columns">
+                <DataTable ref="documentTable" :options="options" :ajax="route('saledocuments_table_document')" :columns="columns">
                     <template #action="props">
                         <div class="flex gap-4 items-center justify-center">
                             <div class="dropdown">
