@@ -504,7 +504,8 @@ class ProductController extends Controller
                     't1.category_id',
                     't1.brand_id',
                     't1.icbper',
-                    't1.created_at'
+                    't1.created_at',
+                    't1.updated_at'
                 ])
                 ->first();
 
