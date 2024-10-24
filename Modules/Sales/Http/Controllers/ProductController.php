@@ -273,6 +273,7 @@ class ProductController extends Controller
 
     public function searchProductByDescriptionCode($local_id, $search)
     {
+
         $products = DB::table('products as t1')
             ->select(
                 't1.id',
@@ -503,6 +504,7 @@ class ProductController extends Controller
                     't1.category_id',
                     't1.brand_id',
                     't1.icbper',
+                    't1.created_at'
                 ])
                 ->first();
 
