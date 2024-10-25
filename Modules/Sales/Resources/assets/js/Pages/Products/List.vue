@@ -633,7 +633,7 @@
                   </table>
             </template>
 
-            <template #footer>
+            <template #buttons>
                 <SecondaryButton @click="closeModalDetailsProduct">
                     Cancel
                 </SecondaryButton>
@@ -883,7 +883,7 @@
                 </div>
             </template>
 
-            <template #footer>
+            <template #buttons>
                 <DangerButton
                     :class="{ 'opacity-25': formReLocate.processing }"
                     :disabled="formReLocate.processing"
